@@ -42,3 +42,13 @@ npm.cmd run test:e2e
 第一轮依赖安装曾被网络/审批配置阻断；2026-10-28 用户开放权限后已恢复，生成 lockfile，lint/typecheck/test/build 和基础 Chrome 浏览器测试通过。后续使用 `npm ci`。实际覆盖范围以 `docs/PROGRESS.md` 为准，不要把基础浏览器测试扩写成真实手机或性能验收。网络问题不要通过关闭限制或绕过审批解决。
 
 主要手动验收路径见 `docs/PROGRESS.md`。每轮更新该文档：完成了什么、实际跑了什么、失败/未验证什么、下一步做什么。技术取舍更新 `docs/DECISIONS.md`。不要把计划写成已实现；不要把未执行的检查写成通过。
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
