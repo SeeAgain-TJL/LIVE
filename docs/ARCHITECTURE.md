@@ -106,3 +106,7 @@ Prisma migrations 纳入仓库，升级前备份，先加后迁再删，关键�
 ## Phase 2 local media boundary
 
 UniverseData v2 adds Memory.mediaIds and Media metadata. Image and video Blobs are stored in IndexedDB (universe-of-me-media) while localStorage keeps the validated versioned relationship snapshot. src/data/media-store.ts is the replacement boundary for a future private S3/R2 adapter. Legacy v1 snapshots are normalized on read; corrupt or orphan references fail closed without overwriting the original data. Production still requires Prisma relations, authorization, short-lived object URLs, backup, and full export/recovery.
+
+## 星穹记忆殿堂
+
+src/components/three/memory-space.tsx 只负责渲染记忆球、相机和 OrbitControls；src/domain/memory.ts 提供纯函数的媒体类型、搜索、筛选和空间坐标；planet-memory-space.tsx 负责将当前星球真实数据组合为页面。memory-guide.tsx 只触发本地确定性动作，memory-details.tsx 负责 HTML 长文和媒体阅读，MemoryList 是辅助管理模式。这样 3D 渲染不会直接读写 provider，也不会把正文绑定到旋转球面。

@@ -13,7 +13,7 @@ interface UniverseContextValue {
   createPlanet(input: PlanetInput): Planet;
   updatePlanet(id: string, input: PlanetInput): Promise<void>;
   deletePlanet(id: string): Promise<void>;
-  saveMemory(planetId: string, input: MemoryInput, id?: string): Promise<void>;
+  saveMemory(planetId: string, input: MemoryInput, id?: string): Promise<string>;
   deleteMemory(id: string): Promise<void>;
   exportData(raw?: boolean): void;
 }
@@ -77,7 +77,7 @@ export function UniverseProvider({ children }: { children: React.ReactNode }) {
     await deleteMedia(memoryIds);
   };
 
-  const saveMemory = async (planetId: string, input: MemoryInput, id?: string) => {
+  const saveMemory = async (planetId: string, input: MemoryInput, id?: string): Promise<string> => {
     if (!data || !data.planets.some(p => p.id === planetId)) throw new Error("星球不存在。");
     if (!input.title.trim() && !input.body.trim()) throw new Error("请写下标题或正文。");
     if (input.title.length > 120 || input.body.length > 50000) throw new Error("标题最多 120 字，正文最多 50000 字。");
@@ -104,6 +104,7 @@ export function UniverseProvider({ children }: { children: React.ReactNode }) {
       media: [...(data.media ?? []).filter(m => !(input.removeMediaIds ?? []).includes(m.id)), ...uploaded],
     });
     await deleteMedia(input.removeMediaIds ?? []);
+    return memoryId;
   };
 
   const deleteMemory = async (id: string) => {

@@ -11,7 +11,7 @@ function today() {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-export function MemoryEditor({ planetId, memory, onClose }: { planetId: string; memory?: Memory; onClose: () => void }) {
+export function MemoryEditor({ planetId, memory, onClose }: { planetId: string; memory?: Memory; onClose: (savedId?: string) => void }) {
   const { saveMemory } = useUniverse();
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState(memory?.title ?? "");
@@ -20,7 +20,7 @@ export function MemoryEditor({ planetId, memory, onClose }: { planetId: string; 
   const [error, setError] = useState("");
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    try { await saveMemory(planetId, { title: title.trim(), body: body.trim(), occurredOn, files }, memory?.id); onClose(); }
+    try { const savedId = await saveMemory(planetId, { title: title.trim(), body: body.trim(), occurredOn, files }, memory?.id); onClose(savedId); }
     catch (e) { setError(e instanceof Error ? e.message : "保存失败，内容仍保留在表单中。"); }
   };
   return <Modal title={memory ? "重新读过，再添一笔" : "留住这一刻"} eyebrow={memory ? "EDIT A MEMORY" : "A MOMENT WORTH KEEPING"} onClose={onClose}>
