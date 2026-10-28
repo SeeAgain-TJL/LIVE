@@ -17,7 +17,7 @@ UniverseExplorer → UniverseScene → CameraRig / PlanetMesh / StarField
 PlanetEditor / PlanetArchive → PlanetPreview
 ```
 
-Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React Three Fiber 9、Drei 10 构建；Tailwind 4 与语义化全局 CSS 实现界面。依赖目前只有版本范围，安装成功后必须提交 lockfile。尚未接通服务端数据库、鉴权或媒体 API。
+Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React Three Fiber 9、Drei 10 构建；Tailwind 4 与语义化全局 CSS 实现界面。已生成 `package-lock.json`，使用 `npm ci` 复现；本轮实际解析为 Next.js 16.4.3、React 19.3.1、R3F 9.8.2、Drei 10.7.9。尚未接通服务端数据库、鉴权或媒体 API。
 
 业务规则在 `domain`，与 React 无关。`UniverseRepository` 是当前本地快照仓库接口，供 provider 使用；**它是同步的本地接口，不等于未来异步服务端仓库能直接原位替换**。接服务端时引入异步查询/命令接口及 loading/error 状态，保持领域类型、视图 props 与 3D 不变。
 
@@ -29,7 +29,8 @@ Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React T
 - 进入档案先飞近，再通过遮罩过渡到独立路由。返回链接与浏览器返回回到宇宙，通过可选镜头书签恢复位置；当前返回过程没有反向飞离动画，列为体验后续项。
 - 相机只在操作结束/飞行完成写书签。坐标载入前校验有限数与范围；书签损坏不阻止档案读取。
 - 自动模式以视口和 CPU 核数为启发式，并非 GPU 性能基准；手机/低核心设备固定 DPR=1、减少细分/星数，高质量 DPR 上限 1.75。未来补 FPS 退化与真实设备测量。
-- WebGL 错误边界、context lost 提示、档案直达链接；列表和表单支持键盘，原生 dialog 负责焦点约束与 Escape。暂未完成真实浏览器与设备验收。
+- WebGL 错误边界、context lost 提示、档案直达链接；列表和表单支持键盘，原生 dialog 负责焦点约束与 Escape。Chrome 自动化已验证创建/进入/文字持久化与移动视口草稿；实际手机与性能验收待完成。
+- Drei Html 标签通过独立 DOM portal 层渲染，避免向 Canvas 自身容器附加节点导致 React 切页卸载冲突。此问题通过真实 Chrome 路由切换测试发现并回归验证。
 
 ## 当前持久化契约
 

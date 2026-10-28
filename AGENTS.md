@@ -27,16 +27,18 @@
 ## 检查与交接
 
 ```powershell
-npm.cmd install
+npm.cmd ci
 npm.cmd run lint
 npm.cmd run typecheck
 npm.cmd test
 npm.cmd run build
 npm.cmd run dev
+# 已安装 Chrome，或先运行 npx.cmd playwright install chrome
+npm.cmd run test:e2e
 ```
 
 本环境 PowerShell 禁止 `npm.ps1`，使用 `npm.cmd`，不更改系统执行策略。测试运行器使用 `--test-isolation=none`，避免受限环境禁止创建子进程。
 
-第一轮依赖安装被网络/审批配置阻断，**不能默认项目已经通过构建或浏览器验收**。先核实当前进度。安装成功后生成 lockfile，再使用 `npm ci`。网络问题不要通过关闭限制或绕过审批解决。
+第一轮依赖安装曾被网络/审批配置阻断；2026-10-28 用户开放权限后已恢复，生成 lockfile，lint/typecheck/test/build 和基础 Chrome 浏览器测试通过。后续使用 `npm ci`。实际覆盖范围以 `docs/PROGRESS.md` 为准，不要把基础浏览器测试扩写成真实手机或性能验收。网络问题不要通过关闭限制或绕过审批解决。
 
 主要手动验收路径见 `docs/PROGRESS.md`。每轮更新该文档：完成了什么、实际跑了什么、失败/未验证什么、下一步做什么。技术取舍更新 `docs/DECISIONS.md`。不要把计划写成已实现；不要把未执行的检查写成通过。

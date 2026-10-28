@@ -19,12 +19,12 @@ jobs:
         with:
           node-version: '24'
       - name: Install dependencies
-        shell: bash
-        run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+        run: npm ci
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: '1'
+      - run: npx playwright install --with-deps chrome
+      - run: npm run test:e2e
