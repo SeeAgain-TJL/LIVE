@@ -102,3 +102,7 @@ Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React T
 ### 长期可靠性
 
 Prisma migrations 纳入仓库，升级前备份，先加后迁再删，关键迁移做恢复演练。数据库定期备份 + 对象清单/校验，明确 RPO/RTO，导出必须能在全新环境还原。正式上线前测试匿名访问、横向越权、撤销分享、签名过期、恶意上传、断点恢复和数据恢复。
+
+## Phase 2 local media boundary
+
+UniverseData v2 adds Memory.mediaIds and Media metadata. Image and video Blobs are stored in IndexedDB (universe-of-me-media) while localStorage keeps the validated versioned relationship snapshot. src/data/media-store.ts is the replacement boundary for a future private S3/R2 adapter. Legacy v1 snapshots are normalized on read; corrupt or orphan references fail closed without overwriting the original data. Production still requires Prisma relations, authorization, short-lived object URLs, backup, and full export/recovery.

@@ -1,5 +1,9 @@
 # 技术决策记录
 
+## 2026-10-28 · D011：媒体采用 IndexedDB，元数据采用 localStorage v2
+
+第二阶段继续使用明确标注的浏览器开发存储。文本、星球资料和媒体元数据保留在版本化 localStorage 快照中；照片与视频 Blob 写入 IndexedDB，避免 base64 放大 JSON 并突破 localStorage 配额。v1 快照读取时补齐 `media` 与 `mediaIds` 后按 v2 保存，正式版本再替换为 Prisma + 私有 S3/R2 仓库接口。当前方案只保证同一浏览器配置的刷新持久化，不声称账号、加密或跨设备安全。
+
 ## 2026-10-28 · D001：先完成探索，再铺开基础设施
 
 仓库为空，无既有 HTML/截图/代码。按用户优先级新建 Next.js App Router、React、strict TypeScript 工程；第一轮建立真实 3D、档案路由和可保存的创建入口。为了让闭环可验证，提前实现最小文字记忆和 JSON 导出。账号、媒体和高级探索不阻塞第一轮。

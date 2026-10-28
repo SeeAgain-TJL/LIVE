@@ -255,6 +255,10 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button { -webkit-app
 .memory-entry-actions .icon-button { width: 30px; height: 30px; }
 .memory-entry h3 { font-size: 19px; font-weight: 400; color: #d4d4ce; margin: 15px 0 18px; overflow-wrap: anywhere; }
 .memory-body { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; line-height: 2.2; color: #aab3bd; }
+.memory-body { font-size: 14px; line-height: 2.05; max-width: 72ch; }
+.memory-media { display: block; width: min(100%, 520px); max-height: 420px; object-fit: contain; margin: 18px 0; border: 1px solid var(--border); border-radius: 6px; background: #050912; }
+.media-loading { display: block; color: #6f7e91; font-size: 11px; margin: 12px 0; }
+.danger-link { color: #c78989; margin-top: 12px; }
 .memory-edited { font-size: 9px; color: #5d7088; display: block; margin-top: 20px; }
 .archive-footnote { display: flex; align-items: center; justify-content: center; font-size: 10px; color: #6c7b8d; padding: 24px 0; border-top: 1px solid #a3b6cd14; letter-spacing: 1px; }
 .archive-footnote .tiny-line { opacity: .55; }

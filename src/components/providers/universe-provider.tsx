@@ -1,18 +1,20 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import type { MemoryInput, Planet, PlanetInput, UniverseData } from "@/domain/types";
+import type { MemoryInput, Planet, PlanetInput, UniverseData, Media } from "@/domain/types";
 import { isDate, nextPosition, validatePlanet } from "@/domain/planet";
 import { DATA_KEY, LocalUniverseRepository } from "@/data/local-repository";
+import { deleteMedia, putMedia } from "@/data/media-store";
 
 interface UniverseContextValue {
   data: UniverseData | null;
   error: string | null;
   ready: boolean;
   createPlanet(input: PlanetInput): Planet;
-  updatePlanet(id: string, input: PlanetInput): void;
-  saveMemory(planetId: string, input: MemoryInput, id?: string): void;
-  deleteMemory(id: string): void;
+  updatePlanet(id: string, input: PlanetInput): Promise<void>;
+  deletePlanet(id: string): Promise<void>;
+  saveMemory(planetId: string, input: MemoryInput, id?: string): Promise<void>;
+  deleteMemory(id: string): Promise<void>;
   exportData(raw?: boolean): void;
 }
 
@@ -61,14 +63,21 @@ export function UniverseProvider({ children }: { children: React.ReactNode }) {
     return planet;
   };
 
-  const updatePlanet = (id: string, input: PlanetInput) => {
+  const updatePlanet = async (id: string, input: PlanetInput) => {
     if (!data || !data.planets.some(p => p.id === id)) throw new Error("这颗星球不存在。");
     const issue = validatePlanet(input);
     if (issue) throw new Error(issue);
     commit({ ...data, planets: data.planets.map(p => p.id === id ? { ...p, ...input, isDemo: false, updatedAt: new Date().toISOString() } : p) });
   };
 
-  const saveMemory = (planetId: string, input: MemoryInput, id?: string) => {
+  const deletePlanet = async (id: string) => {
+    if (!data || !data.planets.some(p => p.id === id)) throw new Error("这颗星球不存在。");
+    const memoryIds = data.memories.filter(m => m.planetId === id).flatMap(m => m.mediaIds ?? []);
+    commit({ ...data, planets: data.planets.filter(p => p.id !== id), memories: data.memories.filter(m => m.planetId !== id), media: (data.media ?? []).filter(m => !memoryIds.includes(m.id)) });
+    await deleteMedia(memoryIds);
+  };
+
+  const saveMemory = async (planetId: string, input: MemoryInput, id?: string) => {
     if (!data || !data.planets.some(p => p.id === planetId)) throw new Error("星球不存在。");
     if (!input.title.trim() && !input.body.trim()) throw new Error("请写下标题或正文。");
     if (input.title.length > 120 || input.body.length > 50000) throw new Error("标题最多 120 字，正文最多 50000 字。");
@@ -76,14 +85,28 @@ export function UniverseProvider({ children }: { children: React.ReactNode }) {
     const now = new Date().toISOString();
     const existing = id ? data.memories.find(m => m.id === id && m.planetId === planetId) : null;
     if (id && !existing) throw new Error("这条记忆不存在。");
-    const memory = { ...input, id: existing?.id ?? crypto.randomUUID(), planetId, kind: "text" as const, createdAt: existing?.createdAt ?? now, updatedAt: now };
+    const files = input.files ?? [];
+    for (const file of files) {
+      if (!(file.type.startsWith("image/") || file.type.startsWith("video/"))) throw new Error("仅支持图片或视频文件。");
+      if (file.size > 100 * 1024 * 1024) throw new Error("单个媒体文件不能超过 100 MB。");
+    }
+    const memoryId = existing?.id ?? crypto.randomUUID();
+    const uploaded: Media[] = [];
+    for (const file of files) {
+      const media = { id: crypto.randomUUID(), memoryId, kind: file.type.startsWith("video/") ? "video" as const : "image" as const, name: file.name.slice(0, 255), mimeType: file.type, size: file.size, createdAt: now };
+      await putMedia(media.id, file); uploaded.push(media);
+    }
+    const retained = (existing?.mediaIds ?? []).filter(mediaId => !(input.removeMediaIds ?? []).includes(mediaId));
+    const memory = { id: memoryId, planetId, title: input.title, body: input.body, occurredOn: input.occurredOn, kind: (retained.length || uploaded.length) ? "mixed" as const : "text" as const, mediaIds: [...retained, ...uploaded.map(m => m.id)], createdAt: existing?.createdAt ?? now, updatedAt: now };
     commit({ ...data,
       planets: data.planets.map(p => p.id === planetId ? { ...p, updatedAt: now } : p),
       memories: existing ? data.memories.map(m => m.id === id ? memory : m) : [...data.memories, memory],
+      media: [...(data.media ?? []).filter(m => !(input.removeMediaIds ?? []).includes(m.id)), ...uploaded],
     });
+    await deleteMedia(input.removeMediaIds ?? []);
   };
 
-  const deleteMemory = (id: string) => {
+  const deleteMemory = async (id: string) => {
     if (!data) throw new Error("宇宙尚未载入。");
     const memory = data.memories.find(m => m.id === id);
     if (!memory) throw new Error("这条记忆不存在，请刷新后重试。");
@@ -91,6 +114,7 @@ export function UniverseProvider({ children }: { children: React.ReactNode }) {
       planets: data.planets.map(p => p.id === memory.planetId ? { ...p, updatedAt: new Date().toISOString() } : p),
       memories: data.memories.filter(m => m.id !== id),
     });
+    await deleteMedia(memory.mediaIds ?? []);
   };
 
   const exportData = (raw = false) => {
@@ -105,7 +129,7 @@ export function UniverseProvider({ children }: { children: React.ReactNode }) {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
-  return <UniverseContext.Provider value={{ data, error, ready, createPlanet, updatePlanet, saveMemory, deleteMemory, exportData }}>{children}</UniverseContext.Provider>;
+  return <UniverseContext.Provider value={{ data, error, ready, createPlanet, updatePlanet, deletePlanet, saveMemory, deleteMemory, exportData }}>{children}</UniverseContext.Provider>;
 }
 
 export function useUniverse() {

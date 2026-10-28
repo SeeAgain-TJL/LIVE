@@ -30,12 +30,30 @@ export interface Planet {
 export interface Memory {
   id: string;
   planetId: string;
-  kind: "text";
+  kind: "text" | "mixed";
   title: string;
   body: string;
   occurredOn: string;
   createdAt: string;
   updatedAt: string;
+  mediaIds?: string[];
+}
+
+export type MediaKind = "image" | "video";
+export interface Media {
+  id: string;
+  memoryId: string;
+  kind: MediaKind;
+  name: string;
+  mimeType: string;
+  size: number;
+  createdAt: string;
+}
+export interface UploadFile {
+  name: string;
+  type: string;
+  size: number;
+  arrayBuffer(): Promise<ArrayBuffer>;
 }
 
 export interface Galaxy {
@@ -45,12 +63,13 @@ export interface Galaxy {
 }
 
 export interface UniverseData {
-  schemaVersion: 1;
+  schemaVersion: 1 | 2;
   revision: number;
   universe: { id: string; name: string };
   galaxies: Galaxy[];
   planets: Planet[];
   memories: Memory[];
+  media?: Media[];
 }
 
 export interface CameraBookmark {
@@ -59,7 +78,10 @@ export interface CameraBookmark {
 }
 
 export type PlanetInput = Pick<Planet, "name" | "startDate" | "endDate" | "ongoing" | "description" | "galaxyId" | "appearance">;
-export type MemoryInput = Pick<Memory, "title" | "body" | "occurredOn">;
+export type MemoryInput = Pick<Memory, "title" | "body" | "occurredOn"> & {
+  files?: UploadFile[];
+  removeMediaIds?: string[];
+};
 
 export interface UniverseRepository {
   load(): UniverseData;

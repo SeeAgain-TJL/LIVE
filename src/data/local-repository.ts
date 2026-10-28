@@ -16,9 +16,9 @@ const timestamp = (v: unknown) => typeof v === "string" && Number.isFinite(Date.
 /** Fail closed on corrupt / future schemas; never silently overwrite personal data. */
 export function parseUniverse(raw: string): UniverseData {
   const d: unknown = JSON.parse(raw);
-  if (!object(d) || d.schemaVersion !== 1 || !Number.isSafeInteger(d.revision) || (d.revision as number) < 0 ||
+  if (!object(d) || ![1, 2].includes(d.schemaVersion as number) || !Number.isSafeInteger(d.revision) || (d.revision as number) < 0 ||
       !object(d.universe) || !text(d.universe.id, 100) || !text(d.universe.name, 100) ||
-      !Array.isArray(d.planets) || !Array.isArray(d.memories) || !Array.isArray(d.galaxies)) throw new Error("数据版本不受支持或档案已损坏。原始数据未被修改，请先导出原始备份。");
+      !Array.isArray(d.planets) || !Array.isArray(d.memories) || !Array.isArray(d.galaxies) || (d.schemaVersion === 2 && !Array.isArray(d.media))) throw new Error("数据版本不受支持或档案已损坏。原始数据未被修改，请先导出原始备份。");
   const galaxyIds = new Set<string>();
   for (const g of d.galaxies) {
     if (!object(g) || !text(g.id, 100) || !g.id || galaxyIds.has(g.id) || !text(g.name, 60) || typeof g.color !== "string" || !/^#[a-f\d]{6}$/i.test(g.color)) throw new Error("星系数据不完整。");
@@ -40,11 +40,28 @@ export function parseUniverse(raw: string): UniverseData {
   const memoryIds = new Set<string>();
   for (const m of d.memories) {
     if (!object(m) || !text(m.id, 100) || !m.id || memoryIds.has(m.id) || !planetIds.has(m.planetId as string) ||
-        m.kind !== "text" || !text(m.title, 120) || !text(m.body, 50000) || (!m.body.trim() && !m.title.trim()) ||
+        !["text", "mixed"].includes(m.kind as string) || !text(m.title, 120) || !text(m.body, 50000) || (!m.body.trim() && !m.title.trim()) ||
+        (m.mediaIds !== undefined && (!Array.isArray(m.mediaIds) || m.mediaIds.some((id: unknown) => typeof id !== "string"))) ||
         typeof m.occurredOn !== "string" || !isDate(m.occurredOn) || !timestamp(m.createdAt) || !timestamp(m.updatedAt)) throw new Error("记忆数据不完整。原始数据未被修改。");
     memoryIds.add(m.id);
   }
-  return d as unknown as UniverseData;
+  const media = Array.isArray(d.media) ? d.media : [];
+  const mediaIds = new Set<string>();
+  for (const m of media) {
+    if (!object(m) || !text(m.id, 100) || !m.id || mediaIds.has(m.id) || !planetIds.size || !text(m.memoryId, 100) ||
+        !["image", "video"].includes(m.kind as string) || !text(m.name, 255) || !text(m.mimeType, 100) ||
+        !Number.isSafeInteger(m.size) || (m.size as number) < 0 || !timestamp(m.createdAt)) throw new Error("Media metadata is invalid.");
+    mediaIds.add(m.id);
+  }
+  const memoryIdsForMedia = new Set((d.memories as Array<Record<string, unknown>>).map(m => m.id as string));
+  if (media.some(m => !memoryIdsForMedia.has((m as Record<string, unknown>).memoryId as string))) throw new Error("Media metadata is invalid.");
+  if ((d.memories as Array<Record<string, unknown>>).some(m => (m.mediaIds as string[] | undefined)?.some(id => !mediaIds.has(id)))) throw new Error("Memory media references are invalid.");
+  const normalized = {
+    ...(d as Record<string, unknown>), schemaVersion: 2,
+    memories: (d.memories as Array<Record<string, unknown>>).map(m => ({ ...m, kind: m.kind === "mixed" ? "mixed" : "text", mediaIds: Array.isArray(m.mediaIds) ? m.mediaIds : [] })),
+    media,
+  } as unknown as UniverseData;
+  return normalized;
 }
 
 export class LocalUniverseRepository implements UniverseRepository {

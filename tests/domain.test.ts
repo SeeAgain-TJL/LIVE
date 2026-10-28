@@ -102,6 +102,18 @@ test("archive validation rejects dangling memories, duplicate IDs and invalid ap
   assert.throws(() => parseUniverse(JSON.stringify(seed)), /星球/);
 });
 
+test("v1 snapshots migrate to v2 and media references must remain attached", () => {
+  const seed = createSeed();
+  const now = new Date().toISOString();
+  const planet = seed.planets[0];
+  const memory = { id: "memory-1", planetId: planet.id, kind: "mixed", title: "photo", body: "body", occurredOn: "2024-01-01", createdAt: now, updatedAt: now, mediaIds: ["media-1"] };
+  const media = { id: "media-1", memoryId: memory.id, kind: "image", name: "photo.jpg", mimeType: "image/jpeg", size: 12, createdAt: now };
+  const migrated = parseUniverse(JSON.stringify({ ...seed, memories: [memory], media: [media], schemaVersion: 2 }));
+  assert.equal(migrated.schemaVersion, 2);
+  assert.deepEqual(migrated.memories[0].mediaIds, ["media-1"]);
+  assert.throws(() => parseUniverse(JSON.stringify({ ...seed, memories: [memory], media: [], schemaVersion: 2 })), /Media|Memory/);
+});
+
 test("new worlds receive deterministic, separated coordinates", () => {
   const seed = createSeed();
   const position = nextPosition(seed.planets);
