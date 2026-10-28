@@ -1,0 +1,31 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useState } from "react";
+import { ArrowDownUp, ArrowLeft, CalendarDays, ChevronRight, Edit3, Feather, FolderHeart, Orbit, Plus, Trash2 } from "lucide-react";
+import type { Memory } from "@/domain/types";
+import { periodLabel, planetName, PLANET_TYPES } from "@/domain/planet";
+import { useUniverse } from "@/components/providers/universe-provider";
+import { PlanetEditor } from "@/components/planets/planet-editor";
+import { StorageState } from "@/components/ui/storage-state";
+import { Modal } from "@/components/ui/modal";
+import { MemoryEditor } from "./memory-editor";
+
+const Preview = dynamic(() => import("@/components/three/universe-scene").then(m => m.PlanetPreview), { ssr: false, loading: () => <div className="preview-fallback">正在载入星球…</div> });
+
+export function PlanetArchive({ id }: { id: string }) {
+  const { data, ready, error, deleteMemory } = useUniverse();
+  const [editingPlanet, setEditingPlanet] = useState(false);
+  const [editor, setEditor] = useState<"new" | Memory | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Memory | null>(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [sort, setSort] = useState<"asc" | "desc">("desc");
+  if (!ready || error || !data) return <StorageState />;
+  const planet = data.planets.find(p => p.id === id);
+  if (!planet) return <main className="storage-state"><Orbit size={36} /><p className="eyebrow">WORLD NOT FOUND</p><h1>这颗星球还没有抵达</h1><p>星球可能属于另一个浏览器。本地开发版尚不支持跨设备同步。</p><Link href="/" className="button"><ArrowLeft size={15} />返回宇宙</Link></main>;
+  const memories = data.memories.filter(m => m.planetId === id).sort((a, b) => (sort === "desc" ? -1 : 1) * (a.occurredOn.localeCompare(b.occurredOn) || a.createdAt.localeCompare(b.createdAt)));
+  const galaxy = data.galaxies.find(g => g.id === planet.galaxyId);
+  const dateLabel = (value: string) => new Date(value).toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric" });
+  return <main className="archive-shell"><div className="archive-stars" aria-hidden="true" /><header className="topbar archive-topbar"><Link href="/" className="back-link"><ArrowLeft size={17} />返回我的宇宙</Link><Link href="/" className="archive-brand">UNIVERSE <em>OF</em> ME</Link><span className="local-badge"><span className="live-dot" />本地开发版</span></header><div className="archive-layout"><aside className="archive-planet"><div className="archive-preview"><Preview appearance={planet.appearance} /></div><p className="eyebrow">{planet.isDemo ? "DEMO WORLD / 未命名外观示例" : "A WORLD OF YOUR OWN"}</p><h1>{planetName(planet)}</h1><p className="archive-period"><CalendarDays size={14} />{periodLabel(planet)}</p><div className="archive-tags"><span>{galaxy?.name || "未归类星系"}</span><span>{PLANET_TYPES.find(t => t.value === planet.appearance.type)?.label}星球</span></div><p className="archive-description">{planet.description || "关于这段时光的故事，等你慢慢写下。"}</p><button className="button secondary edit-planet" onClick={() => setEditingPlanet(true)}><Edit3 size={14} />编辑星球资料</button><div className="archive-metadata"><div><span>档案建立</span><time>{dateLabel(planet.createdAt)}</time></div><div><span>最近更新</span><time>{dateLabel(planet.updatedAt)}</time></div><p>本地保存 · 尚未接入账号与云存储</p></div></aside><section className="memory-space"><div className="archive-breadcrumb">我的宇宙<ChevronRight size={12} />{planetName(planet)}<ChevronRight size={12} /><span>记忆档案</span></div><header className="memory-heading"><div><p className="eyebrow">THE MOMENTS THAT MADE YOU</p><h2>时光在这里停泊<span>{String(memories.length).padStart(2, "0")}</span></h2></div><button className="button" onClick={() => setEditor("new")}><Plus size={15} />写一条记忆</button></header><div className="memory-toolbar"><span><Feather size={13} />文字记忆</span><button className="text-button" onClick={() => setSort(s => s === "desc" ? "asc" : "desc")}><ArrowDownUp size={13} />{sort === "desc" ? "最近的在前" : "最早的在前"}</button></div>{memories.length === 0 ? <div className="memory-empty"><div className="empty-orbit"><FolderHeart size={28} strokeWidth={1} /></div><p className="eyebrow">EVERY STORY STARTS SOMEWHERE</p><h3>这里，等待你的第一个故事。</h3><p>不需要完整的篇章。<br />一句话、一个瞬间，也值得被好好记住。</p><button className="button secondary" onClick={() => setEditor("new")}><Plus size={14} />留下第一条记忆</button></div> : <div className="memory-timeline">{memories.map(memory => <article key={memory.id} className="memory-entry"><div className="timeline-pin" /><header><time dateTime={memory.occurredOn}>{memory.occurredOn.replaceAll("-", " . ")}</time><div className="memory-entry-actions"><button className="icon-button" aria-label={`编辑记忆：${memory.title || memory.occurredOn}`} onClick={() => setEditor(memory)}><Edit3 size={14} /></button><button className="icon-button" aria-label={`删除记忆：${memory.title || memory.occurredOn}`} onClick={() => { setDeleteTarget(memory); setDeleteError(""); }}><Trash2 size={14} /></button></div></header>{memory.title && <h3>{memory.title}</h3>}{memory.body && <p className="memory-body">{memory.body}</p>}{memory.updatedAt !== memory.createdAt && <span className="memory-edited">编辑于 {dateLabel(memory.updatedAt)}</span>}</article>)}</div>}<footer className="archive-footnote"><span className="tiny-line" />有些光，走了很久，依然会抵达。</footer><p className="media-roadmap">当前支持文字记录。照片、视频与私有媒体存储将在后续阶段接入。</p></section></div>{editingPlanet && <PlanetEditor planet={planet} onClose={() => setEditingPlanet(false)} onSaved={() => setEditingPlanet(false)} />}{editor && <MemoryEditor planetId={id} memory={editor === "new" ? undefined : editor} onClose={() => setEditor(null)} />}{deleteTarget && <Modal title="让这条记忆离开？" eyebrow="DELETE MEMORY" onClose={() => setDeleteTarget(null)}><div className="delete-confirmation"><p>将从当前档案删除「{deleteTarget.title || deleteTarget.occurredOn}」。删除后无法在界面中撤销，建议先从宇宙设置导出备份。</p>{deleteError && <p role="alert" className="form-error">{deleteError}</p>}<div className="button-row"><button className="button secondary" onClick={() => setDeleteTarget(null)}>保留记忆</button><button className="button danger" onClick={() => { try { deleteMemory(deleteTarget.id); setDeleteTarget(null); } catch (e) { setDeleteError((e as Error).message); } }}>确认删除</button></div></div></Modal>}</main>;
+}
