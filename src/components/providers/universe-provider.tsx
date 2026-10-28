@@ -35,7 +35,6 @@ export function UniverseProvider({ children }: { children: React.ReactNode }) {
       setReady(true);
     };
     // Read an external browser store only after hydration. Later reads arrive via storage events.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
     const sync = (event: StorageEvent) => { if (event.key === DATA_KEY || event.key === null) load(); };
     window.addEventListener("storage", sync);

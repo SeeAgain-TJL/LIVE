@@ -2,9 +2,9 @@
 
 更新时间：2026-10-28（Asia/Shanghai）。本轮从空仓库开始。
 
-**总体：第一轮实现已写入，数据层测试通过；已生成本地提交，但依赖安装受环境限制，尚未完成 Next.js 运行/构建/浏览器验收。不能标记第一阶段正式完成。**
+**总体：权限已恢复；第一阶段核心代码已通过依赖安装、lint、TypeScript、单元测试、生产构建与基础 Chrome 流程验证。原始提交 `596acbd` 已推送到 GitHub main。本轮修复和锁文件已提交为 `d25bd56`，分支 `codex/environment-verification`，Pull Request：https://github.com/SeeAgain-TJL/LIVE/pull/1 。真实手机性能和完整手工验收仍待完成。**
 
-## 已实现，待应用运行验证
+## 已实现
 
 - [x] Next.js App Router、React、strict TypeScript、Tailwind 工程配置。
 - [x] 文档：PRODUCT、ARCHITECTURE、PROGRESS、DECISIONS、AGENTS、README。
@@ -21,8 +21,10 @@
 - [x] 原生 dialog 焦点约束/Escape、搜索 `/` 快捷键。
 - [x] 按世界边界计算初始/全景镜头，窄屏自动拉远；镜头穿入行星时进行安全投影；搜索覆盖记忆正文。
 - [x] 添加 GitHub Actions CI 配置、UTF-8/本地导入路径静态配置检查、14 项 Node 数据与探索测试。
+- [x] 权限恢复后正常安装依赖并生成锁文件，恢复规范 `.git` 索引，推送原始提交 `596acbd` 到远端 main。
+- [x] 修复 Html 标签路由卸载 DOM 冲突，新增独立标签层与 2 项真实 Chrome 生产模式测试。
 
-“已实现”指代码存在，**不代表已完成浏览器交互验收**。
+浏览器实际覆盖范围见下表与测试文件；清单中未覆盖的操作仍需手工验收。
 
 ## 实际验证
 
@@ -31,19 +33,20 @@
 | Node 环境 | v24.18.0，npm 11.16.0 |
 | `npm.cmd test` | **14/14 通过**：日历、范围、年份、未命名示例、持久化、快照、冲突/删除竞态、损坏/未来版本、配额、引用/位置、记忆搜索、移动视口全景、镜头避让 |
 | `node scripts/verify-config.mjs` | **通过**：文档、strict TS、脚本、UTF-8 替换字符和本地导入路径 |
-| 依赖安装 | **被阻断**：审批服务 404 + 普通路径 ECONNREFUSED；未产生 lockfile |
-| ESLint / TypeScript | 已尝试，未通过：`eslint` / `tsc` 命令不存在（依赖未安装） |
-| Next 开发启动 / 生产构建 | 已尝试，未通过：`next` 命令不存在（依赖未安装） |
-| 浏览器 / WebGL / 手机视觉 | 未完成：应用未能启动 |
+| 依赖安装 | **通过**：已生成 package-lock.json；Next 16.4.3、React 19.3.1；unrs-resolver 安装脚本未放行也可完成检查 |
+| ESLint / TypeScript | **通过**：lint 无 warning，strict TypeScript 无错误 |
+| Next 生产构建 / 启动 | **通过**：首页静态生成、星球档案动态路由；生产服务启动且两个路由均 HTTP 200 |
+| Chrome 生产模式测试 | **2/2 通过**：命名创建→镜头飞行→档案→文字记忆→刷新保留；390×844 手机草稿保存；Canvas 可见、桌面流程无 pageerror |
+| 真实手机与性能 | 未完成：尚未验证实际触控、帧率、发热、多浏览器和大数据量 |
+| GitHub | 原始 `596acbd` 已推送 main；API 确认当前 SeeAgain-TJL 用户具备 push 权限；验证分支已推送，PR #1 已创建，尚未合并 |
 
 第一次 Node 测试尝试因测试子进程 `spawn EPERM` 失败，改为同进程 `--test-isolation=none` 后全通过。
 
 ## 下一位开发者的首要任务
 
-1. 在允许联网的环境执行 `npm.cmd install`，生成并提交 `package-lock.json`。不要改动网络限制绕过审批。
-2. 执行 lint、typecheck、test、build，修复实际发现的兼容/类型问题，再启动 dev。当前依赖使用稳定版本范围，尚未验证安装解析结果。
-3. 完成下方真实浏览器验收，并保存桌面/手机截图；记录真实错误，不得仅凭代码阅读判定通过。
-4. 先完成第一阶段遗留体验与验证，再推进图片/视频及正式持久化。
+1. 使用 `npm.cmd ci` 复现依赖，再执行 lint/typecheck/test/build/test:e2e；Chrome 若未安装，先运行 `npx.cmd playwright install chrome`。
+2. 完成下方剩余真实浏览器/手机验收；本轮截图位于忽略的 `test-results/`，测试运行时可重新生成。
+3. 完善反向飞离、材质品质、低性能表现，再推进图片/视频及正式持久化。
 
 ## 主要手动验收路径
 
@@ -69,7 +72,7 @@
 
 ## 第一阶段遗留与后续
 
-- [ ] 依赖安装、锁版本、启动、lint/typecheck/build、浏览器验证（首要阻碍）。
+- [x] 依赖安装、锁文件、生产启动、lint/typecheck/build、基础浏览器闭环验证。
 - [ ] 更真实的星云与行星纹理/阴影、极端缩放/相机穿模与触控优化。
 - [ ] 返回档案的反向飞离过渡、镜头飞行中断策略、更多可访问键盘空间操作。
 - [ ] 大量星球时实例化/LOD、列表分页、自动 FPS 降级、首屏性能指标。
@@ -79,4 +82,4 @@
 - [ ] 正式备份、完整媒体导出、恢复、跨设备同步与上线部署。
 - [ ] 星系管理、卫星、星轨、完整时间旅行、分享、给过去的自己、可选 AI。
 
-尚无外部账号、数据库、对象存储凭证；未部署、未写入第三方应用。已创建本地提交 `0f76d8f`（通过工作区内可写的备用 Git 元数据目录）；规范 `.git` 元数据目录仍受权限限制，尚未推送到 GitHub。
+当前正常仓库位置为 `C:\Users\tingjie.li\Desktop\LIVE\.git`；备用 `.git-local`、旧源码 ZIP 和 `_handoff_stage` 保留且已忽略，不参与项目检查或提交。尚未部署；账号、数据库和对象存储仍未接入。此前审批/网络故障已解除，历史见 DECISIONS D008/D010。

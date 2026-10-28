@@ -4,6 +4,8 @@ out/
 coverage/
 .npm-cache/
 .git-local/
+_handoff_stage/
+UNIVERSE_OF_ME-*-source.zip
 *.tsbuildinfo
 .env*
 !.env.example
