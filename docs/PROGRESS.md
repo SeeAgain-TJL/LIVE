@@ -2,7 +2,7 @@
 
 更新时间：2026-10-28（Asia/Shanghai）。本轮从空仓库开始。
 
-**总体：权限已恢复；第一阶段核心代码已通过依赖安装、lint、TypeScript、单元测试、生产构建与基础 Chrome 流程验证。原始提交 `596acbd` 已推送到 GitHub main。本轮修复和锁文件在 `codex/environment-verification` 分支；真实手机性能和完整手工验收仍待完成。**
+**总体：权限已恢复；第一阶段核心代码已通过依赖安装、lint、TypeScript、单元测试、生产构建与基础 Chrome 流程验证。原始提交 `596acbd` 已推送到 GitHub main。本轮修复和锁文件已提交为 `d25bd56`，分支 `codex/environment-verification`，Pull Request：https://github.com/SeeAgain-TJL/LIVE/pull/1 。真实手机性能和完整手工验收仍待完成。**
 
 ## 已实现
 
@@ -38,7 +38,7 @@
 | Next 生产构建 / 启动 | **通过**：首页静态生成、星球档案动态路由；生产服务启动且两个路由均 HTTP 200 |
 | Chrome 生产模式测试 | **2/2 通过**：命名创建→镜头飞行→档案→文字记忆→刷新保留；390×844 手机草稿保存；Canvas 可见、桌面流程无 pageerror |
 | 真实手机与性能 | 未完成：尚未验证实际触控、帧率、发热、多浏览器和大数据量 |
-| GitHub | 原始 `596acbd` 已推送 main；API 确认当前 SeeAgain-TJL 用户具备 push 权限；本轮分支待推送/PR |
+| GitHub | 原始 `596acbd` 已推送 main；API 确认当前 SeeAgain-TJL 用户具备 push 权限；验证分支已推送，PR #1 已创建，尚未合并 |
 
 第一次 Node 测试尝试因测试子进程 `spawn EPERM` 失败，改为同进程 `--test-isolation=none` 后全通过。
 
