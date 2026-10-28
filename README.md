@@ -87,3 +87,7 @@ docs/                        # 产品、架构、进度与技术决策
 ```
 
 继续开发前请依次阅读 [AGENTS.md](AGENTS.md)、[产品规范](docs/PRODUCT.md)、[架构](docs/ARCHITECTURE.md)、[进度](docs/PROGRESS.md)、[技术决策](docs/DECISIONS.md)。
+
+## 第二阶段媒体说明
+
+开发版现在支持在记忆中选择图片和视频。元数据保存在版本化 localStorage，媒体 Blob 保存在当前浏览器的 IndexedDB；刷新可恢复，但尚未接入账号、加密、跨设备同步或私有 S3/R2。正式存储接口见 src/data/media-store.ts。

@@ -3,6 +3,7 @@ import test from "node:test";
 import { isDate, matchesYear, nextPosition, validatePlanet } from "../src/domain/planet.ts";
 import { createSeed } from "../src/data/seed.ts";
 import { DATA_KEY, RECOVERY_KEY, LocalUniverseRepository, parseUniverse, type StoragePort } from "../src/data/local-repository.ts";
+import { memoryMatches, memoryMediaKind, memoryPassesFilter, memoryPosition } from "../src/domain/memory.ts";
 
 class InMemoryStorage implements StoragePort {
   values = new Map<string, string>();
@@ -102,10 +103,44 @@ test("archive validation rejects dangling memories, duplicate IDs and invalid ap
   assert.throws(() => parseUniverse(JSON.stringify(seed)), /星球/);
 });
 
+test("v1 snapshots migrate to v2 and media references must remain attached", () => {
+  const seed = createSeed();
+  const now = new Date().toISOString();
+  const planet = seed.planets[0];
+  const memory = { id: "memory-1", planetId: planet.id, kind: "mixed", title: "photo", body: "body", occurredOn: "2024-01-01", createdAt: now, updatedAt: now, mediaIds: ["media-1"] };
+  const media = { id: "media-1", memoryId: memory.id, kind: "image", name: "photo.jpg", mimeType: "image/jpeg", size: 12, createdAt: now };
+  const migrated = parseUniverse(JSON.stringify({ ...seed, memories: [memory], media: [media], schemaVersion: 2 }));
+  assert.equal(migrated.schemaVersion, 2);
+  assert.deepEqual(migrated.memories[0].mediaIds, ["media-1"]);
+  assert.throws(() => parseUniverse(JSON.stringify({ ...seed, memories: [memory], media: [], schemaVersion: 2 })), /Media|Memory/);
+});
+
 test("new worlds receive deterministic, separated coordinates", () => {
   const seed = createSeed();
   const position = nextPosition(seed.planets);
   assert.deepEqual(position, nextPosition(seed.planets));
   assert(!seed.planets.some(p => JSON.stringify(p.position) === JSON.stringify(position)));
   assert(position.every(Number.isFinite));
+});
+
+test("memory space filters are driven by real text, dates and media metadata", () => {
+  const seed = createSeed();
+  const now = new Date().toISOString();
+  const planetId = seed.planets[0].id;
+  const memories = [
+    { id: "m-photo", planetId, kind: "mixed" as const, title: "海边", body: "潮汐", occurredOn: "2026-10-01", createdAt: now, updatedAt: now, mediaIds: ["photo"] },
+    { id: "m-video", planetId, kind: "mixed" as const, title: "夜空", body: "星光", occurredOn: "2025-01-03", createdAt: now, updatedAt: now, mediaIds: ["video"] },
+  ];
+  const media = [
+    { id: "photo", memoryId: "m-photo", kind: "image" as const, name: "shore.jpg", mimeType: "image/jpeg", size: 10, createdAt: now },
+    { id: "video", memoryId: "m-video", kind: "video" as const, name: "sky.mp4", mimeType: "video/mp4", size: 10, createdAt: now },
+  ];
+  assert.equal(memoryMediaKind(memories[0], media), "photo");
+  assert.equal(memoryMediaKind(memories[1], media), "video");
+  assert.equal(memoryMatches(memories[0], media, "潮汐"), true);
+  assert.equal(memoryMatches(memories[0], media, "shore.jpg"), true);
+  assert.equal(memoryPassesFilter(memories[1], media, "video"), true);
+  assert.equal(memoryPassesFilter(memories[1], media, "photo"), false);
+  assert.equal(memoryPosition(0, 2).every(Number.isFinite), true);
+  assert.notDeepEqual(memoryPosition(0, 2), memoryPosition(1, 2));
 });

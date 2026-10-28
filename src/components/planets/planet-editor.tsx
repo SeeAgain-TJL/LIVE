@@ -23,11 +23,11 @@ export function PlanetEditor({ planet, onClose, onSaved }: { planet?: Planet; on
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const changeLook = (update: Partial<PlanetAppearance>) => setAppearance(a => ({ ...a, ...update }));
-  const submit = (event: FormEvent) => {
+  const submit = async (event: FormEvent) => {
     event.preventDefault(); setError(""); setSaving(true);
     try {
       const input: PlanetInput = { name: name.trim() || null, description: description.trim(), startDate: startDate || null, endDate: ongoing ? null : endDate || null, ongoing, galaxyId: galaxyId || null, appearance };
-      if (planet) { updatePlanet(planet.id, input); onSaved(planet.id); }
+      if (planet) { await updatePlanet(planet.id, input); onSaved(planet.id); }
       else onSaved(createPlanet(input).id);
     } catch (e) { setError(e instanceof Error ? e.message : "保存失败，请重试。"); setSaving(false); }
   };
