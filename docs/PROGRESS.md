@@ -37,7 +37,7 @@
 
 未完成/后续：高质量原创最终立绘及六状态美术资产必须另行制作审核；当前清楚标注的 SVG 只是开发预览。真实手机 GPU/帧率/发热、多浏览器、海量数据虚拟化、云端鉴权与完整媒体备份恢复仍待专项工作。没有 AI、语音、Live2D、3D 人物、完整头手动作或复杂剧情。本轮不以功能完成冒充最终角色美术已交付。
 
-分支 `codex/v3-c-global-companion` 基于最新 B2 `637d6c6`；交付时补录提交与 PR，按现有堆叠流程，不合并 main。
+实现提交 `43b0ea5`（`feat: upgrade global companion interaction and persistent preferences`），已推送 `codex/v3-c-global-companion`。基于最新 B2 `637d6c6`，按现有堆叠流程创建 PR [#6](https://github.com/SeeAgain-TJL/LIVE/pull/6)，目标分支 `codex/v3-b2-planet-entry`，未合并 main。上述通过项为本地实测；远端 CI 以该 PR 最新提交的 GitHub Actions 为准。
 
 ## 2026-10-29 · V3.0-B2：星球沉浸式进出
 
