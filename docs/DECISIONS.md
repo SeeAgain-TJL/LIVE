@@ -1,5 +1,27 @@
 # 技术决策记录
 
+## 2026-10-29 · D026：VRM1 采用独立实验路线，授权技术样本与最终美术分开
+
+用户实际视觉否决 V3.0-C 的 SVG 人物，停止继续用 CSS 位移/换图/话术改善其表现。基于 `55a1c40` 创建 `codex/guide-vrm-lab`，新增 `/guide-lab`；正式角色和原有四层探索不被替换。使用 npm 当前发布的 `@pixiv/three-vrm` / `@pixiv/three-vrm-animation` 3.5.5，peer dependency `three >=0.137`，与已安装 Three.js 0.180.0 通过实际浏览器加载验证，无须升级原渲染栈。
+
+仓库没有 VRM/GLB/VRMA 角色资产；选择 pixiv 官方 VRM1_Constraint_Twist_Sample v1.0.1 做有授权的技术验证。检查模型内嵌 VRM Public License 1.0、authors、everyone、allowRedistribution、modification 等字段，固定上游提交并核对 Git blob SHA-1，记录 SHA-256 和原始许可。**不能用 three-vrm 软件包 MIT 许可证替代模型授权，也不能把棕发官方样本说成项目原创成年银蓝最终角色。** 最终三视图、VRM、spring/collider、权属和精修 VRMA 清单在资产 README 中，待制作与用户视觉审核。
+
+## 2026-10-29 · D027：动作由事件协调，记忆球挂接真实骨骼空间
+
+纯状态机维护 idle/attention/thinking/pointing/guiding/arrived/summoning/presenting；请求、视线稳定、手势完成、相机实际到达、球体实际到掌心是不同事件，run ID 丢弃取消后的过期事件。人物不依赖一句字符串驱动假动作，台词只辅助表现。AnimationMixer 原创四元数轨道负责待机和姿态 cross-fade；双骨 IK 求解规范化左臂，原始手骨世界位置与规范化手骨旋转共同标定掌心。球沿世界空间弧线接近并持续跟随，不使用贴图假飞行。
+
+模型的 LookAt / expressionManager / spring bones 由 `vrm.update` 应用。可选本地 VRMA 经官方插件重定向到当前模型；没有提供完整最终动作包，只用项目原创短头转文件验证播放和实际骨骼变化。实验相机移动与正式 B2 路由隔离，先证明动作与三维目标协调再集成。程序转身无脚步/重心，IK 没有全身碰撞，仍需最终模型和动画精修。
+
+骨骼动画层与程序 IK 层分开缓存：Three.js PropertyMixer 会跳过未改变的常量轨道，不能把上一帧被 IK/过渡修改后的四元数直接当作下一帧的动画基线。每帧先恢复干净动画层、求值 mixer 并保存，再施加头眼/IK/最终姿态过渡。跨状态保留实际 IK 姿势，避免只混合 clip 造成回跳；reduced-motion 暂停片段时间而不停止 mixer 淡出时间。浏览器同时断言普通与减少动态效果下欢迎结束后手骨回落，防止测试状态 idle 但人物仍在 T-pose/抬手。
+
+## 2026-10-29 · D028：实验只读档案，视觉证据与功能检查分别交付
+
+实验不挂正式 provider：即使只调用 useUniverse 读取也可能在挂载时触发旧数据迁移/偏好写入，与本轮严格只读要求冲突。ApplicationBoundary 仅对 `/guide-lab` 跳过正式 provider；其余路由沿用原实例。实验读取原始 localStorage，经纯解析在内存中兼容，不调用 repository.load/save，不初始化示例，不操作 IndexedDB。自动化监听 Storage 写入与 IDB open/delete，逐字核对刷新前后原档案。
+
+实验按需只渲染一个真实星球与一个真实记忆目标，不批量加载媒体。导入自包含 VRM1/VRMA 限 35 MB，拒绝外部资源 URI，本地文件不上传/保存，卸载时停止 mixer、释放模型和 object URL。reduced-motion 停止循环表现、缩短动作。每秒采样帧时/渲染计数，提供逐动作实际 Chrome 截图和坐标报告，不以 lint/typecheck/test/build 代替用户视觉验收。渲染保留绘图缓冲区便于截图，本轮性能仅是含截图开销的开发测量。
+
+回归同时暴露既有 B2 返回竞态：镜头返回完成后的异步 `router.replace` 会在用户已请求离开时把 URL 拉回旧星系。最小修复为仅在当前路径/returnFrom 匹配时用 Next.js 支持的同步 `history.replaceState` 消费临时 query，避免新增导航任务覆盖用户离开操作；不更改相机轨迹或任何存储。
+
 ## 2026-10-29 · D023：人物、对话与查找分离，停靠偏好独立于档案
 
 沿用根布局唯一 GuideProvider/GlobalGuide，拆出 GuideCharacter、GuideDialogue、GuideSearchPanel、useGuideFloating 和 useGuideNavigation。默认人物独立存在，点击才打开对话；复杂选择采用独立可滚动面板。鼠标/触摸 pointer capture、累计 7px 阈值、取消捕获及键盘方向键共同避免拖动误点击。停靠保存左右边缘和归一化高度，不存像素；视口变化限位，阅读时临时紧凑，停靠避开重要控件而不静默改写保存偏好。
