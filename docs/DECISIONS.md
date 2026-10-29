@@ -1,5 +1,17 @@
 # 技术决策记录
 
+## 2026-10-29 · D028：C3 先设计原创角色与表演，不继续用技术样本补角度
+
+用户认可 VRM 技术验证但否决视觉与情感质量。基于 `6b80b43` 创建文档分支 `codex/v3-c3-character-art-direction`；本轮不改正式角色、实验运行时或数据。交付 [角色美术设定](character/ART-DIRECTION.md)、[动作分镜](character/PERFORMANCE.md)、[生产与授权规范](character/PRODUCTION.md)。将参考气质转化为原创成年狐灵、银蓝长发、古风星空服装，保持独立脸型和剪裁，不复刻参考角色。
+
+本环境无可调用图像生成工具，按用户允许的制作规范路径交付；没有使用简陋 SVG/几何图冒充三视图，也没有新模型/动画/样片。图像 CLI 备选需要 `OPENAI_API_KEY` 和明确选择，本轮未调用。概念图、模型、表演、实际运行逐关审批，文字规范和测试均不代表美术通过。
+
+## 2026-10-29 · D029：精修片段主导表演，明确额外骨轨道和运行时控制权
+
+直接审查现有 VRM：54 人形骨、18 preset/0 custom、57 mesh morph 名称、22 spring chains/13 colliders、0 内嵌动画；保存结构审计。表情存在但未形成有角色性格的完整表演，不能只归因于缺少 blendshape。
+
+后续由动画师制作 A/B/C 完整身体、手指和表情片段，AnimationMixer 过渡；IK/LookAt 只做目标适配，SpringBone 处理次级动态。同一骨/通道明确写入权，防止 mixer、IK、物理争抢。已安装 VRMA 类型的平移限 hips，旋转限 humanoid；狐耳与衣片另用模型专用轨道适配或 custom expression，当前适配器尚未实现。相机/球到达仍取真实场景事件，不能由固定帧代替。权属、模型/动作版本与掌心标定和片段一起交付。
+
 ## 2026-10-29 · D026：VRM1 采用独立实验路线，授权技术样本与最终美术分开
 
 用户实际视觉否决 V3.0-C 的 SVG 人物，停止继续用 CSS 位移/换图/话术改善其表现。基于 `55a1c40` 创建 `codex/guide-vrm-lab`，新增 `/guide-lab`；正式角色和原有四层探索不被替换。使用 npm 当前发布的 `@pixiv/three-vrm` / `@pixiv/three-vrm-animation` 3.5.5，peer dependency `three >=0.137`，与已安装 Three.js 0.180.0 通过实际浏览器加载验证，无须升级原渲染栈。
