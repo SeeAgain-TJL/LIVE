@@ -1,3 +1,4 @@
+import { openGuide } from "./guide-actions";
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { createSeed } from "../../src/data/seed";
@@ -25,21 +26,27 @@ test("galaxy hierarchy, stable companion, edge snapping and guided planet journe
   await expect(page).toHaveURL(/\/galaxy\/unclassified$/);
   expect(await companion!.evaluate(el => el.isConnected)).toBe(true);
   await page.getByRole("link", { name: "← 返回宇宙星系", exact: true }).click();
+  await openGuide(page);
   await page.getByRole("button", { name: "自己探索", exact: true }).click();
+  await expect(page.getByRole("region", { name: "引导者对话", exact: true })).toHaveCount(0);
+  await openGuide(page);
   await expect(page.locator(".global-guide-message")).toContainText("慢慢看");
-  const drag = page.getByRole("button", { name: /拖动引导者/ });
+  await page.keyboard.press("Escape");
+  const drag = page.getByRole("button", { name: "展开记忆引导者", exact: true });
   const box = (await drag.boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await page.mouse.down();
   await page.mouse.move(1100, box.y + box.height / 2, { steps: 8 }); await page.mouse.up();
   await expect(page.locator(".global-guide")).toHaveClass(/at-right/);
   await drag.focus(); await page.keyboard.press("ArrowLeft");
   await expect(page.locator(".global-guide")).toHaveClass(/at-left/);
+  await openGuide(page);
   await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
   await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/growth$/);
   expect(await companion!.evaluate(el => el.isConnected)).toBe(true);
   await expect(page.getByRole("button", { name: "展开记忆引导者", exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "展开记忆引导者", exact: true }).click();
+  await openGuide(page);
+  await page.getByRole("button", { name: "带我去看看", exact: true }).click();
   await page.getByRole("button", { name: "关闭引导查找", exact: true }).click();
   await page.getByRole("button", { name: "创建星球", exact: true }).click();
   await page.getByLabel("星球名称", { exact: false }).fill("跨层导航验收");
@@ -52,17 +59,20 @@ test("galaxy hierarchy, stable companion, edge snapping and guided planet journe
   await page.getByRole("link", { name: "返回所属星系", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/growth\?planet=/);
   await page.getByRole("button", { name: "关闭星球预览", exact: true }).click();
+  await openGuide(page);
   await page.getByRole("button", { name: "隐藏记忆引导者", exact: true }).click();
   await page.getByRole("link", { name: "← 返回宇宙星系", exact: true }).click();
   await expect(page.getByRole("button", { name: "显示记忆引导者", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "显示记忆引导者", exact: true }).click();
+  await page.getByRole("button", { name: "带我去看看", exact: true }).click();
   await page.getByLabel("引导者目的地搜索", { exact: true }).fill("跨层导航验收");
   const routes: string[] = []; page.on("framenavigated", frame => { if (frame === page.mainFrame()) routes.push(frame.url()); });
   await page.getByRole("button", { name: /前往星球：跨层导航验收/ }).click();
   await expect(page).toHaveURL(/\/planet\//);
   expect(routes.some(url => url.includes("/galaxy/growth?travelPlanet="))).toBe(true);
   expect(await companion!.evaluate(el => el.isConnected)).toBe(true);
-  await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
+  await openGuide(page);
+  await page.getByRole("button", { name: "带我去看看", exact: true }).click();
   await page.getByLabel("引导者目的地搜索", { exact: true }).fill("友情");
   await page.getByRole("button", { name: /前往星系：友情/ }).click();
   await expect(page).toHaveURL(/\/galaxy\/friendship$/);
@@ -109,6 +119,7 @@ test("legacy unclassified archive and existing IndexedDB media survive migration
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("universe-of-me:data:v1")!));
   expect(stored.revision).toBe(7); expect(stored.planets[0]).toEqual({ ...planet, galaxyId: "unclassified" });
   await page.reload();
+  await openGuide(page);
   await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.locator(".global-guide-search").getByRole("button", { name: "照片记忆", exact: true }).click();
   await expect.poll(() => page.locator(".memory-detail-panel img").evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(640);
@@ -124,6 +135,7 @@ test("legacy unclassified archive and existing IndexedDB media survive migration
   await page.reload();
   await expect(page.locator(".selection-card h2")).toHaveText("迁移后重新命名");
   await page.getByRole("link", { name: "直接打开档案 ↗", exact: true }).click();
+  await openGuide(page);
   await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.locator(".global-guide-search").getByRole("button", { name: "照片记忆", exact: true }).click();
   await expect(page.locator(".memory-detail-body")).toHaveText("这是迁移前的正文。");
@@ -133,6 +145,7 @@ test("legacy unclassified archive and existing IndexedDB media survive migration
 test("mobile galaxy and destination lists stay usable within viewport", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
+  await openGuide(page);
   await expect(page.locator(".global-guide-message")).toBeVisible();
   await page.getByRole("button", { name: "带我去看看", exact: true }).click();
   const bounds = (await page.locator(".global-guide-search").boundingBox())!;
@@ -141,6 +154,7 @@ test("mobile galaxy and destination lists stay usable within viewport", async ({
   await page.getByLabel("引导者目的地搜索", { exact: true }).fill("不存在的目的地");
   await expect(page.locator(".global-guide-search")).toContainText("没有找到这个目的地");
   await page.getByRole("button", { name: "关闭引导查找", exact: true }).click();
+  await openGuide(page);
   await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
   await page.getByRole("link", { name: "直接打开星系：成长", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/growth$/);

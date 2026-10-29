@@ -1,6 +1,6 @@
 # 技术架构与数据模型
 
-## 当前实现（本地开发原型，V3.0-B2）
+## 当前实现（本地开发原型，V3.0-C 交互版；最终人物资产待制作）
 
 ```text
 Next.js App Router
@@ -38,6 +38,16 @@ Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React T
 - Drei Html 标签通过独立 DOM portal 层渲染，避免向 Canvas 自身容器附加节点导致 React 切页卸载冲突。此问题通过真实 Chrome 路由切换测试发现并回归验证。
 
 ## 当前持久化契约
+
+### C 全局角色与 UI 偏好（不升级人生数据）
+
+RootLayout 的唯一 GuideProvider/GlobalGuide 沿用，拆分为 GuideCharacter（资产与状态）、GuideDialogue（交谈）、GuideSearchPanel（真实数据查找）、useGuideFloating（指针/键盘/限位/停靠避让）、useGuideNavigation（已有路由协调）。3D 组件不读取人物状态；页面业务层回报 `GuideCue`，`domain/guide-lines.ts` 管理六状态短句，静音后仍更新忙碌/人物状态而不主动弹台词。首次载入延后台词直到恢复偏好，5 秒收起短提示，不强制展开对话。
+
+`data/guide-preferences.ts` 独占 localStorage 的 `universe-of-me:guide:v1`，结构 `{version:1, edge, heightRatio, hidden, dialogueOpen, promptsEnabled}`。高度为 0..1，适应窗口变化。读取不写默认，未知/损坏版本保留原文并禁用写回，错误不阻止宇宙/档案。写入失败保留 UI 会话状态并提示；storage 事件恢复其他标签页的合法偏好。无旧引导 UI 持久化版本需要迁移；主档案/恢复快照/IndexedDB 完全沿用。
+
+`domain/guide-companion.ts` 提供纯偏好校验、布局限位和跨星球记忆筛选。面板每次最多显示 20 项，可继续加载；结果打开受控 `/planet/<id>?memory=<id>`，星球页校验所属关系、明确选择并消费 URL，重复查找同一记忆仍可打开，不影响正常关闭/刷新。
+
+人物资产统一在 `character-assets.ts`，可按六状态提供透明本地图，缺失状态回退基础图、载入失败回退标记预览。当前 `status=preview/source=null`，原创全身 SVG 仅为开发预览；高质量最终资产未产出。具体契约见 `public/characters/memory-guide/README.md`。没有新依赖、AI、语音或第三方素材网络请求。
 
 B2 的 `data/exploration-session.ts` 仅管理可选的 `sessionStorage` 导航上下文，键为 `universe-of-me:visit:v1:<encoded planetId>`，包含 planetId、galaxyId、origin 与 arrival 镜头。读取验证星球/星系匹配和有限向量，失败安静回退；不是人生档案，不参与 schema v2、revision、迁移或媒体数据库。每次进入覆盖该星球本标签页上下文；关闭标签页可能失效，主数据不受影响。浏览器原生历史返回继续使用原有路由与星系书签，产品内「返回所属星系」提供完整的反向过渡。
 
