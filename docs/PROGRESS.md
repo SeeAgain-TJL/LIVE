@@ -34,7 +34,7 @@
 
 未验证与边界：真实手机 GPU/帧率/发热、其他浏览器、极端密集星球布局和长期大数据仍待专项验收。浏览器原生后退保留既有路由/书签，完整反向过渡通过产品内返回链接提供。没有新增云存储、鉴权、AI、重型特效或数据导出恢复；本地档案及媒体不是正式备份，请继续另存原始媒体。
 
-分支：`codex/v3-b2-planet-entry`，按现有堆叠工作流基于未合并 B1 分支提交，不合并 main；提交与 PR 信息在交付后补录。
+代码提交：`c72f0e5`（`feat: add immersive planet entry and restore galaxy viewpoints`），已推送分支 `codex/v3-b2-planet-entry`。按现有堆叠工作流基于未合并的 `codex/v3-b1-galaxies-guide` 创建 PR [#5](https://github.com/SeeAgain-TJL/LIVE/pull/5)，未合并 main。上表为本地实际验证，远端 CI 以该 PR 最新提交对应的 GitHub Actions 为准。
 
 ## 2026-10-29 · V3.0-B1：星系骨架与全局引导者
 
