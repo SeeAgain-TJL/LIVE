@@ -1,5 +1,15 @@
 # 技术架构与数据模型
 
+## VRM 实验边界（2026-10-29）
+
+新增 `/guide-lab`，不替换正式引导者。RootLayout 的 `ApplicationBoundary` 在实验路径跳过 UniverseProvider/GuideProvider/GlobalGuide，避免挂载正式 provider 后执行存储迁移或偏好写入；其余路由继续共享原有全局实例。`data/guide-lab-reader.ts` 只读原始档案并在内存中校验、规范化，不初始化示例、不保存、不打开 IndexedDB。
+
+`domain/guide-lab.ts` 的纯事件状态机携带 run ID，分离请求、骨骼就绪、指引完成、真实相机到达、真实球体到掌心等事件。`components/guide-lab/rig-controller.ts` 使用 VRM normalized 骨骼、AnimationMixer 轨道和双骨 IK，`lab-scene.tsx` 只接收 typed props 并协调模型、空间目标、相机和每秒测量，业务数据查找仍留在 `guide-lab.tsx`。未每帧写业务 React state。
+
+依赖 `@pixiv/three-vrm` 与 `@pixiv/three-vrm-animation` 固定 3.5.5，保持 Three.js 0.180.0；VRM1 的 MToon、表情、LookAt、spring bones 使用官方插件。资产为授权官方技术样本，来源/许可/散列与最终原创资产契约在 `public/characters/guide-lab/`。A/B 相机导航仅发生在实验 Canvas；正式 B2 旅行未接入实验控制器。
+
+模型切换/卸载会停止 mixer、释放 VRM GPU 资源与本地 object URL；加载失败可重试。实验限制自包含 VRM1/VRMA、不请求第三方贴图，不将记忆或本地导入文件上传。详细流程与实际视觉限制见 `GUIDE-LAB.md`。
+
 ## 当前实现（本地开发原型，V3.0-C 交互版；最终人物资产待制作）
 
 ```text

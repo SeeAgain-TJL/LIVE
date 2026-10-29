@@ -14,6 +14,8 @@
     "check": "npm run lint && npm run typecheck && npm test"
   },
   "dependencies": {
+    "@pixiv/three-vrm": "^3.5.5",
+    "@pixiv/three-vrm-animation": "^3.5.5",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.0",
     "lucide-react": "^0.468.0",

@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { UniverseProvider } from "@/components/providers/universe-provider";
-import { GuideProvider } from "@/components/guide/guide-provider";
-import { GlobalGuide } from "@/components/guide/global-guide";
+import { ApplicationBoundary } from "@/components/providers/application-boundary";
 import "./globals.css";
 import "./memory-palace.css";
 import "./galaxy-guide.css";
@@ -16,5 +14,5 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#05080d" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="zh-CN"><body><UniverseProvider><GuideProvider>{children}<GlobalGuide /></GuideProvider></UniverseProvider></body></html>;
+  return <html lang="zh-CN"><body><ApplicationBoundary>{children}</ApplicationBoundary></body></html>;
 }

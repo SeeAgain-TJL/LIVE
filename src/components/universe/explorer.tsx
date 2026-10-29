@@ -62,8 +62,13 @@ export function UniverseExplorer({ galaxyId }: { galaxyId: string }) {
   }, [locked, requestFlight]);
   const returnComplete = useCallback(() => {
     returned();
-    if (returnPlanetId) router.replace(`/galaxy/${encodeURIComponent(galaxyId)}?planet=${encodeURIComponent(returnPlanetId)}`, { scroll: false });
-  }, [returned, returnPlanetId, galaxyId, router]);
+    // Consume a transient query synchronously. A delayed router.replace here could
+    // override a newer user navigation (e.g. returning immediately to the universe).
+    const path = `/galaxy/${encodeURIComponent(galaxyId)}`;
+    if (returnPlanetId && window.location.pathname === path && new URLSearchParams(window.location.search).get("returnFrom") === returnPlanetId) {
+      window.history.replaceState(null, "", `${path}?planet=${encodeURIComponent(returnPlanetId)}`);
+    }
+  }, [returned, returnPlanetId, galaxyId]);
   const travelPlanet = params.get("travelPlanet");
   const trip = params.get("trip") ?? "";
   useEffect(() => {
