@@ -18,6 +18,7 @@ import type { GuideAction } from "@/domain/guide";
 import { MemoryGuideBridge } from "@/components/guide/guide-provider";
 import { MemoryToolbar } from "./memory-toolbar";
 import { MemoryList } from "./memory-list";
+import { PlanetExitLink } from "./planet-exit-link";
 
 const MemorySpace = dynamic(() => import("@/components/three/memory-space").then(module => module.MemorySpace), {
   ssr: false, loading: () => <div className="memory-space-loading">正在展开记忆空间…</div>,
@@ -96,10 +97,10 @@ export function PlanetMemorySpace({ id }: { id: string }) {
   };
 
   return <main className="archive-shell memory-palace-shell">
-    <MemoryGuideBridge act={guideAction} reading={!!selected} />
+    <MemoryGuideBridge planetId={id} act={guideAction} reading={!!selected} />
     <div className="archive-stars" aria-hidden="true" />
     <header className="topbar archive-topbar memory-palace-topbar">
-      <Link href={`/galaxy/${encodeURIComponent(planet.galaxyId!)}?planet=${encodeURIComponent(id)}`} className="back-link"><ArrowLeft size={18} /><span>返回所属星系</span></Link>
+      <PlanetExitLink planetId={id} galaxyId={planet.galaxyId!} />
       <div className="memory-palace-title"><small>星穹记忆殿堂 · {memories.length} 条记忆</small><h1>{planetName(planet)}</h1></div>
       <button className="button" onClick={() => setEditor("new")}><Plus size={18} />写一条记忆</button>
     </header>

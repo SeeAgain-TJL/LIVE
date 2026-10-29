@@ -15,9 +15,9 @@ void main(){ localPosition=position; vec4 world=modelMatrix*vec4(position,1.); w
 const ringFragment = `varying vec3 localPosition; varying vec3 worldPosition; uniform vec3 tint; uniform float radius;
 void main(){ float r=length(localPosition.xy)/radius; float band=.52+.22*sin(r*130.)+.13*sin(r*390.); float gap=smoothstep(.025,.045,abs(r-1.99)); float edge=smoothstep(1.42,1.53,r)*(1.-smoothstep(2.18,2.4,r)); float light=.62+.38*smoothstep(-2.,2.,worldPosition.x); gl_FragColor=vec4(tint*band*light,edge*gap*.84); }`;
 
-export function PlanetMesh({ appearance, position = [0, 0, 0], selected = false, low = false, reducedMotion = false, onSelect, onFly, born = false }: {
+export function PlanetMesh({ appearance, position = [0, 0, 0], selected = false, low = false, reducedMotion = false, onSelect, onHover, born = false }: {
   appearance: PlanetAppearance; position?: Vec3; selected?: boolean; low?: boolean; reducedMotion?: boolean;
-  onSelect?: (event: ThreeEvent<MouseEvent>) => void; onFly?: (event: ThreeEvent<MouseEvent>) => void; born?: boolean;
+  onSelect?: (event: ThreeEvent<MouseEvent>) => void; onHover?: (hovered: boolean) => void; born?: boolean;
 }) {
   const mesh = useRef<Mesh>(null);
   const group = useRef<Group>(null);
@@ -36,7 +36,7 @@ export function PlanetMesh({ appearance, position = [0, 0, 0], selected = false,
   });
   const radius = appearance.size;
   return <group ref={group} position={position}>
-    <mesh ref={mesh} rotation={[0.06, appearance.seed, 0.12]} onClick={onSelect} onDoubleClick={onFly} onPointerOver={e => { e.stopPropagation(); if (onSelect) document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = "auto"; }}>
+    <mesh ref={mesh} rotation={[0.06, appearance.seed, 0.12]} onClick={onSelect} onPointerOver={e => { e.stopPropagation(); if (onSelect) document.body.style.cursor = "pointer"; onHover?.(true); }} onPointerOut={() => { document.body.style.cursor = "auto"; onHover?.(false); }}>
       <sphereGeometry args={[radius, low ? 40 : 80, low ? 28 : 64]} />
       <meshStandardMaterial map={texture} bumpMap={appearance.type === "gas" || appearance.type === "ringed" ? undefined : texture} bumpScale={appearance.type === "ocean" ? 0.035 : 0.09} roughness={appearance.type === "ocean" ? 0.62 : 0.94} metalness={0.02} />
     </mesh>
