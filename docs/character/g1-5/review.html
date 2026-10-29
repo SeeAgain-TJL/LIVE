@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>银蓝星灵 · G1.5 视觉核对</title>
+<style>
+:root { color-scheme: dark; font-family: system-ui, "Microsoft YaHei", sans-serif; background:#101827; color:#e8edf5; }
+* { box-sizing:border-box; } body { max-width:1500px; padding:24px; margin:auto; line-height:1.7; }
+h1 { font-size:clamp(24px,4vw,36px); margin-bottom:8px; } h2 { margin-top:36px; font-size:23px; }
+p { max-width:1000px; } a { color:#9ed5fc; } .notice { border-left:4px solid #e9b864; padding:14px 20px; background:#222737; }
+.gallery { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr)); }
+figure { margin:0; padding:12px; background:#1a263b; border-radius:12px; } img { display:block; max-width:100%; height:auto; margin:auto; }
+figcaption { margin-top:10px; color:#cbd7e7; } .portraits img { height:300px; width:100%; object-fit:contain; }
+.sources img { height:420px; width:100%; object-fit:contain; } .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:16px; }
+button { font:inherit; padding:8px 16px; background:#233a57; border:1px solid #667d99; border-radius:8px; color:inherit; cursor:pointer; }
+button[aria-pressed="true"] { background:#c2e3ff; color:#11223a; } button:hover { border-color:white; } button:focus-visible,a:focus-visible { outline:3px solid #efc06d; outline-offset:3px; }
+.alignment { overflow:auto; border-radius:12px; } .alignment img { max-width:100%; } .alignment.actual img { max-width:none; width:1500px; }
+li { margin-bottom:8px; } footer { margin:40px 0; color:#b7c5d8; } @media(max-width:550px) {body{padding:16px}.sources img{height:300px}}
+</style>
+<h1>银蓝星灵 · G1.5 视觉核对</h1>
+<p>唯一当前基准：用户提供的完整效果图与第一版三视图。已确认主要美术方向，正在规范化建模依据。</p>
+<p class="notice"><strong>这是二维参考核对页，不是模型或转台。</strong> G2.1 尚无基础人物模型，未通过视觉验收。下列图像均来自两张原图的裁切或等比对齐，没有生成新人物、补画背面或模拟 3D 旋转。</p>
+<nav><a href="README.md">制作交接规范</a> · <a href="baseline.json">原图散列与对齐参数</a> · <a href="ENVIRONMENT.md">工具能力检查</a></nav>
+<h2>当前两张基准图</h2>
+<div class="gallery sources">
+<figure><a href="source/approved-beauty.png"><img src="source/approved-beauty.png" alt="完整效果图：银蓝长发、狐耳、蓬松狐尾与深蓝星空礼服"></a><figcaption>完整效果图：脸部、发色与整体质感的主依据。点击查看原图。</figcaption></figure>
+<figure><a href="source/turnaround-v1.png"><img src="source/turnaround-v1.png" alt="第一版三视图与细节设定板"></a><figcaption>三视图 v1：正侧背与结构信息；仍需解决比例和遮挡。图片上的文案不作为功能指令。</figcaption></figure>
+</div>
+<h2>头部与脸部对照</h2>
+<div class="gallery portraits">
+<figure><img src="review/beauty-face.png" alt="完整效果图的脸部原像素裁切"><figcaption>效果图脸部：眼形、鼻唇、下颌、刘海与侧发；保留原像素，放大不增加细节。</figcaption></figure>
+<figure><img src="review/sheet-face.png" alt="设定板中的大头像裁切"><figcaption>设定板头像：与效果图对照，不能把更圆的表现自动套到模型。</figcaption></figure>
+<figure><img src="review/front-head.png" alt="全身正视图中的头部"><figcaption>正面：头部像素不足以确定精确眼睑拓扑，需同脸正交近景。</figcaption></figure>
+<figure><img src="review/side-head.png" alt="侧视图中的头部"><figcaption>侧面：先确认严格 90° 轮廓，耳根和后脑被发束遮挡。</figcaption></figure>
+<figure><img src="review/back-head.png" alt="背视图中的头部"><figcaption>背面：耳间距、冠顶和发束接续需与正面一致。</figcaption></figure>
+</div>
+<h2>三视图比例对齐检查</h2>
+<div class="controls"><button type="button" id="fit" aria-pressed="true">适应宽度</button><button type="button" id="actual" aria-pressed="false">原始尺寸检查</button><a href="review/alignment-audit.png" download>下载对齐检查图</a></div>
+<div class="alignment" id="alignment"><img src="review/alignment-audit.png" alt="三视图冠顶与鞋底对齐，标出眼线、下巴、肩、腰、髋、膝、踝；髋膝为推定线"></div>
+<p>只用冠顶与鞋底做等比缩放、平移，没有把侧面压扁或拉长来强行匹配。髋与膝的橙虚线是待确认的结构位置。耳尖、衣摆拖尾与狐尾不计入身体高度。裁切保留了原图相邻衣发的重叠，不能将其误当成当前视角新增的结构。</p>
+<h2>先解决的五项差异</h2>
+<ol>
+<li><strong>脸：</strong>效果图是倾斜的 3/4 视角，设定板大头像和全身头像的脸宽、眼距观感不同；先补同一脸型的正面/侧面近景，不能用宽高拉伸“修脸”。</li>
+<li><strong>头身：</strong>三个人物的冠顶、耳尖和鞋底高度不同。已统一整体比例用于检查，眼线/下巴/腰等还需要在重绘结构稿中对齐。</li>
+<li><strong>头发与耳：</strong>长发散开程度、耳朵透视和发饰遮挡不同。确定发束分区和耳根，建立相同发量的无风中性发型。</li>
+<li><strong>狐尾：</strong>当前保留一条大型蓬松狐尾；图中尾根被遮挡。必须补尾根出口与后裙关系，不能从头发或裙摆上接出尾巴。</li>
+<li><strong>礼服：</strong>效果图与设定板的胸前、开衩、袖片和垂链有变化。G2.1 只做同版基础礼服轮廓，复杂饰品后置；不改回旧交领服装。</li>
+</ol>
+<footer>G1.5：原图归档、对齐证据与制作规则已整理；正交结构重绘待完成。G2.1：未交付模型、源文件或 360° 渲染。正式网站与 VRM 实验保持原样。</footer>
+<script>
+const area = document.getElementById('alignment');
+const fit = document.getElementById('fit');
+const actual = document.getElementById('actual');
+function size(isActual) { area.classList.toggle('actual',isActual); actual.setAttribute('aria-pressed',String(isActual)); fit.setAttribute('aria-pressed',String(!isActual)); }
+fit.addEventListener('click',()=>size(false)); actual.addEventListener('click',()=>size(true));
+</script>
+</html>
