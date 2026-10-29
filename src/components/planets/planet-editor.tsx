@@ -5,20 +5,21 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, RefreshCw, Sparkles } from "lucide-react";
 import type { Planet, PlanetAppearance, PlanetInput } from "@/domain/types";
 import { PLANET_TYPES } from "@/domain/planet";
+import { DEFAULT_GALAXY } from "@/domain/galaxy";
 import { useUniverse } from "@/components/providers/universe-provider";
 import { Modal } from "@/components/ui/modal";
 
 const Preview = dynamic(() => import("@/components/three/universe-scene").then(m => m.PlanetPreview), { ssr: false, loading: () => <div className="preview-fallback">正在生成星球…</div> });
 const COLORS = ["#c5b194", "#5c93aa", "#b17654", "#b7d4df", "#8899bb", "#a6b59a", "#b18a9f", "#d3ad72"];
 
-export function PlanetEditor({ planet, onClose, onSaved }: { planet?: Planet; onClose: () => void; onSaved: (id: string) => void }) {
+export function PlanetEditor({ planet, defaultGalaxyId, onClose, onSaved }: { planet?: Planet; defaultGalaxyId?: string; onClose: () => void; onSaved: (id: string, galaxyId: string) => void }) {
   const { data, createPlanet, updatePlanet } = useUniverse();
   const [name, setName] = useState(planet?.name ?? "");
   const [description, setDescription] = useState(planet?.isDemo ? "" : planet?.description ?? "");
   const [startDate, setStartDate] = useState(planet?.startDate ?? "");
   const [endDate, setEndDate] = useState(planet?.endDate ?? "");
   const [ongoing, setOngoing] = useState(planet?.ongoing ?? false);
-  const [galaxyId, setGalaxyId] = useState(planet?.galaxyId ?? "");
+  const [galaxyId, setGalaxyId] = useState(planet?.galaxyId ?? defaultGalaxyId ?? DEFAULT_GALAXY.id);
   const [appearance, setAppearance] = useState<PlanetAppearance>(() => planet?.appearance ?? { type: "ocean", color: "#5c93aa", seed: Math.floor(Math.random() * 100000), rings: false, size: 1.6 });
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -27,8 +28,8 @@ export function PlanetEditor({ planet, onClose, onSaved }: { planet?: Planet; on
     event.preventDefault(); setError(""); setSaving(true);
     try {
       const input: PlanetInput = { name: name.trim() || null, description: description.trim(), startDate: startDate || null, endDate: ongoing ? null : endDate || null, ongoing, galaxyId: galaxyId || null, appearance };
-      if (planet) { await updatePlanet(planet.id, input); onSaved(planet.id); }
-      else onSaved(createPlanet(input).id);
+      if (planet) { await updatePlanet(planet.id, input); onSaved(planet.id, galaxyId || DEFAULT_GALAXY.id); }
+      else onSaved(createPlanet(input).id, galaxyId || DEFAULT_GALAXY.id);
     } catch (e) { setError(e instanceof Error ? e.message : "保存失败，请重试。"); setSaving(false); }
   };
   return <Modal title={planet ? "重新描绘这颗星球" : "让一段人生，成为星球"} eyebrow={planet ? "EDIT YOUR PLANET" : "A NEW WORLD BEGINS"} onClose={onClose} wide>
@@ -39,7 +40,7 @@ export function PlanetEditor({ planet, onClose, onSaved }: { planet?: Planet; on
         <div className="field-grid"><label className="field">开始日期<input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} /></label><label className="field">结束日期<input type="date" value={endDate} min={startDate || undefined} disabled={ongoing} onChange={e => setEndDate(e.target.value)} /></label></div>
         <label className="check-field"><input type="checkbox" checked={ongoing} onChange={e => { setOngoing(e.target.checked); if (e.target.checked) setEndDate(""); }} />这段人生，仍在继续</label>
         <label className="field">星球介绍<textarea rows={3} maxLength={4000} value={description} onChange={e => setDescription(e.target.value)} placeholder="留下一些关于这段时光的线索…" /></label>
-        <label className="field">所属星系<select value={galaxyId} onChange={e => setGalaxyId(e.target.value)}><option value="">暂不分类</option>{data?.galaxies.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}</select></label>
+        <label className="field" htmlFor="planet-galaxy">所属星系<select id="planet-galaxy" value={galaxyId} onChange={e => setGalaxyId(e.target.value)}>{data?.galaxies.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}</select></label>
       </div>
       <div className="editor-appearance"><div className="preview-orbit"><Preview appearance={appearance} /><span className="preview-caption">实时 3D 预览 · 拖动旋转</span></div>
         <p className="eyebrow">PLANET COMPOSITION</p>

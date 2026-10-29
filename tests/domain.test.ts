@@ -76,7 +76,7 @@ test("a tab cannot resurrect a universe deleted in another tab", () => {
 });
 
 test("corrupt or future data is preserved and never replaced by demo data", () => {
-  for (const raw of ["{broken", JSON.stringify({ ...createSeed(), schemaVersion: 2 })]) {
+  for (const raw of ["{broken", JSON.stringify({ ...createSeed(), schemaVersion: 99 })]) {
     const storage = new InMemoryStorage();
     storage.setItem(DATA_KEY, raw);
     assert.throws(() => new LocalUniverseRepository(storage).load());

@@ -10,12 +10,12 @@ import { CAMERA_KEY } from "@/data/local-repository";
 
 export interface FlightRequest { planetId: string | null; nonce: number; enter?: boolean }
 
-function saveBookmark(position: Vector3, target: Vector3) {
-  try { localStorage.setItem(CAMERA_KEY, JSON.stringify({ position: position.toArray(), target: target.toArray() })); } catch { /* Optional preference; archive save failures are reported separately. */ }
+function saveBookmark(key: string, position: Vector3, target: Vector3) {
+  try { localStorage.setItem(key, JSON.stringify({ position: position.toArray(), target: target.toArray() })); } catch { /* Optional preference; archive save failures are reported separately. */ }
 }
 
-export function CameraRig({ planets, flight, onArrival, reducedMotion }: {
-  planets: Planet[]; flight: FlightRequest | null; onArrival: (id: string) => void; reducedMotion: boolean;
+export function CameraRig({ planets, flight, onArrival, reducedMotion, bookmarkKey = CAMERA_KEY }: {
+  planets: Planet[]; flight: FlightRequest | null; onArrival: (id: string) => void; reducedMotion: boolean; bookmarkKey?: string;
 }) {
   const controls = useRef<ComponentRef<typeof OrbitControls>>(null);
   const { camera, size } = useThree();
@@ -30,7 +30,7 @@ export function CameraRig({ planets, flight, onArrival, reducedMotion }: {
     camera.position.fromArray(overview.position);
     controls.current.target.fromArray(overview.target);
     try {
-      const raw = localStorage.getItem(CAMERA_KEY);
+      const raw = localStorage.getItem(bookmarkKey);
       const bookmark = raw ? JSON.parse(raw) as CameraBookmark : null;
       const valid = (v: unknown): v is Vec3 => Array.isArray(v) && v.length === 3 && v.every(n => typeof n === "number" && Number.isFinite(n) && Math.abs(n) < 10000);
       if (bookmark && valid(bookmark.position) && valid(bookmark.target) && new Vector3(...bookmark.position).distanceTo(new Vector3(...bookmark.target)) >= 2) {
@@ -39,7 +39,7 @@ export function CameraRig({ planets, flight, onArrival, reducedMotion }: {
       }
     } catch { /* Invalid bookmarks never prevent reading personal records. */ }
     controls.current.update();
-  }, [camera, planets, size.width, size.height]);
+  }, [camera, planets, size.width, size.height, bookmarkKey]);
 
   useEffect(() => {
     if (!flight || !controls.current || handledRequest.current === flight.nonce) return;
@@ -67,11 +67,11 @@ export function CameraRig({ planets, flight, onArrival, reducedMotion }: {
     if (a?.progress === 1) {
       animation.current = null;
       controls.current.enabled = true;
-      saveBookmark(camera.position, controls.current.target);
+      saveBookmark(bookmarkKey, camera.position, controls.current.target);
       if (a.arrivalId) onArrival(a.arrivalId);
     }
   });
 
   const bounds = universeOverview(planets, camera instanceof PerspectiveCamera ? camera.fov : 43, size.width / size.height);
-  return <OrbitControls ref={controls} makeDefault enableDamping dampingFactor={0.07} minDistance={1} maxDistance={Math.max(100, bounds.farthestDistance * 1.5)} rotateSpeed={0.45} zoomSpeed={0.65} maxPolarAngle={Math.PI * 0.94} onEnd={() => { if (controls.current && !animation.current) saveBookmark(camera.position, controls.current.target); }} />;
+  return <OrbitControls ref={controls} makeDefault enableDamping dampingFactor={0.07} minDistance={1} maxDistance={Math.max(100, bounds.farthestDistance * 1.5)} rotateSpeed={0.45} zoomSpeed={0.65} maxPolarAngle={Math.PI * 0.94} onEnd={() => { if (controls.current && !animation.current) saveBookmark(bookmarkKey, camera.position, controls.current.target); }} />;
 }

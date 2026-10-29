@@ -14,7 +14,8 @@ import { Modal } from "@/components/ui/modal";
 import { StorageState } from "@/components/ui/storage-state";
 import { MemoryEditor } from "./memory-editor";
 import { MemoryDetails } from "./memory-details";
-import { MemoryGuide, type GuideAction } from "./memory-guide";
+import type { GuideAction } from "@/domain/guide";
+import { MemoryGuideBridge } from "@/components/guide/guide-provider";
 import { MemoryToolbar } from "./memory-toolbar";
 import { MemoryList } from "./memory-list";
 
@@ -88,20 +89,22 @@ export function PlanetMemorySpace({ id }: { id: string }) {
     if (deleting) return;
     setDeleting(true); setActionError("");
     try {
-      if (wholePlanet) { await deletePlanet(id); router.push("/"); }
+      if (wholePlanet) { await deletePlanet(id); router.push(`/galaxy/${encodeURIComponent(planet.galaxyId!)}`); }
       else if (deleteTarget) { await deleteMemory(deleteTarget.id); setDeleteTarget(null); setSelectedId(null); }
     } catch (cause) { setActionError(cause instanceof Error ? cause.message : "删除失败，请重试。"); }
     finally { setDeleting(false); }
   };
 
   return <main className="archive-shell memory-palace-shell">
+    <MemoryGuideBridge act={guideAction} reading={!!selected} />
     <div className="archive-stars" aria-hidden="true" />
     <header className="topbar archive-topbar memory-palace-topbar">
-      <Link href="/" className="back-link"><ArrowLeft size={18} /><span>返回我的宇宙</span></Link>
+      <Link href={`/galaxy/${encodeURIComponent(planet.galaxyId!)}?planet=${encodeURIComponent(id)}`} className="back-link"><ArrowLeft size={18} /><span>返回所属星系</span></Link>
       <div className="memory-palace-title"><small>星穹记忆殿堂 · {memories.length} 条记忆</small><h1>{planetName(planet)}</h1></div>
       <button className="button" onClick={() => setEditor("new")}><Plus size={18} />写一条记忆</button>
     </header>
     <div className="memory-palace-layout">
+      <nav className="exploration-breadcrumb memory-breadcrumb" aria-label="探索路径"><Link href="/">宇宙</Link><span>›</span><Link href={`/galaxy/${encodeURIComponent(planet.galaxyId!)}`}>{data.galaxies.find(g => g.id === planet.galaxyId)?.name}</Link><span>›</span><span>{planetName(planet)} · 记忆空间</span></nav>
       <section className="planet-summary" aria-label="星球简介">
         <div><p className="planet-summary-description">{planet.description || "关于这段时光的故事，等你慢慢写下。"}</p>
           <p className="planet-summary-meta"><CalendarDays size={15} />{periodLabel(planet)}<span>· {data.galaxies.find(galaxy => galaxy.id === planet.galaxyId)?.name || "未归类星系"}</span>{planet.isDemo && <span>· 外观示例</span>}</p></div>
@@ -118,7 +121,6 @@ export function PlanetMemorySpace({ id }: { id: string }) {
       <section className={`memory-experience ${view === "list" ? "is-list" : ""}`} aria-label={view === "space" ? "记忆球空间" : "记忆列表"}>
         {view === "space" ? <>
           <MemorySpace memories={filtered} media={media} selectedId={selected?.id ?? null} onSelect={setSelectedId} quality={quality} />
-          <div hidden={!!selected}><MemoryGuide onAction={guideAction} /></div>
           <p className="memory-space-hint">拖动旋转 · 滚轮或双指缩放 · 点击记忆球阅读</p>
         </> : <MemoryList memories={filtered} media={media} selectedId={selected?.id ?? null} onSelect={setSelectedId}
           onEdit={setEditor} onDelete={memory => { setActionError(""); setDeleteTarget(memory); }} sort={sort} onSort={() => setSort(value => value === "desc" ? "asc" : "desc")} />}

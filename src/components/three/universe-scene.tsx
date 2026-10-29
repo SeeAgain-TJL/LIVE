@@ -14,6 +14,7 @@ interface SceneProps {
   planets: Planet[]; selectedId: string | null; flight: FlightRequest | null;
   onSelect: (id: string) => void; onFly: (id: string) => void; onArrival: (id: string) => void;
   quality: Quality; newPlanetId?: string | null;
+  bookmarkKey?: string;
 }
 
 function ContextMonitor({ onLost }: { onLost: () => void }) {
@@ -55,7 +56,7 @@ export default function UniverseScene(props: SceneProps) {
           <div className={`planet-label ${props.selectedId === planet.id ? "selected" : ""}`}><i /><span>{planet.name || `未命名 · ${String(index + 1).padStart(2, "0")}`}</span>{planet.isDemo && <small>示例星球</small>}</div>
         </Html>
       </group>)}
-      <CameraRig planets={props.planets} flight={props.flight} onArrival={props.onArrival} reducedMotion={reducedMotion} />
+      <CameraRig planets={props.planets} flight={props.flight} onArrival={props.onArrival} reducedMotion={reducedMotion} bookmarkKey={props.bookmarkKey} />
       <ContextMonitor onLost={() => setContextLost(true)} />
     </Suspense>
   </Canvas></SceneBoundary></div>;

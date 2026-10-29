@@ -1,10 +1,11 @@
 # 技术架构与数据模型
 
-## 当前实现（本地开发原型，V3.0 任务 A）
+## 当前实现（本地开发原型，V3.0-B1）
 
 ```text
 Next.js App Router
-  /                         UniverseExplorer
+  /                         GalaxyExplorer → GalaxyScene
+  /galaxy/[id]              UniverseExplorer → 当前星系的星球
   /planet/[id]              PlanetMemorySpace
               ↓ typed props / actions
   UniverseProvider          状态与提交协调
@@ -16,7 +17,8 @@ Next.js App Router
 
 UniverseExplorer → UniverseScene → CameraRig / PlanetMesh / StarField
 PlanetEditor → PlanetPreview
-PlanetMemorySpace → MemoryToolbar / MemoryGuide / MemoryList / MemoryDetails
+RootLayout → GuideProvider → GlobalGuide（跨路由唯一实例）
+PlanetMemorySpace → MemoryToolbar / MemoryGuideBridge / MemoryList / MemoryDetails
                  → MemorySpace → MemoryOrb / MemoryCamera / StarField
 ```
 
@@ -113,6 +115,16 @@ UniverseData v2 adds Memory.mediaIds and Media metadata. Image and video Blobs a
 
 ## 星穹记忆殿堂
 
-src/components/three/memory-space.tsx 只负责渲染记忆球、相机和 OrbitControls；src/domain/memory.ts 提供纯函数的媒体类型、搜索、筛选和空间坐标；planet-memory-space.tsx 负责将当前星球真实数据组合为页面。memory-guide.tsx 只触发本地确定性动作，memory-details.tsx 负责 HTML 长文和媒体阅读，MemoryList 是辅助管理模式。这样 3D 渲染不会直接读写 provider，也不会把正文绑定到旋转球面。
+src/components/three/memory-space.tsx 只负责渲染记忆球、相机和 OrbitControls；src/domain/memory.ts 提供纯函数的媒体类型、搜索、筛选和空间坐标；planet-memory-space.tsx 负责将当前星球真实数据组合为页面。全局引导者经 MemoryGuideBridge 触发本地确定性动作，memory-details.tsx 负责 HTML 长文和媒体阅读，MemoryList 是辅助管理模式。这样 3D 渲染不会直接读写 provider，也不会把正文绑定到旋转球面。
 
 V3 任务 A 将球体与相机拆到 `memory-orb.tsx`、`memory-camera.tsx`，布局样式独立于宇宙主页。选择以 `selectedId` 为唯一明确状态，不从筛选数量推断；详情在场景和列表两种模式均可打开。非模态抽屉允许继续访问相邻操作，Escape 遇到原生编辑/删除 dialog 时让其优先处理。相机仅在选择、数量或视口变化时飞行，完成后释放控制。所有这些变化不升级持久化 schema。
+
+## B1 星系与全局引导边界
+
+Galaxy 仍为独立的 `id/name/color` 记录。`domain/galaxy.ts` 提供关系规范化、确定性星系坐标和目的地 URL；不把虚构经历写入数据。初次演示包含未分类及四个原有主题星系，五颗未命名外观示例属于未分类。真实旧档案只保留原有星系并补默认项，不补造用户星球或经历。星系视觉位置由顺序确定，不更改已有 Planet.position。
+
+`LocalUniverseRepository.load` 在校验通过后执行幂等关系迁移：缺失/null 归属归入 `unclassified`，保留已分类归属。首次写入前将完整原文存入 `universe-of-me:before-galaxies:v1`（不覆盖），确认主键未变后提交规范化 v2；不递增 revision，不操作 IndexedDB。无效版本或悬空非空归属拒绝迁移；配额失败保留原文/已完成备份并报错。测试验证备份原文、重复读取不写入、失败重试及从备份恢复相同档案。
+
+`GlobalGuide` 挂在根布局、与页面并列；折叠/隐藏、左右边缘、查询与短台词跨客户端路由保留。SVG 为项目原创矢量插画，无第三方角色资源。`GuideProvider` 只管理 UI 和当前页面注册的动作；不复制记忆、不存储用户正文。页面以稳定 bridge 注册/卸载真实记忆查找动作，星球预览/阅读时自动紧凑，原生 dialog 打开时让出交互。拖动仅横向移动并吸附左右边缘，方向键也能切换边缘；不是自由二维角色编辑器。
+
+目的地导航通过一次性的 `travelGalaxy/travelPlanet` 命令进入根页面，先调用星系相机飞行，再进入星系的星球相机，最后复用记忆页面。命令启动后用 replace 消费，防止刷新或浏览器返回重复启动；每次请求带 trip。正常返回使用宇宙/所属星系链接，保留 `?planet=id` 作为预览选择。星系相机书签按 galaxy ID 隔离；无 WebGL 可使用星系直达、档案直达链接，星系飞行还可跳过。反向飞离仍未实现。
