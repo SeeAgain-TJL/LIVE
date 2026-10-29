@@ -161,6 +161,8 @@ test("guide uses real filters, image/video survive refresh and media deletion re
   await expect(page.locator(".memory-detail-panel h2")).toHaveText("照片与视频");
   await page.getByRole("button", { name: "删除记忆", exact: true }).click();
   await page.getByRole("button", { name: "确认删除", exact: true }).click();
+  // Metadata updates before asynchronous Blob cleanup. The confirmation closes only on completion.
+  await expect(page.locator("dialog[open]")).toHaveCount(0);
   await expect(page.locator(".memory-detail-panel")).toHaveCount(0);
   const stored = JSON.parse((await snapshot(page))!);
   expect(stored.memories).toHaveLength(0); expect(stored.media).toHaveLength(0);
