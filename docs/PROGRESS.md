@@ -31,7 +31,7 @@
 5. 收起/隐藏引导者后逐级切换，确认状态保留；重新显示，拖动底部手柄或聚焦后按左右键，确认吸附。阅读时自动紧凑，手机返回按钮与 × 仍能点击。
 6. 编辑星球所属星系并保存，从返回路径确认新归属；记忆不应跟着丢失。导出 JSON 只含元数据，原始照片/视频仍需单独备份。
 
-工作流：新分支 `codex/v3-b1-galaxies-guide`，基于未合并的 V3-A 分支 `codex/v3-memory-usability` 创建堆叠 PR；不合并 main。提交与 PR 链接完成后记录于本节。
+代码提交：`5ae1272`（`feat: add galaxy exploration and persistent memory companion`），已推送新分支 `codex/v3-b1-galaxies-guide`。基于未合并的 V3-A 分支 `codex/v3-memory-usability` 创建堆叠 PR [#4](https://github.com/SeeAgain-TJL/LIVE/pull/4)，未合并 main。本节通过项为本地实测，远端 CI 以该 PR 对应提交的 GitHub Actions 为准。
 
 本轮边界：星系是已有结构化分类的探索骨架，没有星系增删改、星轨、真实星云资源、完整角色资产定制、自由二维拖动、反向飞离、AI/语音或 3D 骨骼。元数据仍在 localStorage，媒体仍在 IndexedDB，尚无账号/加密/正式云存储、完整媒体导出恢复或跨设备同步。下一步先做真机与大量星球/记忆性能验收，再决定星系管理和角色细化。
 
