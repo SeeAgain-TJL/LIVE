@@ -2,6 +2,8 @@
 
 状态：制作规范与可行性评估，2026-10-29。**没有新模型、动画或正式集成实现。** 本文的接口扩展、预算与验收阈值是待验证提案，不是当前运行时已支持的保证。
 
+G1 最新约束：以用户选定的[方向 A 主参考](references/G1-A-REFERENCE.md)制作原创效果图。用户确认最终效果图后，统一三视图/表情与结构资料；正式建模不能先行。选定参考方向不等于批准最终角色、模型或制作样片。
+
 ## 1. 现有样本实查
 
 审查基线：代码 `6b80b43`，模型 `public/characters/guide-lab/pixiv-sample.vrm`。直接解析该 GLB 的 JSON 扩展，结果保存为 [SAMPLE-AUDIT.json](SAMPLE-AUDIT.json)，含 SHA-256、表情绑定与 spring chain 数量。未修改模型。
