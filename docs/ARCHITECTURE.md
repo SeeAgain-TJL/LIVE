@@ -1,5 +1,11 @@
 # 技术架构与数据模型
 
+## C3 资产生产架构提案（2026-10-29，尚未实现）
+
+本轮仅进行原创角色与动画前期设计，不改运行时。复用只读实验、加载/释放、事件任务、真实目标和掌心锚点；现有程序姿态后续由精修 VRMA 片段替代。模型、六表情映射、片段、事件标记、额外骨轨道、控制权、掌心标定和来源许可需组成同版角色包，详见 [生产规范](character/PRODUCTION.md)。
+
+VRMA 3.5.5 接口支持人形骨旋转、hips 位移、表情与 LookAt，不把任意狐耳/服装骨当标准 humanoid 轨道；这些需同版模型专用轨道适配或自定义表情。该适配器、分层控制和新的模型尚未制作，不能因已有导入按钮就宣称完整支持。正式 GuideProvider、四层导航、存储 schema、localStorage/IndexedDB 均保持原样。
+
 ## VRM 实验边界（2026-10-29）
 
 新增 `/guide-lab`，不替换正式引导者。RootLayout 的 `ApplicationBoundary` 在实验路径跳过 UniverseProvider/GuideProvider/GlobalGuide，避免挂载正式 provider 后执行存储迁移或偏好写入；其余路由继续共享原有全局实例。`data/guide-lab-reader.ts` 只读原始档案并在内存中校验、规范化，不初始化示例、不保存、不打开 IndexedDB。

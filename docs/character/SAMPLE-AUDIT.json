@@ -1,0 +1,237 @@
+{
+  "auditedAt": "2026-10-29",
+  "scope": "Structural metadata only; not an approval of visual quality, skin weights or performance.",
+  "sourceFile": "public/characters/guide-lab/pixiv-sample.vrm",
+  "sha256": "12c2b97e95e700783a6a550dc0eee2d7880aeedccef9ae67bc4c5a2f0f2631a2",
+  "format": "VRMC_vrm 1.0",
+  "humanoidBones": 54,
+  "skins": 3,
+  "embeddedAnimations": 0,
+  "lookAtType": "bone",
+  "presetExpressions": {
+    "aa": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "angry": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "blink": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "blinkLeft": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "blinkRight": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "ee": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "happy": {
+      "morphBindCount": 1,
+      "overrideBlink": "blend"
+    },
+    "ih": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "lookDown": {
+      "morphBindCount": 0,
+      "overrideBlink": "none"
+    },
+    "lookLeft": {
+      "morphBindCount": 0,
+      "overrideBlink": "none"
+    },
+    "lookRight": {
+      "morphBindCount": 0,
+      "overrideBlink": "none"
+    },
+    "lookUp": {
+      "morphBindCount": 0,
+      "overrideBlink": "none"
+    },
+    "neutral": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "oh": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "ou": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "relaxed": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "sad": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    },
+    "surprised": {
+      "morphBindCount": 1,
+      "overrideBlink": "none"
+    }
+  },
+  "customExpressionNames": [],
+  "morphTargetNames": [
+    "Face_Blendshape.Fcl_ALL_Neutral",
+    "Face_Blendshape.Fcl_ALL_Angry",
+    "Face_Blendshape.Fcl_ALL_Fun",
+    "Face_Blendshape.Fcl_ALL_Joy",
+    "Face_Blendshape.Fcl_ALL_Sorrow",
+    "Face_Blendshape.Fcl_ALL_Surprised",
+    "Face_Blendshape.Fcl_BRW_Angry",
+    "Face_Blendshape.Fcl_BRW_Fun",
+    "Face_Blendshape.Fcl_BRW_Joy",
+    "Face_Blendshape.Fcl_BRW_Sorrow",
+    "Face_Blendshape.Fcl_BRW_Surprised",
+    "Face_Blendshape.Fcl_EYE_Natural",
+    "Face_Blendshape.Fcl_EYE_Close",
+    "Face_Blendshape.Fcl_EYE_Close_L",
+    "Face_Blendshape.Fcl_EYE_Close_R",
+    "Face_Blendshape.Fcl_EYE_Angry",
+    "Face_Blendshape.Fcl_EYE_Fun",
+    "Face_Blendshape.Fcl_EYE_Joy",
+    "Face_Blendshape.Fcl_EYE_Joy_L",
+    "Face_Blendshape.Fcl_EYE_Joy_R",
+    "Face_Blendshape.Fcl_EYE_Sorrow",
+    "Face_Blendshape.Fcl_EYE_Surprised",
+    "Face_Blendshape.Fcl_EYE_HighlightHide",
+    "Face_Blendshape.Fcl_EYE_IrisHide",
+    "Face_Blendshape.Fcl_EYE_Spread",
+    "Face_Blendshape.Fcl_MTH_Neutral",
+    "Face_Blendshape.Fcl_MTH_Close",
+    "Face_Blendshape.Fcl_MTH_Angry",
+    "Face_Blendshape.Fcl_MTH_Fun",
+    "Face_Blendshape.Fcl_MTH_Joy",
+    "Face_Blendshape.Fcl_MTH_Sorrow",
+    "Face_Blendshape.Fcl_MTH_Surprised",
+    "Face_Blendshape.Fcl_MTH_Up",
+    "Face_Blendshape.Fcl_MTH_Down",
+    "Face_Blendshape.Fcl_MTH_Small",
+    "Face_Blendshape.Fcl_MTH_Large",
+    "Face_Blendshape.Fcl_MTH_A",
+    "Face_Blendshape.Fcl_MTH_I",
+    "Face_Blendshape.Fcl_MTH_U",
+    "Face_Blendshape.Fcl_MTH_E",
+    "Face_Blendshape.Fcl_MTH_O",
+    "Face_Blendshape.Fcl_MTH_SkinFung",
+    "Face_Blendshape.Fcl_MTH_SkinFung_L",
+    "Face_Blendshape.Fcl_MTH_SkinFung_R",
+    "Face_Blendshape.Fcl_HA_Fung1",
+    "Face_Blendshape.Fcl_HA_Fung1_Low",
+    "Face_Blendshape.Fcl_HA_Fung1_Up",
+    "Face_Blendshape.Fcl_HA_Fung2",
+    "Face_Blendshape.Fcl_HA_Fung2_Low",
+    "Face_Blendshape.Fcl_HA_Fung2_Up",
+    "Face_Blendshape.Fcl_HA_Fung3",
+    "Face_Blendshape.Fcl_HA_Fung3_Low",
+    "Face_Blendshape.Fcl_HA_Fung3_Up",
+    "Face_Blendshape.Fcl_HA_Hide",
+    "Face_Blendshape.Fcl_HA_Short",
+    "Face_Blendshape.Fcl_HA_ShortLow",
+    "Face_Blendshape.Fcl_HA_ShortUp"
+  ],
+  "earNamedNodes": [],
+  "springChains": [
+    {
+      "name": "TopsUpperLeg",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperLeg",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperLeg",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperLeg",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperLeg",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperLeg",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperArm",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperArm",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperArm",
+      "joints": 2
+    },
+    {
+      "name": "TopsUpperArm",
+      "joints": 2
+    },
+    {
+      "name": "Hair",
+      "joints": 3
+    },
+    {
+      "name": "Hair",
+      "joints": 3
+    },
+    {
+      "name": "Hair",
+      "joints": 3
+    },
+    {
+      "name": "Hair",
+      "joints": 3
+    },
+    {
+      "name": "Hair",
+      "joints": 7
+    },
+    {
+      "name": "Hair",
+      "joints": 6
+    },
+    {
+      "name": "Hair",
+      "joints": 6
+    },
+    {
+      "name": "Hair",
+      "joints": 6
+    },
+    {
+      "name": "Hair",
+      "joints": 6
+    },
+    {
+      "name": "Hair",
+      "joints": 6
+    },
+    {
+      "name": "Hair",
+      "joints": 5
+    },
+    {
+      "name": "Hair",
+      "joints": 5
+    }
+  ],
+  "colliders": 13
+}
