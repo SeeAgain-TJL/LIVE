@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, CalendarDays, Edit3, Orbit, Plus, Trash2 } from "lucide-react";
 import type { Memory, Quality } from "@/domain/types";
@@ -27,6 +27,9 @@ const MemorySpace = dynamic(() => import("@/components/three/memory-space").then
 export function PlanetMemorySpace({ id }: { id: string }) {
   const router = useRouter();
   const { data, ready, error, deleteMemory, deletePlanet } = useUniverse();
+  const params = useSearchParams();
+  const requestedMemory = params.get("memory");
+  const handledMemory = useRef("");
   // Selection is always explicit. Inferring it from a single result reopens a dismissed drawer.
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editor, setEditor] = useState<"new" | Memory | null>(null);
@@ -44,6 +47,19 @@ export function PlanetMemorySpace({ id }: { id: string }) {
   const searchRef = useRef<HTMLInputElement>(null);
   const yearRef = useRef<HTMLInputElement>(null);
   const closeDetails = useCallback(() => setSelectedId(null), []);
+
+  useEffect(() => {
+    if (!requestedMemory) { handledMemory.current = ""; return; }
+    if (!ready || !data || !requestedMemory || handledMemory.current === requestedMemory) return;
+    const frame = requestAnimationFrame(() => {
+      handledMemory.current = requestedMemory;
+      const target = data.memories.find(m => m.id === requestedMemory && m.planetId === id);
+      if (target) { setQuery(""); setYear(""); setFilter("all"); setSelectedId(target.id); }
+      else setActionError("这段记忆已不存在，或不属于当前星球。可以重新查找。");
+      router.replace(`/planet/${encodeURIComponent(id)}`, { scroll: false });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [ready, data, requestedMemory, id, router]);
 
   useEffect(() => {
     const shortcut = (event: KeyboardEvent) => {

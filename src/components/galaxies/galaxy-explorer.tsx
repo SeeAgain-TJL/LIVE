@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, Download, Orbit, Plus, Search } from "lucide-react";
 import { useUniverse } from "@/components/providers/universe-provider";
-import { useGuide } from "@/components/guide/guide-provider";
+import { useGuide, useGuideTravelScope } from "@/components/guide/guide-provider";
 import { PlanetEditor } from "@/components/planets/planet-editor";
 import { StorageState } from "@/components/ui/storage-state";
 import { DEFAULT_GALAXY } from "@/domain/galaxy";
@@ -16,7 +16,8 @@ const Scene = dynamic(() => import("@/components/three/galaxy-scene"), { ssr: fa
 
 export function GalaxyExplorer() {
   const { data, ready, error, exportData } = useUniverse();
-  const { say } = useGuide();
+  const { cue } = useGuide();
+  useGuideTravelScope();
   const router = useRouter();
   const params = useSearchParams();
   const [flight, setFlight] = useState<GalaxyFlight | null>(null);
@@ -30,6 +31,11 @@ export function GalaxyExplorer() {
   const travelPlanet = params.get("travelPlanet");
   const trip = params.get("trip") ?? "";
   useEffect(() => {
+    if (travelGalaxy || travelPlanet || flight) return;
+    const frame = requestAnimationFrame(() => cue("universeWelcome"));
+    return () => cancelAnimationFrame(frame);
+  }, [travelGalaxy, travelPlanet, flight, cue]);
+  useEffect(() => {
     if (!data || (!travelGalaxy && !travelPlanet)) return;
     const key = `${travelGalaxy}/${travelPlanet}/${trip}`;
     if (handled.current === key) return;
@@ -40,20 +46,20 @@ export function GalaxyExplorer() {
       const target = planet?.galaxyId ?? travelGalaxy;
       if (!target || !data.galaxies.some(g => g.id === target)) { setNotice("这个目的地已不存在，请重新选择。"); return; }
       pendingPlanet.current = planet?.id ?? null;
-      setFlight({ id: target, nonce: ++sequence.current });
+      cue("galaxyDeparture"); setFlight({ id: target, nonce: ++sequence.current });
       // Consume commands so browser Back / reload does not start the trip again.
       router.replace("/", { scroll: false });
     });
     return () => cancelAnimationFrame(frame);
-  }, [data, travelGalaxy, travelPlanet, trip, router]);
+  }, [data, travelGalaxy, travelPlanet, trip, router, cue]);
   const arrive = useCallback((id: string) => {
     const planet = pendingPlanet.current;
-    say(planet ? "目标就在前面。我们继续靠近那颗星球。" : "已经到了。选一颗星球，看看里面的时光。") ;
+    cue("galaxyArrived");
     router.push(`/galaxy/${encodeURIComponent(id)}${planet ? `?travelPlanet=${encodeURIComponent(planet)}&trip=${Date.now()}` : ""}`);
-  }, [router, say]);
+  }, [router, cue]);
   if (!ready || error || !data) return <StorageState />;
   const counts = Object.fromEntries(data.galaxies.map(g => [g.id, data.planets.filter(p => p.galaxyId === g.id).length]));
-  const enter = (id: string) => { pendingPlanet.current = null; say("我们先去这片星系看看。"); setFlight({ id, nonce: ++sequence.current }); };
+  const enter = (id: string) => { pendingPlanet.current = null; cue("galaxyDeparture"); setFlight({ id, nonce: ++sequence.current }); };
   return <main className="universe-shell galaxy-universe-shell">
     <div className="cosmic-backdrop" /><div className="universe-canvas" aria-label="宇宙中的三维星系"><Scene galaxies={data.galaxies} counts={counts} flight={flight} onEnter={enter} onArrival={arrive} /></div><div className="screen-vignette" aria-hidden="true" />
     <header className="topbar"><Link href="/" className="brand"><span className="brand-mark"><Orbit size={25} /></span><span>UNIVERSE <em>OF</em> ME<small>我的人生宇宙</small></span></Link><div className="galaxy-top-actions"><button className="text-button" onClick={() => { try { exportData(); setNotice("已导出 JSON 元数据；媒体原文件请单独备份。"); } catch (cause) { setNotice((cause as Error).message); } }}><Download size={16} />导出档案</button><button className="button" onClick={() => setCreating(true)}><Plus size={17} />创建星球</button></div></header>

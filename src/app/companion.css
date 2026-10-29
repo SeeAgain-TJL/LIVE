@@ -1,0 +1,78 @@
+/* C: character, dialogue and destination browser are separate surfaces. */
+.global-guide.companion { position: fixed; bottom: auto; right: auto; z-index: 38; color: #dfebff; isolation: isolate; }
+.companion button, .companion a { font-size: 14px; min-height: 44px; }
+.companion button:disabled { opacity: .45; cursor: default; }
+.companion :is(button,input,select,a):focus-visible { outline: 2px solid #bbd4ff; outline-offset: 3px; }
+.companion .guide-character-button { width: 100%; height: 100%; padding: 0; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; touch-action: none; user-select: none; cursor: grab; background: none; border-radius: 16px; color: #d9e7ff; }
+.companion.is-dragging .guide-character-button { cursor: grabbing; }
+.guide-character-art { position: relative; display: block; width: 100%; height: calc(100% - 22px); }
+.guide-character-visual { display: block; width: 100%; height: calc(100% - 30px); transform-origin: 50% 95%; animation: companion-breathe 6s ease-in-out infinite; filter: drop-shadow(0 0 14px #789bdb42); }
+.guide-character-visual :is(svg,img) { width: 100%; height: 100%; object-fit: contain; }
+.guide-character-caption { position: absolute; bottom: 15px; left: 0; right: 0; font-size: 13px; text-shadow: 0 2px 4px #000; }
+.guide-asset-preview { position: absolute; bottom: 0; left: 0; right: 0; color: #a4b8d9; font-size: 12px; }
+.guide-character-hint { font-size: 12px; background: #081428cc; border: 1px solid #a8baff33; border-radius: 20px; padding: 4px 8px; white-space: nowrap; }
+.guide-character-button:hover .guide-character-hint { background: #1a2b4c; border-color: #afcaff88; }
+.guide-character-art[data-character-state="thinking"] .guide-character-visual { transform: rotate(-2deg); }
+.guide-character-art[data-character-state="guiding"] .guide-character-visual { transform: rotate(2deg); }
+.guide-character-art[data-character-state="arrived"] .guide-character-caption { color: #d5eaff; }
+.guide-eyes { transform-box: fill-box; transform-origin: center; animation: companion-blink 7s infinite; }
+@keyframes companion-breathe { 0%,100% { scale: 1; } 50% { scale: 1.012 1.018; } }
+@keyframes companion-blink { 0%,44%,48%,100% { transform: scaleY(1); } 46% { transform: scaleY(.08); } }
+.companion-panels { position: fixed; left: 170px; bottom: 32px; width: min(360px, calc(100vw - 200px)); pointer-events: none; }
+.at-right .companion-panels { left: auto; right: 170px; }
+.companion-panels > * { pointer-events: auto; }
+.companion-dialogue, .companion-search { color: #d7e4f8; background: #0a1629f7; border: 1px solid #95b5e655; border-radius: 18px; padding: 20px; box-shadow: 0 18px 60px #0008; backdrop-filter: blur(18px); }
+.companion-dialogue { width: 100%; max-height: min(570px, calc(100svh - 120px)); overflow: auto; }
+.companion :is(.companion-dialogue,.companion-search) > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.companion-dialogue header strong { font-size: 16px; font-weight: 500; display: block; margin-top: 4px; }
+.companion-dialogue header small { font-size: 13px; color: #a8bedd; }
+.companion .guide-small-button { width: 44px; height: 44px; min-height: 44px; flex-shrink: 0; display: inline-grid; place-items: center; border-radius: 10px; color: #c3d5ed; }
+.companion button:hover { background-color: #a9c2ff18; }
+.companion .global-guide-message { color: #e0e8fa; font-size: 16px; line-height: 1.8; margin: 18px 0; max-height: 144px; overflow: auto; }
+.companion-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.companion-actions > :is(button,a) { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 1px solid #a2bde044; border-radius: 10px; background: #93b7ee0c; }
+.companion-actions > :is(button,a):hover { background: #9bbfff22; border-color: #b2ceff; }
+.companion-dialogue > footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-top: 1px solid #b3caff22; margin-top: 12px; padding-top: 8px; }
+.companion-dialogue footer span { font-size: 13px; color: #a9bed9; }
+.companion-dialogue footer button { display: inline-flex; gap: 7px; align-items: center; }
+.companion-bubble { position: absolute; left: calc(100% + 12px); bottom: 45px; width: 250px; border: 1px solid #97b5dd55; border-radius: 14px; padding: 14px 40px 14px 16px; background: #0b192cf0; pointer-events: auto; }
+.at-right .companion-bubble { left: auto; right: calc(100% + 12px); }
+.companion-bubble .global-guide-message { margin: 0; }
+.companion-bubble > button { position: absolute; right: 4px; top: 4px; width: 32px; min-height: 32px; display: grid; place-items: center; }
+.companion-search { position: fixed; left: 24px; top: 96px; bottom: 24px; width: min(430px, calc(100vw - 48px)); overflow: auto; }
+.at-right .companion-search { left: auto; right: 24px; }
+.companion-search-tabs { display: flex; gap: 8px; margin: 18px 0 12px; }
+.companion-search-tabs button { flex: 1; border-bottom: 2px solid transparent; color: #a4b9d9; }
+.companion-search-tabs button[aria-pressed="true"] { color: #edf3ff; border-color: #a6c6ff; }
+.guide-destination-search { display: block; color: #b9cbe3; font-size: 14px; margin: 16px 0; }
+.guide-destination-search input { margin-top: 8px; font-size: 16px; min-height: 44px; }
+.guide-destinations h3 { color: #b2c5df; font-size: 14px; margin: 18px 0 8px; }
+.guide-destinations > button { display: block; text-align: left; width: 100%; padding: 14px 10px; border-bottom: 1px solid #adc7ef22; border-radius: 8px; overflow-wrap: anywhere; }
+.guide-destinations small { display: block; font-size: 13px; color: #aabedd; margin-top: 6px; }
+.guide-destinations p { font-size: 16px; line-height: 1.8; }
+.global-guide-memory-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 0; border-block: 1px solid #b6cded22; }
+.global-guide-memory-actions button { border: 1px solid #a2bde044; border-radius: 8px; padding: 8px; }
+.companion-memory-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 14px; color: #bccde6; }
+.companion-memory-filters :is(input,select) { min-height: 44px; font-size: 14px; margin-top: 8px; width: 100%; }
+.companion .guide-prompt-setting { font-size: 14px; line-height: 1.7; padding: 14px 0; display: flex; align-items: center; gap: 10px; }
+.guide-preference-error { font-size: 14px; color: #e3c497; line-height: 1.7; }
+.companion.is-hidden-guide .guide-character-button { border: 1px solid #aac6ed55; background: #0b182de8; border-radius: 50%; }
+.is-hidden-guide .guide-character-button > span { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
+body:has(dialog[open]) .companion { visibility: hidden; }
+.companion.is-reading .guide-character-hint, .companion.is-reading .guide-character-caption, .companion.is-reading .guide-asset-preview { display: none; }
+.companion.is-reading .guide-character-art, .companion.is-reading .guide-character-visual { height: 100%; }
+body:has(.memory-palace-shell) .companion.is-reading { left: 12px !important; right: auto; }
+body:has(.memory-palace-shell) .companion.is-reading .companion-panels { left: 76px; right: auto; width: min(350px, calc(100vw - 650px)); }
+body:has(.memory-palace-shell) .companion.is-reading .companion-search { left: 12px; right: auto; width: min(430px, calc(100vw - 570px)); }
+@media (max-width: 760px) {
+  .companion .guide-character-hint { font-size: 12px; padding: 3px 6px; }
+  .companion-panels, .at-right .companion-panels { left: 12px; right: 12px; bottom: 20px; width: auto; }
+  .companion-dialogue { max-height: calc(100svh - 110px); padding: 18px; }
+  .companion-search, .at-right .companion-search { left: 12px; right: 12px; width: auto; top: max(84px, env(safe-area-inset-top)); bottom: 16px; padding: 18px; }
+  .companion-bubble { width: min(240px, calc(100vw - 150px)); bottom: 40px; left: calc(100% + 4px); }
+  .at-right .companion-bubble { right: calc(100% + 4px); }
+  body:has(.memory-palace-shell) .companion.is-reading { left: calc(50% - 26px) !important; top: 14px !important; width: 52px !important; height: 52px !important; }
+  body:has(.memory-palace-shell) .companion.is-reading .companion-panels { left: 12px; right: 12px; width: auto; bottom: auto; top: 80px; }
+  body:has(.memory-palace-shell) .companion.is-reading .companion-search { left: 12px; right: 12px; width: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .companion *, .companion *::before, .companion *::after { animation: none !important; transition: none !important; } }

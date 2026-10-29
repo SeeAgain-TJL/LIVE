@@ -1,3 +1,4 @@
+import { openGuide } from "./guide-actions";
 import { expect, test, type Page } from "@playwright/test";
 import { PerspectiveCamera, Vector3 } from "three";
 import { createSeed } from "../../src/data/seed";
@@ -43,14 +44,14 @@ test("single WebGL click enters automatically, ignores repeat clicks and returns
   await page.mouse.click(a.x, a.y);
   await expect(page.locator("main")).toHaveAttribute("data-journey-phase", "flying");
   await expect(page.locator(".selection-card")).toHaveCount(0);
-  await expect(page.locator(".global-guide-message")).toHaveText("我们去这颗星球看看吧。");
+  await expect(page.locator(".global-guide-message")).toHaveText("找到它了，我们出发吧。");
   await page.mouse.click(b.x, b.y);
   await expect(page.locator("main")).toHaveAttribute("data-journey-phase", "approaching");
   await expect(page.locator(".global-guide-message")).toHaveText("已经快到了。");
   await page.screenshot({ path: "test-results/planet-approach-desktop.png" });
   await expect(page).toHaveURL(/\/planet\/entry-0$/);
   await expect(page.locator(".memory-space-canvas canvas")).toBeVisible();
-  await expect(page.locator(".global-guide-message")).toHaveText("欢迎回来，这里的记忆都在等着你。");
+  await expect(page.locator(".global-guide-message")).toHaveText("这些都是你曾经留下的时光。");
   expect(await companion!.evaluate(el => el.isConnected)).toBe(true);
   expect(await archive(page)).toBe(raw);
   expectView(await bookmark(page), origin);
@@ -119,10 +120,11 @@ test("mobile tap enters with reduced motion, direct URL return is safe, and auto
   await page.emulateMedia({ reducedMotion: "reduce" });
   const { raw, bookmark: mobileOrigin } = await prepare(page, true);
   await page.getByRole("button", { name: "收起星球列表", exact: true }).click();
+  await openGuide(page);
   await page.getByRole("button", { name: "带我去看看", exact: true }).click();
   await page.getByLabel("飞行与抵达时显示简短提示", { exact: true }).uncheck();
   await page.getByRole("button", { name: "关闭引导查找", exact: true }).click();
-  const priorMessage = await page.locator(".global-guide-message").innerText();
+  await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
   const p = await point(page, 0, mobileOrigin);
   // Touchscreen tap (not a synthetic click), retaining the same raycast path.
   const client = await page.context().newCDPSession(page);
@@ -134,7 +136,10 @@ test("mobile tap enters with reduced motion, direct URL return is safe, and auto
   await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: p.x, y: p.y }] });
   await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   await expect(page).toHaveURL(/\/planet\/entry-0$/);
-  await expect(page.locator(".global-guide-message")).toHaveText(priorMessage);
+  await expect(page.locator(".companion-bubble")).toHaveCount(0);
+  await openGuide(page);
+  await expect(page.getByLabel("飞行与抵达时显示简短提示", { exact: true })).not.toBeChecked();
+  await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
   expect(await archive(page)).toBe(raw);
   await page.getByRole("link", { name: "返回所属星系", exact: true }).click();
   await expect(page.locator("main")).toHaveAttribute("data-journey-phase", "idle");

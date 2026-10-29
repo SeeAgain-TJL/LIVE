@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { planetReturnUrl } from "@/data/exploration-session";
 
-export function PlanetExitLink({ planetId, galaxyId }: { planetId: string; galaxyId: string }) {
+export function PlanetExitLink({ planetId, galaxyId, label = "返回所属星系" }: { planetId: string; galaxyId: string; label?: string }) {
   const router = useRouter();
   const [leaving, setLeaving] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -18,7 +18,7 @@ export function PlanetExitLink({ planetId, galaxyId }: { planetId: string; galax
       setLeaving(true);
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       timer.current = setTimeout(() => router.push(href), reduced ? 40 : 260);
-    }}><ArrowLeft size={18} /><span>返回所属星系</span></Link>
+    }}><ArrowLeft size={18} /><span>{label}</span></Link>
     {leaving && <div className="planet-exit-transition" role="status">正在回到星球外部…</div>}
   </>;
 }
