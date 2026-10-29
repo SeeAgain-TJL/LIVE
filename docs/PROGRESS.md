@@ -34,6 +34,8 @@
 
 待完成：最终原创成年银蓝长发/深蓝星空服装模型、权属与精修 VRMA 动作包；脚步/重心、全身/布料碰撞、不同模型的掌心标定；真实手机与长期资源测试。当前样本年龄未作认定，不代表最终成年角色设计。**没有把测试通过等同于最终视觉通过，也没有合并或替换正式引导者。** 下一步先由用户依据截图和实验页面确认 VRM 路线，再制作最终资产，之后才讨论正式全局集成。
 
+交付：实现提交 `29c6c88`（`feat: add isolated VRM guide lab with skeletal actions and palm memory interaction`），已推送实验分支 `codex/guide-vrm-lab`。PR [#7](https://github.com/SeeAgain-TJL/LIVE/pull/7) 目标为 `codex/v3-c-global-companion`，保持 open、未合并。上述测试为本地实测；远端 CI 以 PR 最新提交的检查状态为准。
+
 ## 2026-10-29 · V3.0-C：全局记忆引导者交互升级
 
 **交互与导航功能已实现；高质量最终角色立绘尚未制作。** 当前工具环境没有可调用的图像生成工具，本轮没有调用图像 API、下载第三方角色或使用私人内容制作素材。采用用户允许的替代方案：独立资产清单、六状态映射和可替换角色组件；现有原创全身 SVG 在界面明确标为「立绘开发预览」，不能作为最终美术交付。替换与审核契约见 `public/characters/memory-guide/README.md`。
