@@ -115,7 +115,9 @@ test("switch memories, give nested dialogs Escape priority, edit/save and retain
   await expect(page.locator(".memory-detail-date")).toContainText("2025-05-06");
   await expect(page.locator(".memory-detail-body")).toContainText("长篇阅读验收。");
   await page.keyboard.press("Escape");
-  await page.getByRole("link", { name: "返回我的宇宙", exact: true }).click();
+  await page.getByRole("link", { name: "返回所属星系", exact: true }).click();
+  await expect(page).toHaveURL(/\/galaxy\//);
+  await page.getByRole("link", { name: "← 返回宇宙星系", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);
   expect(errors).toEqual([]);
 });
@@ -142,6 +144,7 @@ test("guide uses real filters, image/video survive refresh and media deletion re
   await page.locator(".memory-detail-panel video").evaluate((video: HTMLVideoElement) => video.play());
   await expect.poll(() => page.locator(".memory-detail-panel video").evaluate((video: HTMLVideoElement) => video.currentTime)).toBeGreaterThan(0);
   await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
+  await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.getByRole("button", { name: "视频记忆", exact: true }).last().click();
   await expect(page.locator(".memory-detail-panel h2")).toHaveText("照片与视频");
   const mediaBeforeEdit = JSON.parse((await snapshot(page))!).media;
@@ -150,13 +153,16 @@ test("guide uses real filters, image/video survive refresh and media deletion re
   await page.getByRole("button", { name: "保存记忆", exact: true }).click();
   expect(JSON.parse((await snapshot(page))!).media).toEqual(mediaBeforeEdit);
   await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
+  await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.getByRole("button", { name: "按年份查找", exact: true }).click();
   await expect(page.getByLabel("按年份查找", { exact: true })).toBeFocused();
   await page.getByLabel("按年份查找", { exact: true }).fill("2024");
   await expect(page.locator(".memory-orb-label")).toHaveCount(1);
+  await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.getByRole("button", { name: "关键词搜索", exact: true }).click();
   await expect(page.getByLabel("搜索记忆", { exact: true })).toBeFocused();
   await page.getByLabel("搜索记忆", { exact: true }).fill("照片与视频");
+  await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.getByRole("button", { name: "随机打开", exact: true }).click();
   await expect(page.locator(".memory-detail-panel h2")).toHaveText("照片与视频");
   await page.getByRole("button", { name: "删除记忆", exact: true }).click();
@@ -170,7 +176,7 @@ test("guide uses real filters, image/video survive refresh and media deletion re
   await expect(page.getByRole("heading", { name: "这里还没有记忆", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.getByRole("button", { name: "照片记忆", exact: true }).last().click();
-  await expect(page.locator(".guide-copy")).toContainText("暂时没有找到");
+  await expect(page.locator(".global-guide-message")).toContainText("暂时没有找到");
   const blobCount = await page.evaluate(() => new Promise<number>((resolve, reject) => {
     const request = indexedDB.open("universe-of-me-media", 1);
     request.onsuccess = () => { const db = request.result; const count = db.transaction("blobs").objectStore("blobs").count(); count.onsuccess = () => { db.close(); resolve(count.result); }; count.onerror = () => reject(count.error); };
@@ -187,15 +193,15 @@ test("mobile drawer and guide remain readable, fit viewport and preserve a saved
   const bounds = await drawer.boundingBox();
   expect(bounds!.x).toBeGreaterThanOrEqual(0); expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
   expect(bounds!.y).toBeGreaterThanOrEqual(0); expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(844);
-  await expect(page.locator(".memory-guide")).not.toBeVisible();
+  await expect(page.locator(".global-guide.is-compact")).toBeVisible();
   expect(await page.locator(".memory-detail-body").evaluate(element => parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(16);
   await page.screenshot({ path: "test-results/memory-reading-mobile.png", fullPage: true });
   await page.getByRole("button", { name: "编辑记忆", exact: true }).click();
   await page.getByLabel("写下你的记忆", { exact: true }).fill("手机编辑后保留的文字。");
   await page.getByRole("button", { name: "保存记忆", exact: true }).click();
   await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
-  await expect(page.locator(".memory-guide")).toBeVisible();
-  expect(await page.locator(".guide-copy p").evaluate(element => parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(16);
+  await expect(page.locator(".global-guide-message")).toBeVisible();
+  expect(await page.locator(".global-guide-message").evaluate(element => parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(16);
   await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
   await expect(page.getByRole("button", { name: "展开记忆引导者", exact: true })).toBeVisible();
   await page.screenshot({ path: "test-results/memory-space-mobile.png", fullPage: true });

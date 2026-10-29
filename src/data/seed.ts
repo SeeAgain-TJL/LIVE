@@ -1,4 +1,5 @@
 import type { PlanetAppearance, UniverseData, Vec3 } from "../domain/types.ts";
+import { withGalaxyMembership } from "../domain/galaxy.ts";
 
 export function createSeed(): UniverseData {
   const createdAt = new Date().toISOString();
@@ -9,8 +10,8 @@ export function createSeed(): UniverseData {
     { appearance: { type: "ice", color: "#b7d4df", seed: 38, rings: false, size: 1 }, position: [-4, -4.5, -9] },
     { appearance: { type: "gas", color: "#8899bb", seed: 71, rings: false, size: 1.6 }, position: [6, 5, -13] },
   ];
-  return {
-    schemaVersion: 1,
+  return withGalaxyMembership({
+    schemaVersion: 2,
     revision: 0,
     universe: { id: "local-universe", name: "UNIVERSE OF ME" },
     galaxies: [
@@ -26,5 +27,6 @@ export function createSeed(): UniverseData {
       ...sample, visibility: "private", isDemo: true, createdAt, updatedAt: createdAt,
     })),
     memories: [],
-  };
+    media: [],
+  });
 }

@@ -1,10 +1,13 @@
 import type { UniverseData, UniverseRepository } from "../domain/types.ts";
 import { isDate, validatePlanet } from "../domain/planet.ts";
 import { createSeed } from "./seed.ts";
+import { withGalaxyMembership } from "../domain/galaxy.ts";
 
 export const DATA_KEY = "universe-of-me:data:v1";
 export const RECOVERY_KEY = "universe-of-me:recovery:v1";
 export const CAMERA_KEY = "universe-of-me:camera:v1";
+export const GALAXY_MIGRATION_BACKUP_KEY = "universe-of-me:before-galaxies:v1";
+export const galaxyCameraKey = (id: string) => `${CAMERA_KEY}:galaxy:${encodeURIComponent(id)}`;
 export interface StoragePort { getItem(key: string): string | null; setItem(key: string, value: string): void }
 
 const object = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -28,7 +31,7 @@ export function parseUniverse(raw: string): UniverseData {
   for (const p of d.planets) {
     if (!object(p) || !text(p.id, 100) || !p.id || planetIds.has(p.id) || p.universeId !== d.universe.id ||
         !(p.name === null || text(p.name, 60)) || !text(p.description, 4000) || !nullableDate(p.startDate) || !nullableDate(p.endDate) ||
-        typeof p.ongoing !== "boolean" || !(p.galaxyId === null || galaxyIds.has(p.galaxyId as string)) ||
+        typeof p.ongoing !== "boolean" || !(p.galaxyId == null || galaxyIds.has(p.galaxyId as string)) ||
         !vector(p.position) || p.visibility !== "private" || typeof p.isDemo !== "boolean" || !timestamp(p.createdAt) || !timestamp(p.updatedAt) ||
         !object(p.appearance) || !["rocky", "ocean", "gas", "ice", "ringed"].includes(p.appearance.type as string) ||
         typeof p.appearance.color !== "string" || !/^#[a-f\d]{6}$/i.test(p.appearance.color) ||
@@ -61,7 +64,7 @@ export function parseUniverse(raw: string): UniverseData {
     memories: (d.memories as Array<Record<string, unknown>>).map(m => ({ ...m, kind: m.kind === "mixed" ? "mixed" : "text", mediaIds: Array.isArray(m.mediaIds) ? m.mediaIds : [] })),
     media,
   } as unknown as UniverseData;
-  return normalized;
+  return withGalaxyMembership(normalized);
 }
 
 export class LocalUniverseRepository implements UniverseRepository {
@@ -69,12 +72,22 @@ export class LocalUniverseRepository implements UniverseRepository {
   constructor(storage: StoragePort) { this.storage = storage; }
   load(): UniverseData {
     const raw = this.storage.getItem(DATA_KEY);
-    return raw === null ? createSeed() : parseUniverse(raw);
+    if (raw === null) return createSeed();
+    const normalized = parseUniverse(raw);
+    if (JSON.stringify(JSON.parse(raw)) !== JSON.stringify(normalized)) {
+      try {
+        // Preserve the exact pre-migration file once; never overwrite this recovery copy.
+        if (this.storage.getItem(GALAXY_MIGRATION_BACKUP_KEY) === null) this.storage.setItem(GALAXY_MIGRATION_BACKUP_KEY, raw);
+        if (this.storage.getItem(DATA_KEY) !== raw) throw new Error("档案已更新，请刷新后重试迁移。");
+        this.storage.setItem(DATA_KEY, JSON.stringify(normalized));
+      } catch { throw new Error("星系兼容迁移未完成，原始档案或迁移备份仍保留。请先导出原始档案并检查浏览器存储空间。"); }
+    }
+    return normalized;
   }
   save(data: UniverseData, expectedRevision: number): UniverseData {
     const current = this.storage.getItem(DATA_KEY);
     if ((current === null && expectedRevision !== 0) || (current !== null && parseUniverse(current).revision !== expectedRevision)) throw new Error("另一标签页已更新或移除了宇宙。请刷新后重试，以免覆盖新记录。");
-    const next = { ...data, revision: expectedRevision + 1 };
+    const next = parseUniverse(JSON.stringify({ ...data, revision: expectedRevision + 1 }));
     const serialized = JSON.stringify(next);
     parseUniverse(serialized);
     try {

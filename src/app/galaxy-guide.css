@@ -1,0 +1,153 @@
+/* B1 hierarchy: keep the existing universe palette, planet renderer and memory drawer. */
+.galaxy-universe-shell { min-height: 800px; }
+.galaxy-universe-shell .universe-canvas { inset: 90px 0 85px 340px; }
+.galaxy-top-actions { display: flex; gap: 20px; align-items: center; }
+.galaxy-top-actions .text-button, .galaxy-top-actions .button { font-size: 14px; min-height: 44px; }
+.galaxy-intro { position: absolute; left: 40px; top: 124px; pointer-events: none; }
+.galaxy-intro > p { font-size: 14px; color: #a9b9d2; line-height: 1.8; }
+.galaxy-intro h1 { font-size: 34px; font-weight: 400; line-height: 1.6; margin: 14px 0; letter-spacing: 2px; }
+.galaxy-library { position: absolute; top: 310px; left: 40px; width: 290px; max-height: calc(100svh - 600px); min-height: 190px; padding: 16px; border: 1px solid #9eb6d033; border-radius: 12px; background: #0b1424d9; display: flex; flex-direction: column; backdrop-filter: blur(12px); }
+.galaxy-mobile-storage { display: none; }
+.galaxy-library > header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.galaxy-library h2 { font-size: 18px; margin: 0; font-weight: 500; }
+.galaxy-library > header > span { font-size: 13px; color: #b3c3db; }
+.galaxy-search { display: flex; align-items: center; gap: 8px; color: #a6bcda; }
+.galaxy-search input { padding: 10px; font-size: 14px; }
+.galaxy-list { overflow-y: auto; margin-top: 10px; }
+.galaxy-list article { border-bottom: 1px solid #8da9cd22; padding: 6px 0; }
+.galaxy-list article > button { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 10px 4px; border-radius: 6px; }
+.galaxy-list article > button:hover { background: #a8baff15; }
+.galaxy-list article i { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 16px #a8baff55; }
+.galaxy-list article span { flex: 1; }
+.galaxy-list article strong { font-size: 16px; font-weight: 500; }
+.galaxy-list article small { display: block; font-size: 13px; color: #a8b9d3; margin-top: 4px; }
+.galaxy-list article > a { display: block; text-align: right; padding: 4px 5px 8px; color: #bacbef; font-size: 13px; }
+.galaxy-scene-label { color: #e2ebfd; text-align: center; text-shadow: 0 2px 8px #000; white-space: nowrap; }
+.galaxy-scene-label strong { display: block; font-size: 17px; font-weight: 500; }
+.galaxy-scene-label span { font-size: 13px; color: #b5c6e3; }
+.galaxy-navigation-hint { position: absolute; bottom: 50px; right: 36px; color: #aabbd5; font-size: 14px; }
+.galaxy-local-note { position: absolute; right: 36px; bottom: 12px; color: #a8b7d1; font-size: 13px; max-width: 55%; line-height: 1.7; }
+.galaxy-skip-flight { position: absolute; bottom: 92px; right: 36px; font-size: 14px; padding: 12px 16px; border: 1px solid #a8baff77; border-radius: 6px; background: #10213c; }
+.galaxy-render-fallback { position: absolute; top: 40%; left: 40%; right: 8%; color: #c6d6ef; font-size: 16px; }
+.exploration-breadcrumb { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; color: #b5c7e4; font-size: 14px; }
+.exploration-breadcrumb a { color: #c9d7ff; padding: 6px 0; }
+.exploration-breadcrumb a:hover { color: white; text-decoration: underline; }
+.galaxy-back-navigation { position: absolute; right: 40px; top: 116px; z-index: 20; }
+.galaxy-back-navigation a { display: inline-flex; padding: 10px 14px; font-size: 14px; border: 1px solid #a8baff55; background: #0b1424b0; border-radius: 6px; }
+.galaxy-planet-shell .intro { top: 105px; }
+.galaxy-planet-shell .intro h1 { font-size: 30px; margin: 16px 0; }
+.galaxy-planet-shell .intro-copy { font-size: 14px; }
+.galaxy-planet-shell .planet-library { top: 270px; min-height: 240px; max-height: calc(100% - 525px); }
+.galaxy-planet-shell .planet-library > :not(.planet-list) { flex-shrink: 0; }
+.galaxy-planet-shell .planet-list { flex: 1; }
+.galaxy-planet-shell .list-planet-text strong { font-size: 14px; }
+.galaxy-planet-shell .list-planet-text small { font-size: 12px; color: #a1b2cb; }
+.galaxy-planet-shell .library-heading { font-size: 14px; }
+.galaxy-planet-shell .search-box input, .galaxy-planet-shell .filter-row input { font-size: 14px; }
+.galaxy-planet-shell .library-create { font-size: 13px; padding-top: 10px; margin-top: 8px; }
+.galaxy-planet-shell .filter-row { margin: 6px 0; }
+.current-galaxy-label { color: #aabbda; font-size: 13px; padding: 9px 0; }
+.galaxy-planet-shell .selection-card { z-index: 26; }
+.memory-breadcrumb { padding-top: 14px; }
+
+/* One persistent companion, mounted beside pages in the root layout. */
+.global-guide { position: fixed; bottom: 18px; z-index: 38; width: 374px; max-width: calc(100vw - 24px); display: flex; align-items: flex-end; gap: 4px; color: #e3ecff; isolation: isolate; }
+.global-guide.at-left { left: 16px; }
+.global-guide.at-right { right: 16px; }
+.global-guide button { min-height: 40px; font-size: 14px; }
+.global-guide :is(button,input):focus-visible { outline: 2px solid #bfd4ff; outline-offset: 3px; }
+.global-guide-character { width: 112px; height: 185px; flex-shrink: 0; pointer-events: none; filter: drop-shadow(0 3px 14px #779ce738); }
+.guide-portrait { width: 100%; height: 100%; overflow: visible; }
+.global-guide-dialogue { background: #0b1629f2; border: 1px solid #8eaad357; border-radius: 14px; padding: 14px; margin-bottom: 16px; box-shadow: 0 12px 35px #0009; backdrop-filter: blur(14px); flex: 1; min-width: 0; }
+.global-guide-dialogue header, .global-guide-search > header { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.global-guide-dialogue header strong { font-size: 14px; font-weight: 500; color: #d3e1fa; }
+.global-guide-dialogue header > div { display: flex; gap: 2px; }
+.global-guide .guide-small-button { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 32px; min-height: 32px; border-radius: 6px; color: #bacce6; }
+.global-guide .guide-small-button:hover { background: #9ebaff20; }
+.global-guide-message { font-size: 16px; line-height: 1.7; margin: 8px 0 12px; color: #d0ddef; max-height: 112px; overflow: auto; }
+.global-guide-primary { display: flex; gap: 6px; flex-wrap: wrap; }
+.global-guide-primary > button { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 8px; flex: 1; white-space: nowrap; background: #8caaff12; border: 1px solid #a0b8dc44; border-radius: 6px; font-size: 14px; }
+.global-guide-primary > button:hover, .global-guide-primary > button[aria-expanded="true"] { background: #a8baff2b; border-color: #bfd0ff; }
+.global-guide .guide-drag-handle { position: absolute; right: 8px; bottom: -10px; width: 44px; min-height: 26px; display: grid; place-items: center; color: #99afce; cursor: grab; touch-action: none; }
+.global-guide .guide-drag-handle:active { cursor: grabbing; }
+.global-guide-search { position: absolute; bottom: calc(100% + 10px); left: 0; width: 374px; max-width: calc(100vw - 24px); max-height: min(570px, calc(100svh - 250px)); overflow: auto; background: #0c172aFA; border: 1px solid #a8baff66; border-radius: 12px; padding: 16px; box-shadow: 0 20px 70px #0009; }
+.at-right .global-guide-search { left: auto; right: 0; }
+.global-guide-search header strong { font-size: 16px; font-weight: 500; }
+.guide-destination-search { display: block; color: #b6c8e2; font-size: 14px; margin-top: 14px; }
+.guide-destination-search input { margin-top: 8px; font-size: 16px; }
+.guide-destinations h3 { font-size: 13px; color: #adbfdd; margin: 18px 0 8px; }
+.guide-destinations > button { display: block; width: 100%; padding: 12px 10px; border-radius: 6px; text-align: left; border-bottom: 1px solid #a0b8dc22; }
+.guide-destinations > button:hover { background: #a8baff1b; }
+.guide-destinations small { display: block; color: #aebfda; font-size: 13px; margin-top: 5px; }
+.guide-destinations p { color: #bacce6; font-size: 16px; line-height: 1.8; }
+.global-guide-memory-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-bottom: 12px; border-bottom: 1px solid #a0b8dc33; margin-top: 10px; }
+.global-guide-memory-actions button { padding: 8px; border: 1px solid #9bb6df44; border-radius: 6px; color: #c4d5ee; }
+.global-guide-memory-actions button:hover { background: #a8baff22; }
+.global-guide.is-compact { width: auto; }
+.global-guide:has(.global-guide-search) { z-index: 42; }
+.guide-launcher { display: flex; align-items: center; gap: 8px; padding: 8px 12px 8px 4px; background: #0d1930f2; border: 1px solid #9bb6df66; border-radius: 10px; color: #cadbf5; box-shadow: 0 8px 24px #0008; }
+.guide-launcher .guide-portrait { width: 46px; height: 62px; margin-top: -10px; }
+.is-hidden-guide .guide-launcher { padding: 9px 12px; }
+body:has(dialog[open]) .global-guide { visibility: hidden; }
+.memory-palace-shell ~ .global-guide { bottom: 22px; }
+body:has(.memory-palace-shell) .global-guide.is-reading { max-width: calc(100vw - 570px); }
+body:has(.memory-palace-shell) .global-guide.is-reading.at-right { right: auto; left: 16px; }
+.global-guide.is-reading .global-guide-search { max-height: min(440px, calc(100svh - 180px)); }
+
+@media (max-width: 1100px) {
+  .galaxy-library { width: 254px; left: 24px; }
+  .galaxy-intro { left: 24px; }
+  .global-guide { width: 350px; }
+  .global-guide-character { width: 92px; height: 160px; }
+  .global-guide-dialogue { padding: 12px; }
+}
+@media (max-width: 760px) {
+  .galaxy-universe-shell { min-height: 844px; height: 100svh; }
+  .galaxy-universe-shell .universe-canvas { inset: 218px 0 420px; }
+  .galaxy-universe-shell .topbar { height: 80px; padding: 0 16px; }
+  .galaxy-top-actions { gap: 8px; }
+  .galaxy-top-actions .text-button { font-size: 13px; }
+  .galaxy-top-actions .text-button svg { display: none; }
+  .galaxy-top-actions .button { padding: 9px 10px; font-size: 14px; }
+  .galaxy-universe-shell .brand { font-size: 9px; gap: 6px; letter-spacing: 1px; }
+  .galaxy-universe-shell .brand-mark { display: none; }
+  .galaxy-intro { left: 20px; top: 86px; }
+  .galaxy-intro h1 { font-size: 22px; line-height: 1.5; margin: 8px 0; }
+  .galaxy-intro > p { font-size: 13px; margin: 4px 0; }
+  .galaxy-intro > p:first-child { display: none; }
+  .galaxy-mobile-storage { display: block; color: #a9b9d2; }
+  .galaxy-scene-label strong { font-size: 13px; }
+  .galaxy-scene-label span { display: none; }
+  .galaxy-library { left: 16px; right: 16px; width: auto; top: auto; bottom: 215px; min-height: 195px; max-height: 195px; padding: 12px; }
+  .galaxy-library > header { margin-bottom: 6px; }
+  .galaxy-library .galaxy-search input { padding: 8px; }
+  .galaxy-list { display: flex; gap: 8px; overflow-x: auto; }
+  .galaxy-list article { width: 190px; flex-shrink: 0; }
+  .galaxy-navigation-hint { display: none; }
+  .galaxy-local-note { bottom: 183px; right: 18px; left: 18px; max-width: none; font-size: 12px; }
+  .galaxy-local-note:not(.has-notice) { display: none; }
+  .galaxy-skip-flight { top: 270px; bottom: auto; right: 16px; }
+  .galaxy-planet-shell { min-height: 1000px; }
+  .galaxy-planet-shell .intro { top: 110px; left: 20px; }
+  .galaxy-planet-shell .intro h1 { font-size: 26px; }
+  .galaxy-planet-shell .planet-library { top: auto; bottom: 220px; min-height: 0; max-height: 300px; }
+  .galaxy-planet-shell .planet-list { flex: none; }
+  .galaxy-back-navigation { top: 85px; right: 16px; }
+  .galaxy-back-navigation a { padding: 8px 10px; font-size: 13px; }
+  .galaxy-planet-shell .selection-card { bottom: 225px; }
+  .memory-breadcrumb { font-size: 13px; padding-top: 10px; gap: 7px; }
+  .global-guide { width: 340px; max-width: calc(100vw - 24px); bottom: 12px; }
+  .global-guide.at-left { left: 12px; }.global-guide.at-right { right: 12px; }
+  .global-guide-character { width: 86px; height: 148px; }
+  .global-guide-dialogue { padding: 10px; margin-bottom: 12px; }
+  .global-guide-message { font-size: 16px; max-height: 82px; }
+  .global-guide-primary > button { font-size: 14px; padding: 8px 6px; }
+  .global-guide-dialogue header strong { font-size: 13px; }
+  .global-guide .guide-small-button { width: 26px; }
+  .global-guide-search { width: min(374px, calc(100vw - 24px)); max-height: calc(100svh - 235px); }
+  body:has(.memory-palace-shell) .global-guide.is-reading:is(.at-left,.at-right) { left: calc(50% - 22px); right: auto; top: 14px; bottom: auto; max-width: none; }
+  .global-guide.is-reading .guide-launcher { padding: 4px; width: 44px; height: 44px; justify-content: center; }
+  .global-guide.is-reading .guide-launcher .guide-portrait { width: 28px; height: 36px; margin: 0; }
+  .global-guide.is-reading .guide-launcher span, .global-guide.is-reading .guide-launcher > svg:not(.guide-portrait) { display: none; }
+  .global-guide.is-reading .global-guide-search { position: fixed; left: 12px; right: 12px; bottom: auto; top: 68px; max-height: calc(100svh - 100px); }
+}
