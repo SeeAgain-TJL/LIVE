@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { UniverseProvider } from "@/components/providers/universe-provider";
 import "./globals.css";
+import "./memory-palace.css";
 
 export const metadata: Metadata = {
   title: { default: "UNIVERSE OF ME · 我的人生宇宙", template: "%s · UNIVERSE OF ME" },

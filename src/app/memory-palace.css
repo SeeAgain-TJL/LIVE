@@ -1,0 +1,181 @@
+/* Planet interior only. The outer universe keeps its original layout and typography. */
+.memory-palace-shell {
+  --palace-body: 16px;
+  --palace-control: 14px;
+  --palace-caption: 13px;
+  --palace-muted: #a2b1c8;
+  font-size: var(--palace-body);
+  background: radial-gradient(ellipse at 60% 38%, #17264b55, transparent 52%), #050812;
+}
+.memory-palace-shell :is(button, input, select, summary, .back-link) { font-size: var(--palace-control); min-height: 44px; }
+.memory-palace-shell :is(button, a, input, textarea, select, summary):focus-visible { outline: 2px solid #bdceff; outline-offset: 3px; }
+.memory-palace-shell :is(input, textarea)::placeholder { color: #9baac0; }
+.memory-palace-shell .icon-button { width: 44px; height: 44px; flex-shrink: 0; color: #bbcae0; }
+.memory-palace-shell .icon-button:hover { background: #8caaff26; color: #eef3ff; }
+.memory-palace-shell .button { padding: 11px 16px; }
+.memory-palace-topbar { height: 100px; padding: 14px 32px; gap: 24px; border-bottom: 1px solid #a0b9e628; }
+.memory-palace-shell .back-link { display: inline-flex; align-items: center; gap: 9px; color: #b7c4d9; white-space: nowrap; }
+.memory-palace-title { flex: 1; min-width: 0; text-align: center; }
+.memory-palace-title small { display: block; color: var(--palace-muted); font-size: var(--palace-caption); margin-bottom: 5px; }
+.memory-palace-title h1 { margin: 0; font-size: clamp(20px, 2vw, 28px); font-weight: 500; color: #edf0f8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.memory-palace-layout { position: relative; max-width: 1920px; margin: auto; padding: 0 28px 16px; }
+.planet-summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 2px; }
+.planet-summary > div { min-width: 0; }
+.planet-summary-description { color: #c2ccdc; font-size: 16px; line-height: 1.7; margin: 0 0 7px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.planet-summary-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--palace-muted); font-size: var(--palace-caption); margin: 0; }
+.planet-info-menu { position: relative; flex-shrink: 0; z-index: 20; }
+.planet-info-menu summary { display: flex; align-items: center; cursor: pointer; padding: 8px 14px; border: 1px solid #a0b9e640; border-radius: 7px; color: #c1cee2; }
+.planet-info-menu summary::after { content: '⌄'; margin-left: 10px; }
+.planet-info-menu[open] summary, .planet-info-menu summary:hover { background: #8caaff1a; border-color: #b3c7ff80; }
+.planet-info-popover { position: absolute; top: calc(100% + 8px); right: 0; width: min(360px, calc(100vw - 32px)); padding: 20px; border: 1px solid #a0b9e640; background: #0c1426fa; border-radius: 9px; box-shadow: 0 16px 45px #0009; }
+.planet-info-popover p { margin: 0 0 16px; max-height: 220px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.8; color: #c2ccdc; }
+.planet-info-popover button { display: flex; width: 100%; }
+.planet-info-popover .danger-link { margin-top: 8px; color: #eeacb2; }
+.memory-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 12px 0 16px; border-top: 1px solid var(--border); }
+.memory-search-group { display: flex; flex: 1; gap: 8px; min-width: 290px; }
+.memory-search, .memory-year { display: flex; align-items: center; gap: 10px; color: #acbbd4; border: 1px solid #9eb6d040; border-radius: 7px; padding: 0 12px; background: #0b1320aa; }
+.memory-search { flex: 1; min-width: 150px; }
+.memory-year { width: 106px; }
+.memory-search:focus-within, .memory-year:focus-within { border-color: #bdceff; }
+.memory-search input, .memory-year input { min-width: 0; width: 100%; border: 0; background: transparent; padding: 10px 0; color: #e1e8f5; }
+.memory-search kbd { color: #b3bfd4; font: 13px monospace; }
+.memory-filters { display: flex; gap: 4px; }
+.memory-filters button { display: flex; align-items: center; gap: 6px; border: 1px solid transparent; border-radius: 6px; padding: 8px 10px; color: #b3c1d7; white-space: nowrap; }
+.memory-filters button:hover { color: #eef3ff; background: #8caaff15; }
+.memory-filters button[aria-pressed="true"] { color: #dfE6ff; border-color: #a8baff80; background: #a8baff20; }
+.memory-management-group { display: flex; align-items: center; gap: 14px; margin-left: auto; }
+.memory-result-count { color: var(--palace-muted); font-size: 13px; white-space: nowrap; }
+.memory-palace-shell .view-toggle { display: inline-flex; align-items: center; gap: 7px; border: 1px solid #9eb6d040; border-radius: 6px; padding: 8px 12px; color: #c1cee2; }
+.view-toggle:hover { background: #a8baff15; }
+.quality-control { display: flex; align-items: center; gap: 8px; color: var(--palace-muted); font-size: 13px; white-space: nowrap; }
+.quality-control select { width: 90px; padding: 8px; border-color: #9eb6d040; }
+.memory-experience { position: relative; height: max(580px, calc(100svh - 304px)); isolation: isolate; overflow: hidden; border: 1px solid #9eb6d030; border-radius: 12px; background: #050a16; }
+.memory-space-canvas { position: absolute; inset: 0; }
+.memory-space-loading { height: 100%; display: grid; place-items: center; color: #becae0; }
+.memory-space-hint { position: absolute; right: 20px; bottom: 16px; color: #a6b6ce; font-size: 13px; pointer-events: none; margin: 0; padding: 8px 12px; background: #060d1caa; border-radius: 6px; }
+.memory-orb-label { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #d1dcef; text-shadow: 0 2px 6px #000, 0 0 14px #000; white-space: nowrap; }
+.memory-orb-label span { display: flex; align-items: center; gap: 6px; font-size: 14px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+.memory-orb-label time { color: #aabbd4; font-size: 12px; }
+.memory-orb-label.selected { color: #f2dfb4; }
+.memory-scene-fallback, .palace-empty { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: min(460px, calc(100% - 32px)); color: #b5c4dd; }
+.memory-scene-fallback { z-index: 5; background: #0c1426eb; border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+.palace-empty h2 { color: #e2e8f5; font-size: 21px; font-weight: 400; margin: 10px 0; }
+.palace-empty p, .memory-scene-fallback p { font-size: 16px; line-height: 1.8; }
+.palace-empty > svg { display: inline-block; }
+.palace-storage-note { font-size: 13px; line-height: 1.7; color: #9eabc0; margin: 14px 2px 0; }
+
+/* Quiet, readable companion. Advanced actions appear only on request. */
+.memory-guide { position: absolute; left: 20px; bottom: 54px; width: 350px; max-width: calc(100% - 40px); padding: 20px; border: 1px solid #9eb6d047; border-radius: 12px; background: #0a1424eb; backdrop-filter: blur(16px); box-shadow: 0 17px 50px #02050a88; z-index: 6; }
+.memory-palace-shell .guide-close { position: absolute; top: 5px; right: 5px; width: 36px; min-height: 36px; height: 36px; }
+.guide-avatar { position: absolute; left: 20px; top: 18px; width: 68px; height: 112px; overflow: hidden; border-radius: 36px 36px 18px 18px; background: linear-gradient(165deg, #9fbce8, #41577f 48%, #151d39); box-shadow: 0 0 30px #799ce933; }
+.guide-halo { position: absolute; width: 70px; height: 70px; left: -1px; top: 10px; border: 1px solid #b4d9ff99; border-radius: 50%; box-shadow: 0 0 24px #7cb8ff66; }
+.guide-hair { position: absolute; left: 11px; top: 20px; width: 46px; height: 55px; border-radius: 55% 55% 40% 45%; background: linear-gradient(120deg, #e3f2ff, #809acc 58%, #435379); transform: rotate(-7deg); }
+.guide-face { position: absolute; left: 21px; top: 31px; width: 28px; height: 36px; border-radius: 48% 48% 44% 44%; background: #e4c9c1; }
+.guide-eye { position: absolute; top: 15px; width: 3px; height: 4px; border-radius: 50%; background: #334769; }
+.guide-eye.left { left: 8px; }.guide-eye.right { right: 8px; }
+.guide-star { position: absolute; top: -12px; right: -8px; color: #e6d49e; font-size: 16px; }
+.guide-collar { position: absolute; left: 17px; bottom: 17px; width: 35px; height: 30px; border: 1px solid #bdd8ff88; border-radius: 50%; }
+.guide-copy { padding: 0 14px 0 86px; min-height: 112px; }
+.guide-copy strong { color: #edf0f9; font-size: 16px; font-weight: 500; }
+.guide-copy p { color: #c1cee2; font-size: 16px; line-height: 1.7; margin: 8px 0 0; }
+.guide-primary-actions { display: flex; gap: 8px; margin-top: 16px; }
+.memory-palace-shell .guide-primary-actions .button { flex: 1; padding: 9px 8px; gap: 6px; }
+.guide-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; max-height: 180px; overflow: auto; }
+.guide-actions button { display: flex; align-items: center; gap: 8px; color: #c3d0e4; padding: 8px; border-radius: 6px; text-align: left; }
+.guide-actions button:hover { background: #8caaff22; color: #e9efff; }
+.guide-reopen { position: absolute; left: 20px; bottom: 54px; z-index: 6; display: flex; align-items: center; gap: 8px; border: 1px solid #9eb6d047; border-radius: 8px; padding: 10px 14px; color: #c3d0e4; background: #0a1424eb; }
+.guide-reopen:hover { background: #1c2a48; }
+
+/* Nonmodal reading drawer: the scene and list remain selectable beside it. */
+.memory-detail-panel { position: fixed; top: 116px; right: 28px; bottom: 24px; z-index: 40; width: min(520px, 43vw); display: flex; flex-direction: column; border: 1px solid #a8baff66; border-radius: 14px; background: #0c1528f7; box-shadow: 0 20px 90px #000b; backdrop-filter: blur(18px); animation: memory-drawer-in .22s ease-out; }
+@keyframes memory-drawer-in { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+.memory-detail-panel > header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 22px 22px 14px; }
+.memory-detail-panel > header > div { min-width: 0; }
+.memory-detail-date { color: #b7c6e0; font-size: 14px; margin: 0 0 10px; }
+.memory-detail-panel h2 { color: #f0f1f8; font-size: 24px; font-weight: 500; line-height: 1.5; margin: 0; overflow-wrap: anywhere; max-height: 108px; overflow: auto; }
+.memory-detail-meta { display: flex; align-items: baseline; gap: 12px; margin: 0 22px; padding: 12px 0; border-block: 1px solid var(--border); color: #abbad0; font-size: 14px; }
+.memory-detail-meta strong { color: #dae3f3; font-weight: 400; overflow-wrap: anywhere; min-width: 0; }
+.memory-detail-meta span { flex-shrink: 0; }
+.memory-detail-content { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 20px 22px; scrollbar-width: thin; scrollbar-color: #7484a7 transparent; }
+.memory-detail-body { color: #d4deef; white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--palace-body); line-height: 1.95; margin: 0; }
+.memory-detail-media .memory-media { width: 100%; max-height: 420px; margin: 20px 0 0; }
+.memory-detail-panel footer { display: flex; justify-content: space-between; align-items: center; padding: 14px 22px; border-top: 1px solid var(--border); }
+.memory-palace-shell .danger-icon { color: #efadb7; }
+.memory-palace-shell .danger-icon:hover { color: #ffced5; background: #d96c8a22; }
+.memory-experience.is-list { height: auto; min-height: 580px; background: #081020bd; }
+.memory-list-mode { padding: 0 20px; }
+.memory-list-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); color: var(--palace-muted); font-size: 14px; }
+.memory-list-entry { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+.memory-list-entry.selected { background: #a8baff12; }
+.memory-list-open { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; flex: 1; min-width: 0; text-align: left; padding: 20px 8px; border-radius: 8px; }
+.memory-list-open:hover { background: #8caaff12; }
+.memory-list-kind { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid #8fa8d066; border-radius: 50%; color: #bdcaff; }
+.memory-list-open time { display: block; color: #b7c6e0; font-size: 13px; }
+.memory-list-open strong { display: block; margin: 8px 0; color: #e5eaf5; font-size: 18px; font-weight: 500; overflow-wrap: anywhere; }
+.memory-list-excerpt { color: #b6c4d9; font-size: 16px; line-height: 1.7; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+.memory-list-actions { display: flex; flex-shrink: 0; }
+
+/* Scope form improvements to planet interiors, including native dialogs. */
+.memory-palace-shell .modal { font-size: 16px; }
+.memory-palace-shell .modal-header .eyebrow { font-size: 13px; letter-spacing: .5px; }
+.memory-palace-shell .modal-header h2 { font-size: 24px; }
+.memory-palace-shell .field { font-size: 14px; }
+.memory-palace-shell .field > :is(input, select, textarea) { font-size: 16px; }
+.memory-palace-shell :is(.field-help, .field > span, .memory-editor-count, .memory-editor-footer > span, .editor-footer > span) { color: #a9b7cd; font-size: 13px; line-height: 1.7; }
+.memory-palace-shell .delete-confirmation > p { font-size: 16px; color: #c4cfe0; }
+.memory-palace-shell .form-error { font-size: 14px; }
+.memory-palace-shell .media-loading { color: #b2c1d8; font-size: 14px; line-height: 1.8; }
+
+@media (max-width: 1100px) {
+  .memory-controls { gap: 10px; }
+  .memory-management-group { flex: 1; justify-content: flex-end; }
+  .memory-experience { height: max(600px, calc(100svh - 340px)); }
+  .memory-detail-panel { width: min(480px, 50vw); }
+}
+@media (max-width: 760px) {
+  .memory-palace-topbar { height: auto; min-height: 124px; padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+  .memory-palace-title { grid-column: 1 / -1; grid-row: 2; text-align: left; }
+  .memory-palace-title h1 { font-size: 22px; }
+  .memory-palace-title small { font-size: 13px; }
+  .memory-palace-shell .back-link { font-size: 14px; }
+  .memory-palace-topbar .button { padding: 9px 12px; }
+  .memory-palace-layout { padding: 0 12px 16px; }
+  .planet-summary { padding: 14px 2px; gap: 12px; align-items: flex-start; }
+  .planet-summary-description { -webkit-line-clamp: 1; }
+  .planet-summary-meta { gap: 6px; font-size: 13px; }
+  .planet-summary-meta span { display: none; }
+  .planet-info-menu summary { padding: 8px 10px; }
+  .memory-controls { gap: 10px; padding: 12px 0; }
+  .memory-search-group { min-width: 0; flex-basis: 100%; }
+  .memory-year { width: 100px; }
+  .memory-filters { width: 100%; }
+  .memory-filters button { flex: 1; padding: 8px 4px; justify-content: center; }
+  .memory-management-group { justify-content: space-between; gap: 10px; }
+  .quality-control span { display: none; }
+  .quality-control select { width: 92px; }
+  .memory-experience { height: 680px; height: max(620px, 82svh); border-radius: 10px; }
+  .memory-space-hint { left: 8px; right: 8px; bottom: 8px; font-size: 12px; text-align: center; padding: 8px 4px; }
+  .memory-guide { left: 12px; bottom: 52px; width: 330px; max-width: calc(100% - 24px); padding: 16px; }
+  .guide-avatar { left: 16px; top: 16px; }
+  .guide-copy { padding-left: 84px; padding-right: 12px; }
+  .guide-reopen { left: 12px; bottom: 52px; }
+  .memory-detail-panel { top: auto; right: 8px; left: 8px; bottom: max(8px, env(safe-area-inset-bottom)); width: auto; max-height: 83svh; min-height: 44svh; border-radius: 16px; animation-name: memory-drawer-up; }
+  @keyframes memory-drawer-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  .memory-detail-panel > header { padding: 18px 16px 12px; }
+  .memory-detail-panel h2 { font-size: 22px; max-height: 100px; }
+  .memory-detail-meta { margin: 0 16px; }
+  .memory-detail-content { padding: 18px 16px; }
+  .memory-detail-panel footer { padding: 12px 16px; }
+  .memory-list-mode { padding: 0 10px; }
+  .memory-list-entry { flex-wrap: wrap; gap: 0; }
+  .memory-list-open { flex-basis: 100%; padding-bottom: 10px; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; }
+  .memory-list-kind { width: 32px; height: 32px; }
+  .memory-list-actions { margin-left: auto; margin-bottom: 8px; }
+  .memory-palace-shell .modal-header h2 { font-size: 22px; }
+  .memory-palace-shell .memory-editor-footer { flex-wrap: wrap; }
+  .memory-palace-shell .memory-editor-footer > span { width: 100%; }
+  .memory-palace-shell .memory-editor-footer .button { margin-left: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .memory-detail-panel { animation: none; }
+}
