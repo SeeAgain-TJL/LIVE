@@ -114,6 +114,7 @@ export function UniverseProvider({ children }: { children: React.ReactNode }) {
     commit({ ...data,
       planets: data.planets.map(p => p.id === memory.planetId ? { ...p, updatedAt: new Date().toISOString() } : p),
       memories: data.memories.filter(m => m.id !== id),
+      media: (data.media ?? []).filter(m => m.memoryId !== id),
     });
     await deleteMedia(memory.mediaIds ?? []);
   };

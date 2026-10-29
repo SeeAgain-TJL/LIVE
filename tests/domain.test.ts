@@ -3,7 +3,7 @@ import test from "node:test";
 import { isDate, matchesYear, nextPosition, validatePlanet } from "../src/domain/planet.ts";
 import { createSeed } from "../src/data/seed.ts";
 import { DATA_KEY, RECOVERY_KEY, LocalUniverseRepository, parseUniverse, type StoragePort } from "../src/data/local-repository.ts";
-import { memoryMatches, memoryMediaKind, memoryPassesFilter, memoryPosition } from "../src/domain/memory.ts";
+import { memoryMatches, memoryMediaKind, memoryPassesFilter, memoryPosition, memoryView } from "../src/domain/memory.ts";
 
 class InMemoryStorage implements StoragePort {
   values = new Map<string, string>();
@@ -143,4 +143,31 @@ test("memory space filters are driven by real text, dates and media metadata", (
   assert.equal(memoryPassesFilter(memories[1], media, "photo"), false);
   assert.equal(memoryPosition(0, 2).every(Number.isFinite), true);
   assert.notDeepEqual(memoryPosition(0, 2), memoryPosition(1, 2));
+});
+
+test("memory overview contains every orb on desktop and narrow screens, with a centered single orb", () => {
+  assert.deepEqual(memoryPosition(0, 1), [0, 0, 0]);
+  const tanFov = Math.tan(46 * Math.PI / 360);
+  for (const aspect of [0.5, 1, 2.4]) {
+    for (const total of [1, 2, 20, 81]) {
+      const view = memoryView(total, -1, aspect);
+      for (let i = 0; i < total; i++) {
+        const [x, y, z] = memoryPosition(i, total);
+        const depth = view.position[2] - z;
+        assert((Math.abs(x) + 0.8) / (depth * tanFov * aspect) < 1);
+        assert((Math.abs(y - view.position[1]) + 0.8) / (depth * tanFov) < 1);
+      }
+    }
+  }
+});
+
+test("focused orbs keep a bounded reading scale across viewport shapes", () => {
+  const tanFov = Math.tan(46 * Math.PI / 360);
+  for (const aspect of [0.4, 0.75, 1.5, 2.4]) {
+    const view = memoryView(5, 2, aspect);
+    assert(view.position.every(Number.isFinite));
+    const diameterFraction = (0.58 * 1.1) / (view.distance * tanFov * Math.min(1, aspect));
+    assert(diameterFraction < 0.4);
+    assert(view.distance >= 8);
+  }
 });

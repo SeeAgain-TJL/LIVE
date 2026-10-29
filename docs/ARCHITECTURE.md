@@ -1,20 +1,23 @@
 # 技术架构与数据模型
 
-## 当前实现（v0.1 原型）
+## 当前实现（本地开发原型，V3.0 任务 A）
 
 ```text
 Next.js App Router
   /                         UniverseExplorer
-  /planet/[id]              PlanetArchive
+  /planet/[id]              PlanetMemorySpace
               ↓ typed props / actions
   UniverseProvider          状态与提交协调
               ↓
   UniverseRepository        load / save / schema 校验
               ↓
-  LocalUniverseRepository   localStorage 快照 v1
+  LocalUniverseRepository   localStorage 快照 v2（兼容 v1）
+  MediaStore                IndexedDB Blob
 
 UniverseExplorer → UniverseScene → CameraRig / PlanetMesh / StarField
-PlanetEditor / PlanetArchive → PlanetPreview
+PlanetEditor → PlanetPreview
+PlanetMemorySpace → MemoryToolbar / MemoryGuide / MemoryList / MemoryDetails
+                 → MemorySpace → MemoryOrb / MemoryCamera / StarField
 ```
 
 Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React Three Fiber 9、Drei 10 构建；Tailwind 4 与语义化全局 CSS 实现界面。已生成 `package-lock.json`，使用 `npm ci` 复现；本轮实际解析为 Next.js 16.4.3、React 19.3.1、R3F 9.8.2、Drei 10.7.9。尚未接通服务端数据库、鉴权或媒体 API。
@@ -34,7 +37,7 @@ Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React T
 
 ## 当前持久化契约
 
-`UniverseData` v1 分离 `universe`、`galaxies[]`、`planets[]`、`memories[]`，通过 ID 引用。浏览器快照以 JSON 序列化，但业务实体独立，不把星球资料/全部记忆塞入一个不透明正文字段。
+`UniverseData` v2 分离 `universe`、`galaxies[]`、`planets[]`、`memories[]`、`media[]`，通过 ID 引用；v1 在读取时兼容。浏览器快照以 JSON 序列化，但业务实体独立，不把星球资料/全部记忆塞入一个不透明正文字段。
 
 | 实体 | 当前字段 |
 | --- | --- |
@@ -42,14 +45,15 @@ Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React T
 | Galaxy | id, name, color |
 | Planet | id, universeId, galaxyId?, name?, startDate?, endDate?, ongoing, description, appearance, position, visibility=private, isDemo, createdAt, updatedAt |
 | Appearance | type, color, seed, rings, size |
-| Memory | id, planetId, kind=text, title, body, occurredOn, createdAt, updatedAt |
-| Snapshot | schemaVersion=1, revision, universe, galaxies, planets, memories |
+| Memory | id, planetId, kind=text/mixed, title, body, occurredOn, mediaIds, createdAt, updatedAt |
+| Media | id, memoryId, kind=image/video, name, mimeType, size, createdAt；Blob 由相同 ID 关联 IndexedDB |
+| Snapshot | schemaVersion=2, revision, universe, galaxies, planets, memories, media |
 
 未命名名称存为 `null`；日期存 `YYYY-MM-DD`，代表日历日期而非 UTC 时间点；审计时间使用 UTC ISO 时间戳。无结束日期且不持续的有开始阶段，基础年份检索仅归入开始年份；持续阶段包含开始年至当前年。没有日期的草稿不匹配年份筛选。
 
 读取时严格检查版本、日期、大小、ID 唯一性、星系/星球引用。保存先校验，再保留上一版快照后写主键。revision 检查减少跨标签页覆盖，`storage` 事件同步；localStorage 无跨进程事务，极短并发竞态仍需正式数据库解决。持久化错误不会提交应用状态或关闭表单。未知/损坏版本阻止写入，不重置个人数据。
 
-导出目前仅 JSON v1（含文字，无媒体）；没有导入/恢复 UI。快照只保留上一版，不能替代异地备份。迁移时先导出主数据与快照，做纯函数迁移，验证计数/引用/正文，再显式提交新版本，并测试失败回滚。
+导出目前为 JSON v2（含文字与媒体元数据，不包含 Blob）；没有导入/恢复 UI。快照只保留上一版，不能替代异地备份，原始媒体需要另外保留。迁移时先导出主数据与快照，做纯函数迁移，验证计数/引用/正文，再显式提交新版本，并测试失败回滚。
 
 ## 正式服务端目标架构（尚未实现）
 
@@ -110,3 +114,5 @@ UniverseData v2 adds Memory.mediaIds and Media metadata. Image and video Blobs a
 ## 星穹记忆殿堂
 
 src/components/three/memory-space.tsx 只负责渲染记忆球、相机和 OrbitControls；src/domain/memory.ts 提供纯函数的媒体类型、搜索、筛选和空间坐标；planet-memory-space.tsx 负责将当前星球真实数据组合为页面。memory-guide.tsx 只触发本地确定性动作，memory-details.tsx 负责 HTML 长文和媒体阅读，MemoryList 是辅助管理模式。这样 3D 渲染不会直接读写 provider，也不会把正文绑定到旋转球面。
+
+V3 任务 A 将球体与相机拆到 `memory-orb.tsx`、`memory-camera.tsx`，布局样式独立于宇宙主页。选择以 `selectedId` 为唯一明确状态，不从筛选数量推断；详情在场景和列表两种模式均可打开。非模态抽屉允许继续访问相邻操作，Escape 遇到原生编辑/删除 dialog 时让其优先处理。相机仅在选择、数量或视口变化时飞行，完成后释放控制。所有这些变化不升级持久化 schema。

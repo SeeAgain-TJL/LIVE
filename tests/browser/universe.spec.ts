@@ -21,10 +21,17 @@ test("create a named world, fly into its archive and retain a text memory after 
   await page.getByLabel("写下你的记忆").fill("这是一条自动化验收文字，仅存在隔离测试浏览器中。");
   await page.getByRole("button", { name: "保存记忆" }).click();
   await expect(page.getByRole("heading", { name: "验收记录" })).toBeVisible();
+  // A single result must not implicitly reopen after an explicit dismissal.
+  await page.getByRole("button", { name: "关闭记忆详情" }).click();
+  await expect(page.locator(".memory-detail-panel")).toHaveCount(0);
   phase = "reload";
   await page.reload();
+  await page.getByRole("button", { name: "列表管理", exact: true }).click();
+  await page.getByRole("button", { name: "打开记忆：验收记录", exact: true }).click();
   await expect(page.getByRole("heading", { name: "验收记录" })).toBeVisible();
-  await expect(page.locator(".archive-preview canvas")).toBeVisible();
+  await page.getByRole("button", { name: "关闭记忆详情" }).click();
+  await page.getByRole("button", { name: "记忆球空间", exact: true }).click();
+  await expect(page.locator(".memory-space-canvas canvas")).toBeVisible();
   await page.screenshot({ path: "test-results/archive-desktop.png", fullPage: true });
   expect(errors).toEqual([]);
 });
