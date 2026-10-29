@@ -35,7 +35,7 @@
 6. 在「星球资料」中确认编辑名称/介绍和确认删除入口仍可用；测试删除请使用专门创建的测试记录。
 7. 手机视口下滚动查看场景，展开/收起引导者，打开、关闭并编辑详情；返回外部宇宙继续探索。
 
-分支：`codex/v3-memory-usability`，基于现有 `codex/phase2-memory-system` 继续提交；不合并 main。
+代码提交：`015f11b`（`fix: polish memory palace layout and dismissal`）。分支 `codex/v3-memory-usability` 已推送，基于现有 `codex/phase2-memory-system` 的 PR [#3](https://github.com/SeeAgain-TJL/LIVE/pull/3) 已创建，未合并 main。远端 Actions 结果以 GitHub 对应提交的检查为准，本节通过项是本地实际运行结果。
 
 下一步与未验证：真实手机触控/帧率/发热、多浏览器、海量记录分页/虚拟化、正式账号与云端存储、完整媒体备份恢复仍待专项实现与验收。V3 四层探索与全局可拖动引导者属于后续任务，本轮没有开始重写宇宙。
 
