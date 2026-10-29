@@ -9,12 +9,14 @@ import { CameraRig, type FlightRequest } from "./camera-rig";
 import { PlanetMesh } from "./planet-mesh";
 import { StarField } from "./star-field";
 import { useLowPowerDevice, useReducedMotion } from "./use-render-preferences";
+import { isPlanetTap } from "@/domain/planet-flight";
+import { periodLabel, planetName } from "@/domain/planet";
 
 interface SceneProps {
   planets: Planet[]; selectedId: string | null; flight: FlightRequest | null;
-  onSelect: (id: string) => void; onFly: (id: string) => void; onArrival: (id: string) => void;
+  onEnter: (id: string) => void; onArrival: (id: string) => void; onApproach: (id: string) => void; onReturned: () => void;
   quality: Quality; newPlanetId?: string | null;
-  bookmarkKey?: string;
+  bookmarkKey?: string; galaxyId: string; returnPlanetId?: string | null; locked: boolean; onUnavailable: () => void;
 }
 
 function ContextMonitor({ onLost }: { onLost: () => void }) {
@@ -26,6 +28,11 @@ function ContextMonitor({ onLost }: { onLost: () => void }) {
     return () => canvas.removeEventListener("webglcontextlost", lost);
   }, [gl, onLost]);
   return null;
+}
+
+function SceneUnavailable({ onUnavailable }: { onUnavailable?: () => void }) {
+  useEffect(() => { onUnavailable?.(); }, [onUnavailable]);
+  return <div className="scene-fallback"><span>3D 信号暂不可用</span><p>请从左侧列表查看星球资料，再用「直接打开档案」继续访问记忆。</p><button className="button secondary" onClick={() => location.reload()}>重新载入</button></div>;
 }
 
 class SceneBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
@@ -40,10 +47,33 @@ export default function UniverseScene(props: SceneProps) {
   const deviceLow = useLowPowerDevice();
   const reducedMotion = useReducedMotion();
   const [contextLost, setContextLost] = useState(false);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const gesture = useRef({ x: 0, y: 0, distance: 0, pointers: 0, started: 0, tap: false });
+  const pointers = useRef(new Set<number>());
+  useEffect(() => {
+    const release = (e: PointerEvent) => { pointers.current.delete(e.pointerId); };
+    const reset = () => { pointers.current.clear(); gesture.current.tap = false; };
+    window.addEventListener("pointerup", release); window.addEventListener("pointercancel", release); window.addEventListener("blur", reset);
+    return () => { window.removeEventListener("pointerup", release); window.removeEventListener("pointercancel", release); window.removeEventListener("blur", reset); };
+  }, []);
+  const hovered = props.planets.find(p => p.id === hoveredId);
   const low = props.quality === "low" || (props.quality === "auto" && deviceLow);
-  const fallback = <div className="scene-fallback"><span>3D 信号暂不可用</span><p>请使用支持 WebGL 的浏览器，或从左侧列表访问星球档案。</p><button className="button secondary" onClick={() => location.reload()}>重新载入</button></div>;
+  const fallback = <SceneUnavailable onUnavailable={props.onUnavailable} />;
   if (contextLost) return fallback;
-  return <div className="scene-renderer"><div ref={labels} className="scene-label-layer" aria-hidden="true" /><SceneBoundary fallback={fallback}><Canvas camera={{ position: [0, 7, 30], fov: 43, near: 0.1, far: 30000 }} dpr={low ? 1 : [1, 1.75]} gl={{ antialias: !low, alpha: true, powerPreference: low ? "low-power" : "high-performance" }} fallback={fallback} onPointerMissed={() => { document.body.style.cursor = "auto"; }}>
+  return <div className="scene-renderer" onPointerDownCapture={e => {
+    pointers.current.add(e.pointerId);
+    if (pointers.current.size === 1) gesture.current = { x: e.clientX, y: e.clientY, distance: 0, pointers: 1, started: performance.now(), tap: false };
+    else gesture.current.pointers = Math.max(gesture.current.pointers, pointers.current.size);
+  }} onPointerMoveCapture={e => {
+    if (!pointers.current.has(e.pointerId)) return;
+    const g = gesture.current; g.distance += Math.hypot(e.clientX - g.x, e.clientY - g.y); g.x = e.clientX; g.y = e.clientY;
+  }} onPointerUpCapture={e => {
+    pointers.current.delete(e.pointerId); const g = gesture.current;
+    g.distance += Math.hypot(e.clientX - g.x, e.clientY - g.y);
+    g.tap = isPlanetTap(g.distance, g.pointers, performance.now() - g.started);
+  }} onPointerCancelCapture={e => { pointers.current.delete(e.pointerId); gesture.current.tap = false; }} onClickCapture={e => {
+    if (e.target instanceof HTMLCanvasElement && (!gesture.current.tap || props.locked)) { e.preventDefault(); e.stopPropagation(); }
+  }}><div ref={labels} className="scene-label-layer" aria-hidden="true" />{hovered && !props.locked && <div className="planet-hover-summary" role="status"><strong>{planetName(hovered)}</strong><span>{periodLabel(hovered)} · 单击进入</span></div>}<SceneBoundary fallback={fallback}><Canvas camera={{ position: [0, 7, 30], fov: 43, near: 0.1, far: 30000 }} dpr={low ? 1 : [1, 1.75]} gl={{ antialias: !low, alpha: true, powerPreference: low ? "low-power" : "high-performance" }} fallback={<SceneUnavailable />} onPointerMissed={() => { document.body.style.cursor = "auto"; }}>
     <ambientLight intensity={0.17} color="#8199bd" />
     <directionalLight position={[-12, 10, 12]} intensity={3.1} color="#fff0d7" />
     <directionalLight position={[12, -5, -10]} intensity={0.35} color="#486b9a" />
@@ -51,12 +81,12 @@ export default function UniverseScene(props: SceneProps) {
       <StarField low={low} />
       {props.planets.map((planet, index) => <group key={planet.id}>
         <PlanetMesh appearance={planet.appearance} position={planet.position} low={low} reducedMotion={reducedMotion} selected={props.selectedId === planet.id} born={props.newPlanetId === planet.id}
-          onSelect={e => { e.stopPropagation(); props.onSelect(planet.id); }} onFly={e => { e.stopPropagation(); props.onFly(planet.id); }} />
+          onSelect={e => { e.stopPropagation(); if (!props.locked && gesture.current.tap && e.delta <= 7) props.onEnter(planet.id); }} onHover={value => setHoveredId(value ? planet.id : null)} />
         <Html portal={labels} position={[planet.position[0], planet.position[1] - planet.appearance.size * 1.65, planet.position[2]]} center distanceFactor={30} zIndexRange={[15, 0]} style={{ pointerEvents: "none" }}>
           <div className={`planet-label ${props.selectedId === planet.id ? "selected" : ""}`}><i /><span>{planet.name || `未命名 · ${String(index + 1).padStart(2, "0")}`}</span>{planet.isDemo && <small>示例星球</small>}</div>
         </Html>
       </group>)}
-      <CameraRig planets={props.planets} flight={props.flight} onArrival={props.onArrival} reducedMotion={reducedMotion} bookmarkKey={props.bookmarkKey} />
+      <CameraRig planets={props.planets} flight={props.flight} onArrival={props.onArrival} onApproach={props.onApproach} onReturned={props.onReturned} reducedMotion={reducedMotion} bookmarkKey={props.bookmarkKey} galaxyId={props.galaxyId} returnPlanetId={props.returnPlanetId} />
       <ContextMonitor onLost={() => setContextLost(true)} />
     </Suspense>
   </Canvas></SceneBoundary></div>;

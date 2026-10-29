@@ -1,0 +1,22 @@
+/* B2: intentional entry/exit, keeping the existing universe and palace layout. */
+.planet-hover-summary { position: absolute; left: 50%; bottom: 115px; transform: translateX(-50%); z-index: 18; display: flex; flex-direction: column; gap: 7px; padding: 12px 20px; border-radius: 10px; border: 1px solid #a8baff44; color: #e4ecfc; background: #0b1424dc; pointer-events: none; text-align: center; }
+.planet-hover-summary strong { font-size: 16px; font-weight: 500; }
+.planet-hover-summary span { font-size: 14px; color: #becce5; }
+.planet-journey-status { position: absolute; z-index: 101; bottom: 100px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; padding: 12px 18px; white-space: nowrap; border: 1px solid #a8baff44; border-radius: 10px; background: #0b1424e8; font-size: 14px; color: #d2dff4; }
+.planet-journey-status button { padding: 10px; border: 1px solid #b1c8ff66; border-radius: 6px; min-height: 44px; }
+.planet-journey-status button:hover { background: #a8baff22; }
+.galaxy-planet-shell[data-journey-phase="transition"] .entry-transition { transition-duration: .38s; }
+.planet-exit-transition { position: fixed; inset: 0; display: grid; place-items: center; z-index: 100; background: #05080d; color: #cad9f6; font-size: 16px; animation: planet-exit-in .26s ease-out; }
+@keyframes planet-exit-in { from { opacity: 0; } to { opacity: 1; } }
+.memory-palace-shell { animation: memory-arrival .38s ease-out; }
+@keyframes memory-arrival { from { opacity: .15; } to { opacity: 1; } }
+.guide-prompt-setting { display: flex; align-items: center; gap: 10px; color: #bdcde5; font-size: 14px; padding: 14px 0; line-height: 1.6; }
+.guide-prompt-setting input { width: 18px; height: 18px; min-height: 18px; accent-color: #acbfff; }
+@media (max-width: 760px) {
+  .planet-journey-status { left: 12px; right: 12px; bottom: 210px; transform: none; justify-content: center; white-space: normal; }
+  .planet-hover-summary { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .memory-palace-shell, .planet-exit-transition { animation: none; }
+  .galaxy-planet-shell[data-journey-phase="transition"] .entry-transition { transition-duration: .08s; }
+}

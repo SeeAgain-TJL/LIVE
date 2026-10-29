@@ -1,6 +1,6 @@
 # 技术架构与数据模型
 
-## 当前实现（本地开发原型，V3.0-B1）
+## 当前实现（本地开发原型，V3.0-B2）
 
 ```text
 Next.js App Router
@@ -31,13 +31,19 @@ Next.js 16 App Router + React 19 + strict TypeScript。3D 以 Three.js、React T
 - 宇宙 Canvas 客户端动态加载（`ssr: false`），SSR 不访问 WebGL 或浏览器存储。
 - 确定性程序噪声生成本地 albedo，岩石/冰面 bump，标准光照、Fresnel 大气、径向星环 shader；恒星使用一个 Points 批次。没有外部贴图依赖或背景视频。
 - OrbitControls 管理旋转、缩放和平移；CameraRig 用 `useFrame` 插值相机位置和观察目标，飞行期间暂停手动操作。
-- 进入档案先飞近，再通过遮罩过渡到独立路由。返回链接与浏览器返回回到宇宙，通过可选镜头书签恢复位置；当前返回过程没有反向飞离动画，列为体验后续项。
-- 相机只在操作结束/飞行完成写书签。坐标载入前校验有限数与范围；书签损坏不阻止档案读取。
+- 单击 3D 星球启动 `usePlanetJourney` 的单一任务，CameraRig 接近完成后遮罩转场并进入独立记忆路由。Escape 清除待导航定时器，反向恢复出发视角；飞行期间暂停控制并拦截重复进入。DOM 指针累计移动、时长和触点数共同防止拖动误入。
+- 镜头书签按星系保存：进入前记录出发位置，抵达近景不覆盖它。`PlanetExitLink` 淡出记忆空间后返回所属星系；CameraRig 从星球外部恢复原视角。直接 URL 没有有效会话时使用所属星系书签/全景。坐标载入前校验有限数、范围与相机目标距离，损坏不阻止档案读取。
 - 自动模式以视口和 CPU 核数为启发式，并非 GPU 性能基准；手机/低核心设备固定 DPR=1、减少细分/星数，高质量 DPR 上限 1.75。未来补 FPS 退化与真实设备测量。
 - WebGL 错误边界、context lost 提示、档案直达链接；列表和表单支持键盘，原生 dialog 负责焦点约束与 Escape。Chrome 自动化已验证创建/进入/文字持久化与移动视口草稿；实际手机与性能验收待完成。
 - Drei Html 标签通过独立 DOM portal 层渲染，避免向 Canvas 自身容器附加节点导致 React 切页卸载冲突。此问题通过真实 Chrome 路由切换测试发现并回归验证。
 
 ## 当前持久化契约
+
+B2 的 `data/exploration-session.ts` 仅管理可选的 `sessionStorage` 导航上下文，键为 `universe-of-me:visit:v1:<encoded planetId>`，包含 planetId、galaxyId、origin 与 arrival 镜头。读取验证星球/星系匹配和有限向量，失败安静回退；不是人生档案，不参与 schema v2、revision、迁移或媒体数据库。每次进入覆盖该星球本标签页上下文；关闭标签页可能失效，主数据不受影响。浏览器原生历史返回继续使用原有路由与星系书签，产品内「返回所属星系」提供完整的反向过渡。
+
+`domain/planet-flight.ts` 纯函数计算沿当前视线的外部取景，考虑 FOV、宽高比、星环边界与既有安全投影；渲染仍使用原有 PlanetMesh 材质和大气。CameraRig 用 ref/useFrame 插值，同时接管相机与 OrbitControls target，清除残余 damping 后再开始，避免第一帧方向跳变。`usePlanetJourney` 阶段为 idle/flying/approaching/transition/returning/cancelling，ref 防止 React 提交前重复启动，卸载清理导航定时器。WebGL 失败解锁 UI，档案按钮直接导航，不依赖缺失的镜头回调。
+
+引导者 `announce` 只负责可关闭的自动短句；`say` 继续服务用户主动查找。`MemoryGuideBridge` 每次星球挂载欢迎一次，不复制或上传正文。`planet-journey.css` 仅补进出遮罩、悬停信息与状态提示，既有宇宙和记忆布局不重写。
 
 `UniverseData` v2 分离 `universe`、`galaxies[]`、`planets[]`、`memories[]`、`media[]`，通过 ID 引用；v1 在读取时兼容。浏览器快照以 JSON 序列化，但业务实体独立，不把星球资料/全部记忆塞入一个不透明正文字段。
 

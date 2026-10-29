@@ -12,7 +12,7 @@ import type { GuideAction } from "@/domain/guide";
 
 export function GlobalGuide() {
   const { data, ready, error } = useUniverse();
-  const { binding, message, say, planetPreview } = useGuide();
+  const { binding, message, say, planetPreview, promptsEnabled, setPromptsEnabled } = useGuide();
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
@@ -68,6 +68,7 @@ export function GlobalGuide() {
     </>}
     {expanded && (!compact || autoCompact) && !hidden && <div className="global-guide-search" aria-label="引导查找面板">
       <header><strong>{activePlanet ? "寻找记忆与目的地" : "想去哪里？"}</strong><button className="guide-small-button" aria-label="关闭引导查找" onClick={() => setExpanded(false)}><X size={18} /></button></header>
+      <label className="guide-prompt-setting"><input type="checkbox" checked={promptsEnabled} onChange={e => setPromptsEnabled(e.target.checked)} />飞行与抵达时显示简短提示</label>
       {activePlanet && binding && <div className="global-guide-memory-actions">{([['recent', '最近记忆'], ['photo', '照片记忆'], ['video', '视频记忆'], ['date', '按年份查找'], ['keyword', '关键词搜索'], ['random', '随机打开'], ['all', '返回全部']] as const).map(([action, label]) => <button key={action} onClick={() => { act(action); if (action !== "all") setExpanded(false); }}>{label}</button>)}</div>}
       <label className="guide-destination-search">查找星系或星球<input aria-label="引导者目的地搜索" placeholder="输入星系或星球名称" value={query} onChange={e => setQuery(e.target.value)} /></label>
       <div className="guide-destinations"><h3>星系</h3>{galaxies.map(g => <button key={g.id} onClick={() => travel({ kind: "galaxy", id: g.id })}>前往星系：{g.name}<small>{data.planets.filter(p => p.galaxyId === g.id).length} 颗星球</small></button>)}
