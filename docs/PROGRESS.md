@@ -15,7 +15,7 @@
 
 资产不进入普通 Git 历史：`.blend`、GLB、MP4、PNG、Blender 安装包及插件均位于 `C:\Users\tingjie.li\Desktop\UNIVERSE-OF-ME-assets\g2-1` 或本地工具目录。仓库仅保存脚本、版本/散列说明和小型 JSON 证据；`package-assets.mjs` 会拒绝把资产目录放进仓库，并生成 `asset-manifest.json`。当前没有启用 Git LFS、云对象存储或异地备份。
 
-应用回归也已在本轮补跑：`npm.cmd run lint`、`npm.cmd run typecheck`、`npm.cmd test`（33/33）和 `npm.cmd run build` 均通过；这些检查只说明现有网站没有被本轮脚本/文档变更破坏，不能替代角色视觉验收。未重跑完整 `test:e2e`，因为本轮没有运行时改动；离线审阅页已用独立 Chrome 单独验证。未合并 main，待提交当前功能分支并创建堆叠 PR。
+应用回归也已在本轮补跑：`npm.cmd run lint`、`npm.cmd run typecheck`、`npm.cmd test`（33/33）和 `npm.cmd run build` 均通过；这些检查只说明现有网站没有被本轮脚本/文档变更破坏，不能替代角色视觉验收。未重跑完整 `test:e2e`，因为本轮没有运行时改动；离线审阅页已用独立 Chrome 单独验证。提交 `c66c52e` 已推送到 `codex/blender-g2-1-foundation`，草稿 PR [#10](https://github.com/SeeAgain-TJL/LIVE/pull/10) 以未合并的 G1.5 分支为基线，未合并 main。
 
 ## 2026-10-29 · G1.5 当前两图规范化检查 / G2.1 未完成
 
