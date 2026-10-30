@@ -2,7 +2,7 @@
 
 ## 2026-10-30 · V4.0-A2 空间纵深与镜头旅行
 
-从实际包含 A1 的最新分支 `codex/v4-a1-cosmic-depth` / `1e3fd48` 创建 `codex/v4-a2-spatial-exploration`。远端 PR #1–#11 仍为未合并依赖链；本轮以 #11 为直接基线，保留最新运行时，不合并 main。GitHub 提交/PR 信息在本节末补充。
+从实际包含 A1 的最新分支 `codex/v4-a1-cosmic-depth` / `1e3fd48` 创建 `codex/v4-a2-spatial-exploration`。远端 PR #1–#11 仍为未合并依赖链；本轮以 #11 为直接基线，保留最新运行时，不合并 main。实现提交 **`5fb8351`** 已推送；草稿 PR [#12](https://github.com/SeeAgain-TJL/LIVE/pull/12) 以 `codex/v4-a1-cosmic-depth` 为 base，等待用户视觉验收，未合并 main。生产预览已在 `http://127.0.0.1:3300` 启动；访问其他端口不会共享浏览器数据。原始证据包为 `artifacts-local/UNIVERSE-OF-ME-V4-A2-visual-review.zip`。
 
 已实现：远处程序深空场、带状远星/松散星团/近景参照的三维分层，原背景点预算按 68%/27%/5% 分配；五个派生星系深度跨度 212 单位，棒旋/四臂/絮状/椭圆结构及距离标签；真实右键平移、弧线旅行、适度 FOV 收束与连续取消；取消回程锁和 WebGL 不可用的限时释放。内部使用可见恒星同坐标的平方衰减光源，大气/星环阴影共用光源、倾斜深度轨道及关闭入口、有限 Instancing 卫星/碎片，并把恒星纳入无书签时的默认取景。原行星坐标、Galaxy 归属/迁移、全部 CRUD/媒体、人物及 VRM 实验保留，无档案 schema/IndexedDB 变更、无清空或重置用户存储。
 
