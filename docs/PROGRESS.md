@@ -4,6 +4,8 @@
 
 人物建模暂停。先将上轮 VRoid 评估提交/推送为 `2b008db`，已有 Blender 工程、VRM 实验、银蓝星灵资料保留。从该版本创建 `codex/v4-a1-cosmic-depth`，继承最新运行时；远端 PR #1→#10 均未合并，V4 继续以 `codex/blender-g2-1-foundation` 为直接基线，不合并 main。
 
+实现提交 `063008a` 已推送，草稿 PR [#11](https://github.com/SeeAgain-TJL/LIVE/pull/11) 已创建，等待用户实际视觉验收；未合并 main。检查结果为本地执行，远端 CI 状态以 PR 为准。
+
 已完成：实时三维星空、确定性星系核/旋臂/外围星尘与连续光盘、星云层次、不同大小/倾角/形态；批量点绘制与距离 LOD；自动/高/中/低质量及独立偏好保存；宇宙飞行预取、单任务锁、拖动过滤、ESC 取消、返回宇宙相机恢复；内部恒星、光照、装饰轨道与到达推进。原星球坐标、Galaxy 迁移、CRUD、人物与记忆空间保留，未改档案 schema、localStorage 主数据或 IndexedDB。
 
 实际交付：`artifacts-local/v4-a1/review.html`、三档总览、三个星系近景、内部星球分布、手机截图及 **16.32 秒实际录屏**。审阅页六张图加载成功，视频实测可播放。截图/视频不提交普通 Git；复现脚本 `scripts/capture-cosmic-review.mjs` 与小型测量 JSON 在仓库。详见 [V4 视觉验收记录](V4-A1-REVIEW.md)。生产预览运行于 `http://127.0.0.1:3300`，与用户日常 origin 数据独立。
