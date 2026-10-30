@@ -1,0 +1,92 @@
+[
+  {
+    "name": "before-overview.png",
+    "bytes": 694278,
+    "sha256": "614e50a45053b2ddf84dbe4e536b8b738c03c2ef474a28031c4dcb985b36c346"
+  },
+  {
+    "name": "after-overview.png",
+    "bytes": 853883,
+    "sha256": "a070412ce5728f03f9ba8de8ccdac0a5a2d0d6fc7fd7e43fe02fd021162eba78"
+  },
+  {
+    "name": "before-system.png",
+    "bytes": 738631,
+    "sha256": "6d90e4b0bffd0f34f57c7fa1f64fb64362f4a6ba5127012af720fcd3af8caa43"
+  },
+  {
+    "name": "after-system.png",
+    "bytes": 962702,
+    "sha256": "d7dcbaa89e3684bec18d0c1f2ee197343491c3cafd04c741ceb9b967da478e37"
+  },
+  {
+    "name": "before-empty-system.png",
+    "bytes": 691188,
+    "sha256": "ed037f172817255e444bcef9e0f76d36cd947373eb0063935cd10585ddd38ce4"
+  },
+  {
+    "name": "after-empty-system.png",
+    "bytes": 812230,
+    "sha256": "28d4c26ea9155bc29ac3720123175300de4ca990ae72cab551869ea25a8fee7a"
+  },
+  {
+    "name": "stellar-close.png",
+    "bytes": 1123131,
+    "sha256": "72009f1281bcdab37dbadf06c21f211ab7743e7e07d8796b02554fea1a40087d"
+  },
+  {
+    "name": "galaxy-unclassified-close.png",
+    "bytes": 1073271,
+    "sha256": "fb40d9904eb8faa7607e5a0205169e2539c88d2beb9f94c8c11379f94d40de83"
+  },
+  {
+    "name": "galaxy-growth-close.png",
+    "bytes": 1150540,
+    "sha256": "35cfa65cf2cb493da16557325bcc7786ba7f6251d855db402080abc55e885fed"
+  },
+  {
+    "name": "galaxy-dream-close.png",
+    "bytes": 738895,
+    "sha256": "92717ad11519d553557998eb9fd97922a09c8739be61b9dd3874be0643f2696a"
+  },
+  {
+    "name": "planet-near-comfort.png",
+    "bytes": 1283650,
+    "sha256": "2309548ce5474f7ba08c7d95590cc5817e8b4d5ddf5b24ee04b4007a0ffe30a1"
+  },
+  {
+    "name": "mobile.png",
+    "bytes": 505789,
+    "sha256": "5cf6aff6a41b9826570a399a3168c08dd343e4462e2f8dc1d489639b6d8ce6cf"
+  },
+  {
+    "name": "journey-comfort.webm",
+    "bytes": 10911079,
+    "sha256": "f7a4d0ac4fc59965827aed4a7d57e678acc52067be60fc2240b9211c28530e22"
+  },
+  {
+    "name": "journey-fast.webm",
+    "bytes": 7101238,
+    "sha256": "5439df9adc723da023440e8c70dea27af0e1ff0d0bfc357811894c3b632be9a1"
+  },
+  {
+    "name": "comfort-vs-fast.webm",
+    "bytes": 6117735,
+    "sha256": "6e13598ffe7e7bbc36a14fd64a6664cd90866f74b938832e4c05693000ba0026"
+  },
+  {
+    "name": "review.html",
+    "bytes": 5593,
+    "sha256": "8b4c844ba50bac9bcc5da5221fd9b4f32fd444a75422dda47336918aeedf3d69"
+  },
+  {
+    "name": "performance.json",
+    "bytes": 72340,
+    "sha256": "d35d2049bd4c182d9ba1c05fe089d81e897d38d5f4ab8df1e5c7beed7c148215"
+  },
+  {
+    "name": "comparison-view.json",
+    "bytes": 414,
+    "sha256": "e03da70ee47ef775fb5512cc2156d84043677932ddc763eb99a11ee589629483"
+  }
+]

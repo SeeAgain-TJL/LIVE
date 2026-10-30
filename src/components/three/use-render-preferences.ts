@@ -1,6 +1,8 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import type { TravelMode } from "@/domain/travel";
+import { readTravelMode, saveTravelMode } from "@/data/travel-preferences";
 import type { Quality } from "@/domain/types";
 import { readCosmicQuality, saveCosmicQuality } from "@/data/cosmic-preferences";
 
@@ -34,4 +36,13 @@ function subscribeDevice(callback: () => void) {
 const getDevice = () => window.matchMedia("(max-width: 760px)").matches || navigator.hardwareConcurrency <= 4;
 export function useLowPowerDevice() {
   return useSyncExternalStore(subscribeDevice, getDevice, () => true);
+}
+
+function subscribeTravel(callback: () => void) {
+  window.addEventListener("storage", callback); window.addEventListener("travel-preference", callback);
+  return () => { window.removeEventListener("storage", callback); window.removeEventListener("travel-preference", callback); };
+}
+export function useTravelMode(): [TravelMode, (mode: TravelMode) => void] {
+  const mode = useSyncExternalStore(subscribeTravel, readTravelMode, (): TravelMode => "comfort");
+  return [mode, value => { saveTravelMode(value); window.dispatchEvent(new Event("travel-preference")); }];
 }

@@ -30,13 +30,14 @@ test("real lateral pan separates foreground from distant stars and orbit visibil
   expect(await page.evaluate(() => localStorage.getItem("universe-of-me:data:v1"))).toBe(raw);
 });
 
-test("cinematic field of view resets continuously on Escape and cancelling blocks conflicting trips", async ({ page }) => {
+test("fixed field of view stays steady on Escape and cancelling blocks conflicting trips", async ({ page }) => {
   await page.goto("/"); await expect(page.locator(".galaxy-scene-label")).toHaveCount(5);
   const metrics = async () => JSON.parse((await page.locator("canvas").first().getAttribute("data-render-metrics")) ?? "{}");
   await expect.poll(async () => (await metrics()).fov).toBe(43);
   const before = await metrics();
   await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
-  await expect.poll(async () => (await metrics()).fov).toBeLessThan(42.9);
+  await expect(page.locator("canvas").first()).toHaveAttribute("data-travel-phase", "cruising");
+  expect((await metrics()).fov).toBe(43);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
   await expect(page.locator("main")).toHaveAttribute("data-galaxy-flight", "idle");

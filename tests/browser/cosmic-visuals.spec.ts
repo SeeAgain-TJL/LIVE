@@ -23,7 +23,7 @@ test("cosmic quality, drag rejection, cancellation and universe view restore pre
   // Wheel/orbit changes are real bookmarks, not a static test camera.
   await page.mouse.move(box.x + box.width * 0.7, box.y + box.height * 0.65); await page.mouse.wheel(0, -140);
   await expect.poll(() => page.evaluate(() => localStorage.getItem("universe-of-me:cosmic-camera:v1"))).not.toBeNull();
-  await page.waitForTimeout(900);
+  await expect(page.locator("canvas").first()).toHaveAttribute("data-travel-phase", "idle");
   await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
   await expect(page.locator("main")).toHaveAttribute("data-galaxy-flight", "flying");
   // Departure captures the actual camera, including the last damping movement.
@@ -31,7 +31,7 @@ test("cosmic quality, drag rejection, cancellation and universe view restore pre
   await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
   await page.keyboard.press("Escape");
   await expect(page.locator("main")).toHaveAttribute("data-galaxy-flight", "idle");
-  await page.waitForTimeout(900);
+  await expect(page.locator("canvas").first()).toHaveAttribute("data-travel-phase", "idle");
   await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/unclassified$/);
   await expect(page.locator(".planet-list-item")).toHaveCount(5);

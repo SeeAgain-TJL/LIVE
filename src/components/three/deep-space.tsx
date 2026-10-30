@@ -11,7 +11,7 @@ const fragment = `varying vec3 direction;uniform float seed;
 float hash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7))+seed)*43758.5453);}
 float noise(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
 void main(){vec3 p=normalize(direction);float band=exp(-pow((p.y+p.x*.3)*3.5,2.));float cloud=noise(p*9.)*.65+noise(p*21.)*.25+noise(p*48.)*.1;
-vec3 color=vec3(.0015,.003,.008)+vec3(.008,.013,.025)*band*cloud; color+=vec3(.009,.006,.009)*pow(cloud,3.);
+vec3 color=vec3(.003,.006,.014)+vec3(.014,.023,.04)*band*cloud; color+=vec3(.009,.006,.009)*pow(cloud,3.);
 gl_FragColor=vec4(color,1.);
 #include <tonemapping_fragment>
 #include <colorspace_fragment>
@@ -46,7 +46,7 @@ export function DeepSpace({ seed, tier, local = false }: { seed: number; tier: R
         positions.set([x, y, z], i * 3);
         color.setHSL(random() < .22 ? .1 : .59, .12 + random() * .24, layer === 0 ? .3 + random() * .3 : .45 + random() * .4);
         colors.set([color.r, color.g, color.b], i * 3);
-        sizes[i] = layer === 0 ? .55 + Math.pow(random(), 8) * 5.5 : layer === 1 ? .13 + Math.pow(random(), 6) * .75 : .025 + Math.pow(random(), 5) * .13;
+        sizes[i] = layer === 0 ? .8 + Math.pow(random(), 8) * 7 : layer === 1 ? .13 + Math.pow(random(), 6) * .75 : .025 + Math.pow(random(), 5) * .13;
       }
       // Stable visible landmarks used by diagnostics to measure actual perspective.
       if (layer === 2) positions.set(SPATIAL_LANDMARKS[0], 0);
@@ -56,7 +56,7 @@ export function DeepSpace({ seed, tier, local = false }: { seed: number; tier: R
   }, [seed, tier, local]);
   return <group>
     <mesh raycast={() => null} renderOrder={-100}><sphereGeometry args={[2300, 32, 20]} /><shaderMaterial side={BackSide} depthWrite={false} uniforms={uniforms} vertexShader={vertex} fragmentShader={fragment} /></mesh>
-    <CosmicPoints cloud={layers[0]} opacity={.83} minimumSize={1} />
+    <CosmicPoints cloud={layers[0]} opacity={.95} minimumSize={1.2} />
     <CosmicPoints cloud={layers[1]} opacity={.9} minimumSize={1} />
     <CosmicPoints cloud={layers[2]} opacity={.57} nearFade={5} minimumSize={.7} />
   </group>;
