@@ -1,19 +1,14 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useRef, useLayoutEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
-import { Color, InstancedMesh, Object3D, Vector3 } from "three";
+import { InstancedMesh, Object3D, Vector3 } from "three";
 import type { Planet } from "@/domain/types";
 import type { RenderTier } from "@/domain/cosmic-visuals";
 import { orbitFrame, type StellarSource } from "@/domain/spatial-scene";
-import { CosmicPoints } from "./cosmic-points";
-
-const sunVertex = `varying vec3 vNormal;varying vec3 vPosition;varying vec3 vEye;void main(){vPosition=position;vec4 mv=modelViewMatrix*vec4(position,1.);vEye=normalize(-mv.xyz);vNormal=normalize(normalMatrix*normal);gl_Position=projectionMatrix*mv;}`;
-const sunFragment = `varying vec3 vNormal;varying vec3 vPosition;varying vec3 vEye;void main(){float grain=fract(sin(dot(floor(vPosition*54.),vec3(12.9898,78.233,43.51)))*43758.5453);float limb=pow(max(0.,dot(normalize(vNormal),normalize(vEye))),.65);float cells=.5+.5*sin(vPosition.x*13.+sin(vPosition.y*17.))*sin(vPosition.z*18.+vPosition.y*8.);vec3 tint=mix(vec3(.36,.065,.009),vec3(1.5,.78,.26),limb);gl_FragColor=vec4(tint*(.82+grain*.15+cells*.12),1.);
-#include <tonemapping_fragment>
-#include <colorspace_fragment>
-}`;
+import { StellarBody } from "./stellar-body";
+import { SystemEnvironment } from "./system-environment";
 
 function OrbitPath({ planet, source, index }: { planet: Planet; source: StellarSource; index: number }) {
   const line = useRef<React.ComponentRef<typeof Line>>(null);
@@ -50,18 +45,12 @@ function Satellites({ planets, tier }: { planets: Planet[]; tier: RenderTier }) 
 }
 
 /** Actual source and visual star share coordinates. Original planet positions are untouched. */
-export function StellarNeighborhood({ planets, tier, source, showOrbits }: { planets: Planet[]; tier: RenderTier; source: StellarSource; showOrbits: boolean }) {
-  const glow = useMemo(() => {
-    const color = new Color("#ffd49a");
-    return { positions: new Float32Array([0, 0, 0]), colors: new Float32Array([color.r, color.g, color.b]), sizes: new Float32Array([source.radius * 5.8]) };
-  }, [source.radius]);
+export function StellarNeighborhood({ planets, tier, source, showOrbits, reduced, identity }: { planets: Planet[]; tier: RenderTier; source: StellarSource; showOrbits: boolean; reduced: boolean; identity: string }) {
   return <group>
-    <ambientLight intensity={.09} color="#7185a5" />
+    <ambientLight intensity={.2} color="#7185a5" />
     <pointLight position={source.position} intensity={source.intensity} decay={2} color="#fff0d7" />
-    <group position={source.position}>
-      <mesh raycast={() => null}><sphereGeometry args={[source.radius, 40, 32]} /><shaderMaterial vertexShader={sunVertex} fragmentShader={sunFragment} /></mesh>
-      <CosmicPoints cloud={glow} opacity={.28} soft />
-    </group>
+    <StellarBody source={source} reduced={reduced} low={tier === "low"} />
+    <SystemEnvironment source={source} identity={identity} planets={planets} tier={tier} reduced={reduced} />
     {showOrbits && planets.slice(0, tier === "low" ? 6 : 18).map((planet, i) => <OrbitPath key={planet.id} planet={planet} index={i} source={source} />)}
     <Satellites planets={planets} tier={tier} />
   </group>;

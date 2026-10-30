@@ -1,0 +1,81 @@
+{
+  "images": [
+    {
+      "file": "before-overview.png",
+      "width": 1600
+    },
+    {
+      "file": "after-overview.png",
+      "width": 1600
+    },
+    {
+      "file": "before-system.png",
+      "width": 1600
+    },
+    {
+      "file": "after-system.png",
+      "width": 1600
+    },
+    {
+      "file": "before-empty-system.png",
+      "width": 1600
+    },
+    {
+      "file": "after-empty-system.png",
+      "width": 1600
+    },
+    {
+      "file": "stellar-close.png",
+      "width": 1600
+    },
+    {
+      "file": "galaxy-unclassified-close.png",
+      "width": 1600
+    },
+    {
+      "file": "galaxy-growth-close.png",
+      "width": 1600
+    },
+    {
+      "file": "galaxy-dream-close.png",
+      "width": 1600
+    },
+    {
+      "file": "planet-near-comfort.png",
+      "width": 1600
+    },
+    {
+      "file": "mobile.png",
+      "width": 780
+    }
+  ],
+  "videos": [
+    {
+      "src": "journey-comfort.webm",
+      "duration": 31.2,
+      "width": 1600,
+      "height": 1000,
+      "currentTime": 3.5145,
+      "error": null,
+      "paused": false
+    },
+    {
+      "src": "journey-fast.webm",
+      "duration": 23.24,
+      "width": 1600,
+      "height": 1000,
+      "currentTime": 3.5297,
+      "error": null,
+      "paused": false
+    },
+    {
+      "src": "comfort-vs-fast.webm",
+      "duration": 26.56,
+      "width": 1600,
+      "height": 560,
+      "currentTime": 3.5179,
+      "error": null,
+      "paused": false
+    }
+  ]
+}

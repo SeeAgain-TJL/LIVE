@@ -23,6 +23,7 @@ export function SceneMetrics({ tier }: { tier: RenderTier }) {
       p95Ms: +sorted[Math.floor(sorted.length * .95)].toFixed(2), maxMs: +sorted.at(-1)!.toFixed(2),
       calls: gl.info.render.calls, points: gl.info.render.points, triangles: gl.info.render.triangles, dpr: gl.getPixelRatio(),
       geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, programs: gl.info.programs?.length, heapBytes: heap,
+      auxiliaryPasses: 1, volumeTarget: gl.domElement.dataset.volumeTarget,
       camera: camera.position.toArray(), target, fov: camera instanceof PerspectiveCamera ? camera.fov : null,
       landmarks: landmarks.map(position => {
         projected.copy(position).project(camera);
@@ -30,6 +31,6 @@ export function SceneMetrics({ tier }: { tier: RenderTier }) {
       }),
     });
     sample.current = { seconds: 0, frames: [] };
-  });
+  }, -.25); // Sample the previous main render before this frame's offscreen volume pass resets gl.info.
   return null;
 }

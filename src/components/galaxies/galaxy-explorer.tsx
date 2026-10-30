@@ -11,8 +11,9 @@ import { PlanetEditor } from "@/components/planets/planet-editor";
 import { StorageState } from "@/components/ui/storage-state";
 import { DEFAULT_GALAXY } from "@/domain/galaxy";
 import type { GalaxyFlight } from "@/components/three/galaxy-scene";
-import { useCosmicQuality, useReducedMotion } from "@/components/three/use-render-preferences";
+import { useCosmicQuality, useReducedMotion, useTravelMode } from "@/components/three/use-render-preferences";
 import { markGalaxyArrival } from "@/data/cosmic-preferences";
+import { TravelModeSelect } from "@/components/universe/travel-mode-select";
 import type { Quality } from "@/domain/types";
 
 const Scene = dynamic(() => import("@/components/three/galaxy-scene"), { ssr: false, loading: () => <div className="scene-loading">正在展开星系…</div> });
@@ -28,6 +29,7 @@ export function GalaxyExplorer() {
   const [creating, setCreating] = useState(false);
   const [notice, setNotice] = useState("");
   const [quality, setQuality] = useCosmicQuality();
+  const [travelMode, setTravelMode] = useTravelMode();
   const reduced = useReducedMotion();
   const [transition, setTransition] = useState(false);
   const activeFlight = useRef(false);
@@ -100,9 +102,9 @@ export function GalaxyExplorer() {
   const counts = Object.fromEntries(data.galaxies.map(g => [g.id, data.planets.filter(p => p.galaxyId === g.id).length]));
   const enter = (id: string) => { if (activeFlight.current) return; activeFlight.current = true; pendingPlanet.current = null; cue("galaxyDeparture"); setFlight({ id, nonce: ++sequence.current }); };
   return <main className={`universe-shell galaxy-universe-shell ${transition ? "galaxy-crossing" : ""}`} data-galaxy-flight={flight ? transition ? "crossing" : "flying" : "idle"}>
-    <div className="cosmic-backdrop" /><div className="universe-canvas" aria-label="宇宙中的三维星系"><Scene galaxies={data.galaxies} counts={counts} flight={flight} quality={quality} onEnter={enter} onArrival={arrive} onRestored={restored} /></div><div className="screen-vignette" aria-hidden="true" />
+    <div className="cosmic-backdrop" /><div className="universe-canvas" aria-label="宇宙中的三维星系"><Scene galaxies={data.galaxies} counts={counts} flight={flight} quality={quality} travelMode={travelMode} onEnter={enter} onArrival={arrive} onRestored={restored} /></div><div className="screen-vignette" aria-hidden="true" />
     <div className="galaxy-crossing-veil" aria-hidden="true" />
-    <label className="cosmic-quality">画质<select aria-label="宇宙渲染质量" value={quality} disabled={!!flight} onChange={e => setQuality(e.target.value as Quality)}><option value="auto">自动</option><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></label>
+    <div className="cosmic-controls"><label className="cosmic-quality">画质<select aria-label="宇宙渲染质量" value={quality} disabled={!!flight} onChange={e => setQuality(e.target.value as Quality)}><option value="auto">自动</option><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></label><TravelModeSelect value={travelMode} onChange={setTravelMode} disabled={!!flight} /></div>
     <header className="topbar"><Link href="/" className="brand"><span className="brand-mark"><Orbit size={25} /></span><span>UNIVERSE <em>OF</em> ME<small>我的人生宇宙</small></span></Link><div className="galaxy-top-actions"><button className="text-button" onClick={() => { try { exportData(); setNotice("已导出 JSON 元数据；媒体原文件请单独备份。"); } catch (cause) { setNotice((cause as Error).message); } }}><Download size={16} />导出档案</button><button className="button" onClick={() => setCreating(true)}><Plus size={17} />创建星球</button></div></header>
     <section className="galaxy-intro"><p>宇宙 / 星系 / 星球 / 记忆</p><h1>人生的每一程，<br />都有自己的引力。</h1><p>先选择一片星系，再走近属于你的时光。<span className="galaxy-mobile-storage">本地开发版 · 资料仅保存在此浏览器</span></p></section>
     <aside className="galaxy-library" aria-label="星系列表"><header><h2>我的星系</h2><span>{data.galaxies.length} 片星系</span></header><label className="galaxy-search"><Search size={18} /><input aria-label="搜索星系" value={query} placeholder="寻找一片星系" onChange={e => setQuery(e.target.value)} /></label>

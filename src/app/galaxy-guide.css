@@ -136,3 +136,10 @@
   .galaxy-universe-shell .galaxy-intro h1 { font-size:24px; }
   .galaxy-universe-shell .galaxy-library { width:260px; top:320px; }
 }
+
+/* A3 comfort preferences remain independent from archive and rendering quality. */
+.cosmic-controls { position:absolute; z-index:21; right:36px; top:110px; display:grid; gap:12px; padding:12px 14px; background:#06101bc9; border:1px solid #9ab6cf22; border-radius:9px; }
+.cosmic-controls .cosmic-quality { position:static; justify-content:space-between; }
+.travel-mode-control { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:14px; color:#cbd7e5; }
+.travel-mode-control select { width:140px; min-height:40px; background:#0b1726; }
+@media(max-width:760px) { .cosmic-controls { right:12px; top:140px; padding:8px; gap:5px; } .travel-mode-control { gap:6px; } .travel-mode-control select { width:112px; } }

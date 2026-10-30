@@ -189,3 +189,7 @@ Galaxy 仍为独立的 `id/name/color` 记录。`domain/galaxy.ts` 提供关系�
 角色制作工程与网站运行时保持分离。Blender 脚本位于 `scripts/blender/`，只负责可复现的验证、草稿生成、重新打开检查和外部审阅页打包；它不读写 UniverseProvider、localStorage、IndexedDB，也不改变正式引导者。模型、贴图、视频和安装包保存在仓库外的版本目录，仓库只保存来源、许可、SHA-256、生成参数和小型 JSON 证据。
 
 当前 `silver-spirit-draft01` 是可编辑的静态基础研究，不是生产 VRM。只有技术 mannequin 通过 VRM 1.0 导入/导出烟测；角色草稿在脸部、头发、服装、权重、表情和物理完成前不得接入 `/guide-lab` 或正式页面。未来正式模型应以独立版本目录交付，先做静态外形验收，再做绑定/动画验收，最后才由运行时适配器加载。
+
+## A3 渲染与旅行接口
+
+`StellarBody` 负责恒星表面/光冕，`NebulaVolume` 负责有界三维密度积分，`SystemEnvironment` 只接收 props 渲染环境体与 Instancing 碎片。`domain/system-environment.ts` 的结构没有 Planet ID/记忆关系，不能写入业务仓库。`domain/travel.ts` 提供旅行配置、分段曲线及阶段；`data/travel-preferences.ts` 独立保存节奏偏好。GalaxyCamera / CameraRig 使用相同配置、固定 FOV，向现有导航回调发出真正抵达事件；动画和停稳阶段不更新业务 React state。原档案 schema、坐标和 CRUD 不变。

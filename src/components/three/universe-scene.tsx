@@ -4,6 +4,7 @@ import { Component, Suspense, useEffect, useMemo, useRef, useState, type ReactNo
 import { Canvas, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 
+import type { TravelMode } from "@/domain/travel";
 import type { Planet, Quality } from "@/domain/types";
 import { CameraRig, type FlightRequest } from "./camera-rig";
 import { PlanetMesh } from "./planet-mesh";
@@ -19,7 +20,7 @@ import { periodLabel, planetName } from "@/domain/planet";
 interface SceneProps {
   planets: Planet[]; selectedId: string | null; flight: FlightRequest | null;
   onEnter: (id: string) => void; onArrival: (id: string) => void; onApproach: (id: string) => void; onReturned: () => void;
-  quality: Quality; showOrbits?: boolean; newPlanetId?: string | null;
+  quality: Quality; travelMode: TravelMode; showOrbits?: boolean; newPlanetId?: string | null;
   bookmarkKey?: string; galaxyId: string; returnPlanetId?: string | null; locked: boolean; onUnavailable: () => void;
 }
 
@@ -79,7 +80,7 @@ export default function UniverseScene(props: SceneProps) {
   }} onPointerCancelCapture={e => { pointers.current.delete(e.pointerId); gesture.current.tap = false; }} onClickCapture={e => {
     if (e.target instanceof HTMLCanvasElement && (!gesture.current.tap || props.locked)) { e.preventDefault(); e.stopPropagation(); }
   }}><div ref={labels} className="scene-label-layer" aria-hidden="true" />{hovered && !props.locked && <div className="planet-hover-summary" role="status"><strong>{planetName(hovered)}</strong><span>{periodLabel(hovered)} · 单击进入</span></div>}<SceneBoundary fallback={fallback}><Canvas camera={{ position: [0, 7, 30], fov: 43, near: 0.1, far: 30000 }} dpr={[1, COSMIC_BUDGETS[tier].dpr]} gl={{ antialias: !low, alpha: true, powerPreference: low ? "low-power" : "high-performance" }} fallback={<SceneUnavailable />} onPointerMissed={() => { document.body.style.cursor = "auto"; }}>
-    <StellarNeighborhood planets={props.planets} tier={tier} source={source} showOrbits={props.showOrbits !== false} />
+    <StellarNeighborhood planets={props.planets} tier={tier} source={source} reduced={reducedMotion} identity={props.galaxyId} showOrbits={props.showOrbits !== false} />
     <SceneMetrics tier={tier} />
     <Suspense fallback={null}>
       <CosmicEnvironment tier={tier} identity={props.galaxyId} />
@@ -90,7 +91,7 @@ export default function UniverseScene(props: SceneProps) {
           <div className={`planet-label ${props.selectedId === planet.id ? "selected" : ""}`}><i /><span>{planet.name || `未命名 · ${String(index + 1).padStart(2, "0")}`}</span>{planet.isDemo && <small>示例星球</small>}</div>
         </Html>
       </group>)}
-      <CameraRig source={source} planets={props.planets} flight={props.flight} onArrival={props.onArrival} onApproach={props.onApproach} onReturned={props.onReturned} reducedMotion={reducedMotion} bookmarkKey={props.bookmarkKey} galaxyId={props.galaxyId} returnPlanetId={props.returnPlanetId} />
+      <CameraRig travelMode={props.travelMode} source={source} planets={props.planets} flight={props.flight} onArrival={props.onArrival} onApproach={props.onApproach} onReturned={props.onReturned} reducedMotion={reducedMotion} bookmarkKey={props.bookmarkKey} galaxyId={props.galaxyId} returnPlanetId={props.returnPlanetId} />
       <ContextMonitor onLost={() => setContextLost(true)} />
     </Suspense>
   </Canvas></SceneBoundary></div>;

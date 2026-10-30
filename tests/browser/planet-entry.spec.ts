@@ -106,7 +106,7 @@ test("dragging out and back never enters; Escape cancels flight and transition, 
   expectView(await bookmark(page), departure);
   const restored = await point(page, 0, departure);
   await page.mouse.click(restored.x, restored.y);
-  await expect(page.locator("main")).toHaveAttribute("data-journey-phase", "transition");
+  await page.waitForFunction(() => document.querySelector("main")?.getAttribute("data-journey-phase") === "transition", undefined, { polling: "raf" });
   await page.keyboard.press("Escape");
   await expect(page.locator("main")).toHaveAttribute("data-journey-phase", "idle");
   await expect(page).toHaveURL(/\/galaxy\/unclassified$/);
