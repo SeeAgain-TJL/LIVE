@@ -1,6 +1,6 @@
 export type PlanetType = "rocky" | "ocean" | "gas" | "ice" | "ringed";
 export type Vec3 = [number, number, number];
-export type Quality = "auto" | "high" | "low";
+export type Quality = "auto" | "high" | "medium" | "low";
 
 export interface PlanetAppearance {
   type: PlanetType;

@@ -7,7 +7,10 @@ import { Html, OrbitControls } from "@react-three/drei";
 import type { Planet, Quality } from "@/domain/types";
 import { CameraRig, type FlightRequest } from "./camera-rig";
 import { PlanetMesh } from "./planet-mesh";
-import { StarField } from "./star-field";
+import { CosmicEnvironment } from "./cosmic-environment";
+import { StellarNeighborhood } from "./stellar-neighborhood";
+import { SceneMetrics } from "./scene-metrics";
+import { COSMIC_BUDGETS, renderTier } from "@/domain/cosmic-visuals";
 import { useLowPowerDevice, useReducedMotion } from "./use-render-preferences";
 import { isPlanetTap } from "@/domain/planet-flight";
 import { periodLabel, planetName } from "@/domain/planet";
@@ -57,7 +60,7 @@ export default function UniverseScene(props: SceneProps) {
     return () => { window.removeEventListener("pointerup", release); window.removeEventListener("pointercancel", release); window.removeEventListener("blur", reset); };
   }, []);
   const hovered = props.planets.find(p => p.id === hoveredId);
-  const low = props.quality === "low" || (props.quality === "auto" && deviceLow);
+  const tier = renderTier(props.quality, deviceLow), low = tier === "low";
   const fallback = <SceneUnavailable onUnavailable={props.onUnavailable} />;
   if (contextLost) return fallback;
   return <div className="scene-renderer" onPointerDownCapture={e => {
@@ -73,12 +76,11 @@ export default function UniverseScene(props: SceneProps) {
     g.tap = isPlanetTap(g.distance, g.pointers, performance.now() - g.started);
   }} onPointerCancelCapture={e => { pointers.current.delete(e.pointerId); gesture.current.tap = false; }} onClickCapture={e => {
     if (e.target instanceof HTMLCanvasElement && (!gesture.current.tap || props.locked)) { e.preventDefault(); e.stopPropagation(); }
-  }}><div ref={labels} className="scene-label-layer" aria-hidden="true" />{hovered && !props.locked && <div className="planet-hover-summary" role="status"><strong>{planetName(hovered)}</strong><span>{periodLabel(hovered)} · 单击进入</span></div>}<SceneBoundary fallback={fallback}><Canvas camera={{ position: [0, 7, 30], fov: 43, near: 0.1, far: 30000 }} dpr={low ? 1 : [1, 1.75]} gl={{ antialias: !low, alpha: true, powerPreference: low ? "low-power" : "high-performance" }} fallback={<SceneUnavailable />} onPointerMissed={() => { document.body.style.cursor = "auto"; }}>
-    <ambientLight intensity={0.17} color="#8199bd" />
-    <directionalLight position={[-12, 10, 12]} intensity={3.1} color="#fff0d7" />
-    <directionalLight position={[12, -5, -10]} intensity={0.35} color="#486b9a" />
+  }}><div ref={labels} className="scene-label-layer" aria-hidden="true" />{hovered && !props.locked && <div className="planet-hover-summary" role="status"><strong>{planetName(hovered)}</strong><span>{periodLabel(hovered)} · 单击进入</span></div>}<SceneBoundary fallback={fallback}><Canvas camera={{ position: [0, 7, 30], fov: 43, near: 0.1, far: 30000 }} dpr={[1, COSMIC_BUDGETS[tier].dpr]} gl={{ antialias: !low, alpha: true, powerPreference: low ? "low-power" : "high-performance" }} fallback={<SceneUnavailable />} onPointerMissed={() => { document.body.style.cursor = "auto"; }}>
+    <StellarNeighborhood planets={props.planets} tier={tier} />
+    <SceneMetrics tier={tier} />
     <Suspense fallback={null}>
-      <StarField low={low} />
+      <CosmicEnvironment tier={tier} identity={props.galaxyId} />
       {props.planets.map((planet, index) => <group key={planet.id}>
         <PlanetMesh appearance={planet.appearance} position={planet.position} low={low} reducedMotion={reducedMotion} selected={props.selectedId === planet.id} born={props.newPlanetId === planet.id}
           onSelect={e => { e.stopPropagation(); if (!props.locked && gesture.current.tap && e.delta <= 7) props.onEnter(planet.id); }} onHover={value => setHoveredId(value ? planet.id : null)} />

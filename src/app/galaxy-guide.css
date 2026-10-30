@@ -92,3 +92,37 @@
   .galaxy-planet-shell .selection-card { bottom: 225px; }
   .memory-breadcrumb { font-size: 13px; padding-top: 10px; gap: 7px; }
 }
+
+/* V4-A1: world-space rendering fills the viewport; controls remain quiet overlays. */
+.galaxy-universe-shell { min-height: 750px; }
+.galaxy-universe-shell .universe-canvas { inset: 0; }
+.galaxy-universe-shell .screen-vignette { box-shadow: inset 0 0 100px 15px #02050970; background: linear-gradient(90deg,#03060c99,transparent 26%,transparent 90%,#03060c22); }
+.galaxy-universe-shell .galaxy-intro { top: 112px; left: 32px; max-width: 280px; }
+.galaxy-universe-shell .galaxy-intro h1 { font-size: clamp(22px,2.1vw,30px); line-height: 1.65; }
+.galaxy-universe-shell .galaxy-intro > p { font-size: 14px; }
+.galaxy-universe-shell .galaxy-library { top: 316px; left: 32px; width: 260px; max-height: calc(100svh - 540px); min-height: 190px; background: #07101cb0; border-color: #a1bad125; }
+.cosmic-quality { position: absolute; z-index: 21; top: 110px; right: 36px; display:flex; align-items:center; gap:12px; font-size:14px; color:#c0ccdd; }
+.cosmic-quality select { width:90px; background:#08101dc9; min-height:40px; }
+.galaxy-flight-actions { position:absolute; right:36px; bottom:100px; z-index:35; display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding:12px; background:#07101ee8; border:1px solid #adc7e044; border-radius:8px; font-size:14px; }
+.galaxy-flight-actions button { padding:10px 12px; border:1px solid #b6c8dd44; border-radius:5px; }
+.galaxy-flight-actions button:hover { background:#b6c8dd22; }
+.galaxy-crossing-veil { position:absolute; inset:0; pointer-events:none; background:#03060c; opacity:0; transition:opacity .32s ease; z-index:24; }
+.galaxy-crossing .galaxy-crossing-veil { opacity:1; }
+.galaxy-planet-shell .scene-renderer { animation: galaxy-reveal .65s ease-out; }
+@keyframes galaxy-reveal { from {opacity:.1} to {opacity:1} }
+@media (max-width:760px) {
+  .galaxy-universe-shell { min-height:844px; }
+  .galaxy-universe-shell .universe-canvas { inset:110px 0 275px; }
+  .galaxy-universe-shell .galaxy-intro { top:83px; left:20px; max-width:270px; }
+  .galaxy-universe-shell .galaxy-intro h1 { font-size:18px; margin:4px 0; }
+  .galaxy-universe-shell .galaxy-intro > p:last-child { display:none; }
+  .galaxy-universe-shell .galaxy-library { top:auto; bottom:184px; left:16px; right:16px; width:auto; min-height:178px; max-height:178px; }
+  .cosmic-quality { top:168px; right:16px; gap:6px; }
+  .cosmic-quality select { width:72px; }
+  .galaxy-flight-actions { right:12px; left:12px; bottom:365px; gap:6px; padding:8px; }
+  .galaxy-flight-actions span { width:100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .galaxy-crossing-veil { transition:none; }
+  .galaxy-planet-shell .scene-renderer { animation:none; }
+}

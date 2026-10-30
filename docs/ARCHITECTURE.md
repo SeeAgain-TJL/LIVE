@@ -1,5 +1,13 @@
 # 技术架构与数据模型
 
+## V4.0-A1 渲染与导航（2026-10-30）
+
+`domain/cosmic-visuals.ts` 定义确定性星系外观、空间采样和三档预算；不改变 Galaxy/Planet/Memory schema。`GalaxyCluster` 将三维星点/星尘与实时噪声星盘组合，`CosmicPoints` 每云一个批次并按相机距离平滑减少 drawRange；`CosmicEnvironment` 提供世界坐标恒星和层叠星云平面，非背景视频。没有新增后处理或外部贴图请求。
+
+`GalaxyCamera` 独立控制宇宙飞行、取消回程和阻尼稳定后的书签；`GalaxyExplorer` 协调预取、单任务锁与短淡出，`CameraRig` 只增加一次性的星系到达推进，保留 B2 星球安全距离、取消和回程。`StellarNeighborhood` 使用原行星坐标生成装饰轨道与恒星照明，不改业务位置。
+
+`data/cosmic-preferences.ts` 独立管理可选 `universe-of-me:cosmic-camera:v1`、`universe-of-me:cosmic-quality:v1`（localStorage）以及短期 `universe-of-me:galaxy-arrival:v1`（sessionStorage）。访问失败降级，不读写人生档案或 IndexedDB。`SceneMetrics` 每秒在 canvas 写一次诊断属性，用于浏览器采样，不每帧更新 React state。内存空间仍使用原渲染器和原画质逻辑。
+
 ## G2.1 制作路线变更（2026-10-30）
 
 Blender 工具链已可用，但程序化人物草稿经用户审查不通过，只保留作技术归档，不延续为正式底模。当前 [VRoid 评估](character/g2-1/VROID-ASSESSMENT.md)建议另建可编辑 `.vroid`，人工完成脸/眼/发；必要时导出到 Blender 精修，分支 `.blend` 与 `.vroid` 不承诺双向同步。现阶段尚未安装或验证 VRoid 编辑器，也没有新模型。资产仍在仓库外独立版本化，官网/许可与真实模型校验另记录，不接入网站、不改存储或既有实验。下节是前一轮资料边界的历史记录。
