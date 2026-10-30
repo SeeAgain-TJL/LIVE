@@ -1,0 +1,21 @@
+{
+  "blender": "4.2.23 LTS",
+  "python": "3.11.7 (main, Feb  5 2024, 18:45:06) [MSC v.1928 64 bit (AMD64)]",
+  "addon": [
+    4,
+    10,
+    2
+  ],
+  "config": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\tools\\blender-4.2.23-windows-x64\\4.2\\config",
+  "status": "pipeline-test-only; not character art",
+  "export": [
+    "FINISHED"
+  ],
+  "vrm_spec": "1.0",
+  "humanoid_bones": 17,
+  "import": [
+    "FINISHED"
+  ],
+  "imported_armatures": 1,
+  "imported_meshes": 17
+}

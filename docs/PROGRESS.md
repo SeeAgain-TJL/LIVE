@@ -1,5 +1,34 @@
 # 开发进度
 
+## 2026-10-30 · G2.1 视觉否决后的 VRoid 路线评估（未制作新模型）
+
+用户已观看转台并明确判定程序化草稿不通过。停止该建模路线，保留旧 `.blend`/GLB/渲染与脚本用于技术参考，不作为最终模型基础。最新 [评估与制作交接](character/g2-1/VROID-ASSESSMENT.md)包含工具证据、两图外观重点、人工/自动分工、分阶段脸部审核及可编辑源文件交付约定。
+
+- 已检查常见注册/安装/进程位置与有限深度用户目录，未发现 VRoid 或 `.vroid`；不是全盘搜索。Windows 11、Core 5 220H、15.6 GiB RAM、Intel Graphics、C 盘约 757.1 GiB 空闲；采样可用内存约 1.7 GiB，实际 VRoid 帧率未测。
+- 已读取 computer-use 技能及操作指南；会话没有所需 `node_repl` 工具，无法可靠进行 VRoid GUI 制作。没有绕行自建桌面助手。
+- 官网和帮助站 HTTP 403；pixiv 官方 Steam app 1486350 API 返回 200，确认脸/身体参数、手绘发束和实时贴图编辑。没有核实最新编辑器版号或实际 VRM1 导出，也没有下载安装。
+- 已复核两张当前 PNG 的 SHA-256 与 baseline 一致。建议新建 VRoid 工程，人工定制脸/眼/发，必要时 Blender 精修；先提交脸部正/45°/侧特写审核，再做长发和人体，不做复杂礼服或动画。
+- 本轮只改文档，没有新模型、实模截图或旋转预览。没有修改任何旧二进制、运行代码、依赖、星系/星球/记忆及 localStorage/IndexedDB。
+
+本轮验证：`node scripts/verify-config.mjs` 通过，8 份修改/新增文档 UTF-8 检查与 52 个本地链接存在性检查通过，`git diff --check` 通过；未运行网站 lint/typecheck/test/build 或浏览器测试，文档评估不冒用上一轮的通过结果。下一步需要使用者或专业 VRoid 制作者完成一次真实脸部编辑并保存 `.vroid`；有实际源文件后才能渲染模型与原画并排验收。G2.1 视觉仍未通过。
+
+## 2026-10-30 · G2.1 Blender 环境与银蓝星灵基础草稿（可验证交付，未通过视觉验收）
+
+本轮在暂停后继续，保留正式网站、`/guide-lab`、星球/星系/记忆数据与浏览器存储不变。已在无管理员权限下准备可隔离的 Blender 制作环境，并生成一个独立的程序化基础研究草稿；它用于验证建模工程与交付链路，**不是最终原创角色，也没有达到用户提供参考图的还原度**。
+
+- [x] 使用 Blender **4.2.23 LTS** Windows x64 官方便携 ZIP，SHA-256 `82e791475779a7342424a480bdde9a20b43710da9264c60346125aa16cd910cb`；安装在 `%LOCALAPPDATA%\UNIVERSE-OF-ME\tools`，未改 PATH、注册表、系统 Python、执行策略或管理员配置。
+- [x] 安装并验证 VRM Add-on **4.10.2**（官方 `saturday06/VRM-Addon-for-Blender`，SHA-256 `c02baf55b83a409fbc01e5c1912d7c8eff2807ce1a23d20eb6c049d1fb1d469c`）。
+- [x] 最小管线测试：生成技术 mannequin、保存 `.blend`、CPU Cycles 正/侧/背渲染、VRM 1.0 导出/再导入；17 根 humanoid 映射骨骼，导出报告为 `FINISHED`，解析到 `VRMC_vrm.specVersion=1.0`。该 mannequin 仅证明工具链，不是银蓝星灵。
+- [x] 生成独立 `silver-spirit-draft01`：83 个可编辑网格/曲线对象、两张用户基准图以非渲染参考打包进 `.blend`，输出正/侧/背/3/4 与头部近景 PNG、静态 GLB 和 48 帧/12 fps/4 秒真实相机环绕 MP4。草稿未绑定生产骨架、表情、权重或物理，因此未伪装导出 VRM。
+- [x] 重新打开验证：`.blend` 可读、83 个可编辑网格、2 张内嵌参考图；GLB 113 个网格、46 个保留发色顶点色 primitive、无外部 URI。脚本 `py_compile`、Node `--check` 通过。
+- [x] 外部审阅页用隔离 Chrome 验证：7 张图片加载成功；视频元数据 4 秒/480×640，播放后 `currentTime` 从 1.0 前进到约 1.92；390px 视口无横向溢出；无控制台错误。证据见 `character/g2-1/evidence-browser-review.json`，桌面/移动截图与模型文件在仓库外资产目录。
+
+真实视觉限制：当前草稿的脸型、眼睑/五官、发束、耳根毛感、手部、服装裁片和尾部连接仍然粗糙，整体明显偏通用程序化研究模型，不能作为已批准角色效果图或最终 G2.1。下一步必须由人工建模/雕刻流程先精修头部（脸、眼、发、耳），再审查身体、礼服与尾根；只有通过静态外形验收后才做权重、表情、物理和 VRM/网站集成。
+
+资产不进入普通 Git 历史：`.blend`、GLB、MP4、PNG、Blender 安装包及插件均位于 `C:\Users\tingjie.li\Desktop\UNIVERSE-OF-ME-assets\g2-1` 或本地工具目录。仓库仅保存脚本、版本/散列说明和小型 JSON 证据；`package-assets.mjs` 会拒绝把资产目录放进仓库，并生成 `asset-manifest.json`。当前没有启用 Git LFS、云对象存储或异地备份。
+
+应用回归也已在本轮补跑：`npm.cmd run lint`、`npm.cmd run typecheck`、`npm.cmd test`（33/33）和 `npm.cmd run build` 均通过；这些检查只说明现有网站没有被本轮脚本/文档变更破坏，不能替代角色视觉验收。未重跑完整 `test:e2e`，因为本轮没有运行时改动；离线审阅页已用独立 Chrome 单独验证。提交 `c66c52e` 已推送到 `codex/blender-g2-1-foundation`，草稿 PR [#10](https://github.com/SeeAgain-TJL/LIVE/pull/10) 以未合并的 G1.5 分支为基线，未合并 main。
+
 ## 2026-10-29 · G1.5 当前两图规范化检查 / G2.1 未完成
 
 **用户确认主要方向并授权基础建模验证；本轮完成参考归档与可视化核对资料，未交付真实基础模型、可编辑模型源文件或 360° 转台。G1.5 严格正交重绘仍待完成，G2.1 未通过视觉验收。**
