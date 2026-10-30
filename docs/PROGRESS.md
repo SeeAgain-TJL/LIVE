@@ -1,5 +1,17 @@
 # 开发进度
 
+## 2026-10-30 · V4.0-A4 数据真实感、星系身份化与 HUD 融合
+
+从 A3 分支创建 A4 功能分支。本轮没有修改 schema、删除记录、清空 localStorage 或 IndexedDB，也没有替换正式引导者和 VRM 实验。
+
+已完成：`isPersonalPlanet` 让真实档案与示例几何分层；空星系仅有主恒星、低密度碎片和 1–3 个无 Planet ID 的线框待创建星位；不同星系使用稳定的色温、星云、轨道倾角、碎片密度和情绪文案；左侧列表改为玻璃 HUD，并提供探索/电影模式。搜索、引导目的地和计数均按真实个人星球分类，旧示例保留在标注的示例区。
+
+实际证据位于 `artifacts-local/v4-a4/`：真实 Chrome 运行的总览、空成长星系、隔离真实星球后的成长星系、电影模式 WebP 与 `capture.json`。截图为 1600×1000、DPR1，仅作本机视觉核对；唯一控制台错误仍为既有 favicon 404。
+
+检查：lint、typecheck、43/43 单元测试、build 通过；定向 Chrome 回归 `galaxies-guide` 3/3、`spatial-scene` 3/3、`travel-comfort` 2/2 通过。空间场景测试使用显式隔离个人档案，空星系测试验证待创建引导与低密度环境。
+
+限制：本轮没有真实手机录屏、完整性能矩阵或自动化视频；电影模式为 UI 状态，不是全屏后处理。恒星、星云和行星材质仍为 A3 程序化资产。
+
 ## 2026-10-30 · V4.0-A3 宇宙层次、恒星与舒适旅行
 
 从实际包含 A2 的最新 `codex/v4-a2-spatial-exploration` / `1c7be0e` 创建 `codex/v4-a3-comfort-stellar-systems`。远端已复核 PR #1–#12 仍开放、逐层依赖，A3 以 #12 分支为 base，不合并 main。实现提交 **`2ad22e3`** 已推送，草稿 PR [#13](https://github.com/SeeAgain-TJL/LIVE/pull/13) 已创建，base 为 `codex/v4-a2-spatial-exploration`，未合并。服务运行于 `http://127.0.0.1:3300`。

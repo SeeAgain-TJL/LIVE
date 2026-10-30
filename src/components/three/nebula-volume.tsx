@@ -17,7 +17,7 @@ gl_FragColor=vec4(sum/max(.001,opacity),opacity);
 #include <colorspace_fragment>
 }`;
 /** Bounded 3D density integration. One draw, bounded steps, no full-screen postprocessing. */
-export function NebulaVolume({ tier, local = false, seed }: { tier: RenderTier; local?: boolean; seed: number }) {
+export function NebulaVolume({ tier, local = false, seed, cool = "#46677c", warm = "#8e756e" }: { tier: RenderTier; local?: boolean; seed: number; cool?: string; warm?: string }) {
   const { size, gl } = useThree();
   const resolution = tier === "low" ? .35 : tier === "medium" ? .4 : .5;
   // Diffuse gas has its own pixel budget, independent of the sharp celestial geometry.
@@ -27,7 +27,7 @@ export function NebulaVolume({ tier, local = false, seed }: { tier: RenderTier; 
   useEffect(() => { gl.domElement.setAttribute("data-volume-target", `${target.width}x${target.height}`); }, [gl, target, size.width, size.height, tier]);
   const position = useMemo(() => new Vector3(local ? -12 : -20, local ? 12 : 18, local ? -90 : -135), [local]);
   const scale = useMemo(() => new Vector3(local ? 220 : 360, local ? 105 : 155, local ? 100 : 145), [local]);
-  const uniforms = useMemo(() => ({ invProjection: { value: new Matrix4() }, cameraWorld: { value: new Matrix4() }, volumeScale: { value: scale }, eye: { value: new Vector3() }, cool: { value: new Color(local ? "#376383" : "#46677c") }, warm: { value: new Color(local ? "#917268" : "#8e756e") }, seed: { value: seed % 19 }, steps: { value: tier === "low" ? 4 : tier === "medium" ? 7 : 11 } }), [local, seed, tier, scale]);
+  const uniforms = useMemo(() => ({ invProjection: { value: new Matrix4() }, cameraWorld: { value: new Matrix4() }, volumeScale: { value: scale }, eye: { value: new Vector3() }, cool: { value: new Color(local ? cool : "#46677c") }, warm: { value: new Color(local ? warm : "#8e756e") }, seed: { value: seed % 19 }, steps: { value: tier === "low" ? 4 : tier === "medium" ? 7 : 11 } }), [local, seed, tier, scale, cool, warm]);
   useFrame(({ camera }) => {
     uniforms.eye.value.copy(camera.position).sub(position).divide(scale);
     camera.updateMatrixWorld(); uniforms.invProjection.value.copy(camera.projectionMatrixInverse); uniforms.cameraWorld.value.copy(camera.matrixWorld);

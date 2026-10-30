@@ -1,4 +1,4 @@
-import type { Planet, PlanetInput, Vec3 } from "./types.ts";
+import type { Memory, Planet, PlanetInput, Vec3 } from "./types.ts";
 
 export const PLANET_TYPES = [
   { value: "rocky", label: "岩石", hint: "山脉与大地" },
@@ -10,6 +10,12 @@ export const PLANET_TYPES = [
 
 export function planetName(planet: Planet): string {
   return planet.name || "未命名草稿";
+}
+
+/** Demo geometry remains in the local archive for compatibility, but becomes a personal
+ * world as soon as the user has attached a real memory to it. */
+export function isPersonalPlanet(planet: Planet, memories: Memory[]): boolean {
+  return !planet.isDemo || memories.some(memory => memory.planetId === planet.id);
 }
 
 export function isDate(value: string): boolean {

@@ -2,10 +2,14 @@ import { expect, test } from "@playwright/test";
 import { PerspectiveCamera, Vector3 } from "three";
 import { galaxyPosition } from "../../src/domain/galaxy";
 import { galaxyOverview } from "../../src/domain/cosmic-visuals";
+import { createSeed } from "../../src/data/seed";
 
 test("cosmic quality, drag rejection, cancellation and universe view restore preserve records", async ({ page }) => {
   const errors: string[] = []; page.on("pageerror", e => errors.push(e.message));
   await page.goto("/");
+  const fixture = createSeed(); fixture.planets = fixture.planets.map((planet, index) => ({ ...planet, id: `cosmic-${index}`, name: `宇宙验收 ${index + 1}`, isDemo: false }));
+  await page.evaluate(data => localStorage.setItem("universe-of-me:data:v1", JSON.stringify(data)), fixture);
+  await page.reload();
   await expect(page.locator(".galaxy-scene-label")).toHaveCount(5);
   const raw = await page.evaluate(() => localStorage.getItem("universe-of-me:data:v1"));
   const canvas = page.locator("canvas").first();

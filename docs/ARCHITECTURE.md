@@ -193,3 +193,11 @@ Galaxy 仍为独立的 `id/name/color` 记录。`domain/galaxy.ts` 提供关系�
 ## A3 渲染与旅行接口
 
 `StellarBody` 负责恒星表面/光冕，`NebulaVolume` 负责有界三维密度积分，`SystemEnvironment` 只接收 props 渲染环境体与 Instancing 碎片。`domain/system-environment.ts` 的结构没有 Planet ID/记忆关系，不能写入业务仓库。`domain/travel.ts` 提供旅行配置、分段曲线及阶段；`data/travel-preferences.ts` 独立保存节奏偏好。GalaxyCamera / CameraRig 使用相同配置、固定 FOV，向现有导航回调发出真正抵达事件；动画和停稳阶段不更新业务 React state。原档案 schema、坐标和 CRUD 不变。
+
+## A4 真实星球与待创建星位
+
+`domain/planet.ts` 的 `isPersonalPlanet(planet, memories)` 是视图分类入口：用户保存的非示例星球，或已经有记忆的历史示例，才进入星系场景、计数、检索和引导目的地。示例 Planet 记录仍由本地仓库保留，可从标注的示例管理区访问；分类不会修改 `isDemo` 或迁移快照。
+
+`domain/system-environment.ts` 的 `vacancySlots` 只返回渲染描述 `{id,label,position,size}`，这些 ID 不属于 Planet、Memory 或导出数据。空星系的实体环境体已移除，`SystemEnvironment` 仅渲染占位几何和批量碎片；创建操作由页面将回调接到既有 `PlanetEditor`。CameraRig 复用占位边界做安全投影，但不会将其当作可导航天体。
+
+`domain/galaxy-identity.ts` 提供稳定的星系视觉身份，Three.js 层将其映射为星云冷暖色、恒星色温、环境倾角和短文案。它不扩展 Galaxy 持久化字段。探索页面通过 `data-hud-mode` 切换探索/电影布局，保留键盘、触屏和明确的恢复按钮。

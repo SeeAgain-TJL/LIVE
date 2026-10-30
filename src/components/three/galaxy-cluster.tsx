@@ -9,6 +9,7 @@ import { galaxyPosition } from "@/domain/galaxy";
 import { COSMIC_BUDGETS, galaxySamples, galaxyStyle, type RenderTier } from "@/domain/cosmic-visuals";
 import { CosmicPoints } from "./cosmic-points";
 import { GalaxyDisk } from "./galaxy-disk";
+import { galaxyIdentity } from "@/domain/galaxy-identity";
 
 export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, enter }: {
   galaxy: Galaxy; index: number; count: number; tier: RenderTier; reduced: boolean; labels: RefObject<HTMLDivElement>; enter: () => void;
@@ -17,6 +18,7 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
   const label = useRef<HTMLDivElement>(null);
   const position = useMemo(() => new Vector3(...galaxyPosition(index)), [index]);
   const style = useMemo(() => galaxyStyle(galaxy.id), [galaxy.id]);
+  const identity = useMemo(() => galaxyIdentity(galaxy.id), [galaxy.id]);
   const clouds = useMemo(() => {
     const budget = COSMIC_BUDGETS[tier];
     const cool = new Color(galaxy.color).lerp(new Color("#8eafff"), 0.28), warm = new Color("#fff0cb"), color = new Color();
@@ -56,6 +58,6 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
     <mesh onClick={e => { e.stopPropagation(); if (e.delta <= 7) enter(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
       <sphereGeometry args={[style.radius * 0.86, 20, 12]} /><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
     </mesh>
-    <Html portal={labels} center position={[0, -style.radius * 0.64 - 1, 0]} zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}><div ref={label} className="galaxy-scene-label" data-galaxy-id={galaxy.id}><strong>{galaxy.name}</strong><span>{count} 颗星球 · {style.elliptical ? "椭圆星系" : style.barred ? "棒旋星系" : "旋涡星系"}</span></div></Html>
+    <Html portal={labels} center position={[0, -style.radius * 0.64 - 1, 0]} zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}><div ref={label} className="galaxy-scene-label" data-galaxy-id={galaxy.id} style={{ "--galaxy-accent": identity.accent } as React.CSSProperties}><strong>{galaxy.name}</strong><span>{count > 0 ? `${count} 颗我的星球` : "暂无我的星球 · 待创建"} · {style.elliptical ? "椭圆星系" : style.barred ? "棒旋星系" : "旋涡星系"}</span><small>{identity.mood}</small></div></Html>
   </group>;
 }

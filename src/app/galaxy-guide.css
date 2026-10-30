@@ -143,3 +143,35 @@
 .travel-mode-control { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:14px; color:#cbd7e5; }
 .travel-mode-control select { width:140px; min-height:40px; background:#0b1726; }
 @media(max-width:760px) { .cosmic-controls { right:12px; top:140px; padding:8px; gap:5px; } .travel-mode-control { gap:6px; } .travel-mode-control select { width:112px; } }
+
+/* V4-A4: truthful celestial hierarchy and HUD fusion. */
+.hud-mode-toggle { min-height: 38px; padding: 8px 11px; border: 1px solid #a9c4dc35; border-radius: 7px; color: #c5d4e8; background: #07132188; font-size: 13px; letter-spacing: .3px; }
+.hud-mode-toggle:hover, .hud-mode-toggle:focus-visible, .hud-mode-toggle[aria-pressed="true"] { color: #f0d6a0; border-color: #d9bd824f; background: #132238b5; }
+.galaxy-universe-shell .galaxy-library, .galaxy-planet-shell .planet-library { background: linear-gradient(135deg,#0815259c,#0b142482); border-color: #b4c8df28; box-shadow: 0 18px 80px #0007, inset 0 1px #dbe8ff10; backdrop-filter: blur(18px) saturate(1.15); }
+.galaxy-universe-shell .galaxy-library::before, .galaxy-planet-shell .planet-library::before { content: "舰桥 HUD / 个人档案"; display:block; color:#90a9c5; font-size:10px; letter-spacing:1.5px; margin-bottom:10px; opacity:.72; }
+.galaxy-scene-label { border-left: 2px solid var(--galaxy-accent, #a9c7f0); padding-left: 9px; text-align:left; }
+.galaxy-scene-label strong { color: #eaf3ff; }
+.galaxy-scene-label small { display:block; margin-top:3px; color:#9cafc8; font-size:11px; }
+.vacancy-label { min-width:110px; padding:7px 10px; border:1px dashed #8fc5e875; border-radius:999px; background:#0714239e; color:#b9d8ef; text-align:center; box-shadow:0 0 22px #5f9bc52b; }
+.vacancy-label span, .vacancy-label small { display:block; font-size:11px; letter-spacing:.4px; }
+.vacancy-label small { margin-top:3px; color:#8eabc5; font-size:10px; }
+.example-library { margin-top:12px; padding-top:10px; border-top:1px solid #9eb6d01d; color:#93a9c2; font-size:11px; }
+.example-library summary { cursor:pointer; color:#a9bbcf; }
+.example-library div { display:grid; gap:6px; margin-top:8px; }
+.example-library a { color:#8298b0; line-height:1.5; }
+.example-library a:hover { color:#e3c895; }
+[data-hud-mode="cinema"] .galaxy-intro, [data-hud-mode="cinema"] .galaxy-library, [data-hud-mode="cinema"] .planet-library, [data-hud-mode="cinema"] .explorer-footer, [data-hud-mode="cinema"] .galaxy-navigation-hint, [data-hud-mode="cinema"] .local-disclaimer, [data-hud-mode="cinema"] .orbit-caption { opacity:0; pointer-events:none; transform:translateX(-18px); transition:opacity .3s, transform .3s; }
+[data-hud-mode="cinema"] .universe-canvas { inset:0; }
+[data-hud-mode="cinema"] .screen-vignette { box-shadow: inset 0 0 170px 25px #02040b88; }
+[data-hud-mode="cinema"] .topbar { background:linear-gradient(180deg,#03071199,transparent); border-bottom-color:transparent; }
+@media(max-width:760px) {
+  .hud-mode-toggle { min-height:32px; padding:6px 8px; font-size:11px; }
+  .galaxy-universe-shell .galaxy-library::before, .galaxy-planet-shell .planet-library::before { font-size:9px; }
+  .vacancy-label { transform:scale(.9); }
+}
+.empty-galaxy-state { position:absolute; left:50%; top:54%; transform:translate(-50%,-50%); z-index:16; width:min(360px,calc(100% - 40px)); padding:22px 24px; border:1px solid #9bc3df38; border-radius:14px; background:linear-gradient(145deg,#071524b8,#0a1524a3); box-shadow:0 20px 80px #0008, inset 0 1px #d5ecff12; backdrop-filter:blur(12px); text-align:center; pointer-events:auto; }
+.empty-galaxy-state .eyebrow { display:block; color:#8fb6d3; font-size:10px; letter-spacing:2px; }
+.empty-galaxy-state strong { display:block; margin:10px 0 8px; color:#e4effa; font-size:18px; font-weight:500; }
+.empty-galaxy-state p { color:#a7b9ca; font-size:13px; line-height:1.8; margin:0 0 15px; }
+.empty-galaxy-state .button { font-size:13px; }
+@media(max-width:760px) { .empty-galaxy-state { top:44%; padding:17px; } .empty-galaxy-state strong { font-size:16px; } }

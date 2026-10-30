@@ -27,13 +27,14 @@ test("comfort is the persistent default, holds at arrival, cancels safely, and f
   expect(await page.evaluate(() => localStorage.getItem("universe-of-me:data:v1"))).toBe(archive);
 });
 
-test("empty galaxies show a real environment without creating archive planets", async ({ page }) => {
+test("empty galaxies show truthful vacancy guidance without creating archive planets", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(raw => localStorage.setItem("universe-of-me:data:v1", raw), JSON.stringify(createSeed()));
   await page.goto("/galaxy/growth");
   await expect(page.locator("canvas")).toBeVisible();
   await expect(page.locator(".list-empty")).toContainText("环境天体与碎片带不包含记忆档案");
-  await expect.poll(async () => JSON.parse((await page.locator("canvas").first().getAttribute("data-render-metrics")) ?? "{}").textures).toBeGreaterThanOrEqual(3);
+  await expect(page.locator(".empty-galaxy-state")).toContainText("还没有你的星球");
+  await expect.poll(async () => JSON.parse((await page.locator("canvas").first().getAttribute("data-render-metrics")) ?? "{}").textures).toBeGreaterThanOrEqual(1);
   const before = await page.evaluate(() => localStorage.getItem("universe-of-me:data:v1"));
   const data = JSON.parse(before!);
   expect(data.planets.filter((p: { galaxyId: string }) => p.galaxyId === "growth")).toHaveLength(0);

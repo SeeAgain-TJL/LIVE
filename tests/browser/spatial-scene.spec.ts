@@ -1,7 +1,11 @@
-﻿import { expect, test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+import { createSeed } from "../../src/data/seed";
 
 test("real lateral pan separates foreground from distant stars and orbit visibility preserves the archive", async ({ page }) => {
   await page.goto("/");
+  const fixture = createSeed(); fixture.planets = fixture.planets.map((planet, index) => ({ ...planet, id: `spatial-${index}`, name: `空间验收 ${index + 1}`, isDemo: false }));
+  await page.evaluate(data => localStorage.setItem("universe-of-me:data:v1", JSON.stringify(data)), fixture);
+  await page.reload();
   const canvas = page.locator("canvas").first();
   const metrics = async () => JSON.parse((await canvas.getAttribute("data-render-metrics")) ?? "{}");
   await expect.poll(async () => (await metrics()).landmarks?.length).toBe(2);

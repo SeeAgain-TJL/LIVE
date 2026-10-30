@@ -21,11 +21,11 @@ void main(){float mu=abs(dot(normalize(n),normalize(eye)));float impact=sqrt(max
 }`;
 
 /** Procedural photosphere + two spatial corona shells + anchored magnetic arches. Not a solar physics solver. */
-export function StellarBody({ source, reduced, low }: { source: StellarSource; reduced: boolean; low: boolean }) {
+export function StellarBody({ source, reduced, low, color = "#ffaf51" }: { source: StellarSource; reduced: boolean; low: boolean; color?: string }) {
   const material = useRef<ShaderMaterial>(null), shellMaterials = useRef<(ShaderMaterial | null)[]>([]);
   const elapsed = useRef(0);
   const surface = useMemo(() => ({ time: { value: 0 } }), []);
-  const shells = useMemo(() => [1.8, 3.3].slice(0, low ? 1 : 2).map(shell => ({ time: { value: 0 }, shell: { value: shell }, tint: { value: new Color(shell < 2 ? "#ffaf51" : "#8e6655") } })), [low]);
+  const shells = useMemo(() => [1.8, 3.3].slice(0, low ? 1 : 2).map(shell => ({ time: { value: 0 }, shell: { value: shell }, tint: { value: new Color(shell < 2 ? color : "#8e6655") } })), [low, color]);
   const loops = useMemo(() => [0, 1, 2].slice(0, low ? 1 : 3).map(index => Array.from({ length: 65 }, (_, i) => {
     const t = i / 64, angle = Math.PI * .5 + (t - .5) * .34 + index * .12;
     const radius = 1.002 + Math.sin(t * Math.PI) * (.12 + index * .025);
