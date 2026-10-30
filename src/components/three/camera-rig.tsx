@@ -9,6 +9,7 @@ import { safeCameraPosition, universeOverview } from "@/domain/exploration";
 import { planetApproach } from "@/domain/planet-flight";
 import { CAMERA_KEY } from "@/data/local-repository";
 import { readVisit, saveVisit, validBookmark } from "@/data/exploration-session";
+import { consumeGalaxyArrival } from "@/data/cosmic-preferences";
 
 export interface FlightRequest { planetId: string | null; nonce: number; enter?: boolean }
 interface Animation {
@@ -53,7 +54,13 @@ export function CameraRig({ planets, flight, onArrival, onApproach, onReturned, 
       animation.current = { from: camera.position.clone(), to: new Vector3(...visit.origin.position), fromTarget: control.target.clone(), toTarget: new Vector3(...visit.origin.target), progress: 0, duration: 1.1, arrivalId: null, returning: true, approached: false };
       ownCamera(control, camera);
     } else if (returnPlanetId) onReturned();
-  }, [camera, planets, size.width, size.height, bookmarkKey, galaxyId, returnPlanetId, onReturned]);
+    else if (consumeGalaxyArrival(galaxyId) && !reducedMotion) {
+      const destination = camera.position.clone();
+      camera.position.sub(control.target).multiplyScalar(1.7).add(control.target);
+      animation.current = { from: camera.position.clone(), to: destination, fromTarget: control.target.clone(), toTarget: control.target.clone(), progress: 0, duration: 1.8, arrivalId: null, returning: false, approached: false };
+      ownCamera(control, camera);
+    }
+  }, [camera, planets, size.width, size.height, bookmarkKey, galaxyId, returnPlanetId, onReturned, reducedMotion]);
 
   useEffect(() => {
     const control = controls.current;

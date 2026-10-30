@@ -1,0 +1,392 @@
+{
+  "baseURL": "http://127.0.0.1:3300",
+  "recordedAt": "2026-10-30T03:46:59.779Z",
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "samples": [
+    {
+      "scene": "universe",
+      "quality": "low",
+      "samples": [
+        {
+          "tier": "low",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 22,
+          "points": 16700,
+          "triangles": 2212,
+          "dpr": 1,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 22,
+          "points": 16700,
+          "triangles": 2212,
+          "dpr": 1,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 22,
+          "points": 16700,
+          "triangles": 2212,
+          "dpr": 1,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 22,
+          "points": 16700,
+          "triangles": 2212,
+          "dpr": 1,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 22,
+          "points": 16700,
+          "triangles": 2212,
+          "dpr": 1,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 22,
+          "points": 16700,
+          "triangles": 2212,
+          "dpr": 1,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "universe",
+      "quality": "medium",
+      "samples": [
+        {
+          "tier": "medium",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 24,
+          "points": 44300,
+          "triangles": 2216,
+          "dpr": 1.35,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 24,
+          "points": 44300,
+          "triangles": 2216,
+          "dpr": 1.35,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 24,
+          "points": 44300,
+          "triangles": 2216,
+          "dpr": 1.35,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 24,
+          "points": 44300,
+          "triangles": 2216,
+          "dpr": 1.35,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 24,
+          "points": 44300,
+          "triangles": 2216,
+          "dpr": 1.35,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 24,
+          "points": 44300,
+          "triangles": 2216,
+          "dpr": 1.35,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "universe",
+      "quality": "high",
+      "samples": [
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 24,
+          "points": 59000,
+          "triangles": 2216,
+          "dpr": 1.5,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 24,
+          "points": 59000,
+          "triangles": 2216,
+          "dpr": 1.5,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 24,
+          "points": 59000,
+          "triangles": 2216,
+          "dpr": 1.5,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 24,
+          "points": 59000,
+          "triangles": 2216,
+          "dpr": 1.5,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 24,
+          "points": 59000,
+          "triangles": 2216,
+          "dpr": 1.5,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 24,
+          "points": 59000,
+          "triangles": 2216,
+          "dpr": 1.5,
+          "camera": [
+            0,
+            13.109351335790215,
+            87.39567557193479
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "interior",
+      "quality": "high",
+      "samples": [
+        {
+          "tier": "high",
+          "fps": 41,
+          "p95Ms": 19,
+          "calls": 22,
+          "points": 5001,
+          "triangles": 75958,
+          "dpr": 1.5,
+          "camera": [
+            0.71,
+            10.582061356246204,
+            47.59030678123102
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 18,
+          "calls": 22,
+          "points": 5001,
+          "triangles": 75958,
+          "dpr": 1.5,
+          "camera": [
+            0.71,
+            10.582061356246204,
+            47.59030678123102
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 22,
+          "points": 5001,
+          "triangles": 75958,
+          "dpr": 1.5,
+          "camera": [
+            0.71,
+            10.582061356246204,
+            47.59030678123102
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 22,
+          "points": 5001,
+          "triangles": 75958,
+          "dpr": 1.5,
+          "camera": [
+            0.71,
+            10.582061356246204,
+            47.59030678123102
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 22,
+          "points": 5001,
+          "triangles": 75958,
+          "dpr": 1.5,
+          "camera": [
+            0.71,
+            10.582061356246204,
+            47.59030678123102
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "p95Ms": 17,
+          "calls": 22,
+          "points": 5001,
+          "triangles": 75958,
+          "dpr": 1.5,
+          "camera": [
+            0.71,
+            10.582061356246204,
+            47.59030678123102
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "dataUnchanged": true,
+  "browser": "156.0.8078.49",
+  "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "mobile": {
+    "noOverflow": true,
+    "metrics": {
+      "tier": "low",
+      "fps": 60,
+      "p95Ms": 17,
+      "calls": 22,
+      "points": 16700,
+      "triangles": 2212,
+      "dpr": 1,
+      "camera": [
+        0,
+        15.137830936001375,
+        100.91887290667587
+      ]
+    },
+    "touchNavigation": true
+  }
+}

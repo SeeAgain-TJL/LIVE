@@ -2,6 +2,7 @@ import { openGuide } from "./guide-actions";
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { createSeed } from "../../src/data/seed";
+import { galaxyOverview } from "../../src/domain/cosmic-visuals";
 import { galaxyPosition } from "../../src/domain/galaxy";
 import { PerspectiveCamera, Vector3 } from "three";
 
@@ -17,10 +18,9 @@ test("galaxy hierarchy, stable companion, edge snapping and guided planet journe
   await expect(page.locator(".galaxy-scene-label")).toHaveCount(5);
   const canvas = page.locator("canvas").first();
   const sceneBox = (await canvas.boundingBox())!;
-  const radius = Math.max(10, ...Array.from({ length: 5 }, (_, i) => Math.hypot(...galaxyPosition(i)) + 6));
-  const distance = radius / Math.sin(Math.atan(Math.tan(43 * Math.PI / 360) * Math.min(1, sceneBox.width / sceneBox.height)));
+  const view = galaxyOverview(5, sceneBox.width / sceneBox.height);
   const camera = new PerspectiveCamera(43, sceneBox.width / sceneBox.height, 0.1, 1000);
-  camera.position.set(0, distance * 0.15, distance); camera.lookAt(0, 0, 0); camera.updateMatrixWorld();
+  camera.position.fromArray(view.position); camera.lookAt(0, 0, 0); camera.updateMatrixWorld();
   const center = new Vector3(...galaxyPosition(0)).project(camera);
   await canvas.click({ position: { x: (center.x + 1) * sceneBox.width / 2, y: (1 - center.y) * sceneBox.height / 2 } });
   await expect(page).toHaveURL(/\/galaxy\/unclassified$/);
