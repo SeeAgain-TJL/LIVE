@@ -2,13 +2,13 @@
 
 ## 2026-10-30 · V4.0-A3 宇宙层次、恒星与舒适旅行
 
-从实际包含 A2 的最新 `codex/v4-a2-spatial-exploration` / `1c7be0e` 创建 `codex/v4-a3-comfort-stellar-systems`。远端已复核 PR #1–#12 仍开放、逐层依赖，A3 以 #12 分支为 base，不合并 main。实现及 PR 编号在推送后补记。
+从实际包含 A2 的最新 `codex/v4-a2-spatial-exploration` / `1c7be0e` 创建 `codex/v4-a3-comfort-stellar-systems`。远端已复核 PR #1–#12 仍开放、逐层依赖，A3 以 #12 分支为 base，不合并 main。实现提交 **`2ad22e3`** 已推送，草稿 PR [#13](https://github.com/SeeAgain-TJL/LIVE/pull/13) 已创建，base 为 `codex/v4-a2-spatial-exploration`，未合并。服务运行于 `http://127.0.0.1:3300`。
 
 已实现：保留原星点预算的分层深空、冷暖亮区/暗尘埃、有界三维体积积分（4/7/11 步，独立低分辨率合成）；恒星颗粒/暗斑/临边昏暗、光冕和磁弧；同源真实照明与较清晰暗面；倾斜 Instancing 碎片带；空星系有三颗明确标识为环境的天体，不写入、不计数为档案星球。既有 Galaxy、Planet、Memory、原坐标、CRUD、媒体、正式引导者、VRM 实验均保留，无 schema 变更或档案存储清空。
 
 舒适默认：6.8 秒星系/5.2 秒行星推进、各停稳 1 秒；可选标准/快速；固定 43° FOV、去除镜头弧线抬升、减弱内部二次缩近。分段启动/巡航/减速、近似对数尺度接近；ESC 和真实原视角返回保留。偏好独立保存在 `universe-of-me:travel:v1`，系统 reduced-motion 优先。实录墙钟舒适约 8.26/6.76 秒，快速约 3.50/3.25 秒（含渐隐、路由等）。
 
-实际证据：[A3 审阅记录](V4-A3-REVIEW.md)，本机 `artifacts-local/v4-a3/review.html`。A2/A3 同机位总览与内部、空星系前后、三种星系近景、恒星、星球及触屏模拟截图均来自真实 Chrome。完整舒适实录 31.20 秒、快速 23.24 秒、同步播放对比录屏 26.56 秒；三段均实测可播放并推进时间轴，12 张审阅图均加载成功。原 PNG/WebM 留忽略目录；仓库提交小型 WebP、性能 JSON、播放检查、机位与 SHA-256 清单。无生成式概念图。
+实际证据：[A3 审阅记录](V4-A3-REVIEW.md)，本机 `artifacts-local/v4-a3/review.html`。A2/A3 同机位总览与内部、空星系前后、三种星系近景、恒星、星球及触屏模拟截图均来自真实 Chrome。完整舒适实录 31.20 秒、快速 23.24 秒、同步播放对比录屏 26.56 秒；三段均实测可播放并推进时间轴，12 张审阅图均加载成功。原 PNG/WebM 留忽略目录；仓库提交小型 WebP、性能 JSON、播放检查、机位与 SHA-256 清单。无生成式概念图。证据包 `artifacts-local/UNIVERSE-OF-ME-V4-A3-visual-review.zip` 为 34,732,253 字节，20 个文件，18 项清单 SHA-256 已从 ZIP 解压流校验一致。
 
 检查：lint 无 warning、strict typecheck、42/42 单元测试、生产 build 已通过。最终生产 Chrome 完整回归 **26/26 通过（4.4 分钟）**；另有定向星球进入 4/4 通过。覆盖 CRUD、图片/视频、刷新、旧档案迁移、视角恢复、取消/重复点击、触屏/reduced-motion、引导者及 VRM 实验。初轮新增测试误将未写入的示例当作存档，已改为明确预置隔离档案并通过；一轮 25/26 中短渐隐状态的测试发送 ESC 太晚，改为逐帧等待真实 transition，相关星球进入 4/4 复测通过；不放宽取消/数据断言。性能采集脚本的过早 MutationObserver 已修复并重录。
 
