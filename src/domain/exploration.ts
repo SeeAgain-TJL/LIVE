@@ -11,11 +11,12 @@ export function searchPlanets(planets: Planet[], memories: Memory[], query: stri
 export interface Overview { target: Vec3; position: Vec3; farthestDistance: number }
 
 /** Fit world bounds to the smaller viewport dimension, including rings and breathing room. */
-export function universeOverview(planets: Planet[], verticalFov: number, aspect: number): Overview {
-  if (planets.length === 0) return { target: [0, 0, 0], position: [0, 7, 30], farthestDistance: 100 };
+export function universeOverview(planets: Planet[], verticalFov: number, aspect: number, context: { position: Vec3; size: number }[] = []): Overview {
+  if (planets.length === 0 && context.length === 0) return { target: [0, 0, 0], position: [0, 7, 30], farthestDistance: 100 };
   const min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
-  for (const p of planets) {
-    const radius = p.appearance.size * (p.appearance.rings ? 2.4 : 1.05);
+  const bounds = [...planets.map(p => ({ position: p.position, size: p.appearance.size * (p.appearance.rings ? 2.4 : 1.05) })), ...context];
+  for (const p of bounds) {
+    const radius = p.size;
     p.position.forEach((n, i) => { min[i] = Math.min(min[i], n - radius); max[i] = Math.max(max[i], n + radius); });
   }
   const target = min.map((n, i) => (n + max[i]) / 2) as Vec3;

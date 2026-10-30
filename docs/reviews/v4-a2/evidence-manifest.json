@@ -1,0 +1,112 @@
+{
+  "capturedFrom": "Chrome WebGL, isolated profiles, real runtime screenshots; no generated concepts",
+  "baseline": "1e3fd48",
+  "preview": "1200px WebP, resized from original screenshots, not retouched",
+  "files": [
+    {
+      "name": "before-overview.png",
+      "bytes": 728928,
+      "sha256": "450857c2846e623436f611dac7d2c4de918cf719cd3bab1abc6aa7d7a11698a7"
+    },
+    {
+      "name": "after-overview.png",
+      "bytes": 693645,
+      "sha256": "c45d520ecb4211635bfd4988674ffa5d1132da469c61398b4fc18c8769d15287"
+    },
+    {
+      "name": "parallax-left.png",
+      "bytes": 690541,
+      "sha256": "6b302702e7ba048b7e4b815abf51a3ea559adc2bdcf4cba360d86b7ea1f36b3e"
+    },
+    {
+      "name": "parallax-right.png",
+      "bytes": 695506,
+      "sha256": "286e5157b2ccbb13341fa0f31c59dc07c9c256ffc6a788a2de69a4ee4bbb535d"
+    },
+    {
+      "name": "galaxy-unclassified-close.png",
+      "bytes": 941585,
+      "sha256": "e354b3e655eadcd9de79be8520cd4c76462405aa2b086943c8370e532a58fe29"
+    },
+    {
+      "name": "galaxy-growth-close.png",
+      "bytes": 974079,
+      "sha256": "c290359721bf422f6936bc833cbc200fbf87e0aaca9c6bd1fc4aa16974e51dc7"
+    },
+    {
+      "name": "galaxy-dream-close.png",
+      "bytes": 642177,
+      "sha256": "3169ebcc8856d634d26dfabe4dd8d8083cb539bc678623b984e0652fc4db9bc9"
+    },
+    {
+      "name": "system-layout.png",
+      "bytes": 738405,
+      "sha256": "4a876a86673e6daccbeb55e0d11803b0388f5bd8a656a691a926b63865f98002"
+    },
+    {
+      "name": "system-oblique.png",
+      "bytes": 689307,
+      "sha256": "d2640ebdaee99a9d8d98d8524781d59e40d6c525acb1cc88d4a4d9cc40df5794"
+    },
+    {
+      "name": "planet-near.png",
+      "bytes": 1029623,
+      "sha256": "58decd529ca39ba9209fc441b1a339002868021069a293268758f33e3adbf071"
+    },
+    {
+      "name": "mobile.png",
+      "bytes": 448040,
+      "sha256": "2aec9ed06a9145662490eb9c58d76507a785957533e53f8be2bb9f0b4e986efa"
+    },
+    {
+      "name": "universe-galaxy-planet.webm",
+      "bytes": 7810233,
+      "sha256": "9bbd07c8c45685051f42ab52e347b8820ea241891ce2e2957f7b3ed5d7f43e7f"
+    },
+    {
+      "name": "performance.json",
+      "bytes": 80129,
+      "sha256": "520529626992c8316f8e9a6c68f8625a620ed5ce7c6bf3a54bebb55c87603f91"
+    },
+    {
+      "name": "review.html",
+      "bytes": 2538,
+      "sha256": "611b4a25be9156f067f70b0be0cbcb44cce74f111777589745f73583eea5885f"
+    },
+    {
+      "name": "memory-arrival.png",
+      "bytes": 182967,
+      "sha256": "4a59b21548f033c88711c98c52d90bcef247cdca9d55b40ec330239ee9b81745"
+    },
+    {
+      "name": "universe-low.png",
+      "bytes": 1095078,
+      "sha256": "08ad692a3519dd79c83d19a6541eaa9b798f3b6e5f4a15d15472a4082b28db06"
+    },
+    {
+      "name": "universe-medium.png",
+      "bytes": 1212606,
+      "sha256": "ee88c46ae5896840f8b02bd575627c7c681003270cbfb594537a38425a4b93eb"
+    },
+    {
+      "name": "universe-high.png",
+      "bytes": 1247883,
+      "sha256": "7a438c4dbf7e250eca0038ab464c17c99b37c2516b7ef82fe9f6317efc93bd3d"
+    },
+    {
+      "name": "interior-low.png",
+      "bytes": 1207199,
+      "sha256": "113f97824ab95be9a403161e590acfe0992a449343d0475699dddbe96569689a"
+    },
+    {
+      "name": "interior-medium.png",
+      "bytes": 1328147,
+      "sha256": "6cf131e2eae7f3657539d0c12b95c2b566457fc95345c43ead69b8ff876edba8"
+    },
+    {
+      "name": "interior-high.png",
+      "bytes": 1348506,
+      "sha256": "d515e5944e9d0f07834e945946496528f98c20998d1284c91c265f0c005ecb00"
+    }
+  ]
+}

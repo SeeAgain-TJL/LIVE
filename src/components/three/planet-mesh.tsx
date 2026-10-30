@@ -8,24 +8,26 @@ import { createPlanetTexture } from "./planet-texture";
 
 const atmosphereVertex = `varying vec3 vNormal; varying vec3 vPosition;
 void main(){ vec4 world = modelMatrix * vec4(position,1.); vPosition=world.xyz; vNormal=normalize(mat3(modelMatrix)*normal); gl_Position=projectionMatrix*viewMatrix*world; }`;
-const atmosphereFragment = `varying vec3 vNormal; varying vec3 vPosition; uniform vec3 tint;
-void main(){ vec3 eye=normalize(cameraPosition-vPosition); float rim=pow(1.-abs(dot(normalize(vNormal),eye)),3.8); float sun=max(.12,dot(normalize(vNormal),normalize(vec3(-6.,8.,10.)))); gl_FragColor=vec4(tint,rim*sun*.38); }`;
+const atmosphereFragment = `varying vec3 vNormal; varying vec3 vPosition; uniform vec3 tint; uniform vec3 lightPosition;
+void main(){ vec3 eye=normalize(cameraPosition-vPosition); float rim=pow(1.-abs(dot(normalize(vNormal),eye)),3.8); float sun=smoothstep(-.18,.6,dot(normalize(vNormal),normalize(lightPosition-vPosition))); gl_FragColor=vec4(tint,rim*(.025+sun*.48)); }`;
 const ringVertex = `varying vec3 localPosition; varying vec3 worldPosition;
 void main(){ localPosition=position; vec4 world=modelMatrix*vec4(position,1.); worldPosition=world.xyz; gl_Position=projectionMatrix*viewMatrix*world; }`;
-const ringFragment = `varying vec3 localPosition; varying vec3 worldPosition; uniform vec3 tint; uniform float radius;
-void main(){ float r=length(localPosition.xy)/radius; float band=.52+.22*sin(r*130.)+.13*sin(r*390.); float gap=smoothstep(.025,.045,abs(r-1.99)); float edge=smoothstep(1.42,1.53,r)*(1.-smoothstep(2.18,2.4,r)); float light=.62+.38*smoothstep(-2.,2.,worldPosition.x); gl_FragColor=vec4(tint*band*light,edge*gap*.84); }`;
+const ringFragment = `varying vec3 localPosition; varying vec3 worldPosition; uniform vec3 tint; uniform float radius; uniform vec3 lightPosition; uniform vec3 planetPosition;
+void main(){ float r=length(localPosition.xy)/radius; float band=.52+.22*sin(r*130.)+.13*sin(r*390.); float gap=smoothstep(.025,.045,abs(r-1.99)); float edge=smoothstep(1.42,1.53,r)*(1.-smoothstep(2.18,2.4,r)); vec3 ray=normalize(lightPosition-worldPosition); vec3 toCenter=planetPosition-worldPosition; float along=dot(toCenter,ray); float miss=length(toCenter-ray*max(0.,along)); float shadow=along>0.?smoothstep(radius*.95,radius*1.08,miss):1.; gl_FragColor=vec4(tint*band*(.12+.88*shadow),edge*gap*.84); }`;
 
-export function PlanetMesh({ appearance, position = [0, 0, 0], selected = false, low = false, reducedMotion = false, onSelect, onHover, born = false }: {
+const PREVIEW_LIGHT: Vec3 = [-6, 8, 10];
+
+export function PlanetMesh({ appearance, position = [0, 0, 0], lightPosition = PREVIEW_LIGHT, selected = false, low = false, reducedMotion = false, onSelect, onHover, born = false }: {
   appearance: PlanetAppearance; position?: Vec3; selected?: boolean; low?: boolean; reducedMotion?: boolean;
-  onSelect?: (event: ThreeEvent<MouseEvent>) => void; onHover?: (hovered: boolean) => void; born?: boolean;
+  onSelect?: (event: ThreeEvent<MouseEvent>) => void; onHover?: (hovered: boolean) => void; born?: boolean; lightPosition?: Vec3;
 }) {
   const mesh = useRef<Mesh>(null);
   const group = useRef<Group>(null);
   const birth = useRef(born ? 0.05 : 1);
   const texture = useMemo(() => createPlanetTexture(appearance, low), [appearance, low]);
   useEffect(() => () => texture.dispose(), [texture]);
-  const atmosphere = useMemo(() => ({ tint: { value: new Color(appearance.type === "ocean" ? "#568cba" : appearance.type === "ice" ? "#a2d8e5" : appearance.color) } }), [appearance]);
-  const rings = useMemo(() => ({ tint: { value: new Color(appearance.color).lerp(new Color("#e0d3bc"), 0.32) }, radius: { value: appearance.size } }), [appearance.color, appearance.size]);
+  const atmosphere = useMemo(() => ({ tint: { value: new Color(appearance.type === "ocean" ? "#568cba" : appearance.type === "ice" ? "#a2d8e5" : appearance.color) }, lightPosition: { value: new Vector3(...lightPosition) } }), [appearance, lightPosition]);
+  const rings = useMemo(() => ({ tint: { value: new Color(appearance.color).lerp(new Color("#e0d3bc"), 0.32) }, radius: { value: appearance.size }, lightPosition: { value: new Vector3(...lightPosition) }, planetPosition: { value: new Vector3(...position) } }), [appearance.color, appearance.size, lightPosition, position]);
   const scale = useMemo(() => new Vector3(1, 1, 1), []);
   useFrame((_, dt) => {
     if (mesh.current && !reducedMotion) mesh.current.rotation.y += dt * 0.025;

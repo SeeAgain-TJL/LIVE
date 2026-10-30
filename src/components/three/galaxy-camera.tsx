@@ -3,20 +3,22 @@
 import { useEffect, useRef, type ComponentRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Vector3 } from "three";
+import { PerspectiveCamera, Vector3 } from "three";
 import type { CameraBookmark, Galaxy, Vec3 } from "@/domain/types";
 import { galaxyPosition } from "@/domain/galaxy";
 import { galaxyOverview, galaxyStyle } from "@/domain/cosmic-visuals";
 import { readCosmicCamera, saveCosmicCamera } from "@/data/cosmic-preferences";
 
+import { travelArc } from "@/domain/spatial-scene";
+
 export interface GalaxyFlight { id: string; nonce: number }
-export function GalaxyCamera({ galaxies, flight, onArrival, reduced }: { galaxies: Galaxy[]; flight: GalaxyFlight | null; onArrival: (id: string) => void; reduced: boolean }) {
+export function GalaxyCamera({ galaxies, flight, onArrival, onRestored, reduced }: { galaxies: Galaxy[]; flight: GalaxyFlight | null; onArrival: (id: string) => void; onRestored: () => void; reduced: boolean }) {
   const controls = useRef<ComponentRef<typeof OrbitControls>>(null);
   const { camera, size } = useThree();
   const initialized = useRef(false), handled = useRef<number | null>(null);
   const origin = useRef<CameraBookmark | null>(null);
   const settled = useRef({ position: new Vector3(), target: new Vector3(), quiet: 0, saved: false });
-  const animation = useRef<{ start: Vector3; targetStart: Vector3; target: Vector3; to: Vector3; progress: number; id: string | null } | null>(null);
+  const animation = useRef<{ start: Vector3; targetStart: Vector3; target: Vector3; to: Vector3; progress: number; fromFov?: number; id: string | null } | null>(null);
   useEffect(() => {
     const control = controls.current;
     if (!control) return;
@@ -29,7 +31,7 @@ export function GalaxyCamera({ galaxies, flight, onArrival, reduced }: { galaxie
       if (origin.current) {
         animation.current = { start: camera.position.clone(), targetStart: control.target.clone(), target: new Vector3(...origin.current.target), to: new Vector3(...origin.current.position), progress: 0, id: null };
         origin.current = null;
-      }
+      } else if (!animation.current) onRestored();
       return;
     }
     const index = galaxies.findIndex(g => g.id === flight.id);
@@ -44,7 +46,7 @@ export function GalaxyCamera({ galaxies, flight, onArrival, reduced }: { galaxie
     animation.current = { start: camera.position.clone(), targetStart: control.target.clone(), target, to, progress: 0, id: flight.id };
     const p = camera.position.clone(), t = control.target.clone();
     control.enabled = false; control.enableDamping = false; control.update(); camera.position.copy(p); control.target.copy(t); control.update();
-  }, [camera, galaxies, flight, size.width, size.height]);
+  }, [camera, galaxies, flight, size.width, size.height, onRestored]);
   useFrame((_, dt) => {
     const a = animation.current, control = controls.current;
     if (!control) return;
@@ -62,14 +64,23 @@ export function GalaxyCamera({ galaxies, flight, onArrival, reduced }: { galaxie
     if (!a) return;
     a.progress = Math.min(1, a.progress + Math.min(dt, 0.05) / (reduced ? 0.12 : a.id ? 2.8 : 0.65));
     const t = a.progress ** 3 * (a.progress * (a.progress * 6 - 15) + 10);
-    camera.position.lerpVectors(a.start, a.to, t); control.target.lerpVectors(a.targetStart, a.target, t); control.update();
+    camera.position.lerpVectors(a.start, a.to, t);
+    // Curved dolly, not a screen overlay: nearby world-space dust sweeps past.
+    camera.position.setY(camera.position.y + (a.id ? travelArc(t, a.start.distanceTo(a.to), reduced) : 0));
+    control.target.lerpVectors(a.targetStart, a.target, t);
+    if (camera instanceof PerspectiveCamera) {
+      a.fromFov ??= camera.fov;
+      const fov = a.fromFov + (43 - a.fromFov) * t - (a.id && !reduced ? 2.4 * Math.sin(Math.PI * t) ** 2 : 0);
+      camera.setFocalLength(.5 * camera.getFilmHeight() / Math.tan(fov * Math.PI / 360));
+    }
+    control.update();
     if (a.progress === 1) {
       animation.current = null;
       if (a.id) onArrival(a.id);
-      else { control.enabled = true; control.enableDamping = !reduced; }
+      else { control.enabled = true; control.enableDamping = !reduced; onRestored(); }
     }
   });
-  return <OrbitControls ref={controls} makeDefault enablePan={false} enableDamping={!reduced} dampingFactor={0.06} minDistance={4} maxDistance={1200} rotateSpeed={0.35} zoomSpeed={0.6} onEnd={() => {
+  return <OrbitControls ref={controls} makeDefault enablePan panSpeed={.55} enableDamping={!reduced} dampingFactor={0.06} minDistance={4} maxDistance={1200} rotateSpeed={0.35} zoomSpeed={0.6} onEnd={() => {
     if (controls.current?.enabled && !animation.current) saveCosmicCamera({ position: camera.position.toArray() as Vec3, target: controls.current.target.toArray() as Vec3 });
   }} />;
 }
