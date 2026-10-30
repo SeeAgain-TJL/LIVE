@@ -12,3 +12,11 @@ UNIVERSE_OF_ME-*-source.zip
 next-env.d.ts
 *.log
 test-results/
+
+# DCC software and working assets stay outside normal Git history.
+.tools/
+artifacts-local/
+*.blend
+*.blend1
+*.blend2
+__pycache__/

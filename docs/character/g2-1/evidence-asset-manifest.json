@@ -1,0 +1,101 @@
+{
+  "characterId": "UOM-G01",
+  "stage": "G2.1",
+  "version": "draft01",
+  "status": "Procedural base study, NOT visually approved",
+  "blender": "4.2.23 LTS",
+  "addon": "4.10.2",
+  "assets": [
+    {
+      "file": "silver-spirit-draft01/silver-spirit-draft01.blend",
+      "bytes": 9276316,
+      "sha256": "31be0ec4de5c0e59842a5bcc9a2f4623a59d151292190cd6df3b4701aca2c79b"
+    },
+    {
+      "file": "silver-spirit-draft01/silver-spirit-draft01.glb",
+      "bytes": 4613228,
+      "sha256": "9339033bc250a471d17f6009ebf277b8df6fb7a4deaca6eaee811942e8f41659"
+    },
+    {
+      "file": "silver-spirit-draft01/front.png",
+      "bytes": 764857,
+      "sha256": "65e129e72b29ac1fc6c9923eafa3329a2dcae6fbfc6737ddaa1502ce3862e1c3"
+    },
+    {
+      "file": "silver-spirit-draft01/side.png",
+      "bytes": 721447,
+      "sha256": "20e7c7b1d8d11a7eff9db9300f6f2bd9411cf1e496cbac2f8ef002fad783efbc"
+    },
+    {
+      "file": "silver-spirit-draft01/back.png",
+      "bytes": 735092,
+      "sha256": "c036b0d071a8507e333298c53e8bdb7a3a02dccfb01feab2e15fa9e7a21b4adc"
+    },
+    {
+      "file": "silver-spirit-draft01/three-quarter.png",
+      "bytes": 784064,
+      "sha256": "1689a0e92eccee547a6268fc4eae8e29df265b42b573288a06820a4ef36340d5"
+    },
+    {
+      "file": "silver-spirit-draft01/head-front.png",
+      "bytes": 768577,
+      "sha256": "b28e6a24dd2a1701cdb12ebbdfdad4d6471dcf3c2c2587dbdfe9f7ba301f5b90"
+    },
+    {
+      "file": "silver-spirit-draft01/head-side.png",
+      "bytes": 754893,
+      "sha256": "4b6ad1bf16ad4a4cb5519090793e78e2e88a849e75392bb1a0a1868384e55402"
+    },
+    {
+      "file": "silver-spirit-draft01/head-three-quarter.png",
+      "bytes": 768864,
+      "sha256": "e2e230cede37e745a7e3ad64c8371c3dea5982d30d0f84db21666827b3038b81"
+    },
+    {
+      "file": "silver-spirit-draft01/turntable-draft01.mp4",
+      "bytes": 243804,
+      "sha256": "79438ab3f069d375f16f8f57a73c0bbb53ed38e0e1d06fe7507111f5ce8b050a"
+    },
+    {
+      "file": "silver-spirit-draft01/draft-report.json",
+      "bytes": 739,
+      "sha256": "e4935c4cbb99189685d70824b819264aa073e6a7bf2c198d90453dc850fec6f4"
+    },
+    {
+      "file": "silver-spirit-draft01/verification.json",
+      "bytes": 323,
+      "sha256": "f318b623f8c2a4cf8b1c2c8090139b14b1a902d352bad47d1aafc15503485c96"
+    },
+    {
+      "file": "pipeline-test/smoke-report.json",
+      "bytes": 503,
+      "sha256": "d06cbee70ec9b2d6955a8624eebebaaa1797ebb9e462bc6e6fb9dc48277da39e"
+    },
+    {
+      "file": "pipeline-test/pipeline-test.blend",
+      "bytes": 1405216,
+      "sha256": "940d41ed97225a2666907777af29fe2614ad8329c7aa7d0e0658c91c1819893b"
+    },
+    {
+      "file": "pipeline-test/pipeline-test.vrm",
+      "bytes": 168780,
+      "sha256": "6507623985d75b79b4216dcbc93b6ee60364e56a23002fa7a86c450f14e98146"
+    },
+    {
+      "file": "pipeline-test/test-front.png",
+      "bytes": 244588,
+      "sha256": "0659985b9b4fdfc0f42a8bee4517f4248bb208477fcfa5f9818f6e9d6bdd5387"
+    },
+    {
+      "file": "pipeline-test/test-side.png",
+      "bytes": 234082,
+      "sha256": "d64115070aab33714df682723132903a957792ffc3d9c7e62fab247cc8cc06cc"
+    },
+    {
+      "file": "pipeline-test/test-back.png",
+      "bytes": 246711,
+      "sha256": "cf529283df425da83a0512d67d5f3e264ce0a3c5f53e7f1e8d6b1ec04b0b931a"
+    }
+  ],
+  "storage": "Local external directory only; no remote backup or Git LFS configured"
+}

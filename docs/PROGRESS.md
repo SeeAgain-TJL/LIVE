@@ -1,5 +1,22 @@
 # 开发进度
 
+## 2026-10-30 · G2.1 Blender 环境与银蓝星灵基础草稿（可验证交付，未通过视觉验收）
+
+本轮在暂停后继续，保留正式网站、`/guide-lab`、星球/星系/记忆数据与浏览器存储不变。已在无管理员权限下准备可隔离的 Blender 制作环境，并生成一个独立的程序化基础研究草稿；它用于验证建模工程与交付链路，**不是最终原创角色，也没有达到用户提供参考图的还原度**。
+
+- [x] 使用 Blender **4.2.23 LTS** Windows x64 官方便携 ZIP，SHA-256 `82e791475779a7342424a480bdde9a20b43710da9264c60346125aa16cd910cb`；安装在 `%LOCALAPPDATA%\UNIVERSE-OF-ME\tools`，未改 PATH、注册表、系统 Python、执行策略或管理员配置。
+- [x] 安装并验证 VRM Add-on **4.10.2**（官方 `saturday06/VRM-Addon-for-Blender`，SHA-256 `c02baf55b83a409fbc01e5c1912d7c8eff2807ce1a23d20eb6c049d1fb1d469c`）。
+- [x] 最小管线测试：生成技术 mannequin、保存 `.blend`、CPU Cycles 正/侧/背渲染、VRM 1.0 导出/再导入；17 根 humanoid 映射骨骼，导出报告为 `FINISHED`，解析到 `VRMC_vrm.specVersion=1.0`。该 mannequin 仅证明工具链，不是银蓝星灵。
+- [x] 生成独立 `silver-spirit-draft01`：83 个可编辑网格/曲线对象、两张用户基准图以非渲染参考打包进 `.blend`，输出正/侧/背/3/4 与头部近景 PNG、静态 GLB 和 48 帧/12 fps/4 秒真实相机环绕 MP4。草稿未绑定生产骨架、表情、权重或物理，因此未伪装导出 VRM。
+- [x] 重新打开验证：`.blend` 可读、83 个可编辑网格、2 张内嵌参考图；GLB 113 个网格、46 个保留发色顶点色 primitive、无外部 URI。脚本 `py_compile`、Node `--check` 通过。
+- [x] 外部审阅页用隔离 Chrome 验证：7 张图片加载成功；视频元数据 4 秒/480×640，播放后 `currentTime` 从 1.0 前进到约 1.92；390px 视口无横向溢出；无控制台错误。证据见 `character/g2-1/evidence-browser-review.json`，桌面/移动截图与模型文件在仓库外资产目录。
+
+真实视觉限制：当前草稿的脸型、眼睑/五官、发束、耳根毛感、手部、服装裁片和尾部连接仍然粗糙，整体明显偏通用程序化研究模型，不能作为已批准角色效果图或最终 G2.1。下一步必须由人工建模/雕刻流程先精修头部（脸、眼、发、耳），再审查身体、礼服与尾根；只有通过静态外形验收后才做权重、表情、物理和 VRM/网站集成。
+
+资产不进入普通 Git 历史：`.blend`、GLB、MP4、PNG、Blender 安装包及插件均位于 `C:\Users\tingjie.li\Desktop\UNIVERSE-OF-ME-assets\g2-1` 或本地工具目录。仓库仅保存脚本、版本/散列说明和小型 JSON 证据；`package-assets.mjs` 会拒绝把资产目录放进仓库，并生成 `asset-manifest.json`。当前没有启用 Git LFS、云对象存储或异地备份。
+
+应用回归也已在本轮补跑：`npm.cmd run lint`、`npm.cmd run typecheck`、`npm.cmd test`（33/33）和 `npm.cmd run build` 均通过；这些检查只说明现有网站没有被本轮脚本/文档变更破坏，不能替代角色视觉验收。未重跑完整 `test:e2e`，因为本轮没有运行时改动；离线审阅页已用独立 Chrome 单独验证。未合并 main，待提交当前功能分支并创建堆叠 PR。
+
 ## 2026-10-29 · G1.5 当前两图规范化检查 / G2.1 未完成
 
 **用户确认主要方向并授权基础建模验证；本轮完成参考归档与可视化核对资料，未交付真实基础模型、可编辑模型源文件或 360° 转台。G1.5 严格正交重绘仍待完成，G2.1 未通过视觉验收。**

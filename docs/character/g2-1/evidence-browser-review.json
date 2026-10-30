@@ -1,0 +1,66 @@
+{
+  "url": "file:///C:/Users/tingjie.li/Desktop/UNIVERSE-OF-ME-assets/g2-1/review.html",
+  "imageCount": 7,
+  "images": [
+    {
+      "src": "silver-spirit-draft01/front.png",
+      "complete": true,
+      "naturalWidth": 720,
+      "naturalHeight": 960
+    },
+    {
+      "src": "silver-spirit-draft01/side.png",
+      "complete": true,
+      "naturalWidth": 720,
+      "naturalHeight": 960
+    },
+    {
+      "src": "silver-spirit-draft01/back.png",
+      "complete": true,
+      "naturalWidth": 720,
+      "naturalHeight": 960
+    },
+    {
+      "src": "silver-spirit-draft01/three-quarter.png",
+      "complete": true,
+      "naturalWidth": 720,
+      "naturalHeight": 960
+    },
+    {
+      "src": "silver-spirit-draft01/head-front.png",
+      "complete": true,
+      "naturalWidth": 720,
+      "naturalHeight": 960
+    },
+    {
+      "src": "silver-spirit-draft01/head-side.png",
+      "complete": true,
+      "naturalWidth": 720,
+      "naturalHeight": 960
+    },
+    {
+      "src": "silver-spirit-draft01/head-three-quarter.png",
+      "complete": true,
+      "naturalWidth": 720,
+      "naturalHeight": 960
+    }
+  ],
+  "allImagesLoaded": true,
+  "video": {
+    "duration": 4,
+    "width": 480,
+    "height": 640,
+    "readyState": 4,
+    "src": "silver-spirit-draft01/turntable-draft01.mp4"
+  },
+  "videoAdvancedAfterPlay": true,
+  "currentTimeBeforePlay": 1,
+  "currentTimeAfterPlay": 1.9206,
+  "mobileLayout": {
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyScrollWidth": 390
+  },
+  "mobileNoHorizontalOverflow": true,
+  "consoleErrors": []
+}

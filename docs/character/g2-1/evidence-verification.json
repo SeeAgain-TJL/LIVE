@@ -1,0 +1,14 @@
+{
+  "blend_reopened": true,
+  "editable_meshes": 83,
+  "packed_references": 2,
+  "draft_marked": true,
+  "animation_scope": "camera turntable only; no character rig",
+  "glb_meshes": 113,
+  "vertex_colored_primitives": 46,
+  "external_uris": [],
+  "glb_import": [
+    "FINISHED"
+  ],
+  "imported_meshes": 113
+}

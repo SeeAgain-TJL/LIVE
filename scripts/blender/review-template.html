@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>银蓝星灵 · Blender 基础建模草稿 01</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,"Microsoft YaHei",sans-serif;background:#111b2b;color:#e3e9f2}body{max-width:1350px;margin:0 auto;padding:24px;line-height:1.7}h1{font-size:clamp(24px,4vw,36px)}a{color:#9ed5ff}h2{margin-top:36px}.notice{background:#242b38;padding:18px;border-left:4px solid #e4b16c}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:18px}figure{margin:0;background:#1b273a;padding:12px;border-radius:12px}img,video{display:block;width:100%;height:auto}video{max-width:480px;margin:auto}figcaption{padding-top:10px;color:#c3d0e2}li{margin:8px 0}.links{display:flex;flex-wrap:wrap;gap:18px}a:focus-visible{outline:3px solid #efc570;outline-offset:4px}
+</style>
+<h1>银蓝星灵 · 基础建模草稿 01</h1>
+<p class="notice"><strong>真实 Blender 模型与渲染，尚未达到参考图还原要求。</strong> 这是程序化基础体积研究，不是最终人物。脸型、眼睑、刘海、发束、耳根/毛感、手部和服装均需手工精修。渲染上的 DRAFT 标签与工程内说明保持一致。</p>
+<p>Blender 4.2.23 LTS / VRM Add-on 4.10.2 / CPU Cycles。角色工程未绑定最终骨架，GLB 是静态模型；另一个测试人形只用于验证 VRM 导入导出，绝不作为正式角色。</p>
+<div class="links"><a href="silver-spirit-draft01/silver-spirit-draft01.blend" download>可编辑 Blender 工程</a><a href="silver-spirit-draft01/silver-spirit-draft01.glb" download>静态 GLB 模型</a><a href="silver-spirit-draft01/turntable-draft01.mp4" download>下载真实转台视频</a><a href="README.txt">打开与编辑说明</a></div>
+<h2>真实相机环绕 · 48 帧 / 12 fps</h2>
+<video controls playsinline preload="metadata" poster="silver-spirit-draft01/three-quarter.png" src="silver-spirit-draft01/turntable-draft01.mp4"></video>
+<p>固定模型，摄像机实际环绕一圈；没有把参考图片贴到平面上旋转。当前视频 480×640，用于观察体积和接缝，不代表最终画质。</p>
+<h2>正面 / 侧面 / 背面 / 3⁄4</h2>
+<div class="gallery">
+<figure><a href="silver-spirit-draft01/front.png"><img src="silver-spirit-draft01/front.png" alt="草稿正面实际渲染"></a><figcaption>正面 · 脸、头发与身体比例仍需修整</figcaption></figure>
+<figure><a href="silver-spirit-draft01/side.png"><img src="silver-spirit-draft01/side.png" alt="草稿侧面实际渲染"></a><figcaption>侧面 · 检查面部体积、发肩与尾根</figcaption></figure>
+<figure><a href="silver-spirit-draft01/back.png"><img src="silver-spirit-draft01/back.png" alt="草稿背面实际渲染"></a><figcaption>背面 · 发束/衣片分离，毛发未精修</figcaption></figure>
+<figure><a href="silver-spirit-draft01/three-quarter.png"><img src="silver-spirit-draft01/three-quarter.png" alt="草稿四分之三视图"></a><figcaption>3/4 · 基础材质，无最终贴图</figcaption></figure>
+</div>
+<h2>头部近景</h2>
+<div class="gallery">
+<figure><img src="silver-spirit-draft01/head-front.png" alt="头部正面"><figcaption>正面：五官尚不忠实，眼睑/嘴唇需雕刻</figcaption></figure>
+<figure><img src="silver-spirit-draft01/head-side.png" alt="头部侧面"><figcaption>侧面：后脑、发根和耳部过渡需精修</figcaption></figure>
+<figure><img src="silver-spirit-draft01/head-three-quarter.png" alt="头部四分之三视图"><figcaption>3/4：发束偏粗、缺少参考中的细腻表演气质</figcaption></figure>
+</div>
+<h2>下一步应手工编辑</h2>
+<ol><li>先修脸型、眼形、眼睑与鼻唇侧面，获得用户头部视觉认可。</li><li>重整刘海分流、发量、耳根和毛束，避免整齐管状发束与硬边。</li><li>再修身体与手、礼服裁片和单尾连接；复杂宝石/链条后置。</li><li>另存新版本再编辑，原生成工程可追溯。完成静态外形审核前不推进复杂骨架动画与正式网站集成。</li></ol>
+<p>软件、工程、模型、视频均保存在仓库外。未改现有正式引导者、旧 VRM 实验或浏览器中的人生数据。</p>
+</html>
