@@ -1,5 +1,12 @@
 # 技术架构与数据模型
 
+## V4.0-A2 场景边界
+
+`DeepSpace` 将固定背景预算拆为三维远星、中景星团、近景参照，叠加远处程序深空球与现有星云平面；`GalaxyCluster`/`GalaxyDisk` 继续由 ID 派生形态和厚度。`domain/spatial-scene.ts` 提供恒星位置、安全边界、倾斜轨道和弧线包络，均为纯计算。`UniverseScene` 把同一强类型 `StellarSource` 传给照明和 CameraRig，把光源位置传给 PlanetMesh；不从 3D 组件访问 Provider 或写业务档案。`universeOverview` 可接收不属于业务实体的取景边界，避免为恒星伪造 Planet 记录。
+
+`SceneMetrics` 每秒采样帧间隔与渲染资源，投影来自真正渲染的近/远景参照顶点；相机平移、飞行、FOV 均由 Three/OrbitControls 控制。A2 没有 schema、数据库、人物或媒体接口变更。原相机键继续有效，默认新取景只作用于无书签的场景。
+
+
 ## V4.0-A1 渲染与导航（2026-10-30）
 
 `domain/cosmic-visuals.ts` 定义确定性星系外观、空间采样和三档预算；不改变 Galaxy/Planet/Memory schema。`GalaxyCluster` 将三维星点/星尘与实时噪声星盘组合，`CosmicPoints` 每云一个批次并按相机距离平滑减少 drawRange；`CosmicEnvironment` 提供世界坐标恒星和层叠星云平面，非背景视频。没有新增后处理或外部贴图请求。

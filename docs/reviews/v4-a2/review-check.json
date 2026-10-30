@@ -1,0 +1,84 @@
+{
+  "images": [
+    {
+      "file": "before-overview.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "after-overview.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "parallax-left.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "parallax-right.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "galaxy-unclassified-close.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "galaxy-growth-close.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "galaxy-dream-close.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "system-layout.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "system-oblique.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "planet-near.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "memory-arrival.png",
+      "loaded": true,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "file": "mobile.png",
+      "loaded": true,
+      "width": 780,
+      "height": 1688
+    }
+  ],
+  "video": {
+    "duration": 29.48,
+    "width": 1600,
+    "height": 1000,
+    "timeAfterPlayback": 3.2033,
+    "error": null
+  },
+  "networkFailures": []
+}

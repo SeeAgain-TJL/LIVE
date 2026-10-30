@@ -12,9 +12,12 @@ export function withGalaxyMembership(data: UniverseData): UniverseData {
 }
 
 export function galaxyPosition(index: number): Vec3 {
+  // Staggered depths, not a flat golden-angle catalogue. Derived scene positions only.
+  const composition: Vec3[] = [[10, -4, 22], [-22, 16, -38], [37, 18, -118], [-36, -17, -88], [52, -20, -190]];
+  if (index < composition.length) return [...composition[index]];
   const angle = index * 2.399963;
-  const radius = 7 + Math.sqrt(index) * 7;
-  return [Math.cos(angle) * radius, Math.sin(angle) * radius * 0.8, Math.sin(index * 1.7) * 5];
+  const radius = 36 + Math.sqrt(index) * 13;
+  return [Math.cos(angle) * radius, Math.sin(angle) * radius * 0.6, -30 - index * 11];
 }
 
 export type TravelTarget = { kind: "galaxy" | "planet"; id: string };

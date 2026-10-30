@@ -20,13 +20,19 @@ export function identitySeed(id: string): number {
 /** Appearance is derived, never written into the user's Galaxy or Planet records. */
 export function galaxyStyle(id: string) {
   const seed = identitySeed(id), random = seededRandom(seed);
-  return { seed, radius: 6.5 + random() * 3.2, arms: seed % 3 + 2, twist: 3.7 + random() * 2,
-    flatten: 0.65 + random() * 0.35, tilt: [0.55 + random() * 0.95, random() * Math.PI, -0.6 + random() * 1.2] as Vec3,
-    elliptical: seed % 5 === 0, speed: 0.003 + random() * 0.004 };
+  const morphology = seed % 4;
+  return { seed, radius: 6 + Math.pow(random(), 1.5) * 13, arms: morphology === 2 ? 4 : 2, twist: morphology === 3 ? 7 : 3.5 + random() * 2,
+    flatten: morphology === 0 ? 0.64 : 0.72 + random() * 0.28, tilt: [0.32 + random() * 1.18, random() * Math.PI, -0.65 + random() * 1.3] as Vec3,
+    morphology, elliptical: morphology === 0, barred: morphology === 1, speed: 0.0015 + random() * 0.003 };
 }
 export function galaxyOverview(count: number, aspect: number): CameraBookmark {
-  const radius = Math.max(12, ...Array.from({ length: count }, (_, i) => Math.hypot(...galaxyPosition(i)) + 11));
-  const distance = radius / Math.sin(Math.atan(Math.tan(43 * Math.PI / 360) * Math.min(1, Math.max(0.2, aspect))));
+  const halfAngle = Math.atan(Math.tan(43 * Math.PI / 360) * Math.min(1, Math.max(0.2, aspect)));
+  // Fit projected extents, not a huge bounding sphere dominated by the farthest depth.
+  let distance = 76 / Math.min(1, Math.max(.2, aspect));
+  for (let i = 0; i < count; i++) {
+    const [x, y, z] = galaxyPosition(i);
+    distance = Math.max(distance, z + (Math.max(Math.abs(x), Math.abs(y)) + 17) / Math.tan(halfAngle));
+  }
   return { position: [0, distance * 0.15, distance], target: [0, 0, 0] };
 }
 /** Mixed core / arm / halo samples, interleaved so draw-range LOD retains the silhouette. */
@@ -40,9 +46,10 @@ export function galaxySamples(id: string, count: number, dust = false) {
     const arm = Math.floor(random() * style.arms) * Math.PI * 2 / style.arms;
     const spread = (random() + random() + random() - 1.5) * (0.2 + 0.4 * r);
     const angle = core || halo || style.elliptical ? random() * Math.PI * 2 : arm + r * style.twist + spread;
-    const thickness = core ? 0.12 : halo ? 0.08 : 0.014 + 0.025 * r;
+    const thickness = style.elliptical ? 0.4 : core ? 0.18 : halo ? 0.13 : 0.02 + 0.025 * r;
+    const bar = style.barred && r < 0.32 && !core;
     positions.set([Math.cos(angle) * r * style.radius, (random() + random() - 1) * style.radius * thickness,
-      Math.sin(angle) * r * style.radius * style.flatten], i * 3);
+      Math.sin(angle) * r * style.radius * style.flatten * (bar ? 0.28 : 1)], i * 3);
     radii[i] = r;
     sizes[i] = dust ? 0.7 + random() * 1.3 : 0.012 + Math.pow(random(), 8) * 0.1;
   }

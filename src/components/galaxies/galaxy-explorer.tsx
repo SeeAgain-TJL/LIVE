@@ -32,9 +32,14 @@ export function GalaxyExplorer() {
   const [transition, setTransition] = useState(false);
   const activeFlight = useRef(false);
   const arrivalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelFallback = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sequence = useRef(0);
   const handled = useRef("");
   const pendingPlanet = useRef<string | null>(null);
+  const restored = useCallback(() => {
+    if (cancelFallback.current) clearTimeout(cancelFallback.current);
+    cancelFallback.current = null; activeFlight.current = false;
+  }, []);
   const travelGalaxy = params.get("travelGalaxy");
   const travelPlanet = params.get("travelPlanet");
   const trip = params.get("trip") ?? "";
@@ -46,13 +51,17 @@ export function GalaxyExplorer() {
   }, [flight, router]);
   const cancel = useCallback(() => {
     if (arrivalTimer.current) clearTimeout(arrivalTimer.current);
-    arrivalTimer.current = null; activeFlight.current = false; pendingPlanet.current = null;
+    arrivalTimer.current = null; pendingPlanet.current = null;
+    // Keep navigation locked until the camera has returned from cancellation.
+    // Also release a lost/unavailable Canvas; it cannot send a completion event.
+    if (cancelFallback.current) clearTimeout(cancelFallback.current);
+    cancelFallback.current = setTimeout(restored, 3000);
     setFlight(null); setTransition(false);
-  }, []);
+  }, [restored]);
   useEffect(() => {
     const key = (e: KeyboardEvent) => { if (e.key === "Escape" && activeFlight.current) { e.preventDefault(); cancel(); } };
     window.addEventListener("keydown", key);
-    return () => { window.removeEventListener("keydown", key); if (arrivalTimer.current) clearTimeout(arrivalTimer.current); };
+    return () => { window.removeEventListener("keydown", key); if (arrivalTimer.current) clearTimeout(arrivalTimer.current); if (cancelFallback.current) clearTimeout(cancelFallback.current); };
   }, [cancel]);
   useEffect(() => {
     if (travelGalaxy || travelPlanet || flight) return;
@@ -91,7 +100,7 @@ export function GalaxyExplorer() {
   const counts = Object.fromEntries(data.galaxies.map(g => [g.id, data.planets.filter(p => p.galaxyId === g.id).length]));
   const enter = (id: string) => { if (activeFlight.current) return; activeFlight.current = true; pendingPlanet.current = null; cue("galaxyDeparture"); setFlight({ id, nonce: ++sequence.current }); };
   return <main className={`universe-shell galaxy-universe-shell ${transition ? "galaxy-crossing" : ""}`} data-galaxy-flight={flight ? transition ? "crossing" : "flying" : "idle"}>
-    <div className="cosmic-backdrop" /><div className="universe-canvas" aria-label="宇宙中的三维星系"><Scene galaxies={data.galaxies} counts={counts} flight={flight} quality={quality} onEnter={enter} onArrival={arrive} /></div><div className="screen-vignette" aria-hidden="true" />
+    <div className="cosmic-backdrop" /><div className="universe-canvas" aria-label="宇宙中的三维星系"><Scene galaxies={data.galaxies} counts={counts} flight={flight} quality={quality} onEnter={enter} onArrival={arrive} onRestored={restored} /></div><div className="screen-vignette" aria-hidden="true" />
     <div className="galaxy-crossing-veil" aria-hidden="true" />
     <label className="cosmic-quality">画质<select aria-label="宇宙渲染质量" value={quality} disabled={!!flight} onChange={e => setQuality(e.target.value as Quality)}><option value="auto">自动</option><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></label>
     <header className="topbar"><Link href="/" className="brand"><span className="brand-mark"><Orbit size={25} /></span><span>UNIVERSE <em>OF</em> ME<small>我的人生宇宙</small></span></Link><div className="galaxy-top-actions"><button className="text-button" onClick={() => { try { exportData(); setNotice("已导出 JSON 元数据；媒体原文件请单独备份。"); } catch (cause) { setNotice((cause as Error).message); } }}><Download size={16} />导出档案</button><button className="button" onClick={() => setCreating(true)}><Plus size={17} />创建星球</button></div></header>
@@ -100,7 +109,7 @@ export function GalaxyExplorer() {
       <div className="galaxy-list">{data.galaxies.filter(g => g.name.includes(query.trim())).map(g => <article key={g.id}><button onClick={() => enter(g.id)} aria-label={`进入星系：${g.name}`}><i style={{ background: g.color }} /><span><strong>{g.name}</strong><small>{counts[g.id]} 颗星球{counts[g.id] === 0 ? " · 等待你的故事" : ""}</small></span><ArrowRight size={17} /></button><Link href={`/galaxy/${encodeURIComponent(g.id)}`} aria-label={`直接打开星系：${g.name}`}>直接进入 ↗</Link></article>)}</div>
       {data.galaxies.filter(g => g.name.includes(query.trim())).length === 0 && <p role="status">没有找到这片星系。</p>}
     </aside>
-    <div className="galaxy-navigation-hint">点击星系飞近并进入 · 拖动旋转 · 滚轮缩放</div>
+    <div className="galaxy-navigation-hint">点击星系进入 · 拖动旋转 · 右键拖动平移 · 滚轮缩放</div>
     <p className={`galaxy-local-note ${notice ? "has-notice" : ""}`} role="status">{notice || "本地开发版 · 资料仅保存在此浏览器，请单独备份媒体原文件。"}</p>
     {flight && <div className="galaxy-flight-actions" role="status"><span>正在走近{data.galaxies.find(g => g.id === flight.id)?.name}</span><button onClick={cancel}>取消飞行 · ESC</button><button onClick={() => arrive(flight.id)}>跳过飞行，直接进入</button></div>}
     {creating && <PlanetEditor defaultGalaxyId={DEFAULT_GALAXY.id} onClose={() => setCreating(false)} onSaved={(id, galaxyId) => { setCreating(false); router.push(`/galaxy/${encodeURIComponent(galaxyId)}?planet=${encodeURIComponent(id)}`); }} />}
