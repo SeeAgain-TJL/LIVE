@@ -1,3 +1,4 @@
+import { openOrbSpace } from "./hud-actions";
 import { expect, test } from "@playwright/test";
 
 test("create a named world, fly into its archive and retain a text memory after reload", async ({ page }) => {
@@ -26,11 +27,11 @@ test("create a named world, fly into its archive and retain a text memory after 
   await expect(page.locator(".memory-detail-panel")).toHaveCount(0);
   phase = "reload";
   await page.reload();
-  await page.getByRole("button", { name: "列表管理", exact: true }).click();
+  await page.getByRole("button", { name: "记忆管理", exact: true }).click();
   await page.getByRole("button", { name: "打开记忆：验收记录", exact: true }).click();
   await expect(page.getByRole("heading", { name: "验收记录" })).toBeVisible();
   await page.getByRole("button", { name: "关闭记忆详情" }).click();
-  await page.getByRole("button", { name: "记忆球空间", exact: true }).click();
+  await openOrbSpace(page);
   await expect(page.locator(".memory-space-canvas canvas")).toBeVisible();
   await page.screenshot({ path: "test-results/archive-desktop.png", fullPage: true });
   expect(errors).toEqual([]);

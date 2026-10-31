@@ -6,16 +6,16 @@ import { environmentBodies, systemDebris, safeEnvironmentCamera } from "../src/d
 import { stellarSource } from "../src/domain/spatial-scene.ts";
 import { createSeed } from "../src/data/seed.ts";
 
-test("staged travel starts/stops gently, is monotone and provides a deliberate arrival hold", () => {
+test("staged travel starts/stops gently, is monotone and has no arrival hold", () => {
   assert.equal(stagedProgress(-1), 0); assert.equal(stagedProgress(2), 1);
   let previous = 0;
   for (let i = 0; i <= 1000; i++) { const p = stagedProgress(i / 1000); assert(p >= previous && p <= 1); previous = p; }
   assert(stagedProgress(.001) / .001 < .001);
   assert((1 - stagedProgress(.999)) / .001 < .001);
-  assert.deepEqual([journeyPhase(.1), journeyPhase(.4), journeyPhase(.9), journeyPhase(1, true)], ["starting", "cruising", "slowing", "settling"]);
+  assert.deepEqual([journeyPhase(.1), journeyPhase(.4), journeyPhase(.9), journeyPhase(1)], ["starting", "cruising", "slowing", "slowing"]);
   assert(TRAVEL_PROFILES.comfort.galaxy > TRAVEL_PROFILES.standard.galaxy);
   assert(TRAVEL_PROFILES.standard.planet > TRAVEL_PROFILES.fast.planet);
-  assert(TRAVEL_PROFILES.comfort.hold >= 1);
+  assert(!("hold" in TRAVEL_PROFILES.comfort));
   assert(TRAVEL_PROFILES.comfort.arrivalScale < TRAVEL_PROFILES.fast.arrivalScale);
 });
 

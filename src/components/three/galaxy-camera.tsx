@@ -11,7 +11,7 @@ import { readCosmicCamera, saveCosmicCamera } from "@/data/cosmic-preferences";
 import { comfortableProgress, stagedProgress, journeyPhase, TRAVEL_PROFILES, type TravelMode } from "@/domain/travel";
 
 export interface GalaxyFlight { id: string; nonce: number }
-interface Motion { start: Vector3; targetStart: Vector3; target: Vector3; to: Vector3; progress: number; rest: number; duration: number; hold: number; id: string | null }
+interface Motion { start: Vector3; targetStart: Vector3; target: Vector3; to: Vector3; progress: number; duration: number; id: string | null }
 export function GalaxyCamera({ galaxies, flight, onArrival, onRestored, reduced, travelMode }: { galaxies: Galaxy[]; flight: GalaxyFlight | null; onArrival: (id: string) => void; onRestored: () => void; reduced: boolean; travelMode: TravelMode }) {
   const controls = useRef<ComponentRef<typeof OrbitControls>>(null);
   const { camera, size } = useThree();
@@ -30,7 +30,7 @@ export function GalaxyCamera({ galaxies, flight, onArrival, onRestored, reduced,
     }
     if (!flight) {
       if (origin.current) {
-        animation.current = { start: camera.position.clone(), targetStart: control.target.clone(), target: new Vector3(...origin.current.target), to: new Vector3(...origin.current.position), progress: 0, rest: 0, duration: profile.cancel, hold: 0, id: null };
+        animation.current = { start: camera.position.clone(), targetStart: control.target.clone(), target: new Vector3(...origin.current.target), to: new Vector3(...origin.current.position), progress: 0, duration: profile.cancel, id: null };
         origin.current = null;
       } else if (!animation.current) onRestored();
       return;
@@ -43,7 +43,7 @@ export function GalaxyCamera({ galaxies, flight, onArrival, onRestored, reduced,
     const target = new Vector3(...galaxyPosition(index));
     const direction = camera.position.clone().sub(target).normalize();
     const to = target.clone().addScaledVector(direction, galaxyStyle(flight.id).radius * 1.2 + 4);
-    animation.current = { start: camera.position.clone(), targetStart: control.target.clone(), target, to, progress: 0, rest: 0, duration: profile.galaxy, hold: profile.hold, id: flight.id };
+    animation.current = { start: camera.position.clone(), targetStart: control.target.clone(), target, to, progress: 0, duration: profile.galaxy, id: flight.id };
     const p = camera.position.clone(), t = control.target.clone();
     control.enabled = false; control.enableDamping = false; control.update(); camera.position.copy(p); control.target.copy(t); control.update();
   }, [camera, galaxies, flight, size.width, size.height, onRestored, travelMode]);
@@ -64,11 +64,10 @@ export function GalaxyCamera({ galaxies, flight, onArrival, onRestored, reduced,
     if (!a) return;
     const step = Math.min(dt, .05);
     if (a.progress < 1) a.progress = Math.min(1, a.progress + step / (reduced ? .12 : a.duration));
-    else a.rest += step;
     const t = a.id ? comfortableProgress(a.progress, a.start.distanceTo(a.target), a.to.distanceTo(a.target)) : stagedProgress(a.progress);
     camera.position.lerpVectors(a.start, a.to, t); control.target.lerpVectors(a.targetStart, a.target, t); control.update();
-    gl.domElement.dataset.travelPhase = a.id ? journeyPhase(a.progress, a.progress === 1) : "cancelling";
-    if (a.progress === 1 && a.rest >= (reduced ? 0 : a.hold)) {
+    gl.domElement.dataset.travelPhase = a.id ? journeyPhase(a.progress) : "cancelling";
+    if (a.progress === 1) {
       animation.current = null;
       if (a.id) onArrival(a.id);
       else { control.enabled = true; control.enableDamping = !reduced; onRestored(); }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useUniverse } from "@/components/providers/universe-provider";
 import { useGuide } from "./guide-provider";
 import { GuideCharacter } from "./guide-character";
@@ -16,8 +17,18 @@ export function GlobalGuide() {
   const { travel, openMemory, activePlanet, parentHref } = useGuideNavigation(data);
   const [search, setSearch] = useState<{ mode: "destinations" | "memories"; recent: boolean } | null>(null);
   const [forceOpen, setForceOpen] = useState(false);
+  const [cinema, setCinema] = useState(false);
+  const pathname = usePathname();
+  useEffect(() => {
+    const main = document.querySelector("main");
+    const update = () => setCinema(main?.getAttribute("data-hud-mode") === "cinema");
+    const frame = requestAnimationFrame(update);
+    const observer = new MutationObserver(update);
+    if (main) observer.observe(main, { attributes: true, attributeFilter: ["data-hud-mode"] });
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); };
+  }, [pathname]);
   const reading = !!binding?.reading;
-  const compact = preferences.hidden || reading || planetPreview;
+  const compact = preferences.hidden || reading || planetPreview || cinema;
   const { element, style, dragging, consumeDragClick, events } = useGuideFloating(preferences, updatePreferences, compact);
   const character = useRef<HTMLButtonElement>(null);
   const panels = useRef<HTMLDivElement>(null);
@@ -30,9 +41,8 @@ export function GlobalGuide() {
   if (!preferencesReady) return null;
   const open = () => {
     if (consumeDragClick()) return;
-    if (!data || error) { updatePreferences({ hidden: false, dialogueOpen: false }); dismissBubble(); return; }
-    if (reading || planetPreview) { setForceOpen(!dialogueVisible); updatePreferences({ dialogueOpen: !dialogueVisible }); }
-    else if (preferences.hidden) updatePreferences({ hidden: false, dialogueOpen: true });
+    if (preferences.hidden) { setForceOpen(true); updatePreferences({ hidden: false, dialogueOpen: true }); }
+    else if (reading || planetPreview) { setForceOpen(!dialogueVisible); updatePreferences({ dialogueOpen: !dialogueVisible }); }
     else updatePreferences({ dialogueOpen: !preferences.dialogueOpen });
     setSearch(null); dismissBubble();
   };
@@ -40,10 +50,11 @@ export function GlobalGuide() {
     if (event.key === "Escape" && !document.querySelector("dialog[open]") && (search || dialogueVisible)) { event.preventDefault(); event.stopPropagation(); closePanel(); }
   }}>
     <button ref={character} className="guide-character-button" aria-label={preferences.hidden ? "显示记忆引导者" : "展开记忆引导者"} aria-describedby="guide-movement-help" aria-expanded={dialogueVisible || !!search} onClick={open} {...events}>
-      {preferences.hidden ? <><Sparkles size={22} /><span>显示引导者</span></> : <><GuideCharacter state={state} /><span className="guide-character-hint">{compact ? "记忆引导者" : "点击交谈 · 拖动移动"}</span></>}
+      {preferences.hidden || compact ? <><Sparkles size={22} /><span className="sr-only">记忆引导者</span></> : <GuideCharacter state={state} />}
     </button>
     {!preferences.hidden && !reading && !planetPreview && !dialogueVisible && !search && autoBubble && !dragging && <div className="companion-bubble"><p className="global-guide-message" aria-live="polite">{message}</p><button aria-label="关闭角色提示" onClick={dismissBubble}><X size={16} /></button></div>}
     <div ref={panels} className="companion-panels">
+      {dialogueVisible && (!data || error) && <section className="companion-dialogue" role="status"><header><strong>记忆引导者</strong><button className="guide-small-button" aria-label="收起记忆引导者" onClick={closePanel}><X size={18} /></button></header><p>档案暂时无法读取。请先处理页面上的存储提示；不会重置或覆盖你的记录。</p><button onClick={() => updatePreferences({ hidden: true, dialogueOpen: false })}>隐藏人物</button></section>}
       {dialogueVisible && data && <GuideDialogue onClose={closePanel} activePlanet={activePlanet} parentHref={parentHref} onSearch={(mode, recent = false) => { say(mode === "memories" ? "我会在你保存的时光中寻找。" : "想去哪里？我们慢慢找。", "thinking"); setSearch({ mode, recent }); }} />}
       {search && data && !preferences.hidden && <GuideSearchPanel data={data} initialMode={search.mode} recent={search.recent} onActionComplete={() => { setSearch(null); setForceOpen(false); updatePreferences({ dialogueOpen: false }); }} onClose={() => { setSearch(null); updatePreferences({ dialogueOpen: true }); character.current?.focus(); }} onTravel={target => { if (travel(target)) { setSearch(null); updatePreferences({ dialogueOpen: false }); } }} onOpenMemory={id => { if (openMemory(id)) { setSearch(null); updatePreferences({ dialogueOpen: false }); } }} />}
     </div>

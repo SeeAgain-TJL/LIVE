@@ -90,3 +90,9 @@ body:has(.is-cinema) .guide-character-visual { filter: drop-shadow(0 0 5px #b5dd
 .galaxy-universe-shell .cosmic-controls { z-index: 31; }
 .world-first-shell:has(.world-management) ~ .companion, .companion.is-reading { z-index: 45; }
 @media(max-width:760px) { body:has(.world-first-shell) .companion.is-reading { top: 74px !important; bottom: auto; } }
+.is-cinema .galaxy-scene-label, .is-cinema .planet-label { visibility: hidden !important; }
+body:has(.is-cinema) .companion .guide-character-button { background: #0b1c2bd9; border: 1px solid #a9c9e54d; }
+.world-management .memory-search-group { flex: 0 0 100%; }
+.world-management .memory-year { flex: 0 0 106px; }
+.world-management .memory-search { min-width: 0; }
+.world-management .memory-management-group { flex-wrap: wrap; width: 100%; }

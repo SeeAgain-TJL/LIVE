@@ -1,3 +1,4 @@
+import { openNavigation } from "./hud-actions";
 import { expect, test } from "@playwright/test";
 import { createSeed } from "../../src/data/seed";
 
@@ -23,7 +24,7 @@ test("real lateral pan separates foreground from distant stars and orbit visibil
   for (let i = 0; i < 3; i++) expect(after.camera[i] - before.camera[i]).toBeCloseTo(after.target[i] - before.target[i], 4);
   expect(after.fov).toBeCloseTo(43, 5);
   await expect(page.locator("main")).toHaveAttribute("data-galaxy-flight", "idle");
-  await page.getByRole("link", { name: "直接打开星系：未分类星系", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("link", { name: "直接打开星系：未分类星系", exact: true }).click();
   await expect(page.locator(".planet-label")).toHaveCount(5);
   await expect.poll(async () => (await metrics()).calls).toBeGreaterThan(20);
   const withOrbits = (await metrics()).calls;
@@ -39,15 +40,15 @@ test("fixed field of view stays steady on Escape and cancelling blocks conflicti
   const metrics = async () => JSON.parse((await page.locator("canvas").first().getAttribute("data-render-metrics")) ?? "{}");
   await expect.poll(async () => (await metrics()).fov).toBe(43);
   const before = await metrics();
-  await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
   await expect(page.locator("canvas").first()).toHaveAttribute("data-travel-phase", "cruising");
   expect((await metrics()).fov).toBe(43);
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
   await expect(page.locator("main")).toHaveAttribute("data-galaxy-flight", "idle");
   await expect.poll(async () => Math.hypot(...(await metrics()).camera.map((n: number, i: number) => n - before.camera[i]))).toBeLessThan(.1);
   expect((await metrics()).fov).toBeCloseTo(43, 5);
-  await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/unclassified$/);
 });
 
@@ -62,12 +63,12 @@ test("unavailable WebGL cannot leave cancellation locked and direct navigation r
   await page.goto("/");
   await expect(page.locator(".galaxy-render-fallback")).toBeVisible();
   const raw = await page.evaluate(() => localStorage.getItem("universe-of-me:data:v1"));
-  await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("button", { name: "进入星系：未分类星系", exact: true }).click();
   await page.keyboard.press("Escape");
   await page.waitForTimeout(3200); // Fallback unlock is bounded when no camera can emit completion.
-  await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
   await expect(page.locator("main")).toHaveAttribute("data-galaxy-flight", "flying");
-  await page.getByRole("link", { name: "直接打开星系：友情", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("link", { name: "直接打开星系：友情", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/friendship$/);
   expect(await page.evaluate(() => localStorage.getItem("universe-of-me:data:v1"))).toBe(raw);
 });

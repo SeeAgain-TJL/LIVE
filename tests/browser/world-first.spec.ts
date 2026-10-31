@@ -66,6 +66,12 @@ test("continuous journey reaches world directly, reads actual memory anchors, pe
   await expect(page.locator(".memory-detail-body")).toContainText("自动化测试主动保存");
   await expect.poll(() => page.locator(".memory-detail-panel img").evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(640);
   await page.screenshot({ path: info.outputPath("05-read-original.png") });
+  await page.getByRole("button", { name: "展开记忆引导者", exact: true }).click();
+  await page.getByRole("button", { name: "隐藏记忆引导者", exact: true }).click();
+  await page.getByRole("button", { name: "显示记忆引导者", exact: true }).click();
+  await expect(page.locator(".companion-dialogue")).toBeVisible();
+  await expect(page.locator(".memory-detail-panel")).toBeVisible();
+  await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
   await page.getByRole("button", { name: "编辑记忆", exact: true }).click();
   await page.getByLabel("写下你的记忆", { exact: true }).fill("修改后刷新仍保留，媒体也仍可读取。");
   await page.getByRole("button", { name: "保存记忆", exact: true }).click();

@@ -1,3 +1,4 @@
+import { openManager, openOrbSpace } from "./hud-actions";
 import { openGuide } from "./guide-actions";
 import { expect, test, type Page } from "@playwright/test";
 import { PerspectiveCamera, Vector3 } from "three";
@@ -24,8 +25,10 @@ async function writeMemory(page: Page, title: string, date = "2026-10-01") {
 }
 
 async function clickSingleOrb(page: Page) {
+  await openOrbSpace(page);
   const canvas = page.locator(".memory-space-canvas canvas");
   await expect(canvas).toBeVisible();
+  await expect.poll(() => canvas.getAttribute("data-render-metrics")).toBeTruthy();
   // Centered single-orb overview; this is a real raycast into the WebGL scene.
   const size = await canvas.boundingBox();
   await canvas.click({ position: { x: size!.width / 2, y: size!.height / 2 } });
@@ -36,7 +39,9 @@ async function snapshot(page: Page) {
 }
 
 async function clickOverviewOrb(page: Page, index: number, total: number) {
+  await openOrbSpace(page);
   const canvas = page.locator(".memory-space-canvas canvas");
+  await expect.poll(() => canvas.getAttribute("data-render-metrics")).toBeTruthy();
   const box = (await canvas.boundingBox())!;
   const view = memoryView(total, -1, box.width / box.height);
   const camera = new PerspectiveCamera(46, box.width / box.height, 0.1, 1000);
@@ -58,7 +63,7 @@ test("single orb closes with × and Escape, reopens by raycast, and never edits 
   await expect(page.locator(".memory-detail-panel")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.locator(".memory-detail-panel")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "列表管理", exact: true })).toBeFocused();
+  await expect(page.getByRole("button", { name: "记忆管理", exact: true })).toBeFocused();
   await clickSingleOrb(page);
   await expect(page.locator(".memory-detail-panel")).toBeVisible();
   await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
@@ -73,10 +78,9 @@ test("生命世界 uses the real memory archive and links an anchor back to its 
   await enterNewPlanet(page);
   await writeMemory(page, "世界锚点");
   await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
-  await page.locator(".world-toggle").click();
   await expect(page.locator(".planet-world-canvas canvas")).toBeVisible();
-  await expect(page.locator(".world-memory-index button")).toHaveCount(1);
-  await page.locator(".world-memory-index button").first().click();
+  await expect(page.locator(".planet-world-canvas canvas")).toBeVisible();
+  await openManager(page); await openManager(page); await page.getByRole("button", { name: "打开记忆：世界锚点", exact: true }).click();
   await expect(page.locator(".memory-detail-panel")).toBeVisible();
   expect(await snapshot(page)).toContain("世界锚点");
   expect(errors).toEqual([]);
@@ -106,10 +110,10 @@ test("switch memories, give nested dialogs Escape priority, edit/save and retain
   await page.keyboard.press("Escape");
   await clickOverviewOrb(page, 0, 2);
   await expect(page.locator(".memory-detail-panel h2")).toHaveText("第二段记忆");
-  await page.getByRole("button", { name: "列表管理", exact: true }).click();
-  await page.getByRole("button", { name: "打开记忆：已编辑的记忆", exact: true }).click();
+  await page.getByRole("button", { name: "记忆管理", exact: true }).click();
+  await openManager(page); await page.getByRole("button", { name: "打开记忆：已编辑的记忆", exact: true }).click();
   await expect(page.locator(".memory-detail-panel h2")).toHaveText("已编辑的记忆");
-  await page.getByRole("button", { name: "打开记忆：第二段记忆", exact: true }).click();
+  await openManager(page); await page.getByRole("button", { name: "打开记忆：第二段记忆", exact: true }).click();
   await expect(page.locator(".memory-detail-panel h2")).toHaveText("第二段记忆");
   await page.getByRole("button", { name: "删除记忆", exact: true }).click();
   await page.keyboard.press("Escape");
@@ -117,17 +121,17 @@ test("switch memories, give nested dialogs Escape priority, edit/save and retain
   await expect(page.locator(".memory-detail-panel")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.locator(".memory-detail-panel")).toHaveCount(0);
-  await page.getByLabel("搜索记忆", { exact: true }).fill("已编辑");
+  await openManager(page); await page.getByLabel("搜索记忆", { exact: true }).fill("已编辑");
   await expect(page.locator(".memory-list-entry")).toHaveCount(1);
   await expect(page.locator(".memory-detail-panel")).toHaveCount(0);
-  await page.getByRole("button", { name: "打开记忆：已编辑的记忆", exact: true }).click();
+  await openManager(page); await page.getByRole("button", { name: "打开记忆：已编辑的记忆", exact: true }).click();
   expect(await page.locator(".memory-detail-content").evaluate(element => element.scrollHeight > element.clientHeight)).toBe(true);
   await page.screenshot({ path: "test-results/memory-reading-desktop.png", fullPage: true });
   await page.reload();
   await expect(page.locator(".memory-detail-panel")).toHaveCount(0);
-  await page.getByRole("button", { name: "列表管理", exact: true }).click();
+  await page.getByRole("button", { name: "记忆管理", exact: true }).click();
   await expect(page.locator(".memory-list-entry")).toHaveCount(2);
-  await page.getByRole("button", { name: "打开记忆：已编辑的记忆", exact: true }).click();
+  await openManager(page); await page.getByRole("button", { name: "打开记忆：已编辑的记忆", exact: true }).click();
   await expect(page.locator(".memory-detail-date")).toContainText("2025-05-06");
   await expect(page.locator(".memory-detail-body")).toContainText("长篇阅读验收。");
   await page.keyboard.press("Escape");
@@ -176,7 +180,7 @@ test("guide uses real filters, image/video survive refresh and media deletion re
   await page.getByRole("button", { name: "按年份查找", exact: true }).click();
   await expect(page.getByLabel("按年份查找", { exact: true })).toBeFocused();
   await page.getByLabel("按年份查找", { exact: true }).fill("2024");
-  await expect(page.locator(".memory-orb-label")).toHaveCount(1);
+  await expect(page.locator(".memory-list-entry")).toHaveCount(1);
   await openGuide(page);
   await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.getByRole("button", { name: "关键词搜索", exact: true }).click();
@@ -194,7 +198,7 @@ test("guide uses real filters, image/video survive refresh and media deletion re
   const stored = JSON.parse((await snapshot(page))!);
   expect(stored.memories).toHaveLength(0); expect(stored.media).toHaveLength(0);
   await page.reload();
-  await expect(page.getByRole("heading", { name: "这里还没有记忆", exact: true })).toBeVisible();
+  await expect(page.locator(".planet-world-canvas canvas")).toBeVisible();
   await openGuide(page);
   await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.getByRole("button", { name: "照片记忆", exact: true }).last().click();
@@ -222,7 +226,7 @@ test("mobile drawer and guide remain readable, fit viewport and preserve a saved
   await page.getByLabel("写下你的记忆", { exact: true }).fill("手机编辑后保留的文字。");
   await page.getByRole("button", { name: "保存记忆", exact: true }).click();
   await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
-  await expect(page.locator(".global-guide-message")).toBeVisible();
+  await openGuide(page); await expect(page.locator(".global-guide-message")).toBeVisible();
   expect(await page.locator(".global-guide-message").evaluate(element => parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(16);
   await openGuide(page);
   await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
@@ -230,8 +234,8 @@ test("mobile drawer and guide remain readable, fit viewport and preserve a saved
   await page.screenshot({ path: "test-results/memory-space-mobile.png", fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.reload();
-  await page.getByRole("button", { name: "列表管理", exact: true }).click();
-  await page.getByRole("button", { name: "打开记忆：手机验收", exact: true }).click();
+  await page.getByRole("button", { name: "记忆管理", exact: true }).click();
+  await openManager(page); await page.getByRole("button", { name: "打开记忆：手机验收", exact: true }).click();
   await expect(page.locator(".memory-detail-body")).toHaveText("手机编辑后保留的文字。");
   await page.setViewportSize({ width: 360, height: 740 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

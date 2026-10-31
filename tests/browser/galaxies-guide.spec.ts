@@ -1,3 +1,4 @@
+import { openNavigation, openPlanets, openManager } from "./hud-actions";
 import { openGuide } from "./guide-actions";
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
@@ -41,7 +42,7 @@ test("galaxy hierarchy, stable companion, edge snapping and guided planet journe
   await expect(page.locator(".global-guide")).toHaveClass(/at-left/);
   await openGuide(page);
   await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
-  await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/growth$/);
   expect(await companion!.evaluate(el => el.isConnected)).toBe(true);
   await expect(page.getByRole("button", { name: "展开记忆引导者", exact: true })).toBeVisible();
@@ -107,11 +108,11 @@ test("legacy unclassified archive and existing IndexedDB media survive migration
     localStorage.setItem("universe-of-me:data:v1", raw);
   }, { raw, bytes });
   await page.reload();
-  await page.getByRole("link", { name: "直接打开星系：未分类星系", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("link", { name: "直接打开星系：未分类星系", exact: true }).click();
   await expect(page.locator(".planet-list-item")).toHaveCount(1);
-  await page.locator(".planet-list-item").click();
+  await openPlanets(page); await page.locator(".planet-list-item").click();
   await page.getByRole("link", { name: "直接打开档案 ↗", exact: true }).click();
-  await page.getByRole("button", { name: "列表管理", exact: true }).click();
+  await page.getByRole("button", { name: "记忆管理", exact: true }).click();
   await page.getByRole("button", { name: "打开记忆：迁移前照片", exact: true }).click();
   await expect(page.locator(".memory-detail-body")).toHaveText("这是迁移前的正文。");
   await expect.poll(() => page.locator(".memory-detail-panel img").evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(640);
@@ -124,12 +125,12 @@ test("legacy unclassified archive and existing IndexedDB media survive migration
   await page.locator(".global-guide-search").getByRole("button", { name: "照片记忆", exact: true }).click();
   await expect.poll(() => page.locator(".memory-detail-panel img").evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(640);
   await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
-  await page.locator(".planet-info-menu summary").click();
+  await openManager(page); await page.locator(".world-planet-info summary").click();
   await page.getByRole("button", { name: "编辑星球资料", exact: true }).click();
   await page.getByLabel("星球名称", { exact: false }).fill("迁移后重新命名");
   await page.getByRole("combobox", { name: "所属星系", exact: true }).selectOption("friendship");
   await page.getByRole("button", { name: "保存星球", exact: true }).click();
-  await expect(page.locator(".memory-palace-title h1")).toHaveText("迁移后重新命名");
+  await expect(page.locator(".world-title h1")).toHaveText("迁移后重新命名");
   await page.getByRole("link", { name: "返回所属星系", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/friendship\?planet=/);
   await page.reload();
@@ -156,7 +157,7 @@ test("mobile galaxy and destination lists stay usable within viewport", async ({
   await page.getByRole("button", { name: "关闭引导查找", exact: true }).click();
   await openGuide(page);
   await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
-  await page.getByRole("link", { name: "直接打开星系：成长", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("link", { name: "直接打开星系：成长", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/growth$/);
   await expect(page.getByRole("button", { name: "展开记忆引导者", exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

@@ -1,3 +1,4 @@
+import { openNavigation } from "./hud-actions";
 import { expect, test, type Page } from "@playwright/test";
 import { createSeed } from "../../src/data/seed";
 import { openGuide } from "./guide-actions";
@@ -27,7 +28,7 @@ test("character-only default, 2D drag versus click, saved edge/height, dialogue/
   await expect(character).toBeVisible();
   const raw = await archive(page);
   await expect(page.getByRole("region", { name: "引导者对话", exact: true })).toHaveCount(0);
-  await expect(page.locator(".guide-asset-preview")).toHaveText("立绘开发预览");
+  await expect(page.locator(".guide-asset-preview")).toHaveCount(0);
   const b = (await character.boundingBox())!;
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2); await page.mouse.down();
   await page.mouse.move(1160, 210, { steps: 12 }); await page.mouse.up();
@@ -49,7 +50,7 @@ test("character-only default, 2D drag versus click, saved edge/height, dialogue/
   await page.reload();
   await expect(page.getByRole("button", { name: "显示记忆引导者", exact: true })).toBeVisible();
   await expect(page.locator(".guide-character-art")).toHaveCount(0);
-  await page.getByRole("link", { name: "直接打开星系：成长", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("link", { name: "直接打开星系：成长", exact: true }).click();
   await expect(page.getByRole("button", { name: "显示记忆引导者", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "显示记忆引导者", exact: true }).click();
   await page.keyboard.press("Escape");
@@ -59,7 +60,7 @@ test("character-only default, 2D drag versus click, saved edge/height, dialogue/
   await expect.poll(() => character.evaluate(el => {
     const r = el.getBoundingClientRect();
     return [...document.querySelectorAll("main .search-box, main .galaxy-back-navigation")].every(node => {
-      const b = node.getBoundingClientRect(); return !node.getClientRects().length || r.right <= b.left || r.left >= b.right || r.bottom <= b.top || r.top >= b.bottom;
+      const b = node.getBoundingClientRect(); return !node.getClientRects().length || getComputedStyle(node).visibility === "hidden" || r.right <= b.left || r.left >= b.right || r.bottom <= b.top || r.top >= b.bottom;
     });
   })).toBe(true);
   expect(await archive(page)).toBe(raw);
@@ -82,7 +83,7 @@ test("guide follows actual galaxy/planet flight and searches real memories acros
   await expect(page.locator("main")).toHaveAttribute("data-journey-phase", "flying");
   await expect(page.locator(".global-guide-message")).toHaveText("找到它了，我们出发吧。");
   await expect(page).toHaveURL(/\/planet\/companion-1$/);
-  await expect(page.locator(".global-guide-message")).toHaveText("这些都是你曾经留下的时光。");
+  await expect(page.locator(".global-guide-message")).toHaveText("欢迎来到你的世界，可以慢慢探索。");
   expect(await instance!.evaluate(el => el.isConnected)).toBe(true);
   await openGuide(page); await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
   await page.getByLabel("引导者记忆搜索", { exact: true }).fill("海风关键词");
@@ -115,9 +116,9 @@ test("guide follows actual galaxy/planet flight and searches real memories acros
   await expect(page.locator(".companion-bubble")).toHaveCount(0);
   // Page navigation can interrupt a flight; it must release the guide's global busy state.
   await page.goto("/");
-  await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("button", { name: "进入星系：成长", exact: true }).click();
   await expect(page.locator(".global-guide")).toHaveAttribute("data-state", "guiding");
-  await page.getByRole("link", { name: "直接打开星系：友情", exact: true }).click();
+  await openNavigation(page);  await page.getByRole("link", { name: "直接打开星系：友情", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/friendship$/);
   await openGuide(page);
   await expect(page.getByRole("button", { name: "带我去看看", exact: true })).toBeEnabled();

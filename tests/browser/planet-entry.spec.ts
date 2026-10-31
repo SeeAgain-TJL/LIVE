@@ -50,8 +50,8 @@ test("single WebGL click enters automatically, ignores repeat clicks and returns
   await expect(page.locator(".global-guide-message")).toHaveText("已经快到了。");
   await page.screenshot({ path: "test-results/planet-approach-desktop.png" });
   await expect(page).toHaveURL(/\/planet\/entry-0$/);
-  await expect(page.locator(".memory-space-canvas canvas")).toBeVisible();
-  await expect(page.locator(".global-guide-message")).toHaveText("这些都是你曾经留下的时光。");
+  await expect(page.locator(".planet-world-canvas canvas")).toBeVisible();
+  await expect(page.locator(".global-guide-message")).toHaveText("欢迎来到你的世界，可以慢慢探索。");
   expect(await companion!.evaluate(el => el.isConnected)).toBe(true);
   expect(await archive(page)).toBe(raw);
   expectView(await bookmark(page), origin);
@@ -68,7 +68,7 @@ test("single WebGL click enters automatically, ignores repeat clicks and returns
   await page.getByRole("button", { name: "保存记忆", exact: true }).click();
   await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
   await page.reload();
-  await page.getByRole("button", { name: "列表管理", exact: true }).click();
+  await page.getByRole("button", { name: "记忆管理", exact: true }).click();
   await page.getByRole("button", { name: "打开记忆：进入后新增", exact: true }).click();
   await expect(page.locator(".memory-detail-body")).toHaveText("进入后编辑仍可保存。");
   await expect.poll(() => page.locator(".memory-detail-panel img").evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(640);
@@ -88,7 +88,7 @@ test("single WebGL click enters automatically, ignores repeat clicks and returns
   expect(errors).toEqual([]);
 });
 
-test("dragging out and back never enters; Escape cancels flight and transition, then another entry works", async ({ page }) => {
+test("dragging out and back never enters; Escape cancels early and late flight, then another entry works", async ({ page }) => {
   const { raw } = await prepare(page);
   const a = await point(page, 0, origin);
   await page.mouse.move(a.x, a.y); await page.mouse.down();
@@ -106,7 +106,7 @@ test("dragging out and back never enters; Escape cancels flight and transition, 
   expectView(await bookmark(page), departure);
   const restored = await point(page, 0, departure);
   await page.mouse.click(restored.x, restored.y);
-  await page.waitForFunction(() => document.querySelector("main")?.getAttribute("data-journey-phase") === "transition", undefined, { polling: "raf" });
+  await page.waitForFunction(() => document.querySelector("main")?.getAttribute("data-journey-phase") === "approaching", undefined, { polling: "raf" });
   await page.keyboard.press("Escape");
   await expect(page.locator("main")).toHaveAttribute("data-journey-phase", "idle");
   await expect(page).toHaveURL(/\/galaxy\/unclassified$/);
@@ -119,7 +119,7 @@ test("mobile tap enters with reduced motion, direct URL return is safe, and auto
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   const { raw, bookmark: mobileOrigin } = await prepare(page, true);
-  await page.getByRole("button", { name: "收起星球列表", exact: true }).click();
+  if (await page.getByRole("button", { name: "收起星球列表", exact: true }).isVisible()) await page.getByRole("button", { name: "收起星球列表", exact: true }).click();
   await openGuide(page);
   await page.getByRole("button", { name: "带我去看看", exact: true }).click();
   await page.getByLabel("飞行与抵达时显示简短提示", { exact: true }).uncheck();
@@ -164,6 +164,10 @@ test("missing WebGL never locks direct URL return or list-based archive access",
     } as typeof getContext;
   });
   await page.goto("/planet/entry-0");
+  await expect(page.locator(".world-fallback")).toBeVisible();
+  await page.getByRole("button", { name: "记忆管理", exact: true }).click();
+  await expect(page.getByLabel("搜索记忆", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "返回世界", exact: true }).click();
   await page.getByRole("link", { name: "返回所属星系", exact: true }).click();
   await expect(page).toHaveURL(/\/galaxy\/unclassified/);
   await expect(page.locator(".scene-fallback")).toContainText("3D 信号暂不可用");

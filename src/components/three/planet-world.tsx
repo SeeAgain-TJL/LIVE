@@ -1,7 +1,7 @@
 ﻿"use client";
 
 /* eslint-disable react-hooks/immutability -- R3F owns these mutable camera and canvas objects, not React render state. */
-import { Component, useEffect, useRef, useState, type ComponentRef, type ReactNode } from "react";
+import { Component, useCallback, useEffect, useRef, useState, type ComponentRef, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import { Vector3, type Group } from "three";
@@ -13,9 +13,10 @@ import { WorldEnvironment } from "./world-environment";
 import { SceneMetrics } from "./scene-metrics";
 
 interface Props { planet: Planet; memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void; quality: Quality; night?: boolean; onReady?: () => void; }
-class WorldBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
+class WorldBoundary extends Component<{ children: ReactNode; fallback: ReactNode; onUnavailable: () => void }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
+  componentDidCatch() { this.props.onUnavailable(); }
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
@@ -64,14 +65,16 @@ function WorldContent(props: Props & { low: boolean; labels: React.RefObject<HTM
 }
 export function PlanetWorld(props: Props) {
   const labels = useRef<HTMLDivElement>(null!), deviceLow = useLowPowerDevice();const low = props.quality === 'low' || (props.quality === 'auto' && deviceLow);
-  const [lost, setLost] = useState(false), [page, setPage] = useState(0);
+  const [lost, setLost] = useState(false), [page, setPage] = useState(0), [attempt, setAttempt] = useState(0);
+  const { onReady } = props;
+  const unavailable = useCallback(() => { setLost(true); onReady?.(); }, [onReady]);
   const pages = Math.max(1, Math.ceil(props.memories.length / WORLD_BATCH_SIZE)), current = Math.min(page, pages - 1);
   const batch = props.memories.slice(current * WORLD_BATCH_SIZE, (current + 1) * WORLD_BATCH_SIZE);
-  const fallback = <div className="world-fallback" role="status"><h2>暂时无法打开三维世界</h2><p>请从右上角「记忆管理」继续阅读和编辑，所有档案仍然保留。</p><button className="button secondary" onClick={() => setLost(false)}>重试场景</button></div>;
+  const fallback = <div className="world-fallback" role="status"><h2>暂时无法打开三维世界</h2><p>请从右上角「记忆管理」继续阅读和编辑，所有档案仍然保留。</p><button className="button secondary" onClick={() => { setLost(false);setAttempt(value => value + 1); }}>重试场景</button></div>;
   return <div className="planet-world-canvas" aria-label={`${props.planet.name || '未命名星球'} 的生命记忆世界`}>
     <div ref={labels} className="scene-label-layer" aria-hidden="true" />
-    {lost ? fallback : <WorldBoundary fallback={fallback}><Canvas shadows={!low} camera={{ position: [8, 6, 19], fov: 56, near: .1, far: 1800 }} dpr={low ? 1 : [1, 1.5]} gl={{ antialias: !low, powerPreference: low ? 'low-power' : 'high-performance' }} fallback={fallback}>
-      <WorldContent {...props} memories={batch} low={low} labels={labels} onLost={() => setLost(true)} />
+    {lost ? fallback : <WorldBoundary key={attempt} fallback={fallback} onUnavailable={unavailable}><Canvas shadows={!low} camera={{ position: [8, 6, 19], fov: 56, near: .1, far: 1800 }} dpr={low ? 1 : [1, 1.5]} gl={{ antialias: !low, powerPreference: low ? 'low-power' : 'high-performance' }} fallback={fallback}>
+      <WorldContent {...props} memories={batch} low={low} labels={labels} onLost={unavailable} />
     </Canvas></WorldBoundary>}
     {pages > 1 && <nav className="world-batch-control" aria-label="记忆对象分区"><button disabled={current === 0} onClick={() => setPage(current - 1)}>上一组</button><span>{current + 1} / {pages}</span><button disabled={current === pages - 1} onClick={() => setPage(current + 1)}>下一组</button></nav>}
   </div>;
