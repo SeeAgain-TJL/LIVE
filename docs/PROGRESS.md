@@ -8,7 +8,7 @@
 - [x] P3：星球记忆页新增“生命世界”实验入口：实时 R3F 地形、水体、树木实例、昼夜光源和环境太阳；没有记忆时只显示空状态，不生成虚构记忆。该场景仍是第一版原型，尚未达到概念图级生态资产质量。
 - [x] P4：真实 Memory 按 ID 生成世界锚点，并可通过锚点索引打开现有详情抽屉；编辑、删除、刷新仍走原有 provider/localStorage/IndexedDB 链路。
 
-实际验证：`npm.cmd run lint`、`npm.cmd run typecheck`、`npm.cmd test`（43/43）、`npm.cmd run build`；Chrome 生产回归 12/12（宇宙、星球进入/取消/返回、记忆 CRUD/媒体、移动端）；新增生命世界浏览器测试 1/1；引导者移动拖动单测 1/1。真实截图和录屏在 `artifacts-local/v4-next-review-2026-11-01/`，使用隔离浏览器 fixture，不写入日常浏览器资料。
+实际验证：`npm.cmd run lint`、`npm.cmd run typecheck`、`npm.cmd test`（43/43）、`npm.cmd run build`；完整 Chrome 生产回归 27/27（宇宙、星系层级、VRM 实验、星球进入/取消/返回、记忆 CRUD/媒体、移动端、生命世界锚点）；引导者移动拖动单测通过。真实截图和录屏在 `artifacts-local/v4-next-review-2026-11-01/`，使用隔离浏览器 fixture，不写入日常浏览器资料。
 
 未验证：真实手机 GPU 帧率、长时间高密度星球/记忆压力、其他浏览器、正式云端存储与高质量生态资产。当前人物仍是开发预览立绘；生命世界的地形/树木是可交互原型，不是最终美术交付。
 
