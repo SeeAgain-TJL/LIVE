@@ -15,7 +15,7 @@ import { StorageState } from "@/components/ui/storage-state";
 import { MemoryEditor } from "./memory-editor";
 import { MemoryDetails } from "./memory-details";
 import type { GuideAction } from "@/domain/guide";
-import { MemoryGuideBridge } from "@/components/guide/guide-provider";
+import { MemoryGuideBridge, useGuide } from "@/components/guide/guide-provider";
 import { MemoryToolbar } from "./memory-toolbar";
 import { MemoryList } from "./memory-list";
 import { PlanetExitLink } from "./planet-exit-link";
@@ -29,6 +29,7 @@ const PlanetWorld = dynamic(() => import("@/components/three/planet-world").then
 
 export function PlanetMemorySpace({ id }: { id: string }) {
   const router = useRouter();
+  const { settleTravel } = useGuide();
   const { data, ready, error, deleteMemory, deletePlanet } = useUniverse();
   const params = useSearchParams();
   const requestedMemory = params.get("memory");
@@ -74,7 +75,7 @@ export function PlanetMemorySpace({ id }: { id: string }) {
     const shortcut = (event: KeyboardEvent) => {
       if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey || document.querySelector("dialog[open]")) return;
       if (event.target instanceof HTMLElement && (event.target.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName))) return;
-      event.preventDefault(); setManagerOpen(true); requestAnimationFrame(() => searchRef.current?.focus());
+      event.preventDefault(); setSelectedId(null); setManagerOpen(true); requestAnimationFrame(() => searchRef.current?.focus());
     };
     document.addEventListener("keydown", shortcut);
     return () => document.removeEventListener("keydown", shortcut);
@@ -91,8 +92,8 @@ export function PlanetMemorySpace({ id }: { id: string }) {
   const selected = memories.find(memory => memory.id === selectedId) ?? null;
   const resetFilters = () => { setQuery(""); setYear(""); setFilter("all"); setSelectedId(null); };
   const guideAction = (action: GuideAction): string => {
-    if (action === "keyword") { setManagerOpen(true); requestAnimationFrame(() => searchRef.current?.focus()); return "在管理面板输入关键词，我会在这颗星球里寻找。"; }
-    if (action === "date") { setManagerOpen(true); requestAnimationFrame(() => yearRef.current?.focus()); return "在管理面板输入年份，看看那段时间留下了什么。"; }
+    if (action === "keyword") { setSelectedId(null); setManagerOpen(true); requestAnimationFrame(() => searchRef.current?.focus()); return "在管理面板输入关键词，我会在这颗星球里寻找。"; }
+    if (action === "date") { setSelectedId(null); setManagerOpen(true); requestAnimationFrame(() => yearRef.current?.focus()); return "在管理面板输入年份，看看那段时间留下了什么。"; }
     if (action === "all") { resetFilters(); return `这里有你保存的 ${memories.length} 条记忆。`; }
     let candidates = filtered;
     if (action !== "random") {
@@ -104,11 +105,12 @@ export function PlanetMemorySpace({ id }: { id: string }) {
     }
     const target = candidates[action === "random" ? Math.floor(Math.random() * candidates.length) : 0];
     setSelectedId(target?.id ?? null);
+    if (target) setManagerOpen(false);
     return target ? `这段记忆记录于 ${target.occurredOn}。你可以慢慢看。` : "暂时没有找到这样的记忆，要换一个条件吗？";
   };
   const closeEditor = (savedId?: string) => {
     setEditor(null);
-    if (savedId) { resetFilters(); setSelectedId(savedId); }
+    if (savedId) { resetFilters(); setManagerOpen(false); setSelectedId(savedId); }
   };
   const confirmDelete = async (wholePlanet: boolean) => {
     if (deleting) return;
@@ -123,13 +125,13 @@ export function PlanetMemorySpace({ id }: { id: string }) {
   return <main className="archive-shell memory-palace-shell world-first-shell">
     <MemoryGuideBridge planetId={id} act={guideAction} reading={!!selected} worldReady={worldReady || !worldMode} />
     <section className="world-stage" aria-label={worldMode ? "星球生命世界" : "记忆球空间"}>
-      {worldMode ? <PlanetWorld planet={planet} memories={memories} media={media} selectedId={selectedId} onSelect={setSelectedId} quality={quality} night={night} onReady={onWorldReady} /> : <MemorySpace memories={filtered} media={media} selectedId={selectedId} onSelect={setSelectedId} quality={quality} />}
+      {worldMode ? <PlanetWorld planet={planet} memories={memories} media={media} selectedId={selectedId} onSelect={setSelectedId} quality={quality} night={night} onReady={onWorldReady} onUnavailable={settleTravel} /> : <MemorySpace memories={filtered} media={media} selectedId={selectedId} onSelect={setSelectedId} quality={quality} />}
     </section>
     <header className="world-hud scene-hud">
       <PlanetExitLink planetId={id} galaxyId={planet.galaxyId!} />
       <div className="world-title"><h1>{planetName(planet)}</h1><span>{memories.length} 条记忆</span></div>
       <div className="world-hud-actions">
-        <button className="button secondary" aria-label="记忆管理" aria-expanded={managerOpen} aria-controls="world-management" onClick={() => setManagerOpen(value => !value)}><List size={18} /><span>记忆管理</span></button>
+        <button className="button secondary" aria-label="记忆管理" aria-expanded={managerOpen} aria-controls="world-management" onClick={() => { setSelectedId(null);setManagerOpen(value => !value); }}><List size={18} /><span>记忆管理</span></button>
         <button className="button" onClick={() => setEditor("new")}><Plus size={18} /><span>写一条记忆</span></button>
         <button className="icon-button" aria-label="世界设置与帮助" onClick={() => setHelpOpen(true)}><Settings2 size={18} /></button>
       </div>

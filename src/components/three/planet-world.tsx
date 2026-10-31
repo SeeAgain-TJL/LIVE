@@ -12,7 +12,7 @@ import { useLowPowerDevice, useReducedMotion } from "./use-render-preferences";
 import { WorldEnvironment } from "./world-environment";
 import { SceneMetrics } from "./scene-metrics";
 
-interface Props { planet: Planet; memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void; quality: Quality; night?: boolean; onReady?: () => void; }
+interface Props { planet: Planet; memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void; quality: Quality; night?: boolean; onReady?: () => void; onUnavailable?: () => void; }
 class WorldBoundary extends Component<{ children: ReactNode; fallback: ReactNode; onUnavailable: () => void }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
@@ -66,8 +66,8 @@ function WorldContent(props: Props & { low: boolean; labels: React.RefObject<HTM
 export function PlanetWorld(props: Props) {
   const labels = useRef<HTMLDivElement>(null!), deviceLow = useLowPowerDevice();const low = props.quality === 'low' || (props.quality === 'auto' && deviceLow);
   const [lost, setLost] = useState(false), [page, setPage] = useState(0), [attempt, setAttempt] = useState(0);
-  const { onReady } = props;
-  const unavailable = useCallback(() => { setLost(true); onReady?.(); }, [onReady]);
+  const { onUnavailable } = props;
+  const unavailable = useCallback(() => { setLost(true); onUnavailable?.(); }, [onUnavailable]);
   const pages = Math.max(1, Math.ceil(props.memories.length / WORLD_BATCH_SIZE)), current = Math.min(page, pages - 1);
   const batch = props.memories.slice(current * WORLD_BATCH_SIZE, (current + 1) * WORLD_BATCH_SIZE);
   const fallback = <div className="world-fallback" role="status"><h2>暂时无法打开三维世界</h2><p>请从右上角「记忆管理」继续阅读和编辑，所有档案仍然保留。</p><button className="button secondary" onClick={() => { setLost(false);setAttempt(value => value + 1); }}>重试场景</button></div>;

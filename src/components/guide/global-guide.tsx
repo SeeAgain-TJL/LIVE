@@ -20,11 +20,11 @@ export function GlobalGuide() {
   const [cinema, setCinema] = useState(false);
   const pathname = usePathname();
   useEffect(() => {
-    const main = document.querySelector("main");
-    const update = () => setCinema(main?.getAttribute("data-hud-mode") === "cinema");
+    const update = () => setCinema(document.querySelector("main")?.getAttribute("data-hud-mode") === "cinema");
     const frame = requestAnimationFrame(update);
     const observer = new MutationObserver(update);
-    if (main) observer.observe(main, { attributes: true, attributeFilter: ["data-hud-mode"] });
+    // Hydration replaces StorageState's main without changing the pathname.
+    observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["data-hud-mode"] });
     return () => { cancelAnimationFrame(frame); observer.disconnect(); };
   }, [pathname]);
   const reading = !!binding?.reading;

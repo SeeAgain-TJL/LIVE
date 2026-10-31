@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import { PerspectiveCamera, Vector3 } from "three";
 import { createSeed } from "../../src/data/seed";
+import { planetApproach } from "../../src/domain/planet-flight";
 
 test.use({ viewport: { width: 1440, height: 900 }, video: { mode: "on", size: { width: 1440, height: 900 } } });
 const key = "universe-of-me:data:v1";
@@ -34,6 +35,10 @@ test("continuous journey reaches world directly, reads actual memory anchors, pe
   await expect(page.getByRole("textbox", { name: "搜索星系" })).not.toBeVisible();
   await expect(page.getByLabel("宇宙渲染质量")).toHaveCount(0);
   await page.getByRole("button", { name: "电影模式", exact: true }).click();
+  await expect(page.locator(".guide-character-art")).toHaveCount(0);
+  await page.getByRole("button", { name: "展开记忆引导者", exact: true }).click();
+  await expect(page.locator(".companion-dialogue")).toBeVisible();
+  await page.getByRole("button", { name: "收起记忆引导者", exact: true }).click();
   await page.screenshot({ path: info.outputPath("01-cinema.png") });
   await page.getByRole("button", { name: "返回探索界面", exact: true }).click();
   await page.getByRole("button", { name: "打开导航", exact: true }).click();
@@ -103,6 +108,17 @@ test("ESC cancels before arrival, repeat entry is safe, and no fixed settling ph
   });
   await expect(page).toHaveURL(/\/planet\/review-world$/);await ready(page);
   expect(await page.evaluate(() => (window as unknown as { phases: string[] }).phases)).not.toContain("settling");
+});
+
+test("a planet already at entry distance routes immediately without a minimum flight timer", async ({ page }) => {
+  await prepare(page);
+  const planet = { ...createSeed().planets[0], position: [0, 1, 0] as [number, number, number], appearance: { ...createSeed().planets[0].appearance, size: 1.5, rings: false } };
+  const near = planetApproach(planet, { position: [0, 6, 28], target: [0, 0, 0] }, [planet], 1440 / 900);
+  await page.evaluate(near => localStorage.setItem("universe-of-me:camera:v1:galaxy:unclassified", JSON.stringify(near)), near);
+  await page.goto("/galaxy/unclassified");await ready(page, ".universe-canvas canvas");
+  const start = Date.now();await raycast(page, ".universe-canvas canvas", [0, 1, 0]);
+  await expect(page).toHaveURL(/\/planet\/review-world$/);
+  expect(Date.now() - start).toBeLessThan(1200);
 });
 
 test("empty galaxy keeps scenery visible and guide recovers while reading, dragging and resizing", async ({ page }, info) => {
