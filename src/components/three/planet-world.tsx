@@ -1,84 +1,78 @@
-"use client";
+﻿"use client";
 
-import { useLayoutEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+/* eslint-disable react-hooks/immutability -- R3F owns these mutable camera and canvas objects, not React render state. */
+import { Component, useEffect, useRef, useState, type ComponentRef, type ReactNode } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
-import { AdditiveBlending, BufferGeometry, Float32BufferAttribute, Object3D, type Group, type InstancedMesh } from "three";
+import { Vector3, type Group } from "three";
 import type { Media, Memory, Planet, Quality } from "@/domain/types";
 import { memoryMediaKind } from "@/domain/memory";
+import { WORLD_BATCH_SIZE, worldHeight, worldMemoryPosition } from "@/domain/planet-world";
 import { useLowPowerDevice, useReducedMotion } from "./use-render-preferences";
+import { WorldEnvironment } from "./world-environment";
+import { SceneMetrics } from "./scene-metrics";
 
-function Terrain({ low }: { low: boolean }) {
-  const geometry = useMemo(() => {
-    const size = 25, segments = low ? 24 : 42;
-    const vertices: number[] = [], indices: number[] = [];
-    for (let z = 0; z <= segments; z++) for (let x = 0; x <= segments; x++) {
-      const px = (x / segments - .5) * size, pz = (z / segments - .5) * size;
-      const d = Math.hypot(px * .55, pz * .42);
-      const height = Math.max(-.25, Math.sin(px * .48) * .18 + Math.cos(pz * .33) * .16 + Math.max(0, 1 - d / 10) * .55);
-      vertices.push(px, height, pz);
-    }
-    for (let z = 0; z < segments; z++) for (let x = 0; x < segments; x++) {
-      const a = z * (segments + 1) + x, b = a + 1, c = a + segments + 1, d = c + 1;
-      indices.push(a, c, b, b, c, d);
-    }
-    const g = new BufferGeometry();
-    g.setAttribute("position", new Float32BufferAttribute(vertices, 3)); g.setIndex(indices); g.computeVertexNormals();
-    return g;
-  }, [low]);
-  return <mesh geometry={geometry} receiveShadow><meshStandardMaterial color="#274d5a" roughness={.92} metalness={.02} /></mesh>;
+interface Props { planet: Planet; memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void; quality: Quality; night?: boolean; onReady?: () => void; }
+class WorldBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-function Trees({ low }: { low: boolean }) {
-  const ref = useRef<InstancedMesh>(null);
-  const count = low ? 24 : 64;
-  const matrices = useMemo(() => Array.from({ length: count }, (_, i) => {
-    const a = i * 2.399, r = 2.4 + (i % 9) * .72, o = new Object3D();
-    o.position.set(Math.cos(a) * r, .25, Math.sin(a) * r * .7); o.scale.setScalar(.24 + (i % 4) * .06); o.rotation.y = a; o.updateMatrix(); return o.matrix;
-  }), [count]);
-  useLayoutEffect(() => { if (ref.current) matrices.forEach((matrix, i) => ref.current!.setMatrixAt(i, matrix)); if (ref.current) ref.current.instanceMatrix.needsUpdate = true; }, [matrices]);
-  return <instancedMesh ref={ref} args={[undefined, undefined, count]} castShadow><coneGeometry args={[1, 2.1, 7]} /><meshStandardMaterial color="#5d956d" roughness={.9} /></instancedMesh>;
+function WorldController({ onReady, onLost, reduced }: { onReady?: () => void; onLost: () => void; reduced: boolean }) {
+  const controls = useRef<ComponentRef<typeof OrbitControls>>(null), ready = useRef(false);
+  const { camera, gl } = useThree();
+  const keys = useRef(new Set<string>()), forward = useRef(new Vector3()), side = useRef(new Vector3());
+  useEffect(() => {
+    const canvas = gl.domElement;canvas.tabIndex = 0;canvas.setAttribute('aria-label', '探索星球世界：拖动观察，双指平移，滚轮缩放；聚焦后使用 WASD 行走');
+    const down = (e: KeyboardEvent) => { if (/^[wasd]$/i.test(e.key)) { keys.current.add(e.key.toLowerCase()); e.preventDefault(); } };
+    const up = (e: KeyboardEvent) => keys.current.delete(e.key.toLowerCase());
+    const clear = () => keys.current.clear();const lost = (e: Event) => { e.preventDefault();onLost(); };
+    canvas.addEventListener('keydown', down);window.addEventListener('keyup', up);canvas.addEventListener('blur', clear);canvas.addEventListener('webglcontextlost', lost);
+    return () => { canvas.removeEventListener('keydown', down);window.removeEventListener('keyup', up);canvas.removeEventListener('blur', clear);canvas.removeEventListener('webglcontextlost', lost); };
+  }, [gl, onLost]);
+  useFrame((_, dt) => {
+    if (!ready.current) { ready.current = true;gl.domElement.dataset.worldReady = 'true';onReady?.(); }
+    const control = controls.current;if (!control) return;
+    camera.getWorldDirection(forward.current);forward.current.y = 0;forward.current.normalize();side.current.crossVectors(forward.current, camera.up);
+    const step = Math.min(dt, .04) * 5;
+    for (const key of keys.current) { const delta = (key === 'w' || key === 's' ? forward.current : side.current).clone().multiplyScalar(step * (key === 's' || key === 'a' ? -1 : 1));camera.position.add(delta);control.target.add(delta); }
+    camera.position.x = Math.max(-42, Math.min(42, camera.position.x));camera.position.z = Math.max(-40, Math.min(42, camera.position.z));
+    camera.position.y = Math.max(Math.max(.1, worldHeight(camera.position.x, camera.position.z)) + 1.6, Math.min(38, camera.position.y));
+    control.target.x = Math.max(-30, Math.min(30, control.target.x));control.target.z = Math.max(-32, Math.min(32, control.target.z));control.target.y = Math.max(.5, Math.min(12, control.target.y));
+  });
+  return <OrbitControls ref={controls} makeDefault target={[0, 1.5, -8]} enablePan enableDamping={!reduced} dampingFactor={.08} minDistance={2} maxDistance={58} maxPolarAngle={Math.PI * .48} minPolarAngle={.15} rotateSpeed={.4} panSpeed={.65} zoomSpeed={.6} />;
 }
 
-function WorldAnchors({ memories, media, selectedId, onSelect }: { memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void }) {
-  return <>{memories.map((memory, i) => {
-    const angle = i * 2.399, r = 2.8 + Math.sqrt(i + 1) * 1.25, position: [number, number, number] = [Math.cos(angle) * r, 1.15 + (i % 3) * .55, Math.sin(angle) * r * .72];
-    const kind = memoryMediaKind(memory, media);
-    const color = kind === "video" ? "#d99cff" : kind === "photo" ? "#78d8e8" : kind === "mixed" ? "#f4c878" : "#9fb9ff";
-    return <group key={memory.id} position={position} onClick={event => { event.stopPropagation(); onSelect(memory.id); }}>
-      <mesh><sphereGeometry args={[selectedId === memory.id ? .34 : .25, 20, 14]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={selectedId === memory.id ? 1.4 : .5} roughness={.28} /></mesh>
-      <mesh scale={1.65} raycast={() => null}><sphereGeometry args={[.25, 14, 10]} /><meshBasicMaterial color={color} transparent opacity={.13} blending={AdditiveBlending} depthWrite={false} /></mesh>
-      <Html center position={[0, .48, 0]} style={{ pointerEvents: "none" }}><span className={`world-memory-label ${selectedId === memory.id ? "selected" : ""}`}>{memory.title || "未命名记忆"}</span></Html>
-    </group>;
-  })}</>;
+function Anchor({ memory, media, selected, onSelect, reduced, labels }: { memory: Memory; media: Media[]; selected: boolean; onSelect: (id: string) => void; reduced: boolean; labels: React.RefObject<HTMLDivElement>; }) {
+  const position = worldMemoryPosition(memory.id), kind = memoryMediaKind(memory, media), ref = useRef<Group>(null);
+  const color = kind === 'video' ? '#e2b1f5' : kind === 'photo' ? '#9ae2dc' : kind === 'mixed' ? '#efd49f' : '#c7d8ff';
+  const pointer = useRef<{ x: number; y: number; distance: number; time: number } | null>(null);
+  useFrame(({ clock }) => { if (ref.current) ref.current.position.y = position[1] + (reduced ? 0 : Math.sin(clock.elapsedTime * .8 + position[0]) * .12); });
+  return <group ref={ref} position={position} onPointerDown={e => { if (e.nativeEvent.isPrimary === false || e.button > 0) return;pointer.current = { x: e.clientX, y: e.clientY, distance: 0, time: performance.now() }; }} onPointerMove={e => { if (pointer.current) pointer.current.distance = Math.max(pointer.current.distance, Math.hypot(e.clientX - pointer.current.x, e.clientY - pointer.current.y)); }} onPointerOut={() => { pointer.current = null; }} onPointerCancel={() => { pointer.current = null; }} onPointerUp={e => { const p = pointer.current;pointer.current = null;if (p && p.distance < 7 && Math.hypot(e.clientX - p.x, e.clientY - p.y) < 7 && performance.now() - p.time < 650) { e.stopPropagation();onSelect(memory.id); } }}>
+    <mesh><sphereGeometry args={[selected ? .52 : .43, 24, 16]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={selected ? 1.2 : .45} metalness={.25} roughness={.18} /></mesh>
+    <mesh rotation={[Math.PI * .36, 0, .3]} raycast={() => null}><torusGeometry args={[.62, .018, 6, 48]} /><meshBasicMaterial color={color} /></mesh>
+    <Html portal={labels} center position={[0, .9, 0]} distanceFactor={14} zIndexRange={[6, 0]} style={{ pointerEvents: 'none' }}><span className="world-memory-label">{kind === 'photo' ? '▧' : kind === 'video' ? '▷' : '◇'} {memory.title || '未命名记忆'}</span></Html>
+  </group>;
 }
-
-function WorldContent({ memories, media, selectedId, onSelect, quality }: Props) {
-  const lowDevice = useLowPowerDevice(), reduced = useReducedMotion();
-  const low = quality === "low" || (quality === "auto" && lowDevice);
-  const sun = useRef<Group>(null);
-  useFrame((_, dt) => { if (sun.current && !reduced) sun.current.rotation.y += dt * .04; });
-  return <>
-    <color attach="background" args={["#071528"]} /><fog attach="fog" args={["#071528", 12, 34]} />
-    <ambientLight intensity={.34} color="#8da9cf" /><directionalLight castShadow={!low} position={[-7, 11, 5]} intensity={2.2} color="#ffe2b2" />
-    <group ref={sun} position={[-9, 8, -12]}><mesh><sphereGeometry args={[1.2, 24, 16]} /><meshBasicMaterial color="#ffd48a" /></mesh><pointLight intensity={22} distance={45} color="#ffcf99" /></group>
-    <Terrain low={low} /><mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -.08, 0]}><circleGeometry args={[7.2, 64]} /><meshStandardMaterial color="#246681" transparent opacity={.72} roughness={.12} metalness={.06} /></mesh>
-    <Trees low={low} /><WorldAnchors memories={memories} media={media} selectedId={selectedId} onSelect={onSelect} /><OrbitControls enablePan={false} minDistance={6} maxDistance={24} enableDamping={!reduced} dampingFactor={.06} />
-  </>;
+function WorldContent(props: Props & { low: boolean; labels: React.RefObject<HTMLDivElement>; onLost: () => void }) {
+  const reduced = useReducedMotion();const { gl } = useThree();
+  useEffect(() => { gl.domElement.dataset.worldAnchors = JSON.stringify(props.memories.map(m => ({ id: m.id, position: worldMemoryPosition(m.id) }))); }, [gl, props.memories]);
+  return <><WorldEnvironment low={props.low} night={props.night ?? false} reduced={reduced} />
+    {props.memories.map(memory => <Anchor key={memory.id} memory={memory} media={props.media} selected={props.selectedId === memory.id} onSelect={props.onSelect} reduced={reduced} labels={props.labels} />)}
+    <WorldController reduced={reduced} onReady={props.onReady} onLost={props.onLost} /><SceneMetrics tier={props.low ? 'low' : 'high'} auxiliaryPasses={0} /></>;
 }
-
-function WorldScene(props: Props) {
-  const lowDevice = useLowPowerDevice();
-  const low = props.quality === "low" || (props.quality === "auto" && lowDevice);
-  return <Canvas shadows={!low} camera={{ position: [10, 7, 14], fov: 42 }} dpr={low ? 1 : [1, 1.5]} gl={{ antialias: !low, powerPreference: low ? "low-power" : "high-performance" }}>
-    <WorldContent {...props} />
-  </Canvas>;
-}
-
-interface Props { planet: Planet; memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void; quality: Quality; }
 export function PlanetWorld(props: Props) {
-  return <div className="planet-world-canvas" aria-label={`${props.planet.name || "未命名星球"} 的生命记忆世界`}><WorldScene {...props} />
-    {props.memories.length > 0 && <nav className="world-memory-index" aria-label="世界中的记忆锚点">{props.memories.map(memory => <button key={memory.id} type="button" aria-label={`打开记忆：${memory.title || "未命名记忆"}`} aria-pressed={memory.id === props.selectedId} onClick={() => props.onSelect(memory.id)}>{memory.title || "未命名记忆"}</button>)}</nav>}
-    {props.memories.length === 0 && <p className="world-empty-note">这里还没有记忆锚点。写下第一段时光，它会出现在这个世界里。</p>}
+  const labels = useRef<HTMLDivElement>(null!), deviceLow = useLowPowerDevice();const low = props.quality === 'low' || (props.quality === 'auto' && deviceLow);
+  const [lost, setLost] = useState(false), [page, setPage] = useState(0);
+  const pages = Math.max(1, Math.ceil(props.memories.length / WORLD_BATCH_SIZE)), current = Math.min(page, pages - 1);
+  const batch = props.memories.slice(current * WORLD_BATCH_SIZE, (current + 1) * WORLD_BATCH_SIZE);
+  const fallback = <div className="world-fallback" role="status"><h2>暂时无法打开三维世界</h2><p>请从右上角「记忆管理」继续阅读和编辑，所有档案仍然保留。</p><button className="button secondary" onClick={() => setLost(false)}>重试场景</button></div>;
+  return <div className="planet-world-canvas" aria-label={`${props.planet.name || '未命名星球'} 的生命记忆世界`}>
+    <div ref={labels} className="scene-label-layer" aria-hidden="true" />
+    {lost ? fallback : <WorldBoundary fallback={fallback}><Canvas shadows={!low} camera={{ position: [8, 6, 19], fov: 56, near: .1, far: 1800 }} dpr={low ? 1 : [1, 1.5]} gl={{ antialias: !low, powerPreference: low ? 'low-power' : 'high-performance' }} fallback={fallback}>
+      <WorldContent {...props} memories={batch} low={low} labels={labels} onLost={() => setLost(true)} />
+    </Canvas></WorldBoundary>}
+    {pages > 1 && <nav className="world-batch-control" aria-label="记忆对象分区"><button disabled={current === 0} onClick={() => setPage(current - 1)}>上一组</button><span>{current + 1} / {pages}</span><button disabled={current === pages - 1} onClick={() => setPage(current + 1)}>下一组</button></nav>}
   </div>;
 }

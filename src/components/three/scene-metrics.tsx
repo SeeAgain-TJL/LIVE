@@ -7,7 +7,7 @@ import type { RenderTier } from "@/domain/cosmic-visuals";
 import { SPATIAL_LANDMARKS } from "@/domain/spatial-scene";
 
 /** One diagnostic update/second, no per-frame React state or archive writes. */
-export function SceneMetrics({ tier }: { tier: RenderTier }) {
+export function SceneMetrics({ tier, auxiliaryPasses = 1 }: { tier: RenderTier; auxiliaryPasses?: number }) {
   const sample = useRef({ seconds: 0, frames: [] as number[] });
   const landmarks = useMemo(() => SPATIAL_LANDMARKS.map(p => new Vector3(...p)), []);
   const projected = useMemo(() => new Vector3(), []);
@@ -23,7 +23,7 @@ export function SceneMetrics({ tier }: { tier: RenderTier }) {
       p95Ms: +sorted[Math.floor(sorted.length * .95)].toFixed(2), maxMs: +sorted.at(-1)!.toFixed(2),
       calls: gl.info.render.calls, points: gl.info.render.points, triangles: gl.info.render.triangles, dpr: gl.getPixelRatio(),
       geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, programs: gl.info.programs?.length, heapBytes: heap,
-      auxiliaryPasses: 1, volumeTarget: gl.domElement.dataset.volumeTarget,
+      auxiliaryPasses, volumeTarget: gl.domElement.dataset.volumeTarget,
       camera: camera.position.toArray(), target, fov: camera instanceof PerspectiveCamera ? camera.fov : null,
       landmarks: landmarks.map(position => {
         projected.copy(position).project(camera);

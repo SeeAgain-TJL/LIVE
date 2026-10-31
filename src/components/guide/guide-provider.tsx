@@ -112,13 +112,13 @@ export function useGuideTravelScope() {
   const { settleTravel } = useGuide();
   useEffect(() => () => settleTravel(), [settleTravel]);
 }
-export function MemoryGuideBridge({ act, reading, planetId }: MemoryGuideBinding & { planetId: string }) {
+export function MemoryGuideBridge({ act, reading, planetId, worldReady = true }: MemoryGuideBinding & { planetId: string; worldReady?: boolean }) {
   const { cue } = useGuide();
   const welcomed = useRef<string | null>(null);
   useEffect(() => {
-    if (welcomed.current === planetId) return;
+    if (!worldReady || welcomed.current === planetId) return;
     welcomed.current = planetId; cue("memoryEntered");
-  }, [planetId, cue]);
+  }, [planetId, cue, worldReady]);
   const handler = useRef(act);
   useEffect(() => { handler.current = act; }, [act]);
   const dispatch = useCallback((action: GuideAction) => handler.current(action), []);
