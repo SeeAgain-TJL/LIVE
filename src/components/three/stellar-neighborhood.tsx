@@ -9,6 +9,7 @@ import type { RenderTier } from "@/domain/cosmic-visuals";
 import { orbitFrame, type StellarSource } from "@/domain/spatial-scene";
 import { StellarBody } from "./stellar-body";
 import { SystemEnvironment } from "./system-environment";
+import { galaxyIdentity } from "@/domain/galaxy-identity";
 
 function OrbitPath({ planet, source, index }: { planet: Planet; source: StellarSource; index: number }) {
   const line = useRef<React.ComponentRef<typeof Line>>(null);
@@ -45,12 +46,13 @@ function Satellites({ planets, tier }: { planets: Planet[]; tier: RenderTier }) 
 }
 
 /** Actual source and visual star share coordinates. Original planet positions are untouched. */
-export function StellarNeighborhood({ planets, tier, source, showOrbits, reduced, identity }: { planets: Planet[]; tier: RenderTier; source: StellarSource; showOrbits: boolean; reduced: boolean; identity: string }) {
+export function StellarNeighborhood({ planets, tier, source, showOrbits, reduced, identity, onCreate }: { planets: Planet[]; tier: RenderTier; source: StellarSource; showOrbits: boolean; reduced: boolean; identity: string; onCreate?: () => void }) {
+  const palette = galaxyIdentity(identity);
   return <group>
-    <ambientLight intensity={.2} color="#7185a5" />
-    <pointLight position={source.position} intensity={source.intensity} decay={2} color="#fff0d7" />
-    <StellarBody source={source} reduced={reduced} low={tier === "low"} />
-    <SystemEnvironment source={source} identity={identity} planets={planets} tier={tier} reduced={reduced} />
+    <ambientLight intensity={.2} color={palette.cool} />
+    <pointLight position={source.position} intensity={source.intensity} decay={2} color={palette.stellar} />
+    <StellarBody source={source} reduced={reduced} low={tier === "low"} color={palette.stellar} />
+    <SystemEnvironment source={source} identity={identity} planets={planets} tier={tier} onCreate={onCreate} />
     {showOrbits && planets.slice(0, tier === "low" ? 6 : 18).map((planet, i) => <OrbitPath key={planet.id} planet={planet} index={i} source={source} />)}
     <Satellites planets={planets} tier={tier} />
   </group>;

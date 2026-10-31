@@ -12,7 +12,7 @@ import { readVisit, saveVisit, validBookmark } from "@/data/exploration-session"
 import { consumeGalaxyArrival } from "@/data/cosmic-preferences";
 
 import { safeStellarCamera, type StellarSource } from "@/domain/spatial-scene";
-import { environmentBodies, safeEnvironmentCamera } from "@/domain/system-environment";
+import { safeEnvironmentCamera, vacancySlots } from "@/domain/system-environment";
 
 import { comfortableProgress, stagedProgress, journeyPhase, TRAVEL_PROFILES, type TravelMode } from "@/domain/travel";
 
@@ -44,8 +44,8 @@ export function CameraRig({ source, travelMode, planets, flight, onArrival, onAp
   const animation = useRef<Animation | null>(null);
   const departure = useRef<CameraBookmark | null>(null);
   const lastEntry = useRef(false);
-  const environment = useMemo(() => environmentBodies(galaxyId, planets, source), [galaxyId, planets, source]);
-  const context = useMemo(() => [{ position: source.position, size: source.radius }, ...environment.map(b => ({ position: b.position, size: b.appearance.size * 2.4 }))], [source, environment]);
+  const vacancies = useMemo(() => vacancySlots(galaxyId, planets, source), [galaxyId, planets, source]);
+  const context = useMemo(() => [{ position: source.position, size: source.radius }, ...vacancies.map(slot => ({ position: slot.position, size: slot.size * 1.8 }))], [source, vacancies]);
   const readCamera = (): CameraBookmark => ({ position: camera.position.toArray() as Vec3, target: controls.current!.target.toArray() as Vec3 });
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export function CameraRig({ source, travelMode, planets, flight, onArrival, onAp
       control.update();
       if (a.arrivalId && !a.approached && a.progress >= 0.65) { a.approached = true; if (!reducedMotion) onApproach(a.arrivalId); }
     }
-    camera.position.fromArray(safeEnvironmentCamera(safeCameraPosition(safeStellarCamera(camera.position.toArray() as Vec3, source), planets), environment));
+    camera.position.fromArray(safeEnvironmentCamera(safeCameraPosition(safeStellarCamera(camera.position.toArray() as Vec3, source), planets), vacancies));
     camera.lookAt(control.target);
     if (a?.progress === 1 && (a.rest ?? 0) >= (reducedMotion ? 0 : a.hold ?? 0)) {
       animation.current = null;

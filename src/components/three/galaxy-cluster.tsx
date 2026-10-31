@@ -9,6 +9,7 @@ import { galaxyPosition } from "@/domain/galaxy";
 import { COSMIC_BUDGETS, galaxySamples, galaxyStyle, type RenderTier } from "@/domain/cosmic-visuals";
 import { CosmicPoints } from "./cosmic-points";
 import { GalaxyDisk } from "./galaxy-disk";
+import { galaxyIdentity } from "@/domain/galaxy-identity";
 
 export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, enter }: {
   galaxy: Galaxy; index: number; count: number; tier: RenderTier; reduced: boolean; labels: RefObject<HTMLDivElement>; enter: () => void;
@@ -17,6 +18,7 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
   const label = useRef<HTMLDivElement>(null);
   const position = useMemo(() => new Vector3(...galaxyPosition(index)), [index]);
   const style = useMemo(() => galaxyStyle(galaxy.id), [galaxy.id]);
+  const identity = useMemo(() => galaxyIdentity(galaxy.id), [galaxy.id]);
   const clouds = useMemo(() => {
     const budget = COSMIC_BUDGETS[tier];
     const cool = new Color(galaxy.color).lerp(new Color("#8eafff"), 0.28), warm = new Color("#fff0cb"), color = new Color();
@@ -43,7 +45,7 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
     }
   });
   return <group position={galaxyPosition(index)}>
-    <group rotation={style.tilt}><group ref={rotation}>
+    <group rotation={identity.orbitalTilt}><group ref={rotation}>
       <GalaxyDisk id={galaxy.id} color={galaxy.color} />
       <mesh scale={style.elliptical ? [style.radius*.48, style.radius*.27, style.radius*.39] : [style.radius*.16, style.radius*.09, style.radius*.12]} raycast={() => null}>
         <sphereGeometry args={[1, 24, 16]} /><shaderMaterial transparent depthWrite={false} blending={AdditiveBlending} uniforms={core}
@@ -51,11 +53,11 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
           fragmentShader={`varying vec3 n;varying vec3 p;uniform vec3 tint;void main(){float a=pow(max(0.,dot(normalize(n),normalize(-p))),2.);gl_FragColor=vec4(tint*.55,a*.13);}`} />
       </mesh>
       <CosmicPoints cloud={clouds[0]} opacity={0.56 * Math.sqrt(7500 / COSMIC_BUDGETS[tier].galaxy)} additive={false} lod />
-      <CosmicPoints cloud={clouds[1]} opacity={0.035 * 600 / COSMIC_BUDGETS[tier].dust} soft lod />
+      <CosmicPoints cloud={clouds[1]} opacity={0.035 * identity.dust * 600 / COSMIC_BUDGETS[tier].dust} soft lod />
     </group></group>
     <mesh onClick={e => { e.stopPropagation(); if (e.delta <= 7) enter(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
       <sphereGeometry args={[style.radius * 0.86, 20, 12]} /><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
     </mesh>
-    <Html portal={labels} center position={[0, -style.radius * 0.64 - 1, 0]} zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}><div ref={label} className="galaxy-scene-label" data-galaxy-id={galaxy.id}><strong>{galaxy.name}</strong><span>{count} 颗星球 · {style.elliptical ? "椭圆星系" : style.barred ? "棒旋星系" : "旋涡星系"}</span></div></Html>
+    <Html portal={labels} center position={[0, -style.radius * 0.64 - 1, 0]} zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}><div ref={label} className="galaxy-scene-label" data-galaxy-id={galaxy.id} style={{ "--galaxy-accent": identity.accent } as React.CSSProperties}><strong>{galaxy.name}</strong><span>{count > 0 ? `${count} 颗我的星球` : "暂无我的星球 · 待创建"} · {style.elliptical ? "椭圆星系" : style.barred ? "棒旋星系" : "旋涡星系"}</span><small>{identity.mood}</small></div></Html>
   </group>;
 }

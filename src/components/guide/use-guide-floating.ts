@@ -41,7 +41,9 @@ export function useGuideFloating(preferences: GuidePreferences, update: (patch: 
     if (element.current) { element.current.style.left = `${position.x}px`; element.current.style.top = `${top}px`; }
   };
   const pointerDown = (event: PointerEvent<HTMLButtonElement>) => {
-    if (!event.isPrimary || event.button !== 0 || drag.current || !element.current) return;
+    // Touch emulation reports button=-1 on some Chromium versions; it is still a
+    // primary drag gesture and must remain distinguishable from a click.
+    if (!event.isPrimary || (event.button !== 0 && event.pointerType !== "touch") || drag.current || !element.current) return;
     const r = element.current.getBoundingClientRect();
     suppressClick.current = false;
     drag.current = { id: event.pointerId, x: event.clientX, y: event.clientY, left: r.left, top: r.top, distance: 0, lastX: event.clientX, lastY: event.clientY };

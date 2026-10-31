@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { isDate, matchesYear, nextPosition, validatePlanet } from "../src/domain/planet.ts";
+import { isDate, isPersonalPlanet, matchesYear, nextPosition, validatePlanet } from "../src/domain/planet.ts";
 import { createSeed } from "../src/data/seed.ts";
 import { DATA_KEY, RECOVERY_KEY, LocalUniverseRepository, parseUniverse, type StoragePort } from "../src/data/local-repository.ts";
 import { memoryMatches, memoryMediaKind, memoryPassesFilter, memoryPosition, memoryView } from "../src/domain/memory.ts";
@@ -35,6 +35,13 @@ test("year search includes entire spanning stages and handles undated drafts", (
   assert.equal(matchesYear(planet, 2016), false);
   assert.equal(matchesYear({ ...planet, endDate: null, ongoing: true }, new Date().getFullYear()), true);
   assert.equal(matchesYear({ ...planet, startDate: null }, 2012), false);
+});
+
+test("demo geometry is not a personal planet until it carries a real memory", () => {
+  const planet = createSeed().planets[0];
+  assert.equal(isPersonalPlanet(planet, []), false);
+  assert.equal(isPersonalPlanet(planet, [{ id: "memory-1", planetId: planet.id, kind: "text", title: "自己的记录", body: "", occurredOn: "2026-01-01", createdAt: "2026-01-01T00:00:00.000Z", updatedAt: "2026-01-01T00:00:00.000Z" }]), true);
+  assert.equal(isPersonalPlanet({ ...planet, isDemo: false }, []), true);
 });
 
 test("seed never invents named personal stages or memories", () => {
