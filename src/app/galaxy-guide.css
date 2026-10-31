@@ -7,6 +7,10 @@
 .galaxy-intro > p { font-size: 14px; color: #a9b9d2; line-height: 1.8; }
 .galaxy-intro h1 { font-size: 34px; font-weight: 400; line-height: 1.6; margin: 14px 0; letter-spacing: 2px; }
 .galaxy-library { position: absolute; top: 310px; left: 40px; width: 290px; max-height: calc(100svh - 600px); min-height: 190px; padding: 16px; border: 1px solid #9eb6d033; border-radius: 12px; background: #0b1424d9; display: flex; flex-direction: column; backdrop-filter: blur(12px); }
+.galaxy-universe-shell .galaxy-library[aria-hidden="true"] { visibility: hidden; opacity: 0; transform: translateX(-18px); pointer-events: none; }
+.galaxy-universe-shell .galaxy-library { transition: opacity .28s ease, transform .28s ease, visibility .28s ease; background: linear-gradient(145deg, #091426c4, #07101db0); box-shadow: 0 16px 50px #01040b66; }
+.hud-library-toggle { border: 1px solid #a7c1e83d; color: #c7d7ed; background: #07132699; border-radius: 999px; min-height: 38px; padding: 0 13px; font-size: 13px; }
+.hud-library-toggle:hover { background: #9bbfff20; border-color: #b9d4ff88; }
 .galaxy-mobile-storage { display: none; }
 .galaxy-library > header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .galaxy-library h2 { font-size: 18px; margin: 0; font-weight: 500; }
@@ -108,6 +112,12 @@
 .galaxy-flight-actions button:hover { background:#b6c8dd22; }
 .galaxy-crossing-veil { position:absolute; inset:0; pointer-events:none; background:#03060c; opacity:0; transition:opacity .32s ease; z-index:24; }
 .galaxy-crossing .galaxy-crossing-veil { opacity:1; }
+.galaxy-universe-shell.is-cinema .galaxy-intro,
+.galaxy-universe-shell.is-cinema .galaxy-library,
+.galaxy-universe-shell.is-cinema .galaxy-navigation-hint,
+.galaxy-universe-shell.is-cinema .galaxy-local-note { opacity: 0; visibility: hidden; pointer-events: none; }
+.galaxy-universe-shell.is-cinema .cosmic-controls { opacity: .62; }
+@media (prefers-reduced-motion: reduce) { .galaxy-universe-shell .galaxy-library { transition: none; } }
 .galaxy-planet-shell .scene-renderer { animation: galaxy-reveal .65s ease-out; }
 @keyframes galaxy-reveal { from {opacity:.1} to {opacity:1} }
 @media (max-width:760px) {

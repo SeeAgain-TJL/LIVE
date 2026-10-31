@@ -45,7 +45,7 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
     }
   });
   return <group position={galaxyPosition(index)}>
-    <group rotation={style.tilt}><group ref={rotation}>
+    <group rotation={identity.orbitalTilt}><group ref={rotation}>
       <GalaxyDisk id={galaxy.id} color={galaxy.color} />
       <mesh scale={style.elliptical ? [style.radius*.48, style.radius*.27, style.radius*.39] : [style.radius*.16, style.radius*.09, style.radius*.12]} raycast={() => null}>
         <sphereGeometry args={[1, 24, 16]} /><shaderMaterial transparent depthWrite={false} blending={AdditiveBlending} uniforms={core}
@@ -53,7 +53,7 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
           fragmentShader={`varying vec3 n;varying vec3 p;uniform vec3 tint;void main(){float a=pow(max(0.,dot(normalize(n),normalize(-p))),2.);gl_FragColor=vec4(tint*.55,a*.13);}`} />
       </mesh>
       <CosmicPoints cloud={clouds[0]} opacity={0.56 * Math.sqrt(7500 / COSMIC_BUDGETS[tier].galaxy)} additive={false} lod />
-      <CosmicPoints cloud={clouds[1]} opacity={0.035 * 600 / COSMIC_BUDGETS[tier].dust} soft lod />
+      <CosmicPoints cloud={clouds[1]} opacity={0.035 * identity.dust * 600 / COSMIC_BUDGETS[tier].dust} soft lod />
     </group></group>
     <mesh onClick={e => { e.stopPropagation(); if (e.delta <= 7) enter(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
       <sphereGeometry args={[style.radius * 0.86, 20, 12]} /><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />

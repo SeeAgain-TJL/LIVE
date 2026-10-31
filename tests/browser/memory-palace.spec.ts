@@ -67,6 +67,21 @@ test("single orb closes with × and Escape, reopens by raycast, and never edits 
   expect(errors).toEqual([]);
 });
 
+test("生命世界 uses the real memory archive and links an anchor back to its detail drawer", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await enterNewPlanet(page);
+  await writeMemory(page, "世界锚点");
+  await page.getByRole("button", { name: "关闭记忆详情", exact: true }).click();
+  await page.locator(".world-toggle").click();
+  await expect(page.locator(".planet-world-canvas canvas")).toBeVisible();
+  await expect(page.locator(".world-memory-index button")).toHaveCount(1);
+  await page.locator(".world-memory-index button").first().click();
+  await expect(page.locator(".memory-detail-panel")).toBeVisible();
+  expect(await snapshot(page)).toContain("世界锚点");
+  expect(errors).toEqual([]);
+});
+
 test("switch memories, give nested dialogs Escape priority, edit/save and retain records on refresh", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));

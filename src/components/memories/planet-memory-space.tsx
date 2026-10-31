@@ -23,6 +23,9 @@ import { PlanetExitLink } from "./planet-exit-link";
 const MemorySpace = dynamic(() => import("@/components/three/memory-space").then(module => module.MemorySpace), {
   ssr: false, loading: () => <div className="memory-space-loading">正在展开记忆空间…</div>,
 });
+const PlanetWorld = dynamic(() => import("@/components/three/planet-world").then(module => module.PlanetWorld), {
+  ssr: false, loading: () => <div className="memory-space-loading">正在生成星球世界…</div>,
+});
 
 export function PlanetMemorySpace({ id }: { id: string }) {
   const router = useRouter();
@@ -41,6 +44,7 @@ export function PlanetMemorySpace({ id }: { id: string }) {
   const [filter, setFilter] = useState<MemoryFilter>("all");
   const [sort, setSort] = useState<"desc" | "asc">("desc");
   const [view, setView] = useState<"space" | "list">("space");
+  const [worldMode, setWorldMode] = useState(false);
   const [quality, setQuality] = useState<Quality>("auto");
   const [actionError, setActionError] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -118,7 +122,7 @@ export function PlanetMemorySpace({ id }: { id: string }) {
     <header className="topbar archive-topbar memory-palace-topbar">
       <PlanetExitLink planetId={id} galaxyId={planet.galaxyId!} />
       <div className="memory-palace-title"><small>星穹记忆殿堂 · {memories.length} 条记忆</small><h1>{planetName(planet)}</h1></div>
-      <button className="button" onClick={() => setEditor("new")}><Plus size={18} />写一条记忆</button>
+      <div className="memory-palace-actions"><button className="button secondary world-toggle" aria-pressed={worldMode} onClick={() => setWorldMode(value => !value)}><Orbit size={17} />{worldMode ? "记忆球空间" : "生命世界"}</button><button className="button" onClick={() => setEditor("new")}><Plus size={18} />写一条记忆</button></div>
     </header>
     <div className="memory-palace-layout">
       <nav className="exploration-breadcrumb memory-breadcrumb" aria-label="探索路径"><Link href="/">宇宙</Link><span>›</span><Link href={`/galaxy/${encodeURIComponent(planet.galaxyId!)}`}>{data.galaxies.find(g => g.id === planet.galaxyId)?.name}</Link><span>›</span><span>{planetName(planet)} · 记忆空间</span></nav>
@@ -135,13 +139,13 @@ export function PlanetMemorySpace({ id }: { id: string }) {
         searchRef={searchRef} yearRef={yearRef}
         onQuery={value => { setQuery(value); setSelectedId(null); }} onYear={value => { setYear(value); setSelectedId(null); }}
         onFilter={value => { setFilter(value); setSelectedId(null); }} onView={() => setView(value => value === "space" ? "list" : "space")} onQuality={setQuality} />
-      <section className={`memory-experience ${view === "list" ? "is-list" : ""}`} aria-label={view === "space" ? "记忆球空间" : "记忆列表"}>
-        {view === "space" ? <>
+      <section className={`memory-experience ${view === "list" ? "is-list" : ""} ${worldMode ? "is-world" : ""}`} aria-label={worldMode ? "星球生命世界" : view === "space" ? "记忆球空间" : "记忆列表"}>
+        {worldMode ? <PlanetWorld planet={planet} memories={memories} media={media} selectedId={selected?.id ?? null} onSelect={setSelectedId} quality={quality} /> : view === "space" ? <>
           <MemorySpace memories={filtered} media={media} selectedId={selected?.id ?? null} onSelect={setSelectedId} quality={quality} />
           <p className="memory-space-hint">拖动旋转 · 滚轮或双指缩放 · 点击记忆球阅读</p>
         </> : <MemoryList memories={filtered} media={media} selectedId={selected?.id ?? null} onSelect={setSelectedId}
           onEdit={setEditor} onDelete={memory => { setActionError(""); setDeleteTarget(memory); }} sort={sort} onSort={() => setSort(value => value === "desc" ? "asc" : "desc")} />}
-        {filtered.length === 0 && <div className="palace-empty" role="status"><Orbit size={30} /><h2>{memories.length ? "没有符合条件的记忆" : "这里还没有记忆"}</h2><p>{memories.length ? "换一个关键词、年份或类型，继续寻找。" : "用上方的「写一条记忆」，留住第一段时光。"}</p>{memories.length > 0 && <button className="button secondary" onClick={resetFilters}>返回全部记忆</button>}</div>}
+        {!worldMode && filtered.length === 0 && <div className="palace-empty" role="status"><Orbit size={30} /><h2>{memories.length ? "没有符合条件的记忆" : "这里还没有记忆"}</h2><p>{memories.length ? "换一个关键词、年份或类型，继续寻找。" : "用上方的「写一条记忆」，留住第一段时光。"}</p>{memories.length > 0 && <button className="button secondary" onClick={resetFilters}>返回全部记忆</button>}</div>}
       </section>
       <p className="palace-storage-note">本地开发版：文字保存在 localStorage，媒体保存在 IndexedDB，仅限当前浏览器与访问地址。请保留原始媒体副本。</p>
     </div>

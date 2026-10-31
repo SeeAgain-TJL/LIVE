@@ -5,8 +5,8 @@
 .companion :is(button,input,select,a):focus-visible { outline: 2px solid #bbd4ff; outline-offset: 3px; }
 .companion .guide-character-button { width: 100%; height: 100%; padding: 0; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; touch-action: none; user-select: none; cursor: grab; background: none; border-radius: 16px; color: #d9e7ff; }
 .companion.is-dragging .guide-character-button { cursor: grabbing; }
-.guide-character-art { position: relative; display: block; width: 100%; height: calc(100% - 22px); }
-.guide-character-visual { display: block; width: 100%; height: calc(100% - 30px); transform-origin: 50% 95%; animation: companion-breathe 6s ease-in-out infinite; filter: drop-shadow(0 0 14px #789bdb42); }
+.guide-character-art { position: relative; display: block; width: 100%; height: max(30px, calc(100% - 22px)); min-height: 30px; }
+.guide-character-visual { display: block; width: 100%; height: max(26px, calc(100% - 30px)); min-height: 26px; transform-origin: 50% 95%; animation: companion-breathe 6s ease-in-out infinite; filter: drop-shadow(0 0 14px #789bdb42); }
 .guide-character-visual :is(svg,img) { width: 100%; height: 100%; object-fit: contain; }
 .guide-character-caption { position: absolute; bottom: 15px; left: 0; right: 0; font-size: 13px; text-shadow: 0 2px 4px #000; }
 .guide-asset-preview { position: absolute; bottom: 0; left: 0; right: 0; color: #a4b8d9; font-size: 12px; }
@@ -61,6 +61,7 @@
 body:has(dialog[open]) .companion { visibility: hidden; }
 .companion.is-reading .guide-character-hint, .companion.is-reading .guide-character-caption, .companion.is-reading .guide-asset-preview { display: none; }
 .companion.is-reading .guide-character-art, .companion.is-reading .guide-character-visual { height: 100%; }
+.companion.is-hidden-guide .guide-character-art, .companion.is-hidden-guide .guide-character-visual { min-height: 0; height: 0; }
 body:has(.memory-palace-shell) .companion.is-reading { left: 12px !important; right: auto; }
 body:has(.memory-palace-shell) .companion.is-reading .companion-panels { left: 76px; right: auto; width: min(350px, calc(100vw - 650px)); }
 body:has(.memory-palace-shell) .companion.is-reading .companion-search { left: 12px; right: auto; width: min(430px, calc(100vw - 570px)); }
