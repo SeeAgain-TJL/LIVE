@@ -5,6 +5,7 @@ import "./memory-palace.css";
 import "./galaxy-guide.css";
 import "./planet-journey.css";
 import "./companion.css";
+import "./world-first.css";
 
 export const metadata: Metadata = {
   title: { default: "UNIVERSE OF ME · 我的人生宇宙", template: "%s · UNIVERSE OF ME" },

@@ -19,7 +19,7 @@ import { comfortableProgress, stagedProgress, journeyPhase, TRAVEL_PROFILES, typ
 export interface FlightRequest { planetId: string | null; nonce: number; enter?: boolean }
 interface Animation {
   from: Vector3; to: Vector3; fromTarget: Vector3; toTarget: Vector3;
-  rest?: number; hold?: number; progress: number; duration: number; arrivalId: string | null; returning: boolean; approached: boolean;
+  progress: number; duration: number; arrivalId: string | null; returning: boolean; approached: boolean;
 }
 function saveBookmark(key: string, bookmark: CameraBookmark) {
   try { localStorage.setItem(key, JSON.stringify(bookmark)); } catch { /* Optional camera preference, never archive data. */ }
@@ -93,7 +93,9 @@ export function CameraRig({ source, travelMode, planets, flight, onArrival, onAp
       saveBookmark(bookmarkKey, origin);
       saveVisit({ planetId: planet.id, galaxyId, origin, arrival: destination });
     }
-    animation.current = { from: camera.position.clone(), to: new Vector3(...destination.position), fromTarget: control.target.clone(), toTarget: new Vector3(...destination.target), progress: 0, duration: flight.enter ? profile.planet : profile.arrival, hold: flight.enter ? profile.hold : 0, arrivalId: flight.enter && planet ? planet.id : null, returning: false, approached: false };
+    const distance = camera.position.distanceTo(new Vector3(...destination.position));
+    const duration = flight.enter ? profile.planet * Math.min(1, distance / Math.max(1, (planet?.appearance.size ?? 1) * 12)) : profile.arrival;
+    animation.current = { from: camera.position.clone(), to: new Vector3(...destination.position), fromTarget: control.target.clone(), toTarget: new Vector3(...destination.target), progress: 0, duration, arrivalId: flight.enter && planet ? planet.id : null, returning: false, approached: false };
     // Flush OrbitControls damping before owning both camera and target.
     ownCamera(control, camera);
   }, [flight, planets, camera, size.width, size.height, bookmarkKey, galaxyId, context, profile]);
@@ -105,10 +107,9 @@ export function CameraRig({ source, travelMode, planets, flight, onArrival, onAp
     const a = animation.current;
     if (!a && control.enabled) gl.domElement.dataset.travelPhase = "idle";
     if (a) {
-      if (a.progress < 1) a.progress = Math.min(1, a.progress + Math.min(dt, .05) / (reducedMotion ? .12 : a.duration));
-      else a.rest = (a.rest ?? 0) + Math.min(dt, .05);
+      if (a.progress < 1) a.progress = a.duration === 0 ? 1 : Math.min(1, a.progress + Math.min(dt, .05) / (reducedMotion ? .12 : a.duration));
       const t = a.arrivalId ? comfortableProgress(a.progress, a.from.distanceTo(a.toTarget), a.to.distanceTo(a.toTarget)) : stagedProgress(a.progress);
-      gl.domElement.dataset.travelPhase = a.returning ? "returning" : journeyPhase(a.progress, a.progress === 1);
+      gl.domElement.dataset.travelPhase = a.returning ? "returning" : journeyPhase(a.progress);
       camera.position.lerpVectors(a.from, a.to, t);
       control.target.lerpVectors(a.fromTarget, a.toTarget, t);
       control.update();
@@ -116,7 +117,7 @@ export function CameraRig({ source, travelMode, planets, flight, onArrival, onAp
     }
     camera.position.fromArray(safeEnvironmentCamera(safeCameraPosition(safeStellarCamera(camera.position.toArray() as Vec3, source), planets), vacancies));
     camera.lookAt(control.target);
-    if (a?.progress === 1 && (a.rest ?? 0) >= (reducedMotion ? 0 : a.hold ?? 0)) {
+    if (a?.progress === 1) {
       animation.current = null;
       if (a.arrivalId) onArrival(a.arrivalId);
       else { control.enabled = true; control.enableDamping = !reducedMotion; saveBookmark(bookmarkKey, readCamera()); if (a.returning) onReturned(); }

@@ -22,17 +22,21 @@ export function useGuideFloating(preferences: GuidePreferences, update: (patch: 
   const position = guidePosition(preferences, viewport.width, viewport.height, compact);
   const placementKey = `${pathname}/${preferences.edge}/${preferences.heightRatio}/${viewport.width}/${viewport.height}/${compact}`;
   useEffect(() => {
-    const frame = requestAnimationFrame(() => {
+    const measure = () => {
       const b = guidePosition(preferences, viewport.width, viewport.height, compact);
-      const obstacles = [...document.querySelectorAll("main .topbar, main .galaxy-intro, main .intro, main .galaxy-library, main .planet-library, main .selection-card, main .scene-tools, main .galaxy-back-navigation, main .memory-detail-panel, main .memory-toolbar, main .planet-info-menu")]
-        .filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== "hidden")
+      const obstacles = [...document.querySelectorAll("main .topbar, main .world-hud, main .world-management, main .galaxy-intro, main .intro, main .galaxy-library, main .planet-library, main .selection-card, main .scene-tools, main .galaxy-back-navigation, main .memory-detail-panel, main .memory-toolbar, main .planet-info-menu")]
+        .filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== "hidden" && getComputedStyle(el).opacity !== "0")
         .map(el => el.getBoundingClientRect()).filter(r => r.right > b.x && r.left < b.x + b.w);
       const candidates = [b.y, b.minY, b.maxY, ...obstacles.flatMap(r => [r.top - b.h - 12, r.bottom + 12])].map(y => clamp(y, b.minY, b.maxY));
       const score = (y: number) => obstacles.reduce((sum, r) => sum + Math.max(0, Math.min(y + b.h, r.bottom) - Math.max(y, r.top)) * Math.min(b.w, r.width) * 100, 0) + Math.abs(y - b.y);
       const y = candidates.sort((a, c) => score(a) - score(c))[0];
-      setSafePlacement({ key: placementKey, y });
-    });
-    return () => cancelAnimationFrame(frame);
+      setSafePlacement(previous => previous?.key === placementKey && previous.y === y ? previous : { key: placementKey, y });
+    };
+    let frame = requestAnimationFrame(measure);
+    const observer = new MutationObserver(() => { cancelAnimationFrame(frame); frame = requestAnimationFrame(measure); });
+    const main = document.querySelector("main");
+    if (main) observer.observe(main, { subtree: true, childList: true, attributes: true, attributeFilter: ["class", "aria-expanded", "data-hud-mode"] });
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); };
   }, [placementKey, preferences, viewport.width, viewport.height, compact]);
   const top = safePlacement?.key === placementKey ? safePlacement.y : position.y;
   const style: CSSProperties = { left: position.x, top, width: position.w, height: position.h };

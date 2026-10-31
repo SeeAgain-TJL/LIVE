@@ -29,7 +29,7 @@ export function MemoryDetails({ memory, media, planetName, onClose, onEdit, onDe
     document.addEventListener("keydown", escape);
     return () => {
       document.removeEventListener("keydown", escape);
-      const fallback = document.querySelector<HTMLButtonElement>(".view-toggle");
+      const fallback = document.querySelector<HTMLButtonElement>('[aria-controls="world-management"]');
       if (previous?.isConnected && previous !== document.body && previous.getClientRects().length) previous.focus({ preventScroll: true });
       else fallback?.focus({ preventScroll: true });
     };

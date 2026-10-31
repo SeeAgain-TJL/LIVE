@@ -1,5 +1,15 @@
 # 技术架构与数据模型
 
+## V4.1-R1 默认世界入口
+
+`PlanetMemorySpace` 继续拥有档案业务状态和原 CRUD，通过强类型 props 向 `PlanetWorld` 传入星球/记忆/媒体与选择回调。全屏世界默认挂载，管理抽屉默认关闭；MemoryDetails 从当前星球的完整记录集合读取所选 ID，列表过滤不会使空间对象失效。
+
+`domain/planet-world.ts` 是纯派生几何逻辑：湖岸高度函数、ID 稳定锚点、每组 24 个渲染上限。`world-environment.tsx` 用地形网格、实例化树木、程序水面与天空构建环境；`planet-world.tsx` 协调空间对象、受限相机、键盘移动、WebGL 错误和上下文丢失。没有改变 schema，也没有把环境写入 Galaxy / Planet / Memory。昼夜是手动预设，尚未实现生态仿真。
+
+星球进入由 CameraRig 的实际到达回调推进：取消中恢复书签，到达时一次性提交路由；移除到达后固定等待及路由延迟。旅行中预加载世界模块，真正的模块加载与渲染失败拥有各自反馈。引导者欢迎等待世界首帧（失败时释放引导 busy 状态），人物与相机仍通过事件解耦。
+
+HUD 默认关闭导航/设置，隐藏导航加 inert；电影模式保留恢复入口。人物依然唯一挂载于应用 provider，位置与显示偏好沿用既有存储，观察 HUD 开合调整当前安全位置，不覆盖档案。
+
 ## V4.0-A2 场景边界
 
 `DeepSpace` 将固定背景预算拆为三维远星、中景星团、近景参照，叠加远处程序深空球与现有星云平面；`GalaxyCluster`/`GalaxyDisk` 继续由 ID 派生形态和厚度。`domain/spatial-scene.ts` 提供恒星位置、安全边界、倾斜轨道和弧线包络，均为纯计算。`UniverseScene` 把同一强类型 `StellarSource` 传给照明和 CameraRig，把光源位置传给 PlanetMesh；不从 3D 组件访问 Provider 或写业务档案。`universeOverview` 可接收不属于业务实体的取景边界，避免为恒星伪造 Planet 记录。

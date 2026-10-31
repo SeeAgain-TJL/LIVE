@@ -1,0 +1,98 @@
+﻿/* R1: scene-first composition, bounded and recoverable HUD surfaces. */
+.world-first-shell { position: fixed; inset: 0; min-height: 0; height: 100dvh; overflow: hidden; background: #a0b7bc; }
+.world-stage, .world-first-shell .planet-world-canvas, .world-first-shell .memory-space-canvas { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; border: 0; border-radius: 0; }
+.world-stage canvas { display: block; touch-action: none; }
+.scene-hud { position: absolute; z-index: 20; left: 20px; right: 20px; top: max(16px, env(safe-area-inset-top)); display: flex; align-items: center; gap: 20px; pointer-events: none; color: #edf4f6; }
+.scene-hud > * { pointer-events: auto; }
+.world-hud .back-link, .world-hud-actions, .world-title { background: #0b1c2b9c; backdrop-filter: blur(12px); border: 1px solid #d4e4f12b; border-radius: 12px; }
+.world-hud .back-link { padding: 10px 14px; color: #f0f5f8; }
+.world-title { padding: 10px 18px; margin-right: auto; max-width: 30%; }
+.world-title h1 { font-size: 18px; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.world-title span { font-size: 13px; color: #cbdadd; }
+.world-hud-actions { display: flex; padding: 4px; gap: 4px; }
+.world-hud-actions .button { border: 0; background: transparent; }
+.world-hud-actions .button:hover, .world-hud-actions .button[aria-expanded=true] { background: #c2deeb2b; }
+.hud-panel { background: #0b1929ed; backdrop-filter: blur(18px); border: 1px solid #abc7e33b; border-radius: 16px; box-shadow: 0 16px 40px #0005; }
+.world-management { position: absolute; z-index: 32; top: 100px; right: 20px; bottom: 20px; width: min(490px, calc(100vw - 40px)); padding: 22px; overflow: auto; overscroll-behavior: contain; }
+.world-management > header { display: flex; align-items: center; justify-content: space-between; }
+.world-management h2 { margin: 0; font-size: 20px; }
+.world-management .memory-controls { margin-top: 16px; }
+.world-management .memory-search-group { min-width: 0; width: 100%; }
+.world-management .memory-list { display: block; padding: 0; }
+.world-management .memory-list article { margin-block: 12px; }
+.world-management .palace-storage-note { line-height: 1.8; padding: 20px 0; }
+.world-planet-info { margin-top: 18px; font-size: 14px; line-height: 1.8; }
+.world-planet-info summary { cursor: pointer; }
+.world-planet-info p { white-space: pre-wrap; }
+.world-planet-info button { margin: 8px 6px 8px 0; }
+.world-memory-label { display: inline-block; padding: 5px 10px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; background: #0a2638b3; border: 1px solid #c0e2ef50; border-radius: 20px; color: #f2f9fc; }
+.world-fallback { position: absolute; inset: 30% 10%; text-align: center; padding: 24px; border-radius: 16px; background: #071729df; }
+.world-batch-control, .return-world { position: absolute; z-index: 22; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 16px; align-items: center; background: #0a172bda; padding: 8px 16px; border-radius: 12px; }
+.world-batch-control button { min-height: 44px; }
+.world-first-shell .memory-detail-panel { top: 94px; right: 20px; bottom: 20px; height: auto; border-radius: 16px; background: #0b1929f5; }
+@media (max-width:760px) {
+  .scene-hud { left: 10px; right: 10px; top: 10px; gap: 6px; flex-wrap: wrap; }
+  .world-title { flex: 1; max-width: none; margin: 0; padding: 8px 12px; }
+  .world-title h1 { font-size: 16px; }
+  .world-title span { font-size: 12px; }
+  .world-hud .back-link { font-size: 13px; padding: 8px; }
+  .world-hud-actions { margin-left: auto; }
+  .world-hud-actions .button { padding: 8px 10px; }
+  .world-management { top: 128px; bottom: 12px; right: 10px; width: calc(100vw - 20px); padding: 16px; }
+  .world-first-shell .memory-detail-panel { top: 128px; right: 10px; bottom: 12px; width: calc(100vw - 20px); }
+}
+/* Exploration HUD: closed by default, no permanent tutorial layer. */
+.galaxy-intro, .galaxy-navigation-hint, .galaxy-local-note:not(.has-notice), .intro-copy, .orbit-caption, .explorer-footer, .local-disclaimer, .topbar-center { display: none !important; }
+.is-library-collapsed .galaxy-library { visibility: hidden; pointer-events: none; opacity: 0; }
+.galaxy-universe-shell .cosmic-controls { top: 96px; right: 22px; display: flex; padding: 4px; gap: 4px; background: #06101b70; border-radius: 12px; }
+.cosmic-controls button, .hud-mode-toggle { min-height: 44px; padding: 8px 12px; color: #d4e4ef; font-size: 14px; border-radius: 9px; }
+.cosmic-controls button:hover, .hud-mode-toggle:hover { background: #adc9ed25; }
+.galaxy-library, .planet-library { top: 160px; bottom: 92px; width: 300px; border-radius: 16px; padding: 18px; background: #081726d9; backdrop-filter: blur(18px); border: 1px solid #b3c7dd2b; }
+.galaxy-library { left: 22px; }
+.planet-library { top: 150px; left: 22px; }
+.topbar { background: linear-gradient(#050f1ba0, transparent); border-bottom: 0; }
+.galaxy-universe-shell.is-cinema .galaxy-top-actions, .galaxy-universe-shell.is-cinema .brand, .galaxy-planet-shell.is-cinema .brand, .galaxy-planet-shell.is-cinema .topbar-actions > :not(.hud-mode-toggle), .galaxy-planet-shell.is-cinema .intro, .galaxy-planet-shell.is-cinema .planet-library, .galaxy-planet-shell.is-cinema .empty-galaxy-hud, .galaxy-planet-shell.is-cinema .selection-card { display: none; }
+.is-cinema .cosmic-controls > :not(.hud-mode-toggle) { display: none; }
+.galaxy-universe-shell.is-cinema .cosmic-controls { opacity: 1; top: 20px; }
+.galaxy-planet-shell.is-cinema .topbar { justify-content: flex-end; }
+.galaxy-planet-shell .intro { top: 102px; left: 28px; width: auto; pointer-events: none; }
+.galaxy-planet-shell .intro h1 { font-size: 18px; margin: 8px 0; }
+.galaxy-planet-shell .intro nav { pointer-events: auto; font-size: 13px; }
+.empty-galaxy-hud { position: absolute; z-index: 15; right: 24px; bottom: 90px; max-width: 280px; padding: 12px; border: 1px solid #9dbbdc2e; border-radius: 12px; background: #07152699; }
+.empty-galaxy-hud .eyebrow, .empty-galaxy-hud p { display: none; }
+.empty-galaxy-hud strong { display: block; font-size: 14px; font-weight: 400; color: #c3d1df; margin-bottom: 8px; }
+.empty-galaxy-hud .button { font-size: 14px; min-height: 44px; }
+.galaxy-planet-shell .scene-tools { bottom: 20px; }
+.galaxy-back-navigation { bottom: 24px; }
+.is-cinema .galaxy-scene-label, .is-cinema .planet-label { visibility: hidden; }
+.world-hud-actions .button { color: #eef5fb; }
+.companion .guide-character-art, .companion .guide-character-visual { height: 100%; min-height: 0; }
+.companion .guide-character-button { border-radius: 16px; }
+.companion.is-hidden-guide .guide-character-button, .companion.is-reading .guide-character-button { background: #0b1c2bd9; border: 1px solid #a9c9e54d; }
+.companion .guide-character-button:focus-visible { outline: 2px solid #cce6fa; }
+body:has(.is-cinema) .companion { width: 52px !important; height: 52px !important; top: auto !important; bottom: 20px; }
+body:has(.is-cinema) .companion-bubble { display: none; }
+body:has(.is-cinema) .guide-character-visual { filter: drop-shadow(0 0 5px #b5ddff); }
+.world-first-shell .world-stage > .memory-space-loading { inset: 0; display: grid; place-items: center; }
+@media(max-width:760px) {
+ .galaxy-universe-shell .cosmic-controls { top: 94px; right: 10px; left: auto; padding: 2px; }
+ .cosmic-controls button { font-size: 13px; padding: 8px; }
+ .galaxy-library, .planet-library { left: 10px; top: 150px; bottom: 84px; width: min(300px, calc(100vw - 20px)); }
+ .empty-galaxy-hud { right: 10px; bottom: 86px; max-width: 228px; }
+ .galaxy-planet-shell .intro { top: 88px; left: 14px; }
+ .galaxy-planet-shell .intro h1 { display: none; }
+ .companion-panels, .at-right .companion-panels { bottom: 12px; }
+ body:has(.memory-palace-shell) .companion.is-reading { left: 12px !important; top: auto !important; bottom: 16px; }
+ body:has(.memory-palace-shell) .companion.is-reading .companion-panels { top: 130px; bottom: 12px; }
+ .world-first-shell:has(.memory-detail-panel) .world-hud-actions { visibility: hidden; }
+}
+.galaxy-universe-shell.is-cinema .topbar { pointer-events: none; }
+.galaxy-universe-shell .cosmic-controls { z-index: 31; }
+.world-first-shell:has(.world-management) ~ .companion, .companion.is-reading { z-index: 45; }
+@media(max-width:760px) { body:has(.world-first-shell) .companion.is-reading { top: 74px !important; bottom: auto; } }
+.is-cinema .galaxy-scene-label, .is-cinema .planet-label { visibility: hidden !important; }
+body:has(.is-cinema) .companion .guide-character-button { background: #0b1c2bd9; border: 1px solid #a9c9e54d; }
+.world-management .memory-search-group { flex: 0 0 100%; }
+.world-management .memory-year { flex: 0 0 106px; }
+.world-management .memory-search { min-width: 0; }
+.world-management .memory-management-group { flex-wrap: wrap; width: 100%; }

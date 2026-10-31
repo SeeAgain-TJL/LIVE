@@ -16,6 +16,7 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
 }) {
   const rotation = useRef<Group>(null);
   const label = useRef<HTMLDivElement>(null);
+  const hovered = useRef(false);
   const position = useMemo(() => new Vector3(...galaxyPosition(index)), [index]);
   const style = useMemo(() => galaxyStyle(galaxy.id), [galaxy.id]);
   const identity = useMemo(() => galaxyIdentity(galaxy.id), [galaxy.id]);
@@ -41,7 +42,8 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
     if (label.current) {
       const distance = camera.position.distanceTo(position);
       label.current.dataset.range = distance < 70 ? "near" : "far";
-      label.current.style.opacity = String(Math.max(.45, Math.min(1, 160 / distance)));
+      label.current.style.opacity = String(Math.min(1, 140 / distance));
+      label.current.style.visibility = hovered.current || (distance < 145 && distance > style.radius * .8) ? "visible" : "hidden";
     }
   });
   return <group position={galaxyPosition(index)}>
@@ -55,7 +57,7 @@ export function GalaxyCluster({ galaxy, index, count, tier, reduced, labels, ent
       <CosmicPoints cloud={clouds[0]} opacity={0.56 * Math.sqrt(7500 / COSMIC_BUDGETS[tier].galaxy)} additive={false} lod />
       <CosmicPoints cloud={clouds[1]} opacity={0.035 * identity.dust * 600 / COSMIC_BUDGETS[tier].dust} soft lod />
     </group></group>
-    <mesh onClick={e => { e.stopPropagation(); if (e.delta <= 7) enter(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
+    <mesh onClick={e => { e.stopPropagation(); if (e.delta <= 7) enter(); }} onPointerOver={() => { hovered.current = true; document.body.style.cursor = "pointer"; }} onPointerOut={() => { hovered.current = false; document.body.style.cursor = ""; }}>
       <sphereGeometry args={[style.radius * 0.86, 20, 12]} /><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
     </mesh>
     <Html portal={labels} center position={[0, -style.radius * 0.64 - 1, 0]} zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}><div ref={label} className="galaxy-scene-label" data-galaxy-id={galaxy.id} style={{ "--galaxy-accent": identity.accent } as React.CSSProperties}><strong>{galaxy.name}</strong><span>{count > 0 ? `${count} 颗我的星球` : "暂无我的星球 · 待创建"} · {style.elliptical ? "椭圆星系" : style.barred ? "棒旋星系" : "旋涡星系"}</span><small>{identity.mood}</small></div></Html>

@@ -8,6 +8,7 @@ import { useLowPowerDevice, useReducedMotion } from "./use-render-preferences";
 import { StarField } from "./star-field";
 import { MemoryCamera } from "./memory-camera";
 import { MemoryOrb } from "./memory-orb";
+import { SceneMetrics } from "./scene-metrics";
 
 interface MemorySpaceProps {
   memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void; quality?: Quality;
@@ -48,6 +49,7 @@ export function MemorySpace({ memories, media, selectedId, onSelect, quality = "
       {memories.map((memory, index) => <MemoryOrb key={memory.id} memory={memory} kind={memoryMediaKind(memory, media)} index={index} total={memories.length}
         selected={memory.id === selectedId} low={low} reducedMotion={reducedMotion} labels={labels} onSelect={() => onSelect(memory.id)} />)}
       <MemoryCamera total={memories.length} selectedIndex={memories.findIndex(memory => memory.id === selectedId)} reducedMotion={reducedMotion} />
+      <SceneMetrics tier={low ? "low" : "high"} auxiliaryPasses={0} />
       <ContextMonitor onLost={() => setLost(true)} />
     </Canvas></SpaceBoundary>}
   </div>;

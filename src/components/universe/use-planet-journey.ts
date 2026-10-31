@@ -19,7 +19,7 @@ export function usePlanetJourney(returning: boolean) {
   const [sceneAvailable, setSceneAvailable] = useState(true);
   const active = useRef<string | null>(null);
   const sequence = useRef(0);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const committed = useRef(false);
   const locked = phase !== "idle";
   const fly = useCallback((id: string, enter = false) => {
     if (active.current || phase !== "idle") return;
@@ -28,16 +28,16 @@ export function usePlanetJourney(returning: boolean) {
       return;
     }
     if (enter) {
-      active.current = id; setPhase("flying"); cue("planetDeparture");
+      active.current = id; committed.current = false; setPhase("flying"); cue("planetDeparture");
       router.prefetch(`/planet/${encodeURIComponent(id)}`);
+      void import("@/components/three/planet-world").catch(() => { /* The world has its own resource failure UI. */ });
     }
     setFlight({ planetId: id, nonce: ++sequence.current, enter });
   }, [cue, router, phase, sceneAvailable]);
   const cancel = useCallback(() => {
-    if (!active.current) return;
+    if (!active.current || committed.current) return;
     active.current = null;
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = null; setFlight(null); setPhase("cancelling");
+    setFlight(null); setPhase("cancelling");
     cue("travelCancelled");
   }, [cue]);
   useEffect(() => {
@@ -48,19 +48,17 @@ export function usePlanetJourney(returning: boolean) {
     window.addEventListener("keydown", escape, true);
     return () => window.removeEventListener("keydown", escape, true);
   }, [cancel]);
-  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); active.current = null; }, []);
+  useEffect(() => () => { active.current = null; }, []);
   const approach = useCallback((id: string) => {
     if (active.current !== id) return;
     setPhase("approaching"); cue("planetApproach");
   }, [cue]);
   const arrive = useCallback((id: string) => {
-    if (active.current !== id || timer.current) return;
+    if (active.current !== id || committed.current) return;
+    committed.current = true;
     setPhase("transition");
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) cue("planetArrived");
-    const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 80 : 380;
-    timer.current = setTimeout(() => {
-      if (active.current === id) router.push(`/planet/${encodeURIComponent(id)}`);
-    }, delay);
+    cue("planetArrived");
+    router.push(`/planet/${encodeURIComponent(id)}`);
   }, [router, cue]);
   const overview = useCallback(() => { if (!active.current && phase === "idle") setFlight({ planetId: null, nonce: ++sequence.current }); }, [phase]);
   const returned = useCallback(() => { setPhase("idle"); cue("explorationReturned"); }, [cue]);
@@ -69,8 +67,7 @@ export function usePlanetJourney(returning: boolean) {
     setSceneAvailable(false);
     const pending = active.current;
     active.current = null;
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = null; setFlight(null); setPhase("idle");
+    committed.current = false; setFlight(null); setPhase("idle");
     if (pending) router.push(`/planet/${encodeURIComponent(pending)}`);
   }, [router, settleTravel]);
   return { phase, locked, flight, sceneAvailable, fly, cancel, approach, arrive, overview, returned, unavailable };
