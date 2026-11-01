@@ -1,0 +1,285 @@
+{
+  "metrics": [
+    {
+      "tier": "high",
+      "fps": 28,
+      "meanMs": 36.05,
+      "p95Ms": 80.6,
+      "maxMs": 98.2,
+      "calls": 5,
+      "points": 0,
+      "triangles": 2162725,
+      "dpr": 1,
+      "geometries": 17,
+      "textures": 18,
+      "programs": 9,
+      "heapBytes": 204910012,
+      "auxiliaryPasses": 2,
+      "camera": [
+        7.999999999999995,
+        5.999999999999995,
+        18.999999999999982
+      ],
+      "target": [
+        0,
+        1.5,
+        -8
+      ],
+      "fov": 56,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": 921.1305351877708,
+          "y": 24.74750721110322,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1187.1648140373086,
+          "y": 383.4186173494474,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "tier": "high",
+      "fps": 28,
+      "meanMs": 35.25,
+      "p95Ms": 44.8,
+      "maxMs": 46.1,
+      "calls": 5,
+      "points": 0,
+      "triangles": 2162725,
+      "dpr": 1,
+      "geometries": 17,
+      "textures": 18,
+      "programs": 9,
+      "heapBytes": 207067206,
+      "auxiliaryPasses": 2,
+      "camera": [
+        7.999999999999995,
+        5.999999999999995,
+        18.999999999999982
+      ],
+      "target": [
+        0,
+        1.5,
+        -8
+      ],
+      "fov": 56,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": 921.1305351877708,
+          "y": 24.74750721110322,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1187.1648140373086,
+          "y": 383.4186173494474,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "tier": "high",
+      "fps": 30,
+      "meanMs": 33.84,
+      "p95Ms": 39.5,
+      "maxMs": 40,
+      "calls": 5,
+      "points": 0,
+      "triangles": 2162725,
+      "dpr": 1,
+      "geometries": 17,
+      "textures": 18,
+      "programs": 9,
+      "heapBytes": 205585552,
+      "auxiliaryPasses": 2,
+      "camera": [
+        7.999999999999995,
+        5.999999999999995,
+        18.999999999999982
+      ],
+      "target": [
+        0,
+        1.5,
+        -8
+      ],
+      "fov": 56,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": 921.1305351877708,
+          "y": 24.74750721110322,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1187.1648140373086,
+          "y": 383.4186173494474,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "tier": "high",
+      "fps": 30,
+      "meanMs": 33.61,
+      "p95Ms": 39.5,
+      "maxMs": 42.7,
+      "calls": 5,
+      "points": 0,
+      "triangles": 2162725,
+      "dpr": 1,
+      "geometries": 17,
+      "textures": 18,
+      "programs": 9,
+      "heapBytes": 207286424,
+      "auxiliaryPasses": 2,
+      "camera": [
+        7.999999999999995,
+        5.999999999999995,
+        18.999999999999982
+      ],
+      "target": [
+        0,
+        1.5,
+        -8
+      ],
+      "fov": 56,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": 921.1305351877708,
+          "y": 24.74750721110322,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1187.1648140373086,
+          "y": 383.4186173494474,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "tier": "high",
+      "fps": 26,
+      "meanMs": 38.27,
+      "p95Ms": 47.1,
+      "maxMs": 50.9,
+      "calls": 5,
+      "points": 0,
+      "triangles": 2162725,
+      "dpr": 1,
+      "geometries": 17,
+      "textures": 18,
+      "programs": 9,
+      "heapBytes": 208720690,
+      "auxiliaryPasses": 2,
+      "camera": [
+        7.999999999999995,
+        5.999999999999995,
+        18.999999999999982
+      ],
+      "target": [
+        0,
+        1.5,
+        -8
+      ],
+      "fov": 56,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": 921.1305351877708,
+          "y": 24.74750721110322,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1187.1648140373086,
+          "y": 383.4186173494474,
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "device": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "cores": 16,
+    "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "resources": [
+      {
+        "file": "kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+        "bytes": 5451793
+      },
+      {
+        "file": "r2-coast_line_01.glb",
+        "bytes": 12920622
+      },
+      {
+        "file": "r2-coastal_cliff_02.glb",
+        "bytes": 20749491
+      },
+      {
+        "file": "r2-coast_rocks_01.glb",
+        "bytes": 15659082
+      },
+      {
+        "file": "r2-Water_1_M_Normal.jpg",
+        "bytes": 406661
+      },
+      {
+        "file": "r2-Water_2_M_Normal.jpg",
+        "bytes": 438199
+      }
+    ]
+  },
+  "diagnostics": {
+    "pageErrors": [],
+    "consoleErrors": [],
+    "failedResponses": []
+  }
+}
