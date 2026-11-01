@@ -7,7 +7,7 @@
 - 真实 Memory ID 才生成场景记忆球，0 条记忆保留纯环境；编辑、媒体、详情和返回仍复用现有数据层。
 - 已运行：`npm run lint`、`npm run typecheck`、`npm test`（44 项通过）、`npm run build`、`npx playwright test tests/browser/visual-slice.spec.ts`（1 项通过）。
 - 已保存真实浏览器截图和录屏到 `test-results/visual-slice-ocean-visual--*/`；最近高档位约 41 FPS / p95 30.9ms / 4.16M triangles / 44 textures / 177MB heap。
-- 尚未完成：电影级生产地形精修、完整 LOD/CDN、不同 GPU 的性能验收、页面遗留 404 定位、GitHub PR 推送。当前样板视觉仍需继续审核，不能标记为最终美术验收通过。
+- 尚未完成：电影级生产地形精修、完整 LOD/CDN、不同 GPU 的性能验收、页面遗留 404 定位、GitHub PR 创建（本环境没有 `gh` CLI；分支已推送，可用仓库 compare 链接创建）。当前样板视觉仍需继续审核，不能标记为最终美术验收通过。
 
 ## 2026-11-01 · V4.1 实际开发增量（P0–P4 首轮）
 
