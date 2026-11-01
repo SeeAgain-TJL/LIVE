@@ -1,0 +1,149 @@
+{
+  "high": {
+    "tier": "high",
+    "fps": 56,
+    "meanMs": 17.89,
+    "p95Ms": 24.1,
+    "maxMs": 24.8,
+    "calls": 86,
+    "points": 0,
+    "triangles": 1499228,
+    "dpr": 1,
+    "geometries": 24,
+    "textures": 43,
+    "programs": 11,
+    "heapBytes": 104175298,
+    "auxiliaryPasses": 0,
+    "camera": [
+      7.999999999999995,
+      5.999999999999995,
+      18.999999999999982
+    ],
+    "target": [
+      0,
+      1.5,
+      -8
+    ],
+    "fov": 56,
+    "landmarks": [
+      {
+        "world": [
+          10,
+          -3,
+          48
+        ],
+        "x": 921.1305351877708,
+        "y": 24.74750721110322,
+        "visible": false
+      },
+      {
+        "world": [
+          210,
+          -60,
+          -900
+        ],
+        "x": 1187.1648140373086,
+        "y": 383.4186173494474,
+        "visible": true
+      }
+    ]
+  },
+  "medium": {
+    "tier": "medium",
+    "fps": 60,
+    "meanMs": 16.67,
+    "p95Ms": 17.9,
+    "maxMs": 18.2,
+    "calls": 68,
+    "points": 0,
+    "triangles": 944352,
+    "dpr": 1,
+    "geometries": 24,
+    "textures": 43,
+    "programs": 11,
+    "heapBytes": 112647613,
+    "auxiliaryPasses": 0,
+    "camera": [
+      7.999999999999995,
+      5.999999999999995,
+      18.999999999999982
+    ],
+    "target": [
+      0,
+      1.5,
+      -8
+    ],
+    "fov": 56,
+    "landmarks": [
+      {
+        "world": [
+          10,
+          -3,
+          48
+        ],
+        "x": 921.1305351877708,
+        "y": 24.74750721110322,
+        "visible": false
+      },
+      {
+        "world": [
+          210,
+          -60,
+          -900
+        ],
+        "x": 1187.1648140373086,
+        "y": 383.4186173494474,
+        "visible": true
+      }
+    ]
+  },
+  "low": {
+    "tier": "low",
+    "fps": 60,
+    "meanMs": 16.66,
+    "p95Ms": 17.5,
+    "maxMs": 17.9,
+    "calls": 37,
+    "points": 0,
+    "triangles": 378762,
+    "dpr": 1,
+    "geometries": 24,
+    "textures": 42,
+    "programs": 16,
+    "heapBytes": 109931686,
+    "auxiliaryPasses": 0,
+    "camera": [
+      7.999999999999995,
+      5.999999999999995,
+      18.999999999999982
+    ],
+    "target": [
+      0,
+      1.5,
+      -8
+    ],
+    "fov": 56,
+    "landmarks": [
+      {
+        "world": [
+          10,
+          -3,
+          48
+        ],
+        "x": 921.1305351877708,
+        "y": 24.74750721110322,
+        "visible": false
+      },
+      {
+        "world": [
+          210,
+          -60,
+          -900
+        ],
+        "x": 1187.1648140373086,
+        "y": 383.4186173494474,
+        "visible": true
+      }
+    ]
+  }
+}
