@@ -505,3 +505,4 @@
 - Inriz 的连续山谷、植被和水岸构图明显强于 R1 单点素材拼接，但未找到可编辑场景源码或素材复用许可；本机最高档约 21 FPS、中档约 29 FPS，移动时出现地形生成卡顿。其余候选画质、自由探索或 Intel 集显性能不达标。因此按停止条件**不做集成、不新增替代场景**。
 - 本轮仅研究外部公开 Demo，使用隔离 Chrome，未读取或写入用户本地档案、IndexedDB、正式星球和导航代码。研发判断是先取得完整、可编辑且授权明确的环境美术资产；没有证据支持直接迁移 PlayCanvas/Babylon。
 - 本轮无运行时代码改动，未以 lint/build 充当视觉验收；截图和短时帧间隔采样均为实际浏览器结果。未验证真实移动设备、VRAM 或候选源码在本项目中的性能。
+- GitHub：提交 `b98a0f8` 已推送至 `codex/v4-2-r3-complete-scene-audit`，draft PR [#18](https://github.com/SeeAgain-TJL/LIVE/pull/18) 以 R1 分支为 base，未合并 `main`。
