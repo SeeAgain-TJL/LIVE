@@ -497,3 +497,35 @@
 - 下一步由实际体验审核世界构图、地貌/水体/植被精度和记忆对象可辨识性；不要再次把默认入口退回列表。
 - GitHub：功能分支 `codex/v4-1-r1-world-first` 已推送，PR https://github.com/SeeAgain-TJL/LIVE/pull/15 ，base 为 `codex/v4-a4-truthful-galaxy-hud`（依赖 #14），未合并 main。
 - 阶段提交：`f750136` 到达即进入；`fbde474` 默认生命世界；`195746d` HUD/人物恢复；`c94aa61` 完整证据与回归修正。3300 HTTP 检查返回 200。
+
+### V4.2-R3 完整环境候选审查（2026-11-01）
+
+- 从 R1 完整运行时分支创建 `codex/v4-2-r3-complete-scene-audit`，保留失败的 R2 独立实验分支及 PR #17，不将 R2 扫描岩石接入正式星球。
+- 实际打开并截取五个原始浏览器 Demo：Inriz WebGL2 地形、Dark Strands、Forest Trail、Elemental Serenity、Babylon Forest。各候选的真实截图、源码/授权边界、性能和局限见 [完整环境审阅](reviews/v4-2-r3/README.md)。
+- Inriz 的连续山谷、植被和水岸构图明显强于 R1 单点素材拼接，但未找到可编辑场景源码或素材复用许可；本机最高档约 21 FPS、中档约 29 FPS，移动时出现地形生成卡顿。其余候选画质、自由探索或 Intel 集显性能不达标。因此按停止条件**不做集成、不新增替代场景**。
+- 本轮仅研究外部公开 Demo，使用隔离 Chrome，未读取或写入用户本地档案、IndexedDB、正式星球和导航代码。研发判断是先取得完整、可编辑且授权明确的环境美术资产；没有证据支持直接迁移 PlayCanvas/Babylon。
+- 本轮无运行时代码改动，未以 lint/build 充当视觉验收；截图和短时帧间隔采样均为实际浏览器结果。未验证真实移动设备、VRAM 或候选源码在本项目中的性能。
+- GitHub：提交 `b98a0f8` 已推送至 `codex/v4-2-r3-complete-scene-audit`，draft PR [#18](https://github.com/SeeAgain-TJL/LIVE/pull/18) 以 R1 分支为 base，未合并 `main`。
+
+### V4.2-R3 完整可编辑资产复核（2026-11-01）
+
+- 按本轮调整后的筛选标准，未继续运行新的代码 Demo；转向可编辑的完整 Blender 场景。通过 BlendKit 官方下载接口（带 `scene_uuid`）匿名获取 [Seacliff Beach](https://www.blendkit.com/asset-gallery-detail/842ce837-9d3f-4b68-9049-45cd0ee92777/) 源文件到仓库外 `C:\Users\tingjie.li\AppData\Local\UNIVERSE-OF-ME\asset-audit\seacliff-beach`。没有购买、提交或修改正式项目资产。
+- Blender 4.4.3 匹配打开检查：场景有 91 个对象（87 个网格、1 个相机、3 个空对象）、约 1,086,248 个顶点 / 1,388,940 个多边形、35 个材质、55 张全部打包的图像纹理；没有外部库或缺失纹理。包含连续 Landscape、sands、sea、mount wall、side cliff、植被/岩石集合、天空节点和 7 个 Easy Scatter 几何节点修改器。
+- 源相机 540×540 Cycles 渲染已保存到仓库外 `source-camera-540.png`，证明其海岸悬崖、沙滩、海水和植被的单机位美术质量明显高于 R1 草坡样板。但场景范围约 125×15 Blender 单位，内容集中在一条窄海湾；只有一个相机，没有已验证的漫游碰撞、路径、LOD 或 WebGL 运行场景。原始 Cycles/体积节点/几何散布不能直接由 GLB 保留。
+- 该源文件是可编辑美术起点，不是可直接集成的产品环境。BlendKit 许可允许渲染和符合条件的游戏使用，但要求分发时用户不能轻易提取资产；公开网页通常会暴露 GLB，因此必须在正式复用前取得针对 WebGL 分发方式的明确许可或设计受保护的资产交付。下载文件 SHA-256：`005EBAA333CD2BCEA68694E93010530F48C1D54D6D908826168D95395553D6C1`。
+- 本轮结论：**没有找到同时满足高品质、可自由探索、浏览器性能和正式复用条件的完整环境资产**。Seacliff 保留为审美和 Blender 工作流参考，不导入 R1，也不与孤立扫描件拼接。下一步若继续，最小条件是由环境美术师在 Blender 中把完整海岸扩展为可漫游区域，制作碰撞代理、LOD、烘焙/导出材质和资产清单，再用同一机位在 Three.js 中验证；未经该关卡，不开发新星球。
+
+### V4.2-R3 Seacliff Blender → Three.js 局部链路验证（2026-11-01）
+
+- 重新读取 Seacliff 的 `assets used` 元数据：主场景及可追溯的 13 个 BlenderKit 依赖（材质、笔刷、Easy Scatter 节点组）均标为 `royalty_free`，但场景内 Graswald/Grove 散布产生的植被网格没有逐项网页分发授权字段。BlendKit FAQ 对游戏使用附加“用户不能轻易提取资产”的条件；GLB 将纹理打包并直接发给浏览器不满足可公开部署的授权确认。因此本次导出仅作本地不可发布技术测试，未进入 `public/` 或 Git。
+- 使用 Blender 4.4.3 glTF exporter，在不改变源 `.blend` 的情况下导出完整本地 GLB：约 207,527,508 bytes。导出耗时约 9.3 秒；导出器可处理几何节点的已评估网格，但不会保留 Cycles 节点、世界天空、体积雾或 Blender 散布工作流。
+- 保留的 Blender 基准：仓库外 `C:\Users\tingjie.li\AppData\Local\UNIVERSE-OF-ME\asset-audit\seacliff-beach\source-camera-540.png`。浏览器对照：同目录 `webgl-same-camera-final.png`，旋转验证 `webgl-orbit-final.png`。浏览器使用 Three.js 0.180.0 `GLTFLoader`、相同坐标机位（Blender Z-up 到 glTF Y-up 转换），1280×720、DPR 1、系统 Chrome。
+- 实测结果：GLB 能加载、渲染和通过 OrbitControls 旋转；无页面异常或控制台错误。加载完成约 22.5 秒，渲染约 4,690,436 三角形，短时采样中位数约 59.5 FPS，P95 帧间隔约 33.4 ms。该数据只代表本地隔离测试，不代表移动设备或可发布资产性能。
+- **视觉验证失败**：浏览器画面出现大片空白/错误平面、材质噪点和错误的环境层次；海水、天空和植被没有接近 Cycles 原始构图。主要问题是 Blender 节点材质、世界/体积光照、透明/混合纹理与散布结果在 glTF/Three.js 间没有等价表达，而不是当前硬件先达到瓶颈。停止进一步参数堆叠和正式集成。
+
+### V4.2-R3 技术收敛：高品质世界资产生产规范（2026-11-01）
+
+- 根据候选 Demo、Seacliff Blender 源场景和实际 Three.js 导出验证，新增 [高品质世界资产生产规范](WORLD-ASSET-PRODUCTION-SPEC.md)。规范明确 glTF 2.0/PBR、KTX2、meshopt/LOD、碰撞代理、分区加载、材质/天空/水体限制、Blender 制作流程、许可证清单、浏览器证据和停止条件。
+- 明确区分开源技术工具与美术资产授权。Khronos glTF-Blender-IO、glTF Transform、meshoptimizer、KTX-Software、R3F/Drei 和 Playwright 可复用，但不能替代人工环境构图、地形侵蚀、植被生态分区、材质烘焙和 LOD/碰撞制作。
+- 定义 Intel 核显低/中档与未来独显高档的初始资源预算，并保留 Three.js/R3F 为默认运行时。只有同一套合法实时资产在完成优化后仍出现可重复的引擎瓶颈，才建立 PlayCanvas/Babylon 隔离对照。
+- 本轮没有新增场景、运行时代码或数据迁移；V4.2-R1 继续作为稳定基线，R2 和 Seacliff 导出实验继续隔离。下一步等待符合规范的实时环境资产，不再围绕 Seacliff 调整 Shader、灯光、贴图或减面。
