@@ -13,12 +13,13 @@ export function stagedProgress(value: number): number {
   const r = t - .7;
   return (.6 + .5 * (r + .3 / Math.PI * Math.sin(Math.PI * r / .3))) / .75;
 }
-/** Roughly constant perceived scale growth; avoids linear-distance rushing near a body. */
+/** Hold more distance until late approach so a large planet never appears stalled. */
 export function comfortableProgress(value: number, startDistance: number, endDistance: number): number {
   const p = stagedProgress(value), start = Math.max(.1, startDistance), end = Math.max(.1, endDistance);
   if (p === 0 || p === 1) return p;
   if (start <= end * 1.15) return p;
-  return (start - Math.exp(Math.log(start) + Math.log(end / start) * p)) / (start - end);
+  const logarithmic = (start - Math.exp(Math.log(start) + Math.log(end / start) * p)) / (start - end);
+  return p * .58 + logarithmic * .42;
 }
 export function journeyPhase(progress: number) {
   return progress < .2 ? "starting" : progress < .7 ? "cruising" : "slowing";

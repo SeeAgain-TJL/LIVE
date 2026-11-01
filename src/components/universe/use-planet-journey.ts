@@ -8,7 +8,7 @@ import { useGuide, useGuideTravelScope } from "@/components/guide/guide-provider
 export type JourneyPhase = "idle" | "flying" | "approaching" | "transition" | "returning" | "cancelling";
 
 /** One cancellable entry task; refs close the gap before the next React render. */
-export function usePlanetJourney(returning: boolean) {
+export function usePlanetJourney(returning: boolean, visualSliceId: string | null = null) {
   const router = useRouter();
   const { cue, settleTravel } = useGuide();
   useGuideTravelScope();
@@ -31,9 +31,10 @@ export function usePlanetJourney(returning: boolean) {
       active.current = id; committed.current = false; setPhase("flying"); cue("planetDeparture");
       router.prefetch(`/planet/${encodeURIComponent(id)}`);
       void import("@/components/three/planet-world").catch(() => { /* The world has its own resource failure UI. */ });
+      if (id === visualSliceId) void import("@/components/three/visual-slice-environment").then(module => module.preloadVisualSlice()).catch(() => { /* Scene boundary reports actual loading errors. */ });
     }
     setFlight({ planetId: id, nonce: ++sequence.current, enter });
-  }, [cue, router, phase, sceneAvailable]);
+  }, [cue, router, phase, sceneAvailable, visualSliceId]);
   const cancel = useCallback(() => {
     if (!active.current || committed.current) return;
     active.current = null;

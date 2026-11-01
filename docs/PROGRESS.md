@@ -1,5 +1,14 @@
 # 开发进度
 
+## V4.2 高品质场景样板（进行中）
+
+- 已从 V4.1 R1 建立 `codex/v4-2-visual-slice`，未修改用户数据结构和本地档案。
+- 已接入一颗海洋型个人星球的派生海岸样板：Poly Haven CC0 PBR 地表、扫描树木/蕨类/灌木/岩石、HDR 天空、真实光照和动态水面；其他星球继续走原世界环境。
+- 真实 Memory ID 才生成场景记忆球，0 条记忆保留纯环境；编辑、媒体、详情和返回仍复用现有数据层。
+- 已运行：`npm run lint`、`npm run typecheck`、`npm test`（44 项通过）、`npm run build`、`npx playwright test tests/browser/visual-slice.spec.ts`（1 项通过）。
+- 已保存真实浏览器截图和录屏到 `test-results/visual-slice-ocean-visual--*/`；最近高档位约 41 FPS / p95 30.9ms / 4.16M triangles / 44 textures / 177MB heap。
+- 尚未完成：电影级生产地形精修、完整 LOD/CDN、不同 GPU 的性能验收、页面遗留 404 定位、GitHub PR 推送。当前样板视觉仍需继续审核，不能标记为最终美术验收通过。
+
 ## 2026-11-01 · V4.1 实际开发增量（P0–P4 首轮）
 
 - [x] P0：全局引导者在数据加载失败时仍保留可恢复入口；紧凑/预览尺寸不再把人物压成零高度；触摸拖动兼容 Chromium 的 `button=-1`，拖动与点击继续分离。

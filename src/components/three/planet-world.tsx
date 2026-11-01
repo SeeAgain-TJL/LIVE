@@ -1,18 +1,19 @@
 ﻿"use client";
 
 /* eslint-disable react-hooks/immutability -- R3F owns these mutable camera and canvas objects, not React render state. */
-import { Component, useCallback, useEffect, useRef, useState, type ComponentRef, type ReactNode } from "react";
+import { Component, Suspense, useCallback, useEffect, useRef, useState, type ComponentRef, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import { Vector3, type Group } from "three";
 import type { Media, Memory, Planet, Quality } from "@/domain/types";
 import { memoryMediaKind } from "@/domain/memory";
-import { WORLD_BATCH_SIZE, worldHeight, worldMemoryPosition } from "@/domain/planet-world";
+import { WORLD_BATCH_SIZE, sliceWorldHeight, sliceWorldMemoryPosition, worldHeight, worldMemoryPosition } from "@/domain/planet-world";
 import { useLowPowerDevice, useReducedMotion } from "./use-render-preferences";
 import { WorldEnvironment } from "./world-environment";
+import { VisualSliceEnvironment } from "./visual-slice-environment";
 import { SceneMetrics } from "./scene-metrics";
 
-interface Props { planet: Planet; memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void; quality: Quality; night?: boolean; onReady?: () => void; onUnavailable?: () => void; }
+interface Props { planet: Planet; memories: Memory[]; media: Media[]; selectedId: string | null; onSelect: (id: string) => void; quality: Quality; visualSlice?: boolean; night?: boolean; onReady?: () => void; onUnavailable?: () => void; }
 class WorldBoundary extends Component<{ children: ReactNode; fallback: ReactNode; onUnavailable: () => void }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
@@ -20,7 +21,7 @@ class WorldBoundary extends Component<{ children: ReactNode; fallback: ReactNode
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-function WorldController({ onReady, onLost, reduced }: { onReady?: () => void; onLost: () => void; reduced: boolean }) {
+function WorldController({ onReady, onLost, reduced, visualSlice }: { onReady?: () => void; onLost: () => void; reduced: boolean; visualSlice: boolean }) {
   const controls = useRef<ComponentRef<typeof OrbitControls>>(null), ready = useRef(false);
   const { camera, gl } = useThree();
   const keys = useRef(new Set<string>()), forward = useRef(new Vector3()), side = useRef(new Vector3());
@@ -39,14 +40,14 @@ function WorldController({ onReady, onLost, reduced }: { onReady?: () => void; o
     const step = Math.min(dt, .04) * 5;
     for (const key of keys.current) { const delta = (key === 'w' || key === 's' ? forward.current : side.current).clone().multiplyScalar(step * (key === 's' || key === 'a' ? -1 : 1));camera.position.add(delta);control.target.add(delta); }
     camera.position.x = Math.max(-42, Math.min(42, camera.position.x));camera.position.z = Math.max(-40, Math.min(42, camera.position.z));
-    camera.position.y = Math.max(Math.max(.1, worldHeight(camera.position.x, camera.position.z)) + 1.6, Math.min(38, camera.position.y));
+    camera.position.y = Math.max(Math.max(.1, (visualSlice ? sliceWorldHeight : worldHeight)(camera.position.x, camera.position.z)) + 1.6, Math.min(38, camera.position.y));
     control.target.x = Math.max(-30, Math.min(30, control.target.x));control.target.z = Math.max(-32, Math.min(32, control.target.z));control.target.y = Math.max(.5, Math.min(12, control.target.y));
   });
   return <OrbitControls ref={controls} makeDefault target={[0, 1.5, -8]} enablePan enableDamping={!reduced} dampingFactor={.08} minDistance={2} maxDistance={58} maxPolarAngle={Math.PI * .48} minPolarAngle={.15} rotateSpeed={.4} panSpeed={.65} zoomSpeed={.6} />;
 }
 
-function Anchor({ memory, media, selected, onSelect, reduced, labels }: { memory: Memory; media: Media[]; selected: boolean; onSelect: (id: string) => void; reduced: boolean; labels: React.RefObject<HTMLDivElement>; }) {
-  const position = worldMemoryPosition(memory.id), kind = memoryMediaKind(memory, media), ref = useRef<Group>(null);
+function Anchor({ memory, media, selected, onSelect, reduced, labels, visualSlice }: { memory: Memory; media: Media[]; selected: boolean; onSelect: (id: string) => void; reduced: boolean; labels: React.RefObject<HTMLDivElement>; visualSlice: boolean }) {
+  const position = (visualSlice ? sliceWorldMemoryPosition : worldMemoryPosition)(memory.id), kind = memoryMediaKind(memory, media), ref = useRef<Group>(null);
   const color = kind === 'video' ? '#e2b1f5' : kind === 'photo' ? '#9ae2dc' : kind === 'mixed' ? '#efd49f' : '#c7d8ff';
   const pointer = useRef<{ x: number; y: number; distance: number; time: number } | null>(null);
   useFrame(({ clock }) => { if (ref.current) ref.current.position.y = position[1] + (reduced ? 0 : Math.sin(clock.elapsedTime * .8 + position[0]) * .12); });
@@ -58,10 +59,10 @@ function Anchor({ memory, media, selected, onSelect, reduced, labels }: { memory
 }
 function WorldContent(props: Props & { low: boolean; labels: React.RefObject<HTMLDivElement>; onLost: () => void }) {
   const reduced = useReducedMotion();const { gl } = useThree();
-  useEffect(() => { gl.domElement.dataset.worldAnchors = JSON.stringify(props.memories.map(m => ({ id: m.id, position: worldMemoryPosition(m.id) }))); }, [gl, props.memories]);
-  return <><WorldEnvironment low={props.low} night={props.night ?? false} reduced={reduced} />
-    {props.memories.map(memory => <Anchor key={memory.id} memory={memory} media={props.media} selected={props.selectedId === memory.id} onSelect={props.onSelect} reduced={reduced} labels={props.labels} />)}
-    <WorldController reduced={reduced} onReady={props.onReady} onLost={props.onLost} /><SceneMetrics tier={props.low ? 'low' : 'high'} auxiliaryPasses={0} /></>;
+  useEffect(() => { gl.domElement.dataset.worldAnchors = JSON.stringify(props.memories.map(m => ({ id: m.id, position: (props.visualSlice ? sliceWorldMemoryPosition : worldMemoryPosition)(m.id) }))); }, [gl, props.memories, props.visualSlice]);
+  return <>{props.visualSlice ? <VisualSliceEnvironment appearance={props.planet.appearance} low={props.low} night={props.night ?? false} reduced={reduced} /> : <WorldEnvironment low={props.low} night={props.night ?? false} reduced={reduced} />}
+    {props.memories.map(memory => <Anchor key={memory.id} memory={memory} media={props.media} selected={props.selectedId === memory.id} onSelect={props.onSelect} reduced={reduced} labels={props.labels} visualSlice={!!props.visualSlice} />)}
+    <WorldController reduced={reduced} visualSlice={!!props.visualSlice} onReady={props.onReady} onLost={props.onLost} /><SceneMetrics tier={props.low ? 'low' : 'high'} auxiliaryPasses={0} /></>;
 }
 export function PlanetWorld(props: Props) {
   const labels = useRef<HTMLDivElement>(null!), deviceLow = useLowPowerDevice();const low = props.quality === 'low' || (props.quality === 'auto' && deviceLow);
@@ -74,7 +75,7 @@ export function PlanetWorld(props: Props) {
   return <div className="planet-world-canvas" aria-label={`${props.planet.name || '未命名星球'} 的生命记忆世界`}>
     <div ref={labels} className="scene-label-layer" aria-hidden="true" />
     {lost ? fallback : <WorldBoundary key={attempt} fallback={fallback} onUnavailable={unavailable}><Canvas shadows={!low} camera={{ position: [8, 6, 19], fov: 56, near: .1, far: 1800 }} dpr={low ? 1 : [1, 1.5]} gl={{ antialias: !low, powerPreference: low ? 'low-power' : 'high-performance' }} fallback={fallback}>
-      <WorldContent {...props} memories={batch} low={low} labels={labels} onLost={unavailable} />
+      <Suspense fallback={<Html center><div className="memory-space-loading">正在加载地表资产…</div></Html>}><WorldContent {...props} memories={batch} low={low} labels={labels} onLost={unavailable} /></Suspense>
     </Canvas></WorldBoundary>}
     {pages > 1 && <nav className="world-batch-control" aria-label="记忆对象分区"><button disabled={current === 0} onClick={() => setPage(current - 1)}>上一组</button><span>{current + 1} / {pages}</span><button disabled={current === pages - 1} onClick={() => setPage(current + 1)}>下一组</button></nav>}
   </div>;

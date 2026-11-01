@@ -13,6 +13,7 @@ import { IconButton } from "@/components/ui/icon-button";
 import { Modal } from "@/components/ui/modal";
 import { StorageState } from "@/components/ui/storage-state";
 import { searchPlanets } from "@/domain/exploration";
+import { visualSlicePlanetId } from "@/domain/planet-world";
 import { useGuide } from "@/components/guide/guide-provider";
 import { galaxyCameraKey } from "@/data/local-repository";
 import { usePlanetJourney } from "./use-planet-journey";
@@ -28,7 +29,7 @@ export function UniverseExplorer({ galaxyId }: { galaxyId: string }) {
   const params = useSearchParams();
   const [selectedId, setSelectedId] = useState<string | null>(params.get("planet"));
   const [returnPlanetId] = useState(params.get("returnFrom"));
-  const { phase, locked, flight, sceneAvailable, fly: requestFlight, cancel, approach, arrive, overview, returned, unavailable } = usePlanetJourney(!!returnPlanetId);
+  const { phase, locked, flight, sceneAvailable, fly: requestFlight, cancel, approach, arrive, overview, returned, unavailable } = usePlanetJourney(!!returnPlanetId, data ? visualSlicePlanetId(data.planets, data.memories) : null);
   const [query, setQuery] = useState("");
   const [year, setYear] = useState("");
   const [showList, setShowList] = useState(false);

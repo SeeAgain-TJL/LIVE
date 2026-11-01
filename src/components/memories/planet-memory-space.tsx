@@ -8,6 +8,7 @@ import { ArrowLeft, CalendarDays, Edit3, Orbit, Plus, Trash2, X, List, Settings2
 import type { Memory, Quality } from "@/domain/types";
 import { memoryMatches, memoryPassesFilter, type MemoryFilter } from "@/domain/memory";
 import { periodLabel, planetName } from "@/domain/planet";
+import { visualSlicePlanetId } from "@/domain/planet-world";
 import { useUniverse } from "@/components/providers/universe-provider";
 import { PlanetEditor } from "@/components/planets/planet-editor";
 import { Modal } from "@/components/ui/modal";
@@ -86,6 +87,7 @@ export function PlanetMemorySpace({ id }: { id: string }) {
   if (!planet) return <main className="storage-state"><Orbit size={36} /><h1>这颗星球还没有抵达</h1><Link href="/" className="button"><ArrowLeft size={16} />返回我的宇宙</Link></main>;
   const media = data.media ?? [];
   const memories = data.memories.filter(memory => memory.planetId === id);
+  const visualSlice = id === visualSlicePlanetId(data.planets, data.memories);
   const filtered = memories.filter(memory => memoryMatches(memory, media, query)
     && memoryPassesFilter(memory, media, filter) && (!year || memory.occurredOn.startsWith(year)))
     .sort((a, b) => (sort === "desc" ? -1 : 1) * (a.occurredOn.localeCompare(b.occurredOn) || a.createdAt.localeCompare(b.createdAt)));
@@ -125,11 +127,11 @@ export function PlanetMemorySpace({ id }: { id: string }) {
   return <main className="archive-shell memory-palace-shell world-first-shell">
     <MemoryGuideBridge planetId={id} act={guideAction} reading={!!selected} worldReady={worldReady || !worldMode} />
     <section className="world-stage" aria-label={worldMode ? "星球生命世界" : "记忆球空间"}>
-      {worldMode ? <PlanetWorld planet={planet} memories={memories} media={media} selectedId={selectedId} onSelect={setSelectedId} quality={quality} night={night} onReady={onWorldReady} onUnavailable={settleTravel} /> : <MemorySpace memories={filtered} media={media} selectedId={selectedId} onSelect={setSelectedId} quality={quality} />}
+      {worldMode ? <PlanetWorld planet={planet} memories={memories} media={media} selectedId={selectedId} onSelect={setSelectedId} quality={quality} visualSlice={visualSlice} night={night} onReady={onWorldReady} onUnavailable={settleTravel} /> : <MemorySpace memories={filtered} media={media} selectedId={selectedId} onSelect={setSelectedId} quality={quality} />}
     </section>
     <header className="world-hud scene-hud">
       <PlanetExitLink planetId={id} galaxyId={planet.galaxyId!} />
-      <div className="world-title"><h1>{planetName(planet)}</h1><span>{memories.length} 条记忆</span></div>
+      <div className="world-title"><h1>{planetName(planet)}</h1><span>{memories.length} 条记忆{visualSlice ? " · 海岸样板" : ""}</span></div>
       <div className="world-hud-actions">
         <button className="button secondary" aria-label="记忆管理" aria-expanded={managerOpen} aria-controls="world-management" onClick={() => { setSelectedId(null);setManagerOpen(value => !value); }}><List size={18} /><span>记忆管理</span></button>
         <button className="button" onClick={() => setEditor("new")}><Plus size={18} /><span>写一条记忆</span></button>

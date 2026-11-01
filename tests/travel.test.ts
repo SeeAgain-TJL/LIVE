@@ -19,11 +19,14 @@ test("staged travel starts/stops gently, is monotone and has no arrival hold", (
   assert(TRAVEL_PROFILES.comfort.arrivalScale < TRAVEL_PROFILES.fast.arrivalScale);
 });
 
-test("approach remapping limits the late rush in perceived scale rather than moving at constant world speed", () => {
+test("approach keeps the target at a readable size until the final continuous arrival", () => {
   const distance = (t: number) => 100 - comfortableProgress(t, 100, 5) * 95;
   assert.equal(distance(0), 100); assert(Math.abs(distance(1) - 5) < 1e-8);
-  const a = Math.log(distance(.3) / distance(.4)), b = Math.log(distance(.5) / distance(.6));
-  assert(Math.abs(a - b) < 1e-8);
+  let previous = 100;
+  for (let i = 1; i <= 1000; i++) { const next = distance(i / 1000); assert(next <= previous && next >= 5 - 1e-8); previous = next; }
+  const earlyLogDistance = 100 * Math.pow(5 / 100, stagedProgress(.7));
+  assert(distance(.7) > earlyLogDistance + 2); // avoid an oversized planet lingering through the last third
+  assert(distance(.9) > distance(1)); // no arrival hold
   assert.equal(comfortableProgress(.4, 10, 20), stagedProgress(.4));
 });
 
