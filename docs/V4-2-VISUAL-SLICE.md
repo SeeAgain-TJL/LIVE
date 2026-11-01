@@ -16,7 +16,7 @@
 - `04-memory-in-world.png`, `05-open-memory.png`
 - `video.webm`
 
-最近一次高质量档位读数：约 41 FPS、p95 30.9 ms、4.16M triangles、44 textures、约 177 MB JS heap。当前仍偏重，低端设备需选择简化质量；这是一轮可运行样板，不是电影级最终资产验收。
+最近一次高质量档位读数：约 41 FPS、p95 30.9 ms、4.16M triangles、44 textures、约 177 MB JS heap。浏览器资产约 53 MiB（已用 Git LFS）。当前仍偏重，低端设备需选择简化质量；这是一轮可运行样板，不是电影级最终资产验收。
 
 ## 已知限制
 
