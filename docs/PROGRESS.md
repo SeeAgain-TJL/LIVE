@@ -506,3 +506,11 @@
 - 本轮仅研究外部公开 Demo，使用隔离 Chrome，未读取或写入用户本地档案、IndexedDB、正式星球和导航代码。研发判断是先取得完整、可编辑且授权明确的环境美术资产；没有证据支持直接迁移 PlayCanvas/Babylon。
 - 本轮无运行时代码改动，未以 lint/build 充当视觉验收；截图和短时帧间隔采样均为实际浏览器结果。未验证真实移动设备、VRAM 或候选源码在本项目中的性能。
 - GitHub：提交 `b98a0f8` 已推送至 `codex/v4-2-r3-complete-scene-audit`，draft PR [#18](https://github.com/SeeAgain-TJL/LIVE/pull/18) 以 R1 分支为 base，未合并 `main`。
+
+### V4.2-R3 完整可编辑资产复核（2026-11-01）
+
+- 按本轮调整后的筛选标准，未继续运行新的代码 Demo；转向可编辑的完整 Blender 场景。通过 BlendKit 官方下载接口（带 `scene_uuid`）匿名获取 [Seacliff Beach](https://www.blendkit.com/asset-gallery-detail/842ce837-9d3f-4b68-9049-45cd0ee92777/) 源文件到仓库外 `C:\Users\tingjie.li\AppData\Local\UNIVERSE-OF-ME\asset-audit\seacliff-beach`。没有购买、提交或修改正式项目资产。
+- Blender 4.4.3 匹配打开检查：场景有 91 个对象（87 个网格、1 个相机、3 个空对象）、约 1,086,248 个顶点 / 1,388,940 个多边形、35 个材质、55 张全部打包的图像纹理；没有外部库或缺失纹理。包含连续 Landscape、sands、sea、mount wall、side cliff、植被/岩石集合、天空节点和 7 个 Easy Scatter 几何节点修改器。
+- 源相机 540×540 Cycles 渲染已保存到仓库外 `source-camera-540.png`，证明其海岸悬崖、沙滩、海水和植被的单机位美术质量明显高于 R1 草坡样板。但场景范围约 125×15 Blender 单位，内容集中在一条窄海湾；只有一个相机，没有已验证的漫游碰撞、路径、LOD 或 WebGL 运行场景。原始 Cycles/体积节点/几何散布不能直接由 GLB 保留。
+- 该源文件是可编辑美术起点，不是可直接集成的产品环境。BlendKit 许可允许渲染和符合条件的游戏使用，但要求分发时用户不能轻易提取资产；公开网页通常会暴露 GLB，因此必须在正式复用前取得针对 WebGL 分发方式的明确许可或设计受保护的资产交付。下载文件 SHA-256：`005EBAA333CD2BCEA68694E93010530F48C1D54D6D908826168D95395553D6C1`。
+- 本轮结论：**没有找到同时满足高品质、可自由探索、浏览器性能和正式复用条件的完整环境资产**。Seacliff 保留为审美和 Blender 工作流参考，不导入 R1，也不与孤立扫描件拼接。下一步若继续，最小条件是由环境美术师在 Blender 中把完整海岸扩展为可漫游区域，制作碰撞代理、LOD、烘焙/导出材质和资产清单，再用同一机位在 Three.js 中验证；未经该关卡，不开发新星球。
