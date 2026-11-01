@@ -21,7 +21,7 @@ interface SceneProps {
   planets: Planet[]; selectedId: string | null; flight: FlightRequest | null;
   onEnter: (id: string) => void; onArrival: (id: string) => void; onApproach: (id: string) => void; onReturned: () => void;
   quality: Quality; travelMode: TravelMode; showOrbits?: boolean; newPlanetId?: string | null; onCreateVacancy?: () => void;
-  bookmarkKey?: string; galaxyId: string; returnPlanetId?: string | null; locked: boolean; onUnavailable: () => void;
+  bookmarkKey?: string; galaxyId: string; returnPlanetId?: string | null; locked: boolean; onUnavailable: () => void; coastSampleId?: string | null;
 }
 
 function ContextMonitor({ onLost }: { onLost: () => void }) {
@@ -85,7 +85,7 @@ export default function UniverseScene(props: SceneProps) {
     <Suspense fallback={null}>
       <CosmicEnvironment tier={tier} identity={props.galaxyId} />
       {props.planets.map((planet, index) => <group key={planet.id}>
-        <PlanetMesh appearance={planet.appearance} position={planet.position} lightPosition={source.position} low={low} reducedMotion={reducedMotion} selected={props.selectedId === planet.id} born={props.newPlanetId === planet.id}
+        <PlanetMesh appearance={planet.appearance} position={planet.position} lightPosition={source.position} low={low} reducedMotion={reducedMotion} selected={props.selectedId === planet.id} born={props.newPlanetId === planet.id} coastSample={planet.id === props.coastSampleId}
           onSelect={e => { e.stopPropagation(); if (!props.locked && gesture.current.tap && e.delta <= 7) props.onEnter(planet.id); }} onHover={value => setHoveredId(value ? planet.id : null)} />
         <Html portal={labels} position={[planet.position[0], planet.position[1] - planet.appearance.size * 1.65, planet.position[2]]} center distanceFactor={30} zIndexRange={[15, 0]} style={{ pointerEvents: "none" }}>
           <div className={`planet-label ${props.selectedId === planet.id ? "selected" : ""}`}><i /><span>{planet.name || `未命名 · ${String(index + 1).padStart(2, "0")}`}</span>{planet.isDemo && <small>示例星球</small>}</div>

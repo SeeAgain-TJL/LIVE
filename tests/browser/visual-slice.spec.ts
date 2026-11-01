@@ -71,3 +71,23 @@ test("ocean visual slice travels from a real planet, opens a saved memory and re
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!).memories.length, archiveKey)).toBe(1);
   expect(errors).toEqual([]);
 });
+
+test("a late world asset cannot replace a guide search result with an arrival greeting", async ({ page }) => {
+  const seed = createSeed();
+  seed.planets = [{ ...seed.planets[1], id: "late-coast-review", isDemo: false, name: "隔离加载测试", galaxyId: "unclassified" }];
+  await page.goto("/");
+  await page.evaluate(({ seed, archiveKey }) => localStorage.setItem(archiveKey, JSON.stringify(seed)), { seed, archiveKey });
+  await page.route("**/world-slice/island_tree_01-lod1.glb", async route => {
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    await route.continue();
+  });
+  await page.goto("/planet/late-coast-review", { waitUntil: "domcontentloaded" });
+  await expect(page.locator('.planet-world-canvas canvas[data-world-ready="true"]')).toHaveCount(0);
+  await page.getByRole("button", { name: "展开记忆引导者" }).click();
+  await page.getByRole("button", { name: "帮我寻找", exact: true }).click();
+  await page.getByRole("button", { name: "照片记忆", exact: true }).last().click();
+  await expect(page.locator(".global-guide-message")).toContainText("暂时没有找到");
+  await page.locator('.planet-world-canvas canvas[data-world-ready="true"]').waitFor({ timeout: 45_000 });
+  await expect(page.locator(".global-guide-message")).toContainText("暂时没有找到");
+  expect(await page.locator(".planet-world-canvas canvas").getAttribute("data-world-anchors")).toBe("[]");
+});

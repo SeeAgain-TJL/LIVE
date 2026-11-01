@@ -1,0 +1,68 @@
+{
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+  "cores": 16,
+  "deviceMemory": 16,
+  "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "assets": [
+    {
+      "name": "kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+      "transfer": 5451793,
+      "decoded": 5451493
+    },
+    {
+      "name": "island_tree_01-lod1.glb",
+      "transfer": 9575705,
+      "decoded": 10488676
+    },
+    {
+      "name": "island_tree_02-lod2.glb",
+      "transfer": 6331086,
+      "decoded": 6470948
+    },
+    {
+      "name": "fern_02.glb",
+      "transfer": 1704954,
+      "decoded": 1760784
+    },
+    {
+      "name": "shrub_03.glb",
+      "transfer": 2344942,
+      "decoded": 2406556
+    },
+    {
+      "name": "rock_moss_set_01.glb",
+      "transfer": 1114563,
+      "decoded": 1237424
+    },
+    {
+      "name": "leafy_grass_diff.jpg",
+      "transfer": 1195694,
+      "decoded": 1195394
+    },
+    {
+      "name": "coast_sand_04_diff.jpg",
+      "transfer": 1036802,
+      "decoded": 1036502
+    },
+    {
+      "name": "aerial_grass_rock_diff.jpg",
+      "transfer": 666955,
+      "decoded": 666655
+    },
+    {
+      "name": "aerial_grass_rock_normal.jpg",
+      "transfer": 905256,
+      "decoded": 904956
+    },
+    {
+      "name": "leafy_grass_normal.jpg",
+      "transfer": 1466349,
+      "decoded": 1466049
+    },
+    {
+      "name": "coast_sand_04_normal.jpg",
+      "transfer": 1307893,
+      "decoded": 1307593
+    }
+  ]
+}
