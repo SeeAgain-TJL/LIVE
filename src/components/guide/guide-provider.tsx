@@ -11,6 +11,7 @@ interface GuideContextValue {
   binding: MemoryGuideBinding | null;
   bind: (value: MemoryGuideBinding | null) => void;
   message: string;
+  manualRevision: number;
   say: (message: string, state?: GuideState) => void;
   cue: (event: GuideCue) => void;
   settleTravel: () => void;
@@ -32,6 +33,7 @@ const GuideContext = createContext<GuideContextValue | null>(null);
 export function GuideProvider({ children }: { children: React.ReactNode }) {
   const [binding, setBinding] = useState<MemoryGuideBinding | null>(null);
   const [message, setMessage] = useState<string>(GUIDE_LINES.universeWelcome.text);
+  const [manualRevision, setManualRevision] = useState(0);
   const [state, setState] = useState<GuideState>("welcome");
   const [travelling, setTravelling] = useState(false);
   const [autoBubble, setAutoBubble] = useState(false);
@@ -75,7 +77,7 @@ export function GuideProvider({ children }: { children: React.ReactNode }) {
     updatePreferences({ promptsEnabled: enabled }); if (!enabled) setAutoBubble(false);
   }, [updatePreferences]);
   const say = useCallback((text: string, nextState: GuideState = "speaking") => {
-    setMessage(text); setState(nextState); setAutoBubble(true);
+    setManualRevision(value => value + 1); setMessage(text); setState(nextState); setAutoBubble(true);
   }, []);
   const cue = useCallback((event: GuideCue) => {
     const line = GUIDE_LINES[event];
@@ -95,7 +97,7 @@ export function GuideProvider({ children }: { children: React.ReactNode }) {
   const dismissBubble = useCallback(() => setAutoBubble(false), []);
   const settleTravel = useCallback(() => { setTravelling(false); setState(current => current === "guiding" ? "idle" : current); }, []);
   const bind = useCallback((value: MemoryGuideBinding | null) => setBinding(value), []);
-  return <GuideContext.Provider value={{ binding, bind, message, say, cue, settleTravel, planetPreview, setPlanetPreview, preferences, updatePreferences, preferencesReady, preferenceError, promptsEnabled: preferences.promptsEnabled, setPromptsEnabled, state, travelling, autoBubble, dismissBubble }}>{children}</GuideContext.Provider>;
+  return <GuideContext.Provider value={{ binding, bind, message, manualRevision, say, cue, settleTravel, planetPreview, setPlanetPreview, preferences, updatePreferences, preferencesReady, preferenceError, promptsEnabled: preferences.promptsEnabled, setPromptsEnabled, state, travelling, autoBubble, dismissBubble }}>{children}</GuideContext.Provider>;
 }
 
 export function useGuide() {
@@ -113,12 +115,17 @@ export function useGuideTravelScope() {
   useEffect(() => () => settleTravel(), [settleTravel]);
 }
 export function MemoryGuideBridge({ act, reading, planetId, worldReady = true }: MemoryGuideBinding & { planetId: string; worldReady?: boolean }) {
-  const { cue } = useGuide();
+  const { cue, settleTravel, manualRevision } = useGuide();
   const welcomed = useRef<string | null>(null);
+  const revisionAtArrival = useRef(manualRevision);
   useEffect(() => {
     if (!worldReady || welcomed.current === planetId) return;
-    welcomed.current = planetId; cue("memoryEntered");
-  }, [planetId, cue, worldReady]);
+    welcomed.current = planetId;
+    // Asset completion may happen after a user has already searched. A late
+    // arrival cue must not overwrite the result of that explicit interaction.
+    if (manualRevision === revisionAtArrival.current) cue("memoryEntered");
+    else settleTravel();
+  }, [planetId, cue, worldReady, manualRevision, settleTravel]);
   const handler = useRef(act);
   useEffect(() => { handler.current = act; }, [act]);
   const dispatch = useCallback((action: GuideAction) => handler.current(action), []);

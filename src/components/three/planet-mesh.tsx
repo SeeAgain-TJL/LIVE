@@ -17,14 +17,14 @@ void main(){ float r=length(localPosition.xy)/radius; float band=.52+.22*sin(r*1
 
 const PREVIEW_LIGHT: Vec3 = [-6, 8, 10];
 
-export function PlanetMesh({ appearance, position = [0, 0, 0], lightPosition = PREVIEW_LIGHT, selected = false, low = false, reducedMotion = false, onSelect, onHover, born = false }: {
+export function PlanetMesh({ appearance, position = [0, 0, 0], lightPosition = PREVIEW_LIGHT, selected = false, low = false, reducedMotion = false, onSelect, onHover, born = false, coastSample = false }: {
   appearance: PlanetAppearance; position?: Vec3; selected?: boolean; low?: boolean; reducedMotion?: boolean;
-  onSelect?: (event: ThreeEvent<MouseEvent>) => void; onHover?: (hovered: boolean) => void; born?: boolean; lightPosition?: Vec3;
+  onSelect?: (event: ThreeEvent<MouseEvent>) => void; onHover?: (hovered: boolean) => void; born?: boolean; lightPosition?: Vec3; coastSample?: boolean;
 }) {
   const mesh = useRef<Mesh>(null);
   const group = useRef<Group>(null);
   const birth = useRef(born ? 0.05 : 1);
-  const texture = useMemo(() => createPlanetTexture(appearance, low), [appearance, low]);
+  const texture = useMemo(() => createPlanetTexture(appearance, low, coastSample), [appearance, low, coastSample]);
   useEffect(() => () => texture.dispose(), [texture]);
   const atmosphere = useMemo(() => ({ tint: { value: new Color(appearance.type === "ocean" ? "#568cba" : appearance.type === "ice" ? "#a2d8e5" : appearance.color) }, lightPosition: { value: new Vector3(...lightPosition) } }), [appearance, lightPosition]);
   const rings = useMemo(() => ({ tint: { value: new Color(appearance.color).lerp(new Color("#e0d3bc"), 0.32) }, radius: { value: appearance.size }, lightPosition: { value: new Vector3(...lightPosition) }, planetPosition: { value: new Vector3(...position) } }), [appearance.color, appearance.size, lightPosition, position]);

@@ -1,50 +1,38 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import { Environment, useGLTF, useTexture } from "@react-three/drei";
-import { BufferGeometry, Color, Float32BufferAttribute, Matrix4, Mesh, MeshStandardMaterial, Object3D, RepeatWrapping, SRGBColorSpace, type InstancedMesh, type ShaderMaterial } from "three";
+import { BufferGeometry, Color, Float32BufferAttribute, Matrix4, Mesh, MeshStandardMaterial, Object3D, RepeatWrapping, SRGBColorSpace, type InstancedMesh } from "three";
 import type { PlanetAppearance } from "@/domain/types";
 import { sliceWorldHeight } from "@/domain/planet-world";
+import { coastPlaces, type CoastAsset, type CoastPlace, type CoastTier } from "@/domain/coast-composition";
+import { CoastWater } from "./coast-water";
 
 const root = "/world-slice/";
-const modelFiles = ["island_tree_01.glb", "island_tree_02.glb", "fern_02.glb", "shrub_03.glb", "rock_moss_set_01.glb"];
+const modelFiles = ["island_tree_01-lod1.glb", "island_tree_02-lod2.glb", "fern_02.glb", "shrub_03.glb", "rock_moss_set_01.glb"];
 const terrainUrls = ["leafy_grass_diff.jpg", "leafy_grass_normal.jpg", "coast_sand_04_diff.jpg", "coast_sand_04_normal.jpg", "aerial_grass_rock_diff.jpg", "aerial_grass_rock_normal.jpg"].map(file => root + file);
 export function preloadVisualSlice() { for (const file of modelFiles) useGLTF.preload(root + file); useTexture.preload(terrainUrls); }
 
-function hash(n: number) { const x = Math.sin(n * 127.127 + 4.31) * 43758.5453; return x - Math.floor(x); }
-type Place = { x: number; z: number; scale: number; turn: number };
-type ScatterKind = "tree" | "hero" | "fern" | "shrub" | "rock";
-function places(kind: ScatterKind, low: boolean): Place[] {
-  if (kind === "hero") return [{ x: 17, z: -5, scale: 1.55, turn: .5 }, { x: 17, z: -26, scale: 1.4, turn: 2.1 }, { x: -1, z: -34, scale: 1.2, turn: 4.4 }].slice(0, low ? 2 : 3);
-  const count = kind === "tree" ? (low ? 4 : 7) : kind === "fern" ? (low ? 14 : 45) : kind === "shrub" ? (low ? 12 : 32) : low ? 8 : 18;
-  const result: Place[] = [];
-  for (let i = 0; i < count * 5 && result.length < count; i++) {
-    const x = -24 + hash(i * 5 + kind.length * 101) * 72;
-    const z = -55 + hash(i * 7 + kind.length * 47) * 90;
-    const y = sliceWorldHeight(x, z);
-    if (y < (kind === "rock" ? .35 : .55)) continue;
-    if (kind === "tree" && x < 8 && z > -26) continue; // open arrival vista and memory path
-    if (kind !== "rock" && Math.abs(x - 4) < 5 && z > -20 && z < 22) continue;
-    result.push({ x, z, scale: (kind === "tree" ? 1.05 : kind === "rock" ? .9 : kind === "fern" ? 1.5 : 2.8) * (.78 + hash(i * 13 + 6) * .7), turn: hash(i * 19 + 9) * Math.PI * 2 });
-  }
-  return result;
-}
-
-function ScannedScatter({ file, kind, low }: { file: string; kind: ScatterKind; low: boolean }) {
+function ScannedScatter({ file, kind, tier }: { file: string; kind: CoastAsset; tier: CoastTier }) {
   const gltf = useGLTF(root + file);
   const meshes = useMemo(() => {
     gltf.scene.updateMatrixWorld(true);
     const found: Mesh[] = [];
     gltf.scene.traverse(object => { if (object instanceof Mesh) found.push(object); });
     if (!found.length) throw new Error(`Missing mesh: ${file}`);
-    return kind === "tree" || kind === "hero" ? found : found.slice(0, 1);
+    return kind === "forest" || kind === "hero" ? found : found.slice(0, 1);
   }, [gltf, file, kind]);
-  const locations = useMemo(() => places(kind, low), [kind, low]);
-  return <group>{meshes.map(source => <ScannedPart key={source.uuid} source={source} locations={locations} shadows={!low && kind === "tree"} rock={kind === "rock"} />)}</group>;
+  const locations = useMemo(() => coastPlaces(kind, tier), [kind, tier]);
+  // Split batches by space so React Three Fiber can cull distant vegetation.
+  const clusters = useMemo(() => {
+    const groups = new Map<number, CoastPlace[]>();
+    for (const place of locations) { const key = Math.floor(place.z / 24) * 10 + Math.floor(place.x / 24); groups.set(key, [...(groups.get(key) ?? []), place]); }
+    return [...groups.entries()];
+  }, [locations]);
+  return <group>{meshes.flatMap(source => clusters.map(([key, places]) => <ScannedPart key={`${source.uuid}-${key}`} source={source} locations={places} shadows={tier === "high" && kind === "hero"} rock={kind === "rock"} />))}</group>;
 }
 
-function ScannedPart({ source, locations, shadows, rock }: { source: Mesh; locations: Place[]; shadows: boolean; rock: boolean }) {
+function ScannedPart({ source, locations, shadows, rock }: { source: Mesh; locations: CoastPlace[]; shadows: boolean; rock: boolean }) {
   const instances = useRef<InstancedMesh>(null);
   useLayoutEffect(() => {
     if (!instances.current) return;
@@ -61,72 +49,77 @@ function ScannedPart({ source, locations, shadows, rock }: { source: Mesh; locat
   return <instancedMesh ref={instances} args={[source.geometry, source.material, locations.length]} castShadow={shadows} receiveShadow={rock} />;
 }
 
-function CoastalTerrain({ low }: { low: boolean }) {
+function CoastalTerrain({ tier }: { tier: CoastTier }) {
   const textures = useTexture(terrainUrls);
-  const materials = useMemo(() => {
+  const material = useMemo(() => {
     const copies = textures.map((texture, i) => {
       const copy = texture.clone(); copy.wrapS = copy.wrapT = RepeatWrapping;
       if (i % 2 === 0) copy.colorSpace = SRGBColorSpace;
       copy.needsUpdate = true; return copy;
     });
-    return [0, 1, 2].map(i => new MeshStandardMaterial({ map: copies[i * 2], normalMap: low ? null : copies[i * 2 + 1], roughness: i === 1 ? .82 : .96, color: i === 0 ? 0xa2d0ad : i === 2 ? 0x9fa9a2 : 0xffffff }));
-  }, [textures, low]);
-  useEffect(() => () => materials.forEach(material => { material.map?.dispose(); material.normalMap?.dispose(); material.dispose(); }), [materials]);
+    const material = new MeshStandardMaterial({ map: copies[0], normalMap: tier === "low" ? null : copies[1], roughness: .92, color: 0xffffff });
+    material.onBeforeCompile = shader => {
+      shader.uniforms.sandMap = { value: copies[2] };
+      shader.uniforms.rockMap = { value: copies[4] };
+      shader.vertexShader = shader.vertexShader.replace("#include <common>", "#include <common>\nvarying vec3 vCoastPos;")
+        .replace("#include <begin_vertex>", "#include <begin_vertex>\nvCoastPos = position;");
+      shader.fragmentShader = shader.fragmentShader.replace("#include <common>", "#include <common>\nvarying vec3 vCoastPos;\nuniform sampler2D sandMap;\nuniform sampler2D rockMap;")
+        .replace("#include <map_fragment>", `
+          #ifdef USE_MAP
+            float breakup = sin(vCoastPos.x * .19 + sin(vCoastPos.z * .13)) * .17
+              + sin(vCoastPos.z * .37 - vCoastPos.x * .16) * .09;
+            float beach = 1. - smoothstep(.03, 1.05, vCoastPos.y + breakup);
+            float ridge = smoothstep(5.2, 11.5, vCoastPos.y + breakup * 3.);
+            float trailX = 5. + 3. * sin(vCoastPos.z * .046);
+            float trail = (1. - smoothstep(.9, 3.2, abs(vCoastPos.x - trailX)))
+              * smoothstep(-53., -37., vCoastPos.z);
+            beach = max(beach, trail * .53);
+            vec3 grass = texture2D(map, vMapUv).rgb;
+            vec3 sand = texture2D(sandMap, vMapUv * .84).rgb;
+            vec3 stone = texture2D(rockMap, vMapUv * .72).rgb;
+            vec3 terrainColor = mix(grass * vec3(.83, .96, .82), sand * vec3(.9, .87, .79), beach);
+            terrainColor = mix(terrainColor, stone * vec3(.57, .72, .67), ridge * (1. - beach));
+            diffuseColor.rgb *= terrainColor;
+          #endif
+        `);
+    };
+    return { material, copies };
+  }, [textures, tier]);
+  useEffect(() => () => { material.material.dispose(); material.copies.forEach(texture => texture.dispose()); }, [material]);
   const geometry = useMemo(() => {
-    const size = 220, segments = low ? 180 : 320, vertices: number[] = [], uvs: number[] = [], buckets: number[][] = [[], [], []];
-    const heights: number[] = [];
+    const size = 220, segments = tier === "low" ? 140 : tier === "medium" ? 220 : 300, vertices: number[] = [], uvs: number[] = [], indices: number[] = [];
     for (let j = 0; j <= segments; j++) for (let i = 0; i <= segments; i++) {
       const x = (i / segments - .5) * size, z = (j / segments - .5) * size, y = sliceWorldHeight(x, z);
-      vertices.push(x, y, z); uvs.push(x / 4, z / 4); heights.push(y);
+      vertices.push(x, y, z); uvs.push(x / 5.5, z / 5.5);
     }
     for (let j = 0; j < segments; j++) for (let i = 0; i < segments; i++) {
       const a = j * (segments + 1) + i, b = a + segments + 1;
-      const y = (heights[a] + heights[a + 1] + heights[b] + heights[b + 1]) / 4;
-      const slope = Math.abs(heights[a] - heights[b]) + Math.abs(heights[a] - heights[a + 1]);
-      const material = y < .7 ? 1 : y > 7.5 || slope > 1.7 ? 2 : 0;
-      buckets[material].push(a, b, a + 1, a + 1, b, b + 1);
+      indices.push(a, b, a + 1, a + 1, b, b + 1);
     }
     const geometry = new BufferGeometry();
     geometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
     geometry.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
-    const indices: number[] = [];
-    buckets.forEach((bucket, index) => { geometry.addGroup(indices.length, bucket.length, index); for (const vertex of bucket) indices.push(vertex); });
     geometry.setIndex(indices); geometry.computeVertexNormals();
     return geometry;
-  }, [low]);
+  }, [tier]);
   useEffect(() => () => geometry.dispose(), [geometry]);
-  return <mesh geometry={geometry} material={materials} receiveShadow />;
+  return <mesh geometry={geometry} material={material.material} receiveShadow />;
 }
 
-function InletWater({ night, reduced, color }: { night: boolean; reduced: boolean; color: Color }) {
-  const material = useRef<ShaderMaterial>(null);
-  useFrame((_, dt) => { if (material.current && !reduced) material.current.uniforms.time.value += Math.min(dt, .05); });
-  return <mesh position={[0, .045, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-    <planeGeometry args={[320, 320, lowWaterSegments(reduced), lowWaterSegments(reduced)]} />
-    <shaderMaterial ref={material} uniforms={{ time: { value: 0 }, night: { value: night ? 1 : 0 }, tint: { value: color } }}
-      vertexShader={`uniform float time; varying vec3 vWorld; void main(){vec4 w=modelMatrix*vec4(position,1.);w.y+=sin(w.x*.37+time*.6)*.035+sin(w.z*.48-w.x*.11-time*.42)*.025;vWorld=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`}
-      fragmentShader={`uniform float time;uniform float night;uniform vec3 tint;varying vec3 vWorld;void main(){float dx=cos(vWorld.x*.37+time*.6)*.013-cos(vWorld.z*.48-vWorld.x*.11-time*.42)*.003;float dz=cos(vWorld.z*.48-vWorld.x*.11-time*.42)*.012;vec3 n=normalize(vec3(-dx,1.,-dz));vec3 eye=normalize(cameraPosition-vWorld);float rim=pow(1.-max(dot(n,eye),0.),3.);vec3 sun=normalize(vec3(-.55,.53,-.67));float shine=pow(max(dot(reflect(-sun,n),eye),0.),100.);vec3 c=mix(tint*.55,vec3(.37,.59,.65),rim*.58)+vec3(.95,.77,.49)*shine*.72;c*=mix(1.,.42,night);gl_FragColor=vec4(c,1.);
-      #include <tonemapping_fragment>
-      #include <colorspace_fragment>
-      }`} />
-  </mesh>;
-}
-function lowWaterSegments(reduced: boolean) { return reduced ? 40 : 100; }
-
-export function VisualSliceEnvironment({ appearance, low, night, reduced }: { appearance: PlanetAppearance; low: boolean; night: boolean; reduced: boolean }) {
+export function VisualSliceEnvironment({ appearance, tier, night, reduced }: { appearance: PlanetAppearance; tier: CoastTier; night: boolean; reduced: boolean }) {
   const sea = useMemo(() => new Color(appearance.color).lerp(new Color("#174455"), .58), [appearance.color]);
   return <>
     <color attach="background" args={[night ? "#071624" : "#93b9c4"]} />
     <fog attach="fog" args={[night ? "#102a3c" : "#91b5c2", 78, 210]} />
     {!night && <Environment files={root + "kloofendal_48d_partly_cloudy_puresky_2k.hdr"} background environmentIntensity={.5} backgroundIntensity={.85} />}
     <hemisphereLight args={[night ? "#8fa6c9" : "#e4f0ff", "#425043", night ? .8 : .72]} />
-    <directionalLight position={[-45, 47, -60]} color={night ? "#a9c8e8" : "#fff0cd"} intensity={night ? .7 : 1.45} castShadow={!low} shadow-mapSize={[low ? 512 : 2048, low ? 512 : 2048]} shadow-camera-left={-52} shadow-camera-right={52} shadow-camera-top={52} shadow-camera-bottom={-52} shadow-camera-far={180} shadow-normalBias={.035} />
-    <CoastalTerrain low={low} />
-    <InletWater night={night} reduced={reduced} color={sea} />
-    <ScannedScatter file="island_tree_01.glb" kind="hero" low={low} />
-    <ScannedScatter file="island_tree_02.glb" kind="tree" low={low} />
-    <ScannedScatter file="fern_02.glb" kind="fern" low={low} />
-    <ScannedScatter file="shrub_03.glb" kind="shrub" low={low} />
-    <ScannedScatter file="rock_moss_set_01.glb" kind="rock" low={low} />
+    <directionalLight position={[-45, 47, -60]} color={night ? "#a9c8e8" : "#fff0cd"} intensity={night ? .7 : 1.45} castShadow={tier !== "low"} shadow-mapSize={[tier === "high" ? 2048 : tier === "medium" ? 1024 : 512, tier === "high" ? 2048 : tier === "medium" ? 1024 : 512]} shadow-camera-left={-52} shadow-camera-right={52} shadow-camera-top={52} shadow-camera-bottom={-52} shadow-camera-far={180} shadow-normalBias={.035} />
+    <CoastalTerrain tier={tier} />
+    <CoastWater night={night} reduced={reduced} color={sea} tier={tier} />
+    <ScannedScatter file="island_tree_01-lod1.glb" kind="hero" tier={tier} />
+    <ScannedScatter file="island_tree_02-lod2.glb" kind="forest" tier={tier} />
+    <ScannedScatter file="fern_02.glb" kind="fern" tier={tier} />
+    <ScannedScatter file="shrub_03.glb" kind="shrub" tier={tier} />
+    <ScannedScatter file="rock_moss_set_01.glb" kind="rock" tier={tier} />
   </>;
 }

@@ -57,15 +57,17 @@ function Anchor({ memory, media, selected, onSelect, reduced, labels, visualSlic
     <Html portal={labels} center position={[0, .9, 0]} distanceFactor={14} zIndexRange={[6, 0]} style={{ pointerEvents: 'none' }}><span className="world-memory-label">{kind === 'photo' ? '▧' : kind === 'video' ? '▷' : '◇'} {memory.title || '未命名记忆'}</span></Html>
   </group>;
 }
-function WorldContent(props: Props & { low: boolean; labels: React.RefObject<HTMLDivElement>; onLost: () => void }) {
+function WorldContent(props: Props & { low: boolean; tier: "high" | "medium" | "low"; labels: React.RefObject<HTMLDivElement>; onLost: () => void }) {
   const reduced = useReducedMotion();const { gl } = useThree();
   useEffect(() => { gl.domElement.dataset.worldAnchors = JSON.stringify(props.memories.map(m => ({ id: m.id, position: (props.visualSlice ? sliceWorldMemoryPosition : worldMemoryPosition)(m.id) }))); }, [gl, props.memories, props.visualSlice]);
-  return <>{props.visualSlice ? <VisualSliceEnvironment appearance={props.planet.appearance} low={props.low} night={props.night ?? false} reduced={reduced} /> : <WorldEnvironment low={props.low} night={props.night ?? false} reduced={reduced} />}
+  return <>{props.visualSlice ? <VisualSliceEnvironment appearance={props.planet.appearance} tier={props.tier} night={props.night ?? false} reduced={reduced} /> : <WorldEnvironment low={props.low} night={props.night ?? false} reduced={reduced} />}
     {props.memories.map(memory => <Anchor key={memory.id} memory={memory} media={props.media} selected={props.selectedId === memory.id} onSelect={props.onSelect} reduced={reduced} labels={props.labels} visualSlice={!!props.visualSlice} />)}
-    <WorldController reduced={reduced} visualSlice={!!props.visualSlice} onReady={props.onReady} onLost={props.onLost} /><SceneMetrics tier={props.low ? 'low' : 'high'} auxiliaryPasses={0} /></>;
+    <WorldController reduced={reduced} visualSlice={!!props.visualSlice} onReady={props.onReady} onLost={props.onLost} /><SceneMetrics tier={props.tier} auxiliaryPasses={0} /></>;
 }
 export function PlanetWorld(props: Props) {
-  const labels = useRef<HTMLDivElement>(null!), deviceLow = useLowPowerDevice();const low = props.quality === 'low' || (props.quality === 'auto' && deviceLow);
+  const labels = useRef<HTMLDivElement>(null!), deviceLow = useLowPowerDevice();
+  const tier = props.quality === "high" ? "high" : props.quality === "medium" ? "medium" : props.quality === "low" || deviceLow ? "low" : "high";
+  const low = tier === "low";
   const [lost, setLost] = useState(false), [page, setPage] = useState(0), [attempt, setAttempt] = useState(0);
   const { onUnavailable } = props;
   const unavailable = useCallback(() => { setLost(true); onUnavailable?.(); }, [onUnavailable]);
@@ -75,7 +77,7 @@ export function PlanetWorld(props: Props) {
   return <div className="planet-world-canvas" aria-label={`${props.planet.name || '未命名星球'} 的生命记忆世界`}>
     <div ref={labels} className="scene-label-layer" aria-hidden="true" />
     {lost ? fallback : <WorldBoundary key={attempt} fallback={fallback} onUnavailable={unavailable}><Canvas shadows={!low} camera={{ position: [8, 6, 19], fov: 56, near: .1, far: 1800 }} dpr={low ? 1 : [1, 1.5]} gl={{ antialias: !low, powerPreference: low ? 'low-power' : 'high-performance' }} fallback={fallback}>
-      <Suspense fallback={null}><WorldContent {...props} memories={batch} low={low} labels={labels} onLost={unavailable} /></Suspense>
+      <Suspense fallback={null}><WorldContent {...props} memories={batch} low={low} tier={tier} labels={labels} onLost={unavailable} /></Suspense>
     </Canvas></WorldBoundary>}
     {pages > 1 && <nav className="world-batch-control" aria-label="记忆对象分区"><button disabled={current === 0} onClick={() => setPage(current - 1)}>上一组</button><span>{current + 1} / {pages}</span><button disabled={current === pages - 1} onClick={() => setPage(current + 1)}>下一组</button></nav>}
   </div>;

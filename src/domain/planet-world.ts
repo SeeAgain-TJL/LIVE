@@ -15,15 +15,20 @@ export function worldHeight(x: number, z: number) {
   return .7 + hills + lake + ridge;
 }
 export function sliceWorldHeight(x: number, z: number) {
-  // A sheltered coastal basin: sea to the west, walkable glade to the east,
-  // rising headland beyond. Detail is geometric, not a flat image backdrop.
-  const coast = -10 + 3.2 * Math.sin(z * .085) + 1.3 * Math.sin(z * .27 + .7);
-  const inland = Math.max(0, Math.min(1, (x - coast) / 8));
-  const hills = (Math.sin(x * .12 + z * .045) * Math.cos(z * .11) * 1.8
-    + Math.sin(x * .31 + z * .18) * .48 + Math.sin(x * .77 - z * .51) * .13) * inland;
-  const ridge = Math.max(0, -z - 24) * .24 * (1 + .25 * Math.sin(x * .14));
-  const glade = 1 - .72 * Math.exp(-((x - 4) ** 2 + (z + 5) ** 2) / 250);
-  return -1.3 + inland * (2.3 + hills * glade + ridge);
+  // Authored cove and two distant headlands share one height source with the
+  // water depth, foam, camera floor and memory markers. No archive fields change.
+  const coast = -11 + 3.5 * Math.sin(z * .064 + .4) + 1.6 * Math.sin(z * .19);
+  const inland = Math.max(0, Math.min(1, (x - coast) / 13));
+  const headland = 9.5 * Math.exp(-((x + 37) ** 2 / 700 + (z + 73) ** 2 / 1150))
+    + 8 * Math.exp(-((x + 72) ** 2 / 850 + (z + 122) ** 2 / 1100));
+  const inlandRidge = Math.max(0, -z - 25) * .19 * (1 + .22 * Math.sin(x * .095));
+  const broad = (Math.sin(x * .087 + z * .027) * Math.cos(z * .068) * 1.45
+    + Math.sin(x * .23 + z * .13) * .32) * inland;
+  const detail = (Math.sin(x * .63 - z * .49) * .08
+    + Math.sin(x * 1.13 + z * .83) * .045) * inland;
+  const pathX = 5 + 3 * Math.sin(z * .046);
+  const path = Math.exp(-((x - pathX) ** 2 / 18)) * Math.max(0, Math.min(1, (z + 53) / 16));
+  return -1.9 + inland * (3.15 + inlandRidge + broad + detail - path * .37) + headland;
 }
 export function worldHash(id: string) {
   let h = 2166136261;

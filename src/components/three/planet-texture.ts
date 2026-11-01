@@ -19,7 +19,7 @@ function fbm(x: number, y: number, seed: number) {
 const mix = (a: number[], b: number[], t: number) => a.map((v, i) => v * (1 - t) + b[i] * t);
 
 /** Locally generated equirectangular albedo; no remote image or personal-data requests. */
-export function createPlanetTexture(appearance: PlanetAppearance, low: boolean) {
+export function createPlanetTexture(appearance: PlanetAppearance, low: boolean, coastSample = false) {
   const width = low ? 256 : 512, height = width / 2;
   const pixels = new Uint8Array(width * height * 4);
   const hex = appearance.color.slice(1);
@@ -39,7 +39,10 @@ export function createPlanetTexture(appearance: PlanetAppearance, low: boolean) 
         color = mix(base.map(v => v * 0.47), base.map(v => Math.min(255, v * 1.16 + 18)), band * 0.65 + storm * 0.22 + detail * 0.08);
       } else if (appearance.type === "ocean") {
         const land = n > 0.51;
-        color = land ? mix([48, 69, 48], [137, 147, 105], Math.min(1, (n - 0.51) * 5)) : mix([8, 24, 43], base, n * 0.86);
+        color = land
+          ? mix(coastSample ? [58, 82, 56] : [48, 69, 48], coastSample ? [132, 131, 91] : [137, 147, 105], Math.min(1, (n - 0.51) * 5))
+          : mix(coastSample ? [15, 49, 63] : [8, 24, 43], base, n * (coastSample ? .58 : .86));
+        if (coastSample && Math.abs(n - .51) < .019) color = mix(color, [170, 158, 125], .72);
         const cloud = fbm(nx * 1.8 + 12, ny * 1.7, appearance.seed + 20);
         if (cloud > 0.58) color = mix(color, [228, 236, 229], Math.min(0.88, (cloud - 0.58) * 5));
         if (Math.abs(latitude - 0.5) > 0.445 + n * 0.025) color = mix(color, [206, 220, 221], 0.85);
