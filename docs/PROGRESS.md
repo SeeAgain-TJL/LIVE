@@ -1,5 +1,14 @@
 # 开发进度
 
+## V4.2-R2 成熟技术调研与海岸扫描验证（2026-11-01）
+
+- 基于完整 R1 `codex/v4-2-r1-coast-polish` 新建独立实验分支 `codex/v4-2-r2-tech-validation`。正式星球场景、导航、数据仓库、Galaxy/Planet/Memory 结构及浏览器 localStorage/IndexedDB 均未改动。
+- 已核查 `three-landscape`、`hello-terrain`、`three-geospatial`、`pmndrs/sky` 的 GitHub、许可证、peer 依赖和真实浏览器 Demo；另核查已有 Drei、Three Water2、Poly Haven 与 PlayCanvas 条件。具体观察、Demo 地址与资产授权见 [R2 实验审阅](reviews/v4-2-r2/README.md)。
+- 独立 `/coast-lab` 使用 Poly Haven CC0 的三块真实海岸扫描、现有 HDR 天空和 Three.js Water2，支持浏览器拖动观察/WASD 前进；不读取或写入用户人生档案。相同 1440×900/DPR1/FOV56/相机机位的 R1 与 R2 浏览器截图、侧向与行走截图、实测数据在 `docs/reviews/v4-2-r2/`；本地录屏在 `artifacts-local/v4-2-r2/browser/`。
+- **视觉与性能验收未通过，停止继续调参。** 岩石局部细节更真实，但崖壁硬端面、接地缝、缺少植被和远景，整体仍不是可信海湾。相同 Intel Graphics/Chrome 156 设备，R2 约 27–29 FPS、34–37ms、216 万三角形、约 55.6MB 网络资源请求；R1 同机位约 56 FPS、17.89ms、150 万三角形。Water2 两个额外反射/折射通道明显增加成本。浏览器 pageerror/console error/失败资源为 0；这不代表画质通过。
+- 当前证据指向缺少经 Blender 人工雕刻和拼合的完整地貌、手工 LOD/纹理权重、林地与潮间带资产，而非必须更换渲染引擎。PlayCanvas 对照不具备已证实的收益，本轮没有迁移或复制第二套世界。旧 R1 样板继续作为正式星球运行，R2 只作为失败边界验证。
+- 工程验证：lint、typecheck、46/46 领域测试、Next production build 通过；Chrome 定向实验 1/1、VRM 实验与宇宙基本功能 4/4 通过。没有重复全量浏览器测试，仍不能把这些结果视作视觉验收。
+
 ## V4.2-R1 海岸样板视觉精修与性能（2026-11-01）
 
 - 基于完整 V4.2 `ea623f8` 新建 `codex/v4-2-r1-coast-polish`，未改动档案 schema、仓库、媒体或浏览器用户存储。样板仍只派生到第一颗真实海洋型个人星球。
