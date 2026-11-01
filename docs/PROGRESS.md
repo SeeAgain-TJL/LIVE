@@ -522,3 +522,10 @@
 - 保留的 Blender 基准：仓库外 `C:\Users\tingjie.li\AppData\Local\UNIVERSE-OF-ME\asset-audit\seacliff-beach\source-camera-540.png`。浏览器对照：同目录 `webgl-same-camera-final.png`，旋转验证 `webgl-orbit-final.png`。浏览器使用 Three.js 0.180.0 `GLTFLoader`、相同坐标机位（Blender Z-up 到 glTF Y-up 转换），1280×720、DPR 1、系统 Chrome。
 - 实测结果：GLB 能加载、渲染和通过 OrbitControls 旋转；无页面异常或控制台错误。加载完成约 22.5 秒，渲染约 4,690,436 三角形，短时采样中位数约 59.5 FPS，P95 帧间隔约 33.4 ms。该数据只代表本地隔离测试，不代表移动设备或可发布资产性能。
 - **视觉验证失败**：浏览器画面出现大片空白/错误平面、材质噪点和错误的环境层次；海水、天空和植被没有接近 Cycles 原始构图。主要问题是 Blender 节点材质、世界/体积光照、透明/混合纹理与散布结果在 glTF/Three.js 间没有等价表达，而不是当前硬件先达到瓶颈。停止进一步参数堆叠和正式集成。
+
+### V4.2-R3 技术收敛：高品质世界资产生产规范（2026-11-01）
+
+- 根据候选 Demo、Seacliff Blender 源场景和实际 Three.js 导出验证，新增 [高品质世界资产生产规范](WORLD-ASSET-PRODUCTION-SPEC.md)。规范明确 glTF 2.0/PBR、KTX2、meshopt/LOD、碰撞代理、分区加载、材质/天空/水体限制、Blender 制作流程、许可证清单、浏览器证据和停止条件。
+- 明确区分开源技术工具与美术资产授权。Khronos glTF-Blender-IO、glTF Transform、meshoptimizer、KTX-Software、R3F/Drei 和 Playwright 可复用，但不能替代人工环境构图、地形侵蚀、植被生态分区、材质烘焙和 LOD/碰撞制作。
+- 定义 Intel 核显低/中档与未来独显高档的初始资源预算，并保留 Three.js/R3F 为默认运行时。只有同一套合法实时资产在完成优化后仍出现可重复的引擎瓶颈，才建立 PlayCanvas/Babylon 隔离对照。
+- 本轮没有新增场景、运行时代码或数据迁移；V4.2-R1 继续作为稳定基线，R2 和 Seacliff 导出实验继续隔离。下一步等待符合规范的实时环境资产，不再围绕 Seacliff 调整 Shader、灯光、贴图或减面。
