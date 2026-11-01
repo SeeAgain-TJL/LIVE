@@ -75,7 +75,7 @@ export function PlanetWorld(props: Props) {
   return <div className="planet-world-canvas" aria-label={`${props.planet.name || '未命名星球'} 的生命记忆世界`}>
     <div ref={labels} className="scene-label-layer" aria-hidden="true" />
     {lost ? fallback : <WorldBoundary key={attempt} fallback={fallback} onUnavailable={unavailable}><Canvas shadows={!low} camera={{ position: [8, 6, 19], fov: 56, near: .1, far: 1800 }} dpr={low ? 1 : [1, 1.5]} gl={{ antialias: !low, powerPreference: low ? 'low-power' : 'high-performance' }} fallback={fallback}>
-      <Suspense fallback={<Html center><div className="memory-space-loading">正在加载地表资产…</div></Html>}><WorldContent {...props} memories={batch} low={low} labels={labels} onLost={unavailable} /></Suspense>
+      <Suspense fallback={null}><WorldContent {...props} memories={batch} low={low} labels={labels} onLost={unavailable} /></Suspense>
     </Canvas></WorldBoundary>}
     {pages > 1 && <nav className="world-batch-control" aria-label="记忆对象分区"><button disabled={current === 0} onClick={() => setPage(current - 1)}>上一组</button><span>{current + 1} / {pages}</span><button disabled={current === pages - 1} onClick={() => setPage(current + 1)}>下一组</button></nav>}
   </div>;
