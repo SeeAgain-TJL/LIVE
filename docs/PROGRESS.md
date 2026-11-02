@@ -1,5 +1,16 @@
 # 开发进度
 
+## Pine Forest 第一批：恢复与渲染稳定性（2026-11-02）
+
+- 延续 `codex/pine-forest-vertical-slice`，先以 `6a342c2` 保存全部上轮未提交工作（53 个文件，含此前的分区、预算与诊断草稿），没有重置、删除或合并 main。原 `.blend` SHA-256 仍为 `FDCE77741081F462F11E5CEFE8BF79A0BC796727DBB6E51D12FC6CF20E9C9CFB`；源清单校验仍为 11 树种／585 根实例、114 地表网格／879,825 实例、60 源分区。未改正式场景、记忆或浏览器存储。
+- 保留原场景相机 `lookAt` 后的 `reorder("YXZ")`，旧局部实验共用相机也改用 reorder。实际 Chrome 同机位方向 `[-0.9821439487, 0.1260486988, -0.1396602648]` 与源目标方向吻合；五次都验证初始机位、行走与转向。
+- 重现旧 170 树／18,000 地被可见集的 `fern_02_source_pbr` 链接失败、WebGL context lost 和白屏。`VALIDATE_STATUS false` 是 Three.js 链接错误路径的标题，不能据此断定 GLSL 语法错误。新脚本保存完整 Shader 源码、编译／链接／绘制时 validate 日志及上下文事件；失败驱动日志确为空。最小冷杉 `fir_twig_single_tree`、最小蕨类（1K 与原 4K）均通过编译／链接／validate。
+- 原地被包 38 张接近 4K 的 WebP 解码后，RGBA8+mip 链估算约 3,233 MiB。改为复用已有 1K 包（约 202 MiB）；两包 114 源对象名／变换、90 primitive 顶点索引数量、材质与 alpha 配置一致。没有删减模型或实例，4K 原包保留；显式 `sourceTextures=1` 再次复现失败。证据指向贴图资源压力触发上下文／程序故障，未实测 GPU 显存，也未确定驱动内部 OOM/TDR 类型。
+- Windows / production Chrome 156 / Intel Graphics D3D11 / 1440×900 / DPR1，**五次独立 Chrome 进程、相同 170 树／18,000 地被、81,413,829 初始三角形**均有真实画面；每次 9 个程序全部通过编译／链接／validate，浏览器错误和上下文异常均 0。高负载仍约 6 FPS，不作性能验收。增加上下文丢失／Shader 失败提示、撤销就绪和重载入口；主动注入 context loss 后恢复检查通过。
+- 实际检查：strict TypeScript、修改文件定向 ESLint、production build、`git diff --check`、源清单／贴图一致性校验通过；3 项最小模型 + 5 项独立加载通过。旧 4K 高负载两次复现故障，追加 A/B 中也有一次成功，故仍明确为**间歇故障**而非每次必败。恢复测试初版误把不可见 Canvas fallback 当作错误，修正为可见提示检查后通过。未跑无关领域测试、全量站点回归、真实手机、其他 GPU、长时或完整动态分区／LOD／性能验收。
+- 截图、逐次结果、完整日志位置和复现命令见 [第一批审阅](reviews/pine-batch1/README.md)。最终五次原始全量 Shader 日志在 Git 忽略的 `artifacts-local/pine-batch1-five-final/results.json`。1K 地被近景细节、既有稀疏树冠及 Cycles 材质／光照差距仍未获视觉验收。
+- 第一批完成后停止。下一批由用户另行发起，单独验证动态分区、LOD 与性能，不在本轮推进。
+
 ## V4.2-R1 海岸样板视觉精修与性能（2026-11-01）
 
 - 基于完整 V4.2 `ea623f8` 新建 `codex/v4-2-r1-coast-polish`，未改动档案 schema、仓库、媒体或浏览器用户存储。样板仍只派生到第一颗真实海洋型个人星球。

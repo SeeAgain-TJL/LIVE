@@ -1,0 +1,2996 @@
+{
+  "environment": {
+    "browser": "Chrome 156 production",
+    "viewport": [
+      1440,
+      900
+    ],
+    "dpr": 1,
+    "processIsolation": true
+  },
+  "baseline": [
+    {
+      "attempt": 1,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65",
+      "errors": [
+        "THREE.WebGLProgram: Shader Error 0 - VALIDATE_STATUS false\n\nMaterial Name: fern_02_source_pbr\nMaterial Type: MeshStandardMaterial\n\nProgram Info Log: \n\n",
+        "THREE.WebGLProgram: Shader Error 1282 - VALIDATE_STATUS false\n\nMaterial Name: fern_02_source_pbr\nMaterial Type: MeshStandardMaterial\n\nProgram Info Log: \n\n"
+      ],
+      "initial": {
+        "fps": 59.880239349981295,
+        "medianMs": 16.700000047683716,
+        "p95Ms": 17.299999952316284,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 124,
+        "geometries": 163,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ]
+      },
+      "image": [
+        {
+          "mean": 253.22698533950617,
+          "stdev": 15.714666249516174
+        },
+        {
+          "mean": 252.82215432098766,
+          "stdev": 18.561628564555267
+        },
+        {
+          "mean": 252.8397137345679,
+          "stdev": 18.335472828935
+        }
+      ],
+      "moved": {
+        "fps": 59.880239349981295,
+        "medianMs": 16.700000047683716,
+        "p95Ms": 17.5,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 124,
+        "geometries": 163,
+        "camera": [
+          21.028223281648135,
+          0.5626422854003047,
+          47.25730549319983
+        ]
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [
+          {
+            "type": "webglcontextlost",
+            "message": "",
+            "time": 20013.5
+          }
+        ],
+        "draws": 462,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "failed": "AssertionError [ERR_ASSERTION]: Browser errors\n\n2 !== 0\n",
+      "elapsedMs": 25298
+    }
+  ],
+  "minimal": [
+    {
+      "attempt": 1,
+      "route": "/forest-origin-lab?diagnostic=fir",
+      "errors": [],
+      "initial": {
+        "fps": 59.880239349981295,
+        "medianMs": 16.700000047683716,
+        "p95Ms": 17.299999952316284,
+        "triangles": 400683,
+        "calls": 7,
+        "textures": 14,
+        "geometries": 18,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 201.00471064814815,
+          "stdev": 27.331400045209296
+        },
+        {
+          "mean": 198.8566936728395,
+          "stdev": 39.94977704917272
+        },
+        {
+          "mean": 191.93217052469134,
+          "stdev": 53.899071513798425
+        }
+      ],
+      "moved": {
+        "fps": 59.88024020486524,
+        "medianMs": 16.699999809265137,
+        "p95Ms": 17.199999809265137,
+        "triangles": 400683,
+        "calls": 7,
+        "textures": 14,
+        "geometries": 18,
+        "camera": [
+          21.0174813421939,
+          0.5629475636048162,
+          47.25577799602276
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fir_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fir_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fir_twig_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fir_twig_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fir_twig_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fir_twig_single_tree"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 2605,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 8673
+    },
+    {
+      "attempt": 2,
+      "route": "/forest-origin-lab?diagnostic=fern",
+      "errors": [],
+      "initial": {
+        "fps": 59.880239349981295,
+        "medianMs": 16.700000047683716,
+        "p95Ms": 17.200000047683716,
+        "triangles": 135852,
+        "calls": 4,
+        "textures": 8,
+        "geometries": 15,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 201.20459799382715,
+          "stdev": 27.108746266461946
+        },
+        {
+          "mean": 199.07954320987653,
+          "stdev": 39.79871372529083
+        },
+        {
+          "mean": 192.1949552469136,
+          "stdev": 53.77686641336899
+        }
+      ],
+      "moved": {
+        "fps": 59.880239349981295,
+        "medianMs": 16.700000047683716,
+        "p95Ms": 17.40000009536743,
+        "triangles": 135852,
+        "calls": 4,
+        "textures": 8,
+        "geometries": 15,
+        "camera": [
+          21.033420993221277,
+          0.562494591114657,
+          47.25804460458557
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 1489,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 9224
+    },
+    {
+      "attempt": 3,
+      "route": "/forest-origin-lab?diagnostic=fern&sourceTextures=1",
+      "errors": [],
+      "initial": {
+        "fps": 59.88024020486524,
+        "medianMs": 16.699999809265137,
+        "p95Ms": 17.59999990463257,
+        "triangles": 135852,
+        "calls": 4,
+        "textures": 8,
+        "geometries": 15,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 201.20459799382715,
+          "stdev": 27.108746266461946
+        },
+        {
+          "mean": 199.07954320987653,
+          "stdev": 39.79871372529083
+        },
+        {
+          "mean": 192.1949552469136,
+          "stdev": 53.77686641336899
+        }
+      ],
+      "moved": {
+        "fps": 59.880239349981295,
+        "medianMs": 16.700000047683716,
+        "p95Ms": 17.40000009536743,
+        "triangles": 135852,
+        "calls": 4,
+        "textures": 8,
+        "geometries": 15,
+        "camera": [
+          21.016788313708748,
+          0.5629672609800055,
+          47.25567944779885
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 1425,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 14121
+    }
+  ],
+  "fiveLoads": [
+    {
+      "attempt": 1,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65",
+      "errors": [],
+      "initial": {
+        "fps": 6.086427268960581,
+        "medianMs": 164.29999995231628,
+        "p95Ms": 492.2000000476837,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 156.90759413580247,
+          "stdev": 57.920509054821565
+        },
+        {
+          "mean": 154.35106558641976,
+          "stdev": 62.603218237046796
+        },
+        {
+          "mean": 144.59603163580246,
+          "stdev": 71.11293809090066
+        }
+      ],
+      "moved": {
+        "fps": 6.086427268960581,
+        "medianMs": 164.29999995231628,
+        "p95Ms": 373.09999990463257,
+        "triangles": 81901969,
+        "calls": 199,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          22.635702469176334,
+          0.4851113371161092,
+          47.4858880440167
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 10103,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 13542
+    },
+    {
+      "attempt": 2,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65",
+      "errors": [],
+      "initial": {
+        "fps": 6.119951045749486,
+        "medianMs": 163.39999985694885,
+        "p95Ms": 1752.7000000476837,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 156.90757793209877,
+          "stdev": 57.92053381417471
+        },
+        {
+          "mean": 154.351050154321,
+          "stdev": 62.603242838668095
+        },
+        {
+          "mean": 144.59600462962962,
+          "stdev": 71.11296815048195
+        }
+      ],
+      "moved": {
+        "fps": 5.991611740135383,
+        "medianMs": 166.90000009536743,
+        "p95Ms": 501.29999995231634,
+        "triangles": 82113859,
+        "calls": 201,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          22.764259222188585,
+          0.47575662624479265,
+          47.50416873514867
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 10146,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 13224
+    },
+    {
+      "attempt": 3,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65",
+      "errors": [],
+      "initial": {
+        "fps": 5.727376864525803,
+        "medianMs": 174.59999990463257,
+        "p95Ms": 1692.3000001907349,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 156.90758024691357,
+          "stdev": 57.920516466226495
+        },
+        {
+          "mean": 154.35105941358026,
+          "stdev": 62.60321909745983
+        },
+        {
+          "mean": 144.59602469135802,
+          "stdev": 71.11293955423496
+        }
+      ],
+      "moved": {
+        "fps": 5.820721771114981,
+        "medianMs": 171.79999995231628,
+        "p95Ms": 353.30000019073486,
+        "triangles": 81901969,
+        "calls": 199,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          22.635702469176334,
+          0.4851113371161092,
+          47.4858880440167
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 9539,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 13145
+    },
+    {
+      "attempt": 4,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65",
+      "errors": [],
+      "initial": {
+        "fps": 5.941770649336457,
+        "medianMs": 168.29999995231628,
+        "p95Ms": 525.6000001430511,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 156.90758719135803,
+          "stdev": 57.92051110196034
+        },
+        {
+          "mean": 154.3510586419753,
+          "stdev": 62.60321993374673
+        },
+        {
+          "mean": 144.59602700617285,
+          "stdev": 71.11293739187484
+        }
+      ],
+      "moved": {
+        "fps": 5.803830529754777,
+        "medianMs": 172.29999995231628,
+        "p95Ms": 319.59999990463257,
+        "triangles": 82113859,
+        "calls": 201,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          22.715054211309972,
+          0.478750301690658,
+          47.49717181289495
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 9756,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 12798
+    },
+    {
+      "attempt": 5,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65",
+      "errors": [],
+      "initial": {
+        "fps": 5.8343057224889385,
+        "medianMs": 171.39999985694885,
+        "p95Ms": 805.5,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 156.9075563271605,
+          "stdev": 57.9205515376476
+        },
+        {
+          "mean": 154.3510262345679,
+          "stdev": 62.603264215494654
+        },
+        {
+          "mean": 144.5959938271605,
+          "stdev": 71.11297705155776
+        }
+      ],
+      "moved": {
+        "fps": 5.813953488372093,
+        "medianMs": 172,
+        "p95Ms": 521,
+        "triangles": 81901969,
+        "calls": 199,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          22.635702469176334,
+          0.4851113371161092,
+          47.4858880440167
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 9528,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 12328
+    }
+  ],
+  "regression4k": [
+    {
+      "attempt": 1,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65&sourceTextures=1",
+      "errors": [
+        "Pine Forest shader link failure {linked: false, programLog: , contextLost: false, shaders: Array(2)}",
+        "Pine Forest shader link failure {linked: false, programLog: , contextLost: false, shaders: Array(2)}"
+      ],
+      "failed": "TimeoutError: locator.waitFor: Timeout 120000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('canvas[data-forest-origin-ready=\\'true\\']') to be visible\u001b[22m\n",
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": false,
+            "linkLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 0,
+                "compiled": false,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 0,
+                "compiled": false,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": false,
+            "linkLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 0,
+                "compiled": false,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 0,
+                "compiled": false,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [
+          {
+            "type": "webglcontextlost",
+            "message": "",
+            "time": 19652.200000047684
+          }
+        ],
+        "draws": 245,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "elapsedMs": 120125
+    }
+  ],
+  "recovery": {
+    "intentionalContextLoss": true,
+    "alertShown": true,
+    "staleReadyCleared": true,
+    "reloadRecovered": true
+  },
+  "additionalAB": [
+    {
+      "attempt": 1,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65",
+      "errors": [],
+      "initial": {
+        "fps": 6.053268763385942,
+        "medianMs": 165.20000004768372,
+        "p95Ms": 526.2000000476837,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 156.9075949074074,
+          "stdev": 57.920506917903346
+        },
+        {
+          "mean": 154.35106558641976,
+          "stdev": 62.60322264951598
+        },
+        {
+          "mean": 144.59603086419753,
+          "stdev": 71.1129365077807
+        }
+      ],
+      "moved": {
+        "fps": 5.783689991026168,
+        "medianMs": 172.90000009536743,
+        "p95Ms": 350.2999999523163,
+        "triangles": 82113859,
+        "calls": 201,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          22.78019887321598,
+          0.47499937255017843,
+          47.506435343711466
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 9773,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 13568
+    },
+    {
+      "attempt": 2,
+      "route": "/forest-origin-lab?trees=170&props=18000&radius=65&sourceTextures=1",
+      "errors": [],
+      "initial": {
+        "fps": 5.589714921559102,
+        "medianMs": 178.90000009536743,
+        "p95Ms": 21157.299999952316,
+        "triangles": 81413829,
+        "calls": 188,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439486879049,
+          0.12604869884139178,
+          -0.13966026484337826
+        ],
+        "contextLost": false
+      },
+      "image": [
+        {
+          "mean": 157.26073070987655,
+          "stdev": 57.64026732400218
+        },
+        {
+          "mean": 154.74670601851852,
+          "stdev": 62.30875300669234
+        },
+        {
+          "mean": 144.98825231481482,
+          "stdev": 70.85629530194707
+        }
+      ],
+      "moved": {
+        "fps": 5.640157925938769,
+        "medianMs": 177.29999995231628,
+        "p95Ms": 620.6000001430511,
+        "triangles": 81901969,
+        "calls": 199,
+        "textures": 187,
+        "geometries": 163,
+        "camera": [
+          22.635702469176334,
+          0.4851113371161092,
+          47.4858880440167
+        ],
+        "direction": [
+          -0.9057498799061646,
+          0.2000264250641661,
+          -0.37363964501377256
+        ],
+        "contextLost": false
+      },
+      "diagnostics": {
+        "programs": [
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "CubemapFromEquirect"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "BackgroundCubeMaterial"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "EquirectangularToCubeUV"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "SphericalGaussianBlur"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_terrain_web_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "pine_bark_single_tree"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "moss_01_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          },
+          {
+            "linked": true,
+            "linkLog": "",
+            "validated": true,
+            "validationLog": "",
+            "contextLost": false,
+            "shaders": [
+              {
+                "type": 35633,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              },
+              {
+                "type": 35632,
+                "compiled": true,
+                "log": "",
+                "name": "fern_02_source_pbr"
+              }
+            ]
+          }
+        ],
+        "events": [],
+        "draws": 9727,
+        "contexts": [
+          {
+            "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "maxTextures": 16,
+            "maxAttributes": 16
+          }
+        ]
+      },
+      "passed": true,
+      "elapsedMs": 39754
+    }
+  ]
+}

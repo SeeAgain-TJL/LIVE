@@ -123,10 +123,9 @@ function ForestCamera({ layout, keys, onReady }: { layout: Layout; keys: React.R
   const frames = useRef<number[]>([]);
   const ready = useRef(false);
   useEffect(() => {
-    camera.rotation.order = "YXZ";
+    camera.rotation.reorder("YXZ");
     camera.position.copy(sourceToWorld(layout.camera));
     camera.lookAt(sourceToWorld(layout.target));
-    camera.rotation.order = "YXZ";
     const canvas = gl.domElement;
     canvas.tabIndex = 0;
     canvas.setAttribute("aria-label", "松林三维实验场景，拖动观察，WASD 或方向键移动");

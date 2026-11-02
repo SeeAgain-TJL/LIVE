@@ -339,3 +339,11 @@ Blender 内存中切换 `Is Viewport` 节点已证明可读取真实渲染分支
 Pine Forest 的原始 `.blend` 不变，转换流程以 Blender 原生 Geometry Nodes `Realize Instances`、glTF 导出、官方 meshoptimizer `gltfpack` 和 Three.js 实例加载为主。整树根实例与树冠内部实例分别处理，保留 11 种原树、源地被网格和原位置，禁止显示绿色视口代理。派生资产隔离在仓库外；同源 LOD 只是性能候选，不自动视为画质合格。
 
 单树针叶固化成功，但同机位完整可见集试验触发 `fern_02` shader 校验失败和白屏；局部实验另有间歇 `fir_twig` 错误与 WebGL 上下文失败。白屏帧率不能用于性能验收。当前转换还未保留 Cycles 混合/透射、河流及体积光照，故按用户停止条件不再通过删减森林或重制替代模型追求表面通过。保留可复现的源清单与派生模型，待材质烘焙、分区资源预算和独立硬件验证具备后再恢复整场景实验；不修改 Galaxy、Planet、Memory 或浏览器存储。
+
+## D-V4.2-R4.4：第一批以贴图驻留边界修复白屏（2026-11-02）
+
+按用户分批授权，仅恢复既有工作、验证相机并修复浏览器渲染稳定性。先提交恢复检查点，不继续上一轮的动态分区或 LOD 草稿。相机通过 Euler.reorder 保留 lookAt 得到的 quaternion，不在 lookAt 后直接赋 rotation.order。
+
+Three.js r180 的 `VALIDATE_STATUS false` 错误实际由 LINK_STATUS 失败触发；本机完整源地被 4K 包在原 170 树／18,000 地被可见集重现 Shader 失败和 context lost，而真实最小冷杉／蕨类 Shader 通过。复用已有 1K 地被包后，相同几何、位置、实例数和约 8,141 万三角形五次独立 production Chrome 加载均正常。原 4K 路径对照再次失败。根因证据指向资源压力；RGBA8+mip 静态估算由约 3,233 MiB 降至 202 MiB，不能把此估算写成 GPU 显存实测，驱动内部 OOM/TDR 尚不能区分。
+
+浏览器实验默认使用 1K 派生贴图；原 4K 包及所有源数据保留，显式 sourceTextures=1 只用于诊断。旧 4K 对照两次失败，但追加 A/B 也有一次成功，故此结论描述间歇性资源故障，不声称 4K 每次必败。没有删减森林或改模型／实例来获得通过；仍保留 Shader 检查，完整日志与异常提示，context loss 时撤销就绪并提供重载。1K 近景贴图细节损失需单独视觉审核。本批短时固定可见集稳定不代表完整场景、动态流送或性能达标；高负载约 6 FPS，后续范围由用户单独授权。证据见 [第一批审阅](reviews/pine-batch1/README.md)。

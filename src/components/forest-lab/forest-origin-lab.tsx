@@ -2,7 +2,7 @@
 
 /* eslint-disable react-hooks/immutability -- R3F owns camera, matrices and WebGL diagnostics. */
 
-import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Component, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
 import { ACESFilmicToneMapping, DoubleSide, InstancedMesh, Matrix4, Mesh, Vector3 } from "three";
@@ -19,6 +19,65 @@ const cameraSource = new Vector3(23.155473709106445, -47.55979919433594, 0.92230
 const cameraTarget = new Vector3(-25.951723098754883, -40.576786041259766, 7.224738121032715);
 const axis = new Matrix4().makeRotationX(-Math.PI / 2);
 const axisInverse = axis.clone().invert();
+
+class RenderBoundary extends Component<{ children: ReactNode }, { error: string }> {
+  state = { error: "" };
+  static getDerivedStateFromError(error: Error) { return { error: error.message }; }
+  render() { return this.state.error ? <RenderFailure message={this.state.error} /> : this.props.children; }
+}
+
+function RenderFailure({ message }: { message: string }) {
+  return <div className="forest-lab-status" role="alert">{message}
+    <button type="button" onClick={() => window.location.reload()}>重新加载场景</button>
+  </div>;
+}
+
+function RenderHealth() {
+  const { gl } = useThree();
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const canvas = gl.domElement;
+    const lost = () => {
+      canvas.dataset.forestRenderError = "context-lost";
+      delete canvas.dataset.forestOriginReady;
+      setError("WebGL 上下文已丢失，场景渲染中断。请重新加载场景。");
+    };
+    canvas.addEventListener("webglcontextlost", lost);
+    const previous = gl.debug.onShaderError;
+    gl.debug.onShaderError = (context, program, vertex, fragment) => {
+      // Preserve validation and complete driver logs, including the context state.
+      console.error("Pine Forest shader link failure", {
+        linked: context.getProgramParameter(program, context.LINK_STATUS),
+        programLog: context.getProgramInfoLog(program), contextLost: context.isContextLost(),
+        shaders: [vertex, fragment].map(shader => ({ compiled: context.getShaderParameter(shader, context.COMPILE_STATUS),
+          log: context.getShaderInfoLog(shader), source: context.getShaderSource(shader) })),
+      });
+      delete canvas.dataset.forestOriginReady;
+      canvas.dataset.forestRenderError = "shader-link";
+      setError("材质程序链接失败，场景渲染中断。完整诊断已记录，请重新加载场景。");
+    };
+    return () => { canvas.removeEventListener("webglcontextlost", lost); gl.debug.onShaderError = previous; };
+  }, [gl]);
+  // DOM status is rendered by the owner, outside the Three.js reconciler.
+  useEffect(() => {
+    gl.domElement.dispatchEvent(new CustomEvent("pine-render-error", { detail: error, bubbles: true }));
+  }, [error, gl]);
+  return null;
+}
+
+function ForestSurface({ children }: { children: ReactNode }) {
+  const [error, setError] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = ref.current;
+    const report = (event: Event) => setError((event as CustomEvent<string>).detail);
+    element?.addEventListener("pine-render-error", report);
+    return () => element?.removeEventListener("pine-render-error", report);
+  }, []);
+  return <div ref={ref} style={{ position: "absolute", inset: 0 }}><RenderBoundary>{children}</RenderBoundary>
+    {error && <RenderFailure message={error} />}
+  </div>;
+}
 
 function sourceToWorld(point: Vector3) { return new Vector3(point.x, point.z, -point.y); }
 function worldMatrix(rows: number[][]) {
@@ -37,7 +96,7 @@ function groundHeight(collision: Collision, x: number, z: number) {
     b * ((1 - a) * at(column, row + 1) + a * at(column + 1, row + 1));
 }
 
-function Instances({ part, matrices }: { part: Mesh; matrices: number[][][] }) {
+function Instances({ part, matrices, diagnostic = false }: { part: Mesh; matrices: number[][][]; diagnostic?: boolean }) {
   const ref = useRef<InstancedMesh>(null);
   const material = useMemo(() => {
     const copy = Array.isArray(part.material) ? part.material.map(value => value.clone()) : part.material.clone();
@@ -55,10 +114,10 @@ function Instances({ part, matrices }: { part: Mesh; matrices: number[][][] }) {
     ref.current.instanceMatrix.needsUpdate = true;
     ref.current.computeBoundingSphere();
   }, [part, matrices]);
-  return <instancedMesh ref={ref} args={[part.geometry, material, matrices.length]} frustumCulled />;
+  return <instancedMesh ref={ref} args={[part.geometry, material, matrices.length]} frustumCulled={!diagnostic} />;
 }
 
-function SourceAsset({ file, matrices, name }: { file: string; matrices: number[][][]; name?: string }) {
+function SourceAsset({ file, matrices, name, diagnostic }: { file: string; matrices: number[][][]; name?: string; diagnostic?: boolean }) {
   const gltf = useGLTF(root + file);
   const meshes = useMemo(() => {
     gltf.scene.updateMatrixWorld(true);
@@ -68,7 +127,7 @@ function SourceAsset({ file, matrices, name }: { file: string; matrices: number[
     parent.traverse(object => { if (object instanceof Mesh) found.push(object); });
     return found;
   }, [gltf, name]);
-  return <group>{meshes.map(mesh => <Instances key={mesh.uuid} part={mesh} matrices={matrices} />)}</group>;
+  return <group>{meshes.map(mesh => <Instances key={mesh.uuid} part={mesh} matrices={matrices} diagnostic={diagnostic} />)}</group>;
 }
 
 function Walker({ collision, onPosition, trunks = [] }: { collision: Collision; onPosition?: (point: Vector3) => void; trunks?: number[][][] }) {
@@ -121,21 +180,26 @@ function Walker({ collision, onPosition, trunks = [] }: { collision: Collision; 
     samples.current.push(delta * 1000);
     if (samples.current.length > 120) samples.current.shift();
     if (performance.now() - last.current > 1000) {
+      if (gl.domElement.dataset.forestRenderError || gl.getContext().isContextLost() || gl.info.render.calls === 0) {
+        delete gl.domElement.dataset.forestOriginReady;
+        return;
+      }
       const sorted = [...samples.current].sort((a, b) => a - b);
       const medianMs = sorted[Math.floor(sorted.length / 2)] ?? 0;
       gl.domElement.dataset.forestOriginReady = "true";
       gl.domElement.dataset.forestOriginMetrics = JSON.stringify({ fps: medianMs ? 1000 / medianMs : 0, medianMs,
         p95Ms: sorted[Math.floor(sorted.length * 0.95)] ?? 0, triangles: gl.info.render.triangles,
         calls: gl.info.render.calls, textures: gl.info.memory.textures, geometries: gl.info.memory.geometries,
-        camera: camera.position.toArray() });
+        camera: camera.position.toArray(), direction: camera.getWorldDirection(new Vector3()).toArray(),
+        contextLost: gl.getContext().isContextLost() });
       last.current = performance.now();
     }
   });
   return null;
 }
 
-function Scene({ trees, props, collision, onPosition, runtime = false }: { trees: Record<string, number[][][]>; props: Record<string, number[][][]>;
-  collision: Collision; onPosition?: (point: Vector3) => void; runtime?: boolean }) {
+function Scene({ trees, props, collision, onPosition, sourceTextures = false, diagnostic = false }: { trees: Record<string, number[][][]>; props: Record<string, number[][][]>;
+  collision: Collision; onPosition?: (point: Vector3) => void; sourceTextures?: boolean; diagnostic?: boolean }) {
   const terrain = useGLTF(root + "terrain.glb");
   return <>
     <fog attach="fog" args={["#adb2a5", 0.013]} />
@@ -145,20 +209,21 @@ function Scene({ trees, props, collision, onPosition, runtime = false }: { trees
     <primitive object={terrain.scene} />
     {Object.entries(trees).map(([key, matrices]) => {
       const [source, lod] = key.split("|");
-      return <SourceAsset key={key} file={`trees/${source}-${lod}-meshopt-webp.glb`} matrices={matrices} />;
+      return <SourceAsset key={key} file={`trees/${source}-${lod}-meshopt-webp.glb`} matrices={matrices} diagnostic={diagnostic} />;
     })}
-    {Object.entries(props).map(([name, matrices]) => <SourceAsset key={name} file={runtime ? "source-props-web-1k.glb" : "source-props.glb"} name={name} matrices={matrices} />)}
+    {Object.entries(props).map(([name, matrices]) => <SourceAsset key={name} file={sourceTextures ? "source-props.glb" : "source-props-web-1k.glb"} name={name} matrices={matrices} diagnostic={diagnostic} />)}
     <Walker collision={collision} onPosition={onPosition} trunks={Object.values(trees).flat()} />
   </>;
 }
 
 export function ForestOriginLab() {
-  const [payload, setPayload] = useState<{ trees: Record<string, number[][][]>; props: Record<string, number[][][]>; collision: Collision; counts: [number, number] }>();
+  const [payload, setPayload] = useState<{ trees: Record<string, number[][][]>; props: Record<string, number[][][]>; collision: Collision; counts: [number, number]; sourceTextures: boolean; diagnostic: boolean }>();
   const [error, setError] = useState("");
   const [budget, setBudget] = useState<LabBudget>({ trees: 8, props: 500, radius: 35 });
   useEffect(() => {
     let active = true;
     const params = new URLSearchParams(window.location.search);
+    const diagnostic = params.get("diagnostic");
     const integer = (key: string, fallback: number, maximum: number) => {
       const value = params.get(key);
       return Math.min(maximum, Math.max(0, value === null || !Number.isFinite(Number(value)) ? fallback : Number(value)));
@@ -174,7 +239,8 @@ export function ForestOriginLab() {
       .then(([inventory, placements, preview, layout]) => {
         const trees: Record<string, number[][][]> = {};
         const nearby = placements.map(item => ({ item, distance: Math.hypot(item.matrix[0][3] - cameraSource.x, item.matrix[1][3] - cameraSource.y) }))
-          .filter(value => value.distance < requested.radius).sort((a, b) => a.distance - b.distance).slice(0, requested.trees);
+          .filter(value => value.distance < requested.radius && (diagnostic !== "fir" || value.item.source.startsWith("silver_fir")))
+          .sort((a, b) => a.distance - b.distance).slice(0, diagnostic === "fern" ? 0 : diagnostic === "fir" ? 1 : requested.trees);
         for (const { item, distance } of nearby) {
           const lod = distance < 18 ? "lod03" : "lod01";
           (trees[`${item.source}|${lod}`] ??= []).push(item.matrix);
@@ -182,20 +248,23 @@ export function ForestOriginLab() {
         const props: Record<string, number[][][]> = {};
         const chosen = preview.records.map(([index, rows]) => ({ name: inventory.sourceAssetNames[index], rows,
           distance: Math.hypot(rows[0][3] - cameraSource.x, rows[1][3] - cameraSource.y) }))
-          .filter(value => value.distance < requested.radius).sort((a, b) => a.distance - b.distance).slice(0, requested.props);
+          .filter(value => value.distance < requested.radius && (diagnostic !== "fern" || value.name.startsWith("fern_02")))
+          .sort((a, b) => a.distance - b.distance).slice(0, diagnostic === "fir" ? 0 : diagnostic === "fern" ? 1 : requested.props);
         for (const { name, rows } of chosen) {
           const matrix = [...rows, [0, 0, 0, 1]];
           (props[name] ??= []).push(matrix);
         }
-        if (active) { setBudget(requested); setPayload({ trees, props, collision: layout.collision, counts: [nearby.length, chosen.length] }); }
+        if (active) { setBudget(requested); setPayload({ trees, props, collision: layout.collision, counts: [nearby.length, chosen.length],
+          sourceTextures: params.get("sourceTextures") === "1", diagnostic: diagnostic === "fir" || diagnostic === "fern" }); }
       }).catch(cause => { if (active) setError(String(cause)); });
     return () => { active = false; };
   }, []);
   return <main className="forest-lab" aria-label="Pine Forest 原资产隔离验证">
-    {payload && <Canvas camera={{ position: sourceToWorld(cameraSource).toArray(), fov: 48.5, near: 0.08, far: 280 }}
+    {payload && <ForestSurface><Canvas camera={{ position: sourceToWorld(cameraSource).toArray(), fov: 48.5, near: 0.08, far: 280 }}
+      fallback={<RenderFailure message="无法创建 WebGL 场景，请检查浏览器的图形支持。" />}
       dpr={1} gl={{ antialias: true, powerPreference: "high-performance", toneMapping: ACESFilmicToneMapping }}>
-      <Suspense fallback={null}><Scene {...payload} /></Suspense>
-    </Canvas>}
+      <RenderHealth /><Suspense fallback={null}><Scene {...payload} /></Suspense>
+    </Canvas></ForestSurface>}
     <div className="forest-lab-bar"><div><strong>Pine Forest 原场景转换验证</strong>
       <span>源树 {payload?.counts[0] ?? "…"}/{budget.trees} · 地被 {payload?.counts[1] ?? "…"}/{budget.props} · 分级诊断</span></div></div>
     {error && <div className="forest-lab-status" role="alert">{error}</div>}
@@ -298,11 +367,12 @@ export function ForestRuntimeLab() {
   const currentTile = tileKey(camera);
   const ready = inventory && manifest && collision && loaded[currentTile];
   return <main className="forest-lab" aria-label="Pine Forest 原资产实时漫游实验">
-    {inventory && manifest && collision && <Canvas camera={{ position: sourceToWorld(cameraSource).toArray(), fov: 48.5, near: 0.08, far: 280 }}
+    {inventory && manifest && collision && <ForestSurface><Canvas camera={{ position: sourceToWorld(cameraSource).toArray(), fov: 48.5, near: 0.08, far: 280 }}
+      fallback={<RenderFailure message="无法创建 WebGL 场景，请检查浏览器的图形支持。" />}
       dpr={1} gl={{ antialias: true, powerPreference: "high-performance", toneMapping: ACESFilmicToneMapping }}>
-      <Suspense fallback={null}><Scene trees={selection?.trees ?? {}} props={selection?.props ?? {}} collision={collision}
-        onPosition={reportPosition} runtime /></Suspense>
-    </Canvas>}
+      <RenderHealth /><Suspense fallback={null}><Scene trees={selection?.trees ?? {}} props={selection?.props ?? {}} collision={collision}
+        onPosition={reportPosition} /></Suspense>
+    </Canvas></ForestSurface>}
     <div className="forest-lab-bar"><div><strong>Pine Forest 原资产漫游</strong>
       <span>分区 {Object.keys(loaded).length}/61 · 可见源树 {selection?.counts[0] ?? 0} · 地被 {selection?.counts[1] ?? 0}</span></div></div>
     {!ready && !error && <div className="forest-lab-status" role="status">正在加载周边森林分区</div>}
