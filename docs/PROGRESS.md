@@ -529,3 +529,43 @@
 - 明确区分开源技术工具与美术资产授权。Khronos glTF-Blender-IO、glTF Transform、meshoptimizer、KTX-Software、R3F/Drei 和 Playwright 可复用，但不能替代人工环境构图、地形侵蚀、植被生态分区、材质烘焙和 LOD/碰撞制作。
 - 定义 Intel 核显低/中档与未来独显高档的初始资源预算，并保留 Three.js/R3F 为默认运行时。只有同一套合法实时资产在完成优化后仍出现可重复的引擎瓶颈，才建立 PlayCanvas/Babylon 隔离对照。
 - 本轮没有新增场景、运行时代码或数据迁移；V4.2-R1 继续作为稳定基线，R2 和 Seacliff 导出实验继续隔离。下一步等待符合规范的实时环境资产，不再围绕 Seacliff 调整 Shader、灯光、贴图或减面。
+
+### Pine Forest 独立森林星球链路验证（2026-11-02）
+
+- 在 `codex/pine-forest-vertical-slice` 分支开始隔离实验。C 盘下载前可用约 756.61 GB。仅从 Poly Haven 官方 `https://dl.polyhaven.org/file/ph-assets/Scenes/pine_forest.zip` 获取 2,746,288,533 byte 归档；服务器公布与本地计算 SHA-1 均为 `28F70ADFE38F8FE6C82B5F16561DD865072881DA`。场景及其归档内资产为 Poly Haven CC0；资产源工程和派生大文件放在 `%LOCALAPPDATA%/UNIVERSE-OF-ME/asset-audit/candidate-assets`，没有加入 Git。
+- 原始 `polyhaven_pine_fir_forest.blend` 只读打开；Blender 4.4.3。场景有 299 个对象/268 个网格、53 个材质、128 张图像、35 个 Geometry Nodes 修改器、地形约 203×200 Blender 单位、约 34,540 个散布实例；材质依赖 Cycles 自定义节点、8K PBR 和 EXR 天空。源场景包含松树/冷杉、代理树、岩石、蕨类、树根和地表；导出的高/中树 LOD 通过评估 Geometry Nodes 得到并转换 UV 属性、重建 glTF Principled PBR；地形烘焙路径/地表颜色，生成 1.5 单位采样的独立碰撞高度格。运行时派生资产约 69.22 MB，21 张缩放贴图约 2.63 MB。未经 GLB、纹理和打包方式授权审查，这些测试包不用于公开部署。
+- 新增独立 `/forest-lab`，ApplicationBoundary 跳过正式 Universe/Guide providers，不读取或写入 localStorage/IndexedDB；正式 Galaxy/Planet/Memory、正式星球与 R1 环境代码未修改。可操作 WASD/方向键与指针观察，具地形高度约束、碰撞代理、真实源场景树木/细节分布、HDR 天空、光照及低/中/高档；本地资产复制到被忽略的 `public/forest-lab-assets`。源文件、转换产物、原图和浏览器录屏保存在仓库外资产审查目录。
+- Blender 原场景相机输出 1440×900、Cycles 2 sample、限制 1K 纹理、关闭 fog 合成；耗时约 10 分钟且峰值约 31.8 GB（本机物理内存约 16 GB），图像仍有噪声。因此此图仅是受硬件限制的源场景基准，不是高质量官方原图。完整官方场景图仍为 Poly Haven Pine Forest 页面提供的 Blender 场景图。
+- 真实生产 Chrome（Intel Graphics / ANGLE D3D11，1440×900，DPR 1）：低档 59.9 FPS、p95 17.3 ms、2.38M 三角形、约 2.88 秒到 Canvas；中档 31.3 FPS、p95 37.3 ms、6.08M 三角形、约 2.79 秒；高档 18.9 FPS、p95 62.9 ms、10.29M 三角形、约 1.86 秒。短浏览器录屏期间交互采样中档约 20 FPS。数据是这台机器的生产 Chrome 基准，不代表其他设备。
+- 实际视觉门槛**未通过**：同机位 WebGL 把低面源代理树冠放大为大片硬边绿色块；真实高/中树减面后针叶覆盖不连续，地表烘焙色在对照图中偏浅且粗糙，源场景林下明暗/体积层次没有保留。浏览器正常加载、树木实例化与基础漫游都成立，但低档画质退化，中/高档性能低于目标。主要瓶颈位于源场景到实时资产的 LOD/针叶 alpha 语义与场景材质烘焙链路，加上 Intel 核显预算；没有证据证明 Three.js 本身不适用。
+- 证据位于 `%LOCALAPPDATA%/UNIVERSE-OF-ME/asset-audit/candidate-assets/`：`pine-source-camera-1440.png`、`pine-evidence/blender-vs-webgl-same-camera.png`、`production-low-same-camera.png`、`webgl-walk-near.png`、`webgl-look-far.png`、`page-*.webm`、`quality-production.json` 和 `measurements.json`。对照图清楚区分 Blender 与浏览器；WebGL 截图来自 production Chrome，不是 Blender 渲染。
+- 检查通过：`npm run lint`、`npm run typecheck`、`npm test`（46/46）、`npm run build`、`npm run test:e2e`（33/33），另以隔离生产 Chrome 完成三档截图、行走和转向采样。测到页面退出时 `placements.json` fetch 被 AbortController 中止，属于测试关闭页面导致的预期取消；生产质量脚本中无页面错误。视觉验收失败，不推进正式星球、不扩展地貌范围。若要恢复，需先解决标准针叶 alpha/遮罩导出和高质量树冠 LOD，重做中远景地表烘焙；不以随机增树、色调或雾效绕过该门槛。
+
+### Pine Forest 单树根因验证（2026-11-02）
+
+- 只读检查官方 Blender 源工程 `pine_02`：Geometry Nodes 评估后 3,317,021 面，其中 `pine_twig` 3,268,884 面。真实枝片和针叶存在。原材质的 `pine_twig_alpha.png` 接 Principled Alpha；`pine_twig_mask.png` 控制额外的 Translucent/Mix 着色，并非透明裁切图。评估网格的角点 `UVMap` 已转换为标准 glTF UV。
+- 旧导出将原树以 0.012 比例减面至约 47,352 面（约 10.28 MB）；中档 1,297 棵中固定分配 17 棵 high、125 棵 mid、1,155 棵约 56 面的纯绿色代理。分档仅依据初始相机位置，不随行走更新。大片绿色低面树冠的直接原因是实验代码显式加载代理，而非 Three.js 自动 LOD。
+- 新建隔离 `/single-tree-lab`，未减面导出 `pine_02_unreduced.glb`（412,684,780 bytes，约 4,055,887 三角形），原 `.blend` 保持不变。旧版与完整 GLB 均有 UV、法线、PBR 贴图和针叶 `alphaMode=BLEND`、双面，但无 `alphaCutoff`。纹理并未丢失；浏览器强制 0.5 裁切会过度削薄树冠，BLEND 更接近 Blender 轮廓。原 Cycles 透射/遮罩着色及天空光照仍未等价转换。
+- 证据位于 `%LOCALAPPDATA%/UNIVERSE-OF-ME/asset-audit/candidate-assets/single-tree/`：原材质单树 `blender-{near,mid}.png`（1440x900、Cycles 8 sample）；真实 Chrome 截图 `webgl-previous-cut-{near,mid}.png`、`webgl-original-{cut,blend}-{near,mid}.png`；同机位 `comparison-{near,mid}.png` 和 `single-tree-results.json`。源树自身是疏冠松树，浏览器完整导出虽恢复更多轮廓，色彩和透射仍有明显差距。
+- Intel Graphics / ANGLE D3D11、Chrome 156、1440x900、DPR 1 短测：旧减面约 1.39 秒加载、约 60 FPS；完整树 BLEND 约 13.43 秒加载、近景 55.6 FPS、中景 58.1 FPS、旋转采样 57.8 FPS/p95 24.6 ms，渲染统计约 8.02M 三角形。无浏览器异常；GPU 显存未可靠测量。这是单树测试，不证明多树性能。
+- **停止条件触发**：单树 413 MB 且材质尚未达到源图质量，不制作中远 LOD、不扩大森林、不接正式星球。下一步需要人工制作保留针叶轮廓的实时树木拓扑和中远景形态，烘焙源透射/遮罩着色，再先复核单树。正式数据、场景和浏览器存储均未更改。
+- 本轮检查：`npm.cmd run lint`、`npm.cmd run typecheck`、`npm.cmd test`（46/46）、`npm.cmd run build`、`npm.cmd run test:e2e`（33/33）均通过；单树截图及旋转采样来自隔离 Chrome，不把工程测试当作视觉验收通过。
+
+### Pine Forest 原场景复用链路核验（2026-11-02）
+
+- 按用户更正，以 Poly Haven 官方 Pine Forest `.blend`（SHA-256 `FDCE77741081F462F11E5CEFE8BF79A0BC796727DBB6E51D12FC6CF20E9C9CFB`）为唯一场景美术源，原文件只读且未修改。Blender 源节点确认松树散布渲染分支引用 `pine_trees` 中 5 棵源树、冷杉分支引用 `fir_trees_l` 中 6 棵源树；`pine_proxy_large` / `fir_proxy_large` 属于视口定位代理。旧 WebGL 实验误把代理显示成正式远景树冠。
+- 从 meshoptimizer 官方 v1.3 发布包取得仓库外 Windows `gltfpack`。对原 `pine_02` 未减面 GLB 进行 meshopt + WebP 转换：412.68 MB -> 82.94 MB，约 405.6 万三角形不变；glTF 材质数、纹理数和浏览器枝片轮廓保留。以 `-si 0.1/-se 0.01`、`-si 0.03/-se 0.01`、`-si 0.01/-se 0.02` 生成同源自动简化档：约 40.9 万/12.6 万/4.37 万三角形，文件约 39.72/34.29/33.24 MB。单树近景仍需逐帧审美检查，以上只证明压缩与转换可运行。
+- 从同一源工程再导出 `silver_fir_01`，未经减面为 564.37 MB；gltfpack 10%/1% 档为约 74.4 万/7.19 万三角形、29.85/15.39 MB。所有 GLB、报告和工具在 `%LOCALAPPDATA%/UNIVERSE-OF-ME/asset-audit/candidate-assets/single-tree/` 或仓库外 `tools/gltfpack-1.3/`；仅复制到 Git 忽略的本地实验静态目录，未公开部署或加入普通 Git 历史。
+- 在**内存中**把 Geometry Nodes 的 48 条 `Is Viewport` 连线切至渲染分支后，依赖图从约 3.4 万个视口代理/细节实例展开为约 112 万条嵌套渲染实例记录；这不是 112 万棵独立树。可以读到源 `pine_01` 至 `pine_05` 和 `silver_fir_01` 至 `silver_fir_06` 的真实实例变换，并确认渲染布局含大量苔藓、地被、枝条和多种岩石。原 `.blend` 未保存或改写；全量浏览器可用布局尚未从嵌套实例正确去重、分区与导出。
+- 新增隔离 `/forest-source-lab`，沿用原地形、源散布坐标、岩石/蕨类和自由漫游；只把局部树木显示替换为源松树/冷杉经 gltfpack 转换的网格，按相机距离更新、超预算实例暂时剔除，不显示绿色代理。此页**不是**原森林完整转换：目前只用 2/11 棵源树、少量岩石/蕨类，未重建约 3.4 万散布对象的完整林下层、河流、远景树形、Cycles 透射/遮罩材质及光照/体积氛围。原地表烘焙偏浅，源树稀疏且远景缺口明显。
+- 证据：`%LOCALAPPDATA%/UNIVERSE-OF-ME/asset-audit/candidate-assets/source-forest-evidence/` 的 `source-camera.png`、`walk-forward.png`、`turn-right.png`、`source-forest-free-walk.webm`、`blender-vs-previous-vs-source-trees.png` 和 `results.json`。对照图左侧为 Blender 原机位 Cycles 2 sample 噪声图，中间为旧 WebGL，右侧为本轮真实 Chrome 局部结果；不得把它描述为完整原场景画质。
+- 1440x900/DPR 1、Intel Graphics/ANGLE D3D11 的局部运行结果不稳定：一次有效截图约 11.9M 三角形/36 FPS；随后两次 production 运行分别在 `pine_twig` 与 `fir_twig` 报 `THREE.WebGLProgram VALIDATE_STATUS false` 并白屏，白屏时 60 FPS 是无效数据。进一步把可见预算从 60 降到 30 棵后，一次复测有效画面约 5.0M 三角形、59.5 FPS、p95 32 ms，但同一 production 包也出现过 shader 白屏。未测 GPU 显存，无法把该间歇错误归因于 Three.js 能力限制或确定的驱动瓶颈。当前原图对照仅 2-sample Cycles，原画质基准本身也受噪声限制。
+- **结论：原场景复用方向保留，当前局部转换未通过视觉/稳定性验收，停止继续删树或扩展正式星球。** 下一次应先从源 Geometry Nodes 输出各树种的实际渲染实例、完整地被/岩石/河流布局与材质烘焙分层，再以原构图的可见集分区加载和经过视觉审核的同源 LOD 验证；不重新设计森林、不引入其他资产。正式 Galaxy/Planet/Memory、浏览器存储和现有 R1 场景未改。
+### Pine Forest 原场景优先转换核验（2026-11-02）
+
+- 按用户更正，官方 Poly Haven `.blend` 是唯一美术源。只读加载并在内存中切换 Geometry Nodes 的 48 条 `Is Viewport` 连线；源文件 SHA-256 前后保持 `FDCE77741081F462F11E5CEFE8BF79A0BC796727DBB6E51D12FC6CF20E9C9CFB`。派生资源均在 `%LOCALAPPDATA%/UNIVERSE-OF-ME/asset-audit/candidate-assets/pine-source-conversion/`，未提交大型 GLB，也未改正式场景或用户数据。
+- 可复现清单提取出 11 种源树的 585 个整树根位置，以及 114 种源网格的 879,825 个地被/岩石实例，保留 Blender 世界矩阵并分成 60 个空间块。先前 112 万条依赖图记录含树冠内部 Geometry Nodes 嵌套实例，不能当作整树数。`node scripts/forest-lab/validate-source-manifest.mjs` 校验了所有块与树种计数。
+- 发现此前冷杉 `silver_fir_02` 直接求值仅 44,233 面；用 Blender 原生 `Realize Instances` 在内存中固化后为 2,026,088 面，含约 198 万面真实 `fir_twig`。现已从源工程导出 11/11 种完整树枝叶网格、同源自动简化档和 114 种源地表网格；`gltfpack 1.3` 生成 meshopt/WebP 派生资源，`node scripts/forest-lab/validate-derived-assets.mjs` 核验源树 alpha 材质、三角形与地表对象名。未使用绿色视口代理。
+- Chrome 156 / Intel Graphics / 1440×900 / DPR 1：已固化 `silver_fir_02` 单树实际截图在 `pine-source-conversion/browser-evidence/realized-fir-{near,mid}.png`；单树加载约 21.5 秒，近景中位约 52 FPS / p95 39.6 ms，中景约 47 FPS / p95 48.6 ms，仍与源 Cycles 材质有明显差距。旧局部森林重复运行又出现 `fir_twig` shader 校验错误和一次 WebGL 上下文拒绝创建。
+- 隔离 `/forest-origin-lab` 使用原树、原地被模型和原始矩阵试验可见集（170/585 棵树、18,000/879,825 个地表实例），可自由行走代码已接入，但实际 Chrome 画面白屏并报 `fern_02_source_pbr` shader `VALIDATE_STATUS false`。约 8,141 万三角形、188 draw calls；白屏时记录的 60 FPS **无效**。证据在 `pine-source-conversion/browser-evidence/origin-*`。首次 47.8 MB JSON 传输还触发 `ERR_CACHE_WRITE_FAILURE`，改 gzip 后能进入渲染阶段。该页不能称为完整移植或视觉验收通过。
+- 未等价转换：Cycles 的针叶透射/遮罩、草的干湿混合、苔藓与枯木混合、河流 Geometry Nodes/材质、天空与体积光照。当前地形仍沿用此前较浅的烘焙。停止扩大森林与正式接入；下一步需先在独立目标硬件上解决 alpha 植被 shader/显存稳定性，针对原材质逐层烘焙、以源构图分区流送并验证同源 LOD 的画质与预算。Three.js 根本能力限制尚未被证明。

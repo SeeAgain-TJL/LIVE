@@ -1,0 +1,19 @@
+.forest-lab { position: fixed; inset: 0; overflow: hidden; background: #151d1b; color: #f2f4ef; }
+.forest-lab canvas { display: block; outline: none; }
+.forest-lab canvas:focus-visible { outline: 2px solid #e3b972; outline-offset: -2px; }
+.forest-lab-bar { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: start; gap: 16px; pointer-events: none; font: 13px/1.3 Arial, sans-serif; }
+.forest-lab-bar > div:first-child { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; background: rgb(13 22 23 / 65%); border: 1px solid rgb(237 235 219 / 18%); border-radius: 4px; backdrop-filter: blur(10px); }
+.forest-lab-bar strong { font-size: 14px; font-weight: 600; }
+.forest-lab-bar span { color: #becac4; font-size: 11px; }
+.forest-lab-quality { pointer-events: auto; display: flex; padding: 3px; background: rgb(13 22 23 / 72%); border: 1px solid rgb(237 235 219 / 18%); border-radius: 4px; backdrop-filter: blur(10px); }
+.forest-lab-quality button { min-width: 38px; min-height: 32px; padding: 0 8px; color: #ced8d2; background: transparent; border: 0; border-radius: 3px; cursor: pointer; }
+.forest-lab-quality button[aria-pressed="true"] { background: #ded7b9; color: #1c2727; }
+.forest-lab-status { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); max-width: min(520px, calc(100vw - 28px)); display: flex; align-items: center; gap: 12px; padding: 11px 15px; background: rgb(12 21 21 / 82%); border: 1px solid rgb(237 235 219 / 20%); border-radius: 4px; font: 13px/1.4 Arial, sans-serif; }
+.forest-lab-status button { display: grid; place-items: center; width: 30px; height: 30px; color: inherit; background: none; border: 1px solid currentColor; border-radius: 3px; cursor: pointer; }
+.forest-lab-move { position: absolute; right: 18px; bottom: 22px; display: none; grid-template-columns: repeat(3, 42px); grid-template-rows: repeat(2, 42px); gap: 3px; touch-action: none; }
+.forest-lab-move button { display: grid; place-items: center; background: rgb(12 21 21 / 70%); color: #f4f3e6; border: 1px solid rgb(237 235 219 / 27%); border-radius: 4px; }
+.forest-lab-move button:nth-child(1) { grid-column: 2; grid-row: 1; }
+.forest-lab-move button:nth-child(2) { grid-column: 1; grid-row: 2; }
+.forest-lab-move button:nth-child(3) { grid-column: 2; grid-row: 2; }
+.forest-lab-move button:nth-child(4) { grid-column: 3; grid-row: 2; }
+@media (pointer: coarse) { .forest-lab-move { display: grid; } }

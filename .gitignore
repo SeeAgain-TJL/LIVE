@@ -16,6 +16,8 @@ test-results/
 # DCC software and working assets stay outside normal Git history.
 .tools/
 artifacts-local/
+public/forest-lab-assets/
+public/forest-origin-assets/
 *.blend
 *.blend1
 *.blend2
