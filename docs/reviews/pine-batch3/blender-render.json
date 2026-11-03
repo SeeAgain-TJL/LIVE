@@ -1,0 +1,29 @@
+{
+  "copy": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\pine-source-conversion\\batch3-work\\pine-forest-copy.blend",
+  "source": "pine_02",
+  "polygons": 3317021,
+  "vertices": 3937849,
+  "materials": [
+    null,
+    "pine_bark",
+    "pine_trunk_02",
+    "pine_twig",
+    "pine_dead_branches"
+  ],
+  "center": [
+    0.07956171035766602,
+    -0.19332289695739746,
+    7.185103416442871
+  ],
+  "camera": [
+    18.97956085205078,
+    -19.09332275390625,
+    9.34510326385498
+  ],
+  "samples": 8,
+  "resolution": [
+    720,
+    450
+  ],
+  "savedBlend": false
+}

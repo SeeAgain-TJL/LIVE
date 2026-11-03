@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "audit": {
+    "updates": 204,
+    "matrices": 457857,
+    "maxError": 0.000003805048891081242
+  },
+  "errors": [],
+  "qualitySwitch": "low→high→low completed"
+}

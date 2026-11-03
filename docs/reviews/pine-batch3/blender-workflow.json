@@ -1,0 +1,580 @@
+{
+  "version": "4.4.3",
+  "loadedCopy": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\pine-source-conversion\\batch3-work\\pine-forest-copy.blend",
+  "objects": 299,
+  "meshes": 267,
+  "materials": 53,
+  "images": 128,
+  "sourceTrees": [
+    {
+      "name": "pine_02",
+      "mesh": "NurbsPath.002",
+      "modifiers": [
+        [
+          "GeometryNodes",
+          "NODES"
+        ]
+      ],
+      "materials": [
+        "pine_bark",
+        "pine_twig",
+        "pine_dead_branches"
+      ]
+    },
+    {
+      "name": "silver_fir_02",
+      "mesh": "NurbsPath.009",
+      "modifiers": [
+        [
+          "GeometryNodes",
+          "NODES"
+        ]
+      ],
+      "materials": [
+        "fir_bark",
+        "fir_twig",
+        "fir_dead_branches"
+      ]
+    }
+  ],
+  "needleMaterials": [
+    {
+      "name": "fir_twig",
+      "surface": "DITHERED",
+      "backfaceCulling": false,
+      "nodes": {
+        "FRAME": 1,
+        "BSDF_PRINCIPLED": 1,
+        "OUTPUT_MATERIAL": 1,
+        "NORMAL_MAP": 1,
+        "ATTRIBUTE": 1,
+        "REROUTE": 10,
+        "MIX_SHADER": 2,
+        "MATH": 3,
+        "TEX_NOISE": 1,
+        "NEW_GEOMETRY": 1,
+        "VALTORGB": 1,
+        "MIX": 1,
+        "HUE_SAT": 2,
+        "TEX_IMAGE": 5,
+        "BSDF_TRANSLUCENT": 1,
+        "ADD_SHADER": 1,
+        "BSDF_TRANSPARENT": 1
+      },
+      "images": [
+        {
+          "name": "fir_twig_rough.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\fir_twig_rough.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "Non-Color"
+        },
+        {
+          "name": "fir_twig_nor_gl.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\fir_twig_nor_gl.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "Non-Color"
+        },
+        {
+          "name": "fir_twig_diff.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\fir_twig_diff.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "sRGB"
+        },
+        {
+          "name": "fir_twig_mask01.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\fir_twig_mask01.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "Non-Color"
+        },
+        {
+          "name": "fir_twig_alpha.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\fir_twig_alpha.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "Non-Color"
+        }
+      ],
+      "links": [
+        [
+          "Reroute.007",
+          "Output",
+          "Principled BSDF",
+          "Roughness"
+        ],
+        [
+          "Image Texture.002",
+          "Color",
+          "Normal Map",
+          "Color"
+        ],
+        [
+          "Reroute.008",
+          "Output",
+          "Principled BSDF",
+          "Normal"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.001",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.002",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.003",
+          "Vector"
+        ],
+        [
+          "Attribute",
+          "Vector",
+          "Reroute",
+          "Input"
+        ],
+        [
+          "Principled BSDF",
+          "BSDF",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Mix Shader",
+          "Shader",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Reroute.005",
+          "Output",
+          "Translucent BSDF",
+          "Normal"
+        ],
+        [
+          "Hue Saturation Value.001",
+          "Color",
+          "Translucent BSDF",
+          "Color"
+        ],
+        [
+          "Image Texture",
+          "Color",
+          "Hue Saturation Value",
+          "Color"
+        ],
+        [
+          "Hue Saturation Value",
+          "Color",
+          "Mix",
+          "A"
+        ],
+        [
+          "Geometry",
+          "Position",
+          "Noise Texture",
+          "Vector"
+        ],
+        [
+          "Noise Texture",
+          "Fac",
+          "ColorRamp",
+          "Fac"
+        ],
+        [
+          "Math",
+          "Value",
+          "Mix",
+          "Factor"
+        ],
+        [
+          "ColorRamp",
+          "Color",
+          "Math",
+          "Value"
+        ],
+        [
+          "Reroute.004",
+          "Output",
+          "Principled BSDF",
+          "Base Color"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.004",
+          "Vector"
+        ],
+        [
+          "Reroute.002",
+          "Output",
+          "Reroute.001",
+          "Input"
+        ],
+        [
+          "Math.002",
+          "Value",
+          "Mix Shader",
+          "Fac"
+        ],
+        [
+          "Translucent BSDF",
+          "BSDF",
+          "Mix Shader",
+          "Shader"
+        ],
+        [
+          "Reroute.001",
+          "Output",
+          "Math.001",
+          "Value"
+        ],
+        [
+          "Image Texture.004",
+          "Color",
+          "Reroute.002",
+          "Input"
+        ],
+        [
+          "Mix",
+          "Result",
+          "Reroute.003",
+          "Input"
+        ],
+        [
+          "Reroute.003",
+          "Output",
+          "Reroute.004",
+          "Input"
+        ],
+        [
+          "Reroute.006",
+          "Output",
+          "Reroute.005",
+          "Input"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Reroute.006",
+          "Input"
+        ],
+        [
+          "Image Texture.001",
+          "Color",
+          "Reroute.007",
+          "Input"
+        ],
+        [
+          "Reroute.006",
+          "Output",
+          "Reroute.008",
+          "Input"
+        ],
+        [
+          "Reroute.003",
+          "Output",
+          "Hue Saturation Value.001",
+          "Color"
+        ],
+        [
+          "Reroute.009",
+          "Output",
+          "Principled BSDF",
+          "Alpha"
+        ],
+        [
+          "Image Texture.003",
+          "Color",
+          "Reroute.009",
+          "Input"
+        ],
+        [
+          "Math.001",
+          "Value",
+          "Math.002",
+          "Value"
+        ],
+        [
+          "Reroute.009",
+          "Output",
+          "Math.002",
+          "Value"
+        ],
+        [
+          "Transparent BSDF",
+          "BSDF",
+          "Mix Shader.001",
+          "Shader"
+        ],
+        [
+          "Mix Shader.001",
+          "Shader",
+          "Material Output",
+          "Surface"
+        ],
+        [
+          "Reroute.009",
+          "Output",
+          "Mix Shader.001",
+          "Fac"
+        ],
+        [
+          "Add Shader",
+          "Shader",
+          "Mix Shader.001",
+          "Shader"
+        ]
+      ]
+    },
+    {
+      "name": "pine_twig",
+      "surface": "DITHERED",
+      "backfaceCulling": false,
+      "nodes": {
+        "FRAME": 2,
+        "NORMAL_MAP": 1,
+        "MAPPING": 1,
+        "ATTRIBUTE": 1,
+        "OUTPUT_MATERIAL": 1,
+        "BSDF_PRINCIPLED": 1,
+        "BSDF_TRANSLUCENT": 1,
+        "TEX_IMAGE": 5,
+        "REROUTE": 1,
+        "MIX_SHADER": 1,
+        "MIX": 1,
+        "INVERT": 1,
+        "MATH": 1,
+        "ADD_SHADER": 1
+      },
+      "images": [
+        {
+          "name": "pine_twig_diff.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\pine_twig_diff.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "sRGB"
+        },
+        {
+          "name": "pine_twig_rough.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\pine_twig_rough.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "Non-Color"
+        },
+        {
+          "name": "pine_twig_nor_gl.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\pine_twig_nor_gl.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "Non-Color"
+        },
+        {
+          "name": "pine_twig_alpha.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\pine_twig_alpha.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "Non-Color"
+        },
+        {
+          "name": "pine_twig_mask.png.001",
+          "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\textures\\pine_twig_mask.png",
+          "size": [
+            4096,
+            4096
+          ],
+          "colorSpace": "sRGB"
+        }
+      ],
+      "links": [
+        [
+          "Image Texture.001",
+          "Color",
+          "Principled BSDF",
+          "Base Color"
+        ],
+        [
+          "Image Texture.002",
+          "Color",
+          "Principled BSDF",
+          "Roughness"
+        ],
+        [
+          "Image Texture.003",
+          "Color",
+          "Normal Map",
+          "Color"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Principled BSDF",
+          "Normal"
+        ],
+        [
+          "Image Texture.004",
+          "Color",
+          "Principled BSDF",
+          "Alpha"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.001",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.002",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.003",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.004",
+          "Vector"
+        ],
+        [
+          "Mapping",
+          "Vector",
+          "Reroute",
+          "Input"
+        ],
+        [
+          "Attribute",
+          "Vector",
+          "Mapping",
+          "Vector"
+        ],
+        [
+          "Principled BSDF",
+          "BSDF",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Mix Shader",
+          "Shader",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Mix",
+          "Result",
+          "Translucent BSDF",
+          "Color"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Translucent BSDF",
+          "Normal"
+        ],
+        [
+          "Translucent BSDF",
+          "BSDF",
+          "Mix Shader",
+          "Shader"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.005",
+          "Vector"
+        ],
+        [
+          "Image Texture.001",
+          "Color",
+          "Mix",
+          "A"
+        ],
+        [
+          "Math",
+          "Value",
+          "Invert",
+          "Color"
+        ],
+        [
+          "Invert",
+          "Color",
+          "Mix",
+          "Factor"
+        ],
+        [
+          "Image Texture.005",
+          "Color",
+          "Math",
+          "Value"
+        ],
+        [
+          "Add Shader",
+          "Shader",
+          "Material Output",
+          "Surface"
+        ]
+      ]
+    }
+  ],
+  "exports": [
+    {
+      "source": "rock_moss_hand_placed_03",
+      "vertices": 4912,
+      "polygons": 9826,
+      "UV": [
+        "UVMap"
+      ],
+      "temporaryTranslation": [
+        16.806718826293945,
+        -43.7133903503418,
+        -0.3522113859653473
+      ],
+      "restoredTranslation": [
+        16.681718826293945,
+        -43.7133903503418,
+        -0.3522113859653473
+      ],
+      "path": "C:\\Users\\tingjie.li\\Desktop\\LIVE\\artifacts-local\\pine-batch3\\blender\\source-rock-roundtrip.glb",
+      "bytes": 133936548
+    }
+  ],
+  "savedBlend": false
+}

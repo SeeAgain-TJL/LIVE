@@ -21,7 +21,7 @@ function Streaming({ manifest, onError, quality }: { manifest: TileManifest; onE
     owner.current = runtime;
     scene.add(runtime.group);
     gl.domElement.dataset.forestStreamingRuntime="true";
-    return () => { owner.current=null;scene.remove(runtime.group);runtime.dispose();delete gl.domElement.dataset.forestGeometryReady; };
+    return () => { owner.current=null;scene.remove(runtime.group);runtime.dispose();delete gl.domElement.dataset.forestGeometryReady;delete gl.domElement.dataset.forestStreaming; };
   }, [manifest,gl,onError,scene,quality]);
   useFrame(()=>{if(camera instanceof PerspectiveCamera) owner.current?.tick(camera,performance.now());});
   return null;

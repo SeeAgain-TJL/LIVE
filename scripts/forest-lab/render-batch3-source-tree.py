@@ -47,7 +47,7 @@ maximum = Vector(tuple(max(v.co[i] for v in mesh.vertices) for i in range(3)))
 center = (minimum + maximum) / 2
 camera = bpy.data.objects.new('batch3_reference_camera', bpy.data.cameras.new('batch3_camera'))
 scene.collection.objects.link(camera)
-camera.data.lens = 28.05  # horizontal FOV ~65.8 / vertical35.6 at16:10
+camera.data.lens = 35.04  # sensor36mm, vertical FOV35.6deg at16:10
 camera.location = center + Vector((18.9, -18.9, 2.16))
 camera.rotation_euler = (center-camera.location).to_track_quat('-Z', 'Y').to_euler()
 scene.camera = camera

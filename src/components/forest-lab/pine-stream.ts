@@ -357,6 +357,9 @@ export class PineStream {
           const geometry=selected.asset.billboard ? part.geometry.clone():part.geometry;
           if(selected.asset.billboard) {geometry.setAttribute("atlasAngle",new InstancedBufferAttribute(new Float32Array(capacity),1));ownedGeometry.push(geometry);}
           const mesh=new InstancedMesh(geometry,part.material,capacity);
+          // Parts are populated across frames. Never submit identity matrices
+          // from a newly allocated but not yet populated batch.
+          mesh.count=0;
           mesh.instanceMatrix.setUsage(DynamicDrawUsage);mesh.frustumCulled=false;mesh.name=key;
           this.group.add(mesh);return mesh;
         });

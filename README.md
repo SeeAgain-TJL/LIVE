@@ -1,6 +1,6 @@
 # UNIVERSE OF ME · 我的人生宇宙
 
-Pine Forest 第二批已完成本地 LOD/动态分区实验并停止：原机位提交约 81.41M→7.34M 三角形，Intel 核显 production Chrome 平均约 31–58 FPS，密集区域移动仍有 50–83ms P95 尖峰，**稳定 30 FPS 与整体视觉验收尚未通过**。独立入口 `/forest-runtime-lab`；真实截图、录屏路径、同源 LOD 对照与限制见 [第二批审阅](docs/reviews/pine-batch2/README.md)。正式星球和用户数据没有修改。
+Pine Forest 第三批已完成性能/Blender 隔离实验：原布局与源资产保留，分帧筛选和增量矩阵明显减少密集行走尖峰。Intel 核显推荐低精度 + 80% 内部渲染（1152×720放大到1440×900）：无录屏移动平均48.8 FPS/P95 33.5ms，真实录屏47.1/P95 33.5ms；原生DPR1局部仍约50ms，较高档不推荐此核显。**森林自然度仍未通过最终美术验收**。入口 `/forest-runtime-lab`；真实截图、2分34秒录屏、Blender原材质对照与限制见 [第三批审阅](docs/reviews/pine-batch3/README.md)。正式星球和用户数据没有修改，本批结束后停止。
 
 > 人生不是一条直线，而是一个不断扩张的宇宙。
 

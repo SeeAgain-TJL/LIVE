@@ -109,6 +109,7 @@ try {
   await segment('diagonal-return',10,async()=>{await page.keyboard.down('s');await page.keyboard.down('d');},async()=>{await page.keyboard.up('s');await page.keyboard.up('d');});
   await segment('dense-return',14,()=>page.keyboard.down('s'),()=>page.keyboard.up('s'));
   result.final=await read();result.contextEvents=await page.evaluate(()=>window.__pineEvents);
+  result.matrixAudit=result.final.streaming.audit||null;
   result.archiveAccess=await page.evaluate(()=>window.__archiveAccess);
   if(diagnostic) result.longTasks=await page.evaluate(()=>window.__longTasks);
   result.resources=await page.evaluate(()=>performance.getEntriesByType('resource').filter(r=>r.name.includes('forest-origin-assets')).map(r=>({name:r.name.split('/forest-origin-assets/')[1],encoded:r.encodedBodySize,transfer:r.transferSize,duration:r.duration})));
@@ -119,6 +120,16 @@ try {
   result.motion={seconds:frames.reduce((s,x)=>s+x,0)/1000,frames:frames.length,averageFps:1000*frames.length/frames.reduce((s,x)=>s+x,0),p95Ms:frames[Math.floor(frames.length*.95)],p99Ms:frames[Math.floor(frames.length*.99)],over100ms:frames.filter(x=>x>100).length};
   result.returnDistanceFromStart=Math.hypot(result.final.metrics.camera[0]-result.stages[0].samples[0].metrics.camera[0],result.final.metrics.camera[2]-result.stages[0].samples[0].metrics.camera[2]);
   result.qualityTargetMet=moving.every(s=>s.averageFps>=30 && s.p95Ms<=40);
+  const initialTiles=new Set(result.stages[0].samples[0].streaming.tiles);
+  result.returnedTiles=result.stages.filter(s=>s.name.includes('return')).flatMap(s=>s.samples.flatMap(s=>s.streaming.tiles)).filter((key,index,all)=>initialTiles.has(key) && all.indexOf(key)===index);
+  const ever=new Set(),reentries=new Set();let previous=new Set();
+  for(const stage of result.stages) for(const sample of stage.samples) {
+    const present=new Set(sample.streaming.tiles);
+    for(const key of present) {if(ever.has(key) && !previous.has(key)) reentries.add(key);ever.add(key);}
+    previous=present;
+  }
+  result.tileReentries=[...reentries];
+  if(route.includes('audit')) assert.ok(result.matrixAudit && result.matrixAudit.matrices>0 && result.matrixAudit.maxError<0.00005,'Incremental instance matrices diverged from source');
   assert.equal(errors.length,0,'Browser errors');assert.equal(result.contextEvents.length,0,'Context events');
   assert.equal(result.archiveAccess.length,0,'Lab touched archive storage');
   assert.ok(result.released.resources>0,'No LOD resource release observed');

@@ -1,0 +1,17 @@
+{
+  "parent": "batch2-delivery/delivery-sha256.json",
+  "source": "original Pine Forest source retained",
+  "files": [
+    {
+      "file": "impostors/pine_04.json",
+      "bytes": 721,
+      "sha256": "6f8fefbafa4056ce0a0149a6968cce62e3afa4e942d1fdf849e756157a76cfbe"
+    },
+    {
+      "file": "impostors/pine_04.webp",
+      "bytes": 3637424,
+      "sha256": "fea1ef996e9892e88dfbf7f58b42c60ebd49264a0fdc03a9274942426b6a553e"
+    }
+  ],
+  "totalBytes": 3638145
+}
