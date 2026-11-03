@@ -14,9 +14,9 @@ function AtlasModel({species,level,view}: Props) {
   useEffect(()=>{
     let disposed=false;
     let release:()=>void=()=>{};
-    loadPineImpostorAsset(species).then(({asset,geometry,material,texture,metadata})=>{
+    loadPineImpostorAsset(species,new URLSearchParams(window.location.search).get("impostor")==="detail").then(({asset,geometry,material,texture,metadata})=>{
       const center=asset.billboard!.center;
-      geometry.setAttribute("atlasAngle",new InstancedBufferAttribute(new Float32Array([1]),1));
+      geometry.setAttribute("atlasAngle",new InstancedBufferAttribute(new Float32Array([asset.billboard!.views/8]),1));
       const mesh=new InstancedMesh(geometry,material,1);
       mesh.setMatrixAt(0,new Matrix4().makeRotationY(Math.PI/4).setPosition(center));scene.add(mesh);
       const distance=view==="near" ? 27:view==="mid" ? 52:90;
@@ -38,13 +38,19 @@ function Model({species,level,view,bake,angle}: Props) {
   useLayoutEffect(()=>{
     gltf.scene.updateMatrixWorld(true);
     gltf.scene.traverse(object=>{if(object instanceof Mesh) for(const material of Array.isArray(object.material) ? object.material:[object.material]) if(material.transparent) material.forceSinglePass=true;});
+    if(new URLSearchParams(window.location.search).get("alpha")==="coverage") gltf.scene.traverse(object=>{
+      if(object instanceof Mesh) for(const material of Array.isArray(object.material) ? object.material:[object.material]) if(material.name.includes("twig")) {
+        material.transparent=false;material.alphaTest=0.03;material.alphaToCoverage=true;material.depthWrite=true;material.needsUpdate=true;
+      }
+    });
     const box=new Box3().setFromObject(gltf.scene);
+    const views=new URLSearchParams(window.location.search).get("views")==="16" ? 16:8;
     const center=box.getCenter(new Vector3());const extent=box.getSize(new Vector3());
     const width=Math.max(extent.x,extent.z,extent.y/2)*1.08;
     const height=width*2;
     if(bake && camera instanceof OrthographicCamera) {
       camera.left=-width/2;camera.right=width/2;camera.top=height/2;camera.bottom=-height/2;camera.near=0.1;camera.far=300;
-      camera.position.set(center.x+Math.sin(angle*Math.PI/4)*100,center.y,center.z+Math.cos(angle*Math.PI/4)*100);
+      camera.position.set(center.x+Math.sin(angle*2*Math.PI/views)*100,center.y,center.z+Math.cos(angle*2*Math.PI/views)*100);
       camera.lookAt(center);camera.updateProjectionMatrix();
     } else {
       const distance=view==="near" ? 27:view==="mid" ? 52:90;
@@ -55,7 +61,7 @@ function Model({species,level,view,bake,angle}: Props) {
     const rotate=(event:Event)=>{
       if(!bake) return;
       const index=(event as CustomEvent<number>).detail;
-      camera.position.set(center.x+Math.sin(index*Math.PI/4)*100,center.y,center.z+Math.cos(index*Math.PI/4)*100);camera.lookAt(center);
+      camera.position.set(center.x+Math.sin(index*2*Math.PI/views)*100,center.y,center.z+Math.cos(index*2*Math.PI/views)*100);camera.lookAt(center);
       const metadata=JSON.parse(gl.domElement.dataset.pineReview!);metadata.angle=index;gl.domElement.dataset.pineReview=JSON.stringify(metadata);
       delete gl.domElement.dataset.pineReviewReady;
     };

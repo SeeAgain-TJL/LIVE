@@ -23,6 +23,25 @@ await page.addInitScript(()=>{
   const open=indexedDB.open.bind(indexedDB);indexedDB.open=(...args)=>{window.__archiveAccess.push({method:'indexedDB.open',key:args[0]});return open(...args);};
 });
 if(diagnostic) await page.addInitScript(()=>{
+  window.__gpuTimes=[];
+  const clear=WebGL2RenderingContext.prototype.clear;
+  let pending=[],active=false;
+  WebGL2RenderingContext.prototype.clear=function(...args){
+    const ext=this.getExtension('EXT_disjoint_timer_query_webgl2');
+    if(ext && window.__collect && !active) {
+      const disjoint=this.getParameter(ext.GPU_DISJOINT_EXT);
+      pending=pending.filter(q=>{
+        if(!this.getQueryParameter(q,this.QUERY_RESULT_AVAILABLE)) return true;
+        if(!disjoint) window.__gpuTimes.push(this.getQueryParameter(q,this.QUERY_RESULT)/1e6);
+        this.deleteQuery(q);return false;
+      });
+      if(pending.length<8) {
+        const q=this.createQuery();this.beginQuery(ext.TIME_ELAPSED_EXT,q);active=true;
+        queueMicrotask(()=>{this.endQuery(ext.TIME_ELAPSED_EXT);pending.push(q);active=false;});
+      }
+    }
+    return clear.apply(this,args);
+  };
   window.__uploads={calls:0,bytes:0,cpuMs:0};
   for(const method of ['bufferData','bufferSubData']) {
     const original=WebGL2RenderingContext.prototype[method];
@@ -41,7 +60,7 @@ const read=()=>page.locator('canvas').evaluate(c=>({metrics:JSON.parse(c.dataset
 async function segment(name,seconds,action,cleanup) {
   if(diagnostic) await cdp.send('Profiler.start');
   const uploadStart=diagnostic ? await page.evaluate(()=>({...window.__uploads})):null;
-  await page.evaluate(()=>{window.__frames=[];window.__collect=true;let last=performance.now();function next(now){if(!window.__collect) return;window.__frames.push(now-last);last=now;requestAnimationFrame(next);}requestAnimationFrame(next);});
+  await page.evaluate(()=>{window.__frames=[];window.__gpuTimes=[];window.__collect=true;let last=performance.now();function next(now){if(!window.__collect) return;window.__frames.push(now-last);last=now;requestAnimationFrame(next);}requestAnimationFrame(next);});
   if(action) await action();
   const samples=[];
   for(let i=0;i<seconds;i++){await page.waitForTimeout(1000);samples.push(await read());}
@@ -59,6 +78,8 @@ async function segment(name,seconds,action,cleanup) {
     const nodes=new Map(profile.nodes.map(n=>[n.id,n]));const self=new Map();
     for(let i=0;i<profile.samples.length;i++){const n=nodes.get(profile.samples[i]);const key=n.callFrame.functionName+' @ '+n.callFrame.url+':'+n.callFrame.lineNumber;self.set(key,(self.get(key)||0)+profile.timeDeltas[i]/1000);}
     summary.cpuSelfMs=[...self].sort((a,b)=>b[1]-a[1]).slice(0,35);
+    const gpu=await page.evaluate(()=>window.__gpuTimes);gpu.sort((a,b)=>a-b);
+    summary.gpu={samples:gpu.length,medianMs:gpu[Math.floor(gpu.length/2)],p95Ms:gpu[Math.floor(gpu.length*.95)]};
   }
   result.stages.push(summary);
   await page.screenshot({path:path.join(folder,`${name}.png`)});
@@ -82,18 +103,27 @@ try {
   await segment('continuous-turn',6,async()=>{await page.mouse.move(420,450);await page.mouse.down();await page.mouse.move(1120,375,{steps:100});await page.mouse.up();});
   await segment('far-static',10);
   // Retrace actual input through resident and previously released partitions.
+  await page.mouse.move(1120,375);await page.mouse.down();await page.mouse.move(420,450,{steps:100});await page.mouse.up();
   await segment('walk-return',14,()=>page.keyboard.down('s'),()=>page.keyboard.up('s'));
+  await page.mouse.move(1130,410);await page.mouse.down();await page.mouse.move(720,450,{steps:36});await page.mouse.up();
+  await segment('diagonal-return',10,async()=>{await page.keyboard.down('s');await page.keyboard.down('d');},async()=>{await page.keyboard.up('s');await page.keyboard.up('d');});
+  await segment('dense-return',14,()=>page.keyboard.down('s'),()=>page.keyboard.up('s'));
   result.final=await read();result.contextEvents=await page.evaluate(()=>window.__pineEvents);
   result.archiveAccess=await page.evaluate(()=>window.__archiveAccess);
   if(diagnostic) result.longTasks=await page.evaluate(()=>window.__longTasks);
   result.resources=await page.evaluate(()=>performance.getEntriesByType('resource').filter(r=>r.name.includes('forest-origin-assets')).map(r=>({name:r.name.split('/forest-origin-assets/')[1],encoded:r.encodedBodySize,transfer:r.transferSize,duration:r.duration})));
   result.resourceBytes=result.resources.reduce((s,r)=>s+r.encoded,0);
   result.released=result.final.streaming.released;
+  const moving=result.stages.filter(s=>['walk-forward','walk-diagonal','turn-and-walk','continuous-turn','walk-return','diagonal-return','dense-return'].includes(s.name));
+  const frames=moving.flatMap(s=>s.frameIntervals).sort((a,b)=>a-b);
+  result.motion={seconds:frames.reduce((s,x)=>s+x,0)/1000,frames:frames.length,averageFps:1000*frames.length/frames.reduce((s,x)=>s+x,0),p95Ms:frames[Math.floor(frames.length*.95)],p99Ms:frames[Math.floor(frames.length*.99)],over100ms:frames.filter(x=>x>100).length};
+  result.returnDistanceFromStart=Math.hypot(result.final.metrics.camera[0]-result.stages[0].samples[0].metrics.camera[0],result.final.metrics.camera[2]-result.stages[0].samples[0].metrics.camera[2]);
+  result.qualityTargetMet=moving.every(s=>s.averageFps>=30 && s.p95Ms<=40);
   assert.equal(errors.length,0,'Browser errors');assert.equal(result.contextEvents.length,0,'Context events');
   assert.equal(result.archiveAccess.length,0,'Lab touched archive storage');
   assert.ok(result.released.resources>0,'No LOD resource release observed');
   assert.ok(result.released.tiles>0,'No tile release observed');
-  const beginning=result.stages[0].samples[0].metrics.camera;const ending=result.final.metrics.camera;
+  const beginning=result.stages[0].samples[0].metrics.camera;const ending=result.stages.find(s=>s.name==='walk-diagonal').samples.at(-1).metrics.camera;
   assert.ok(Math.hypot(beginning[0]-ending[0],beginning[2]-ending[2])>20,'Movement did not cross the representative area');
   result.passed=true;
 } catch(error) {result.failed=String(error);result.final=await read().catch(()=>null);await page.screenshot({path:path.join(folder,'failed.png')}).catch(()=>{});}

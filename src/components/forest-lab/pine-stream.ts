@@ -6,10 +6,12 @@ export const pineRoot = "/forest-origin-assets/";
 export type TileManifest = { names: string[]; propAssetCount: number; tiles: Record<string, { trees: number; props: number; bytes: number }> };
 type Tier = "near" | "mid" | "far";
 type Part = { geometry: Mesh["geometry"]; material: Material | Material[]; matrix: Matrix4 };
-type Asset = { parts: Part[]; sphere: Sphere; billboard?: { center: Vector3 } };
+type Asset = { parts: Part[]; sphere: Sphere; billboard?: { center: Vector3; views: number } };
 type Resource = { assets: Map<string, Asset>; geometries: Set<Mesh["geometry"]>; materialKeys: Set<string>; lastUsed: number };
 type Tile = { data: Float32Array; bounds: Float32Array; lod: Uint8Array; cells: { box: Box3; offsets: number[] }[]; lastUsed: number };
-type Batch = { resource: string; parts: InstancedMesh[]; capacity: number; ownedGeometry: Mesh["geometry"][]; lastUsed: number };
+type Slot = { data: Float32Array; offset: number; seen: number };
+type Batch = { resource: string; parts: InstancedMesh[]; capacity: number; ownedGeometry: Mesh["geometry"][]; lastUsed: number;
+  entries: Slot[]; slots: Map<Float32Array, Map<number, Slot>> };
 type Selection = { resource: string; asset: Asset; chunks: { data: Float32Array; offsets: number[] }[]; count: number };
 const tiers: Tier[] = ["near", "mid", "far"];
 function matrixAt(data: Float32Array, offset: number, target: Matrix4) {
@@ -24,22 +26,24 @@ function tileDistance(key: string, point: Vector3) {
   return Math.hypot(Math.max(x*32-point.x,0,point.x-(x+1)*32), Math.max(y*32+point.z,0,-point.z-(y+1)*32));
 }
 
-export async function loadPineImpostorAsset(name: string) {
-  const response=await fetch(pineRoot+`batch2/impostors/${name}.json`);
+export async function loadPineImpostorAsset(name: string, detail=false) {
+  const folder=detail && name==="pine_04" ? "batch3/impostors":"batch2/impostors";
+  const response=await fetch(pineRoot+`${folder}/${name}.json`);
   if(!response.ok) throw Error(`Impostor ${name} HTTP ${response.status}`);
-  const metadata=await response.json() as {center:number[];width:number;height:number;bounds:{min:number[];max:number[]}};
-  const texture=await new TextureLoader().loadAsync(pineRoot+`batch2/impostors/${name}.webp`);texture.colorSpace=SRGBColorSpace;
+  const metadata=await response.json() as {center:number[];width:number;height:number;views?:number;bounds:{min:number[];max:number[]}};
+  const views=metadata.views || 8,rows=views/4;
+  const texture=await new TextureLoader().loadAsync(pineRoot+`${folder}/${name}.webp`);texture.colorSpace=SRGBColorSpace;
   const material=new MeshBasicMaterial({map:texture,transparent:true,alphaTest:0.015,depthWrite:false,side:DoubleSide,toneMapped:false});
   material.forceSinglePass=true;
   material.onBeforeCompile=shader=>{
     shader.vertexShader=shader.vertexShader.replace("#include <common>","#include <common>\nattribute float atlasAngle;");
-    shader.vertexShader=shader.vertexShader.replace("#include <uv_vertex>","#include <uv_vertex>\nvMapUv = vec2((vMapUv.x + mod(atlasAngle, 4.0)) / 4.0, (vMapUv.y + 1.0 - floor(atlasAngle / 4.0)) / 2.0);");
+    shader.vertexShader=shader.vertexShader.replace("#include <uv_vertex>",`#include <uv_vertex>\nvMapUv = vec2((vMapUv.x + mod(atlasAngle, 4.0)) / 4.0, (vMapUv.y + ${rows-1}.0 - floor(atlasAngle / 4.0)) / ${rows}.0);`);
   };
-  material.customProgramCacheKey=()=>"pine-source-eight-view-v2";
+  material.customProgramCacheKey=()=>`pine-source-view-atlas-${views}`;
   const geometry=new PlaneGeometry(metadata.width,metadata.height);
   const center=new Vector3().fromArray(metadata.center);
   const sphere=new Box3(new Vector3().fromArray(metadata.bounds.min),new Vector3().fromArray(metadata.bounds.max)).getBoundingSphere(new Sphere());
-  const asset: Asset={parts:[{geometry,material,matrix:new Matrix4()}],sphere,billboard:{center}};
+  const asset: Asset={parts:[{geometry,material,matrix:new Matrix4()}],sphere,billboard:{center,views}};
   return {asset,geometry,material,texture,metadata};
 }
 
@@ -78,10 +82,15 @@ export class PineStream {
   private released = { tiles: 0, resources: 0, batches: 0, materials: 0 };
   private counters = { candidates: 0, frustumRejected: 0, pixelRejected: 0, trees: 0, props: 0, near: 0, mid: 0, far: 0 };
   private tickMs = 0;
+  private work: Generator<void> | null = null;
+  private maxSliceMs = 0;
+  private audit = { updates: 0, matrices: 0, maxError: 0 };
+  private generation = 0;
+  private timings = { selectMs: 0, matrixMs: 0, tileBuildMs: 0, prepareMs: 0, matrixWrites: 0, uploadBytes: 0 };
   private failures = new Set<string>();
 
   constructor(private manifest: TileManifest, private gl: WebGLRenderer, private reportError: (message: string) => void,
-    private options: { alpha: "single" | "mask"; frozenLod?: Tier } = { alpha: "single" }) {
+    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: "low" | "high"; audit?: boolean } = { alpha: "single" }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Meshoptimizer API, not a React hook.
     MeshoptDecoder.useWorkers(2);
     this.request("props/far", 0);
@@ -113,7 +122,7 @@ export class PineStream {
   }
   private async loadImpostor(key: string): Promise<Resource> {
     const name=key.split("/")[0];
-    const {asset,geometry,material}=await loadPineImpostorAsset(name);
+    const {asset,geometry,material}=await loadPineImpostorAsset(name,this.options.quality==="high");
     const materialKey=`impostor/${name}`;this.materials.set(materialKey,{material,refs:1});
     return {assets:new Map([[name,asset]]),geometries:new Set([geometry]),materialKeys:new Set([materialKey]),lastUsed:performance.now()};
   }
@@ -121,6 +130,7 @@ export class PineStream {
     return Object.values(material).filter((value): value is Texture => value instanceof Texture);
   }
   private prepare(gltf: GLTF, key: string): Resource {
+    const started=performance.now();
     const resource: Resource = { assets:new Map(),geometries:new Set(),materialKeys:new Set(),lastUsed:performance.now() };
     gltf.scene.updateMatrixWorld(true);
     const [name,tier] = key.split("/");
@@ -132,7 +142,8 @@ export class PineStream {
         if (seen.has(material)) return seen.get(material)!;
         // Source atlases are identical across species within a tree LOD tier;
         // all three prop tiers use the exact same verified 1K image bytes.
-        const poolKey = `${name === "props" ? "props" : tier}/${material.name}`;
+        const coverage=this.options.alpha === "coverage" && name==="pine_02" && material.name.includes("twig");
+        const poolKey = `${name === "props" ? "props" : tier}/${material.name}${coverage ? "/coverage":""}`;
         const pooled = this.materials.get(poolKey);
         let selected = material;
         if (pooled) {
@@ -143,6 +154,9 @@ export class PineStream {
           if (material.transparent) {
             material.forceSinglePass = true;
             if (this.options.alpha === "mask") { material.transparent = false; material.alphaTest = 0.08; }
+            if (coverage) {
+              material.transparent=false;material.alphaTest=0.03;material.alphaToCoverage=true;material.depthWrite=true;
+            }
           }
           this.materials.set(poolKey,{material,refs:0});
         }
@@ -172,6 +186,7 @@ export class PineStream {
         resource.assets.set(assetName,fallback);
       }
     } else collect(gltf.scene,name);
+    this.timings.prepareMs=Math.max(this.timings.prepareMs,performance.now()-started);
     return resource;
   }
   private releaseResource(resource: Resource) {
@@ -202,7 +217,16 @@ export class PineStream {
         const count=data.length/13;
         const cells=new Map<string,{box:Box3;offsets:number[]}>();
         const bounds=new Float32Array(count*4);
+        let sliceStart=performance.now();
         for(let offset=0;offset<data.length;offset+=13) {
+          // Decode is already asynchronous; bound the remaining spatial-index
+          // construction so an arriving dense partition cannot monopolize a frame.
+          if(offset%(13*1024)===0 && offset>0) {
+            this.timings.tileBuildMs=Math.max(this.timings.tileBuildMs,performance.now()-sliceStart);
+            await new Promise<void>(resolve=>setTimeout(resolve,0));
+            if(controller.signal.aborted || this.disposed) return;
+            sliceStart=performance.now();
+          }
           const name=this.manifest.names[data[offset]];
           const source=this.resources.get(data[offset]<this.manifest.propAssetCount ? "props/far" : `${name}/far`)!.assets.get(name);
           if(!source) throw Error(`Missing packed bounds ${key}: index ${data[offset]} ${name}`);
@@ -217,6 +241,7 @@ export class PineStream {
           const cell=cells.get(cellKey) || {box:new Box3(),offsets:[]};
           cell.box.union(this.sphere.getBoundingBox(this.boundsBox));cell.offsets.push(offset);cells.set(cellKey,cell);
         }
+        this.timings.tileBuildMs=Math.max(this.timings.tileBuildMs,performance.now()-sliceStart);
         this.tiles.set(key,{data,bounds,lod:new Uint8Array(count).fill(2),cells:[...cells.values()],lastUsed:performance.now()});
         this.dirty=true;
       }).catch(error=>{if(!controller.signal.aborted && !this.disposed) this.reportError(String(error));}).finally(()=>this.tileLoading.delete(key));
@@ -225,11 +250,25 @@ export class PineStream {
   tick(camera: PerspectiveCamera, now: number) {
     if(this.disposed) return;
     this.pump();
+    if(this.work) {this.advance();return;}
     this.maintenance(now);
     const boundsReady = this.resources.has("props/far") && this.manifest.names.slice(this.manifest.propAssetCount).every(name=>this.resources.has(`${name}/far`));
     if (!boundsReady) return;
     camera.getWorldDirection(this.currentDirection);
     if(now-this.lastTick<90 || (!this.dirty && camera.position.distanceToSquared(this.position)<0.09 && this.direction.dot(this.currentDirection)>0.998)) return;
+    // A coherent camera snapshot lets selection span frames without mixing
+    // frusta/LOD distances. The previous complete visible set remains resident.
+    this.work=this.update(camera.clone(),now);
+    this.advance();
+  }
+  private advance() {
+    const start=performance.now();
+    do {
+      if(this.work!.next().done) {this.work=null;break;}
+    } while(performance.now()-start<4);
+    this.maxSliceMs=Math.max(this.maxSliceMs,performance.now()-start);
+  }
+  private *update(camera: PerspectiveCamera, now: number): Generator<void> {
     const tickStart=performance.now();
     this.dirty=false;this.lastTick=now;this.position.copy(camera.position);this.direction.copy(this.currentDirection);
     this.loadTiles(camera.position,now);
@@ -239,37 +278,57 @@ export class PineStream {
     this.frustum.setFromProjectionMatrix(this.projection.multiply(camera.matrixWorldInverse));
     const projectionScale=this.gl.domElement.height/(2*Math.tan(camera.fov*Math.PI/360));
     const selection=new Map<string,Selection>();
+    // Resolve each asset/tier only once per tick. In the dense route this used
+    // to perform request(), now(), string allocation and tier lookup per prop.
+    const resolved=new Map<number,{key:string;resource:Resource;asset:Asset;batchKey:string;available:Tier}>();
+    const generation=++this.generation;
+    const verifyMatrices=this.options.audit;
+    let selectActiveMs=0,activeStart=performance.now();
+    const high=this.options.quality==="high";
     const counters={candidates:0,frustumRejected:0,pixelRejected:0,trees:0,props:0,near:0,mid:0,far:0};
     for(const tile of this.tiles.values()) {
       const chunks=new Map<string,{data:Float32Array;offsets:number[]}>();
       for(const cell of tile.cells) {
+      selectActiveMs+=performance.now()-activeStart;
+      yield;
+      activeStart=performance.now();
       if (!this.frustum.intersectsBox(cell.box)) { counters.frustumRejected+=cell.offsets.length; continue; }
-      for(const offset of cell.offsets) {
+      for(let cellIndex=0;cellIndex<cell.offsets.length;cellIndex++) {
+        if(cellIndex && cellIndex%256===0) {
+          selectActiveMs+=performance.now()-activeStart;yield;activeStart=performance.now();
+        }
+        const offset=cell.offsets[cellIndex];
         counters.candidates++;
         const i=offset/13;
+        const tree=tile.data[offset]>=this.manifest.propAssetCount;
+        const dx=tile.data[offset+4]-camera.position.x,dz=-tile.data[offset+8]-camera.position.z;
+        const distanceSquared=dx*dx+dz*dz;
+        if(distanceSquared>(tree ? 95*95:40*40)) {counters.pixelRejected++;continue;}
         this.sphere.center.fromArray(tile.bounds,i*4);this.sphere.radius=tile.bounds[i*4+3];
         if(!this.frustum.intersectsSphere(this.sphere)) {counters.frustumRejected++;continue;}
-        const tree=tile.data[offset]>=this.manifest.propAssetCount;
-        const distance=Math.hypot(tile.data[offset+4]-camera.position.x,-tile.data[offset+8]-camera.position.z);
         const depth=Math.max(0.1,this.point.copy(this.sphere.center).sub(camera.position).dot(this.currentDirection));
         const pixels=2*this.sphere.radius*projectionScale/depth;
-        if(distance>(tree ? 95:40) || pixels<(tree ? 2:1.5)) {counters.pixelRejected++;continue;}
+        if(pixels<(tree ? 2:1.5)) {counters.pixelRejected++;continue;}
         const previous=tile.lod[i];
         const hysteresis=previous===0 ? 1.12 : previous===2 ? 0.9 : 1;
-        const tierIndex=tree ? (distance<18*hysteresis && pixels>700/hysteresis ? 0 : distance<45*hysteresis && pixels>260/hysteresis ? 1:2)
-          : (distance<6*hysteresis && pixels>120/hysteresis ? 0 : distance<17*hysteresis && pixels>24/hysteresis ? 1:2);
+        const tierIndex=tree ? (distanceSquared<((high?26:18)*hysteresis)**2 && pixels>(high?450:700)/hysteresis ? 0 : distanceSquared<(45*hysteresis)**2 && pixels>260/hysteresis ? 1:2)
+          : (distanceSquared<((high?9:6)*hysteresis)**2 && pixels>120/hysteresis ? 0 : distanceSquared<((high?22:17)*hysteresis)**2 && pixels>24/hysteresis ? 1:2);
         tile.lod[i]=tierIndex;
         const desired=this.options.frozenLod || tiers[tierIndex];
-        const name=this.manifest.names[tile.data[offset]];
-        const family=tree ? name:"props";
         const requestedTier=tree && desired==="mid" ? "far":desired;
-        const resourceKey=`${family}/${requestedTier}`;
-        this.request(resourceKey,distance);
-        const available=tiers.slice(tiers.indexOf(requestedTier)).find(tier=>this.resources.has(`${family}/${tier}`)) || "far";
-        const key=`${family}/${available}`;
-        const resource=this.resources.get(key)!;resource.lastUsed=now;
-        const asset=resource.assets.get(name)!;
-        const batchKey=`${key}/${name}`;
+        const lookup=tile.data[offset]*3+tiers.indexOf(requestedTier);
+        let resolvedAsset=resolved.get(lookup);
+        if(!resolvedAsset) {
+          const name=this.manifest.names[tile.data[offset]];
+          const family=tree ? name:"props";
+          this.request(`${family}/${requestedTier}`,distanceSquared);
+          const available=tiers.slice(tiers.indexOf(requestedTier)).find(tier=>this.resources.has(`${family}/${tier}`)) || "far";
+          const key=`${family}/${available}`;
+          const resource=this.resources.get(key)!;resource.lastUsed=now;
+          resolvedAsset={key,resource,asset:resource.assets.get(name)!,batchKey:`${key}/${name}`,available};
+          resolved.set(lookup,resolvedAsset);
+        }
+        const {key,asset,batchKey,available}=resolvedAsset;
         const batch=selection.get(batchKey) || {resource:key,asset,chunks:[],count:0};
         let chunk=chunks.get(batchKey);
         if(!chunk) {chunk={data:tile.data,offsets:[]};chunks.set(batchKey,chunk);batch.chunks.push(chunk);}
@@ -279,12 +338,20 @@ export class PineStream {
       }
       }
     }
-    for(const [key,batch] of this.batches) if(!selection.has(key)) for(const mesh of batch.parts) mesh.count=0;
+    const selectedAt=performance.now();
+    this.timings.selectMs=selectActiveMs+selectedAt-activeStart;
+    this.timings.matrixWrites=0;this.timings.uploadBytes=0;
+    this.timings.matrixMs=0;
+    for(const [key,batch] of this.batches) if(!selection.has(key)) {
+      for(const mesh of batch.parts) mesh.count=0;
+      batch.entries=[];batch.slots.clear();
+    }
     for(const [key,selected] of selection) {
+      yield;
       let batch=this.batches.get(key);
       if(!batch || batch.capacity<selected.count) {
         if(batch) this.removeBatch(key,batch);
-        const capacity=2**Math.ceil(Math.log2(Math.max(1,selected.count)));
+        const capacity=2**Math.ceil(Math.log2(Math.max(8,selected.count*1.25)));
         const ownedGeometry: Mesh["geometry"][]=[];
         const parts=selected.asset.parts.map(part=>{
           const geometry=selected.asset.billboard ? part.geometry.clone():part.geometry;
@@ -293,37 +360,105 @@ export class PineStream {
           mesh.instanceMatrix.setUsage(DynamicDrawUsage);mesh.frustumCulled=false;mesh.name=key;
           this.group.add(mesh);return mesh;
         });
-        batch={resource:selected.resource,parts,capacity,ownedGeometry,lastUsed:now};this.batches.set(key,batch);
+        batch={resource:selected.resource,parts,capacity,ownedGeometry,lastUsed:now,entries:[],slots:new Map()};this.batches.set(key,batch);
       }
       batch.lastUsed=now;
+      // Fixed slots preserve matrices for static source instances. Only additions
+      // and swap-removals write buffers; camera-facing impostors still update.
+      const additions:Slot[]=[];
+      let changedScanned=0;
+      for(const {data,offsets} of selected.chunks) {
+        let slots=batch.slots.get(data);
+        if(!slots) {slots=new Map();batch.slots.set(data,slots);}
+        for(const offset of offsets) {
+          if(changedScanned && changedScanned%1024===0) yield;
+          changedScanned++;
+          const entry=slots.get(offset);
+          if(entry) entry.seen=generation;
+          else additions.push({data,offset,seen:generation});
+        }
+      }
+      const changed=new Set<number>();
+      for(let i=batch.entries.length-1;i>=0;i--) {
+        if(i && i%1024===0) yield;
+        if(batch.entries[i].seen===generation) continue;
+        const removed=batch.entries[i];batch.slots.get(removed.data)!.delete(removed.offset);
+        const last=batch.entries.pop()!;
+        if(i<batch.entries.length) {batch.entries[i]=last;changed.add(i);}
+      }
+      for(const entry of additions) {changed.add(batch.entries.length);batch.entries.push(entry);batch.slots.get(entry.data)!.set(entry.offset,entry);}
+      for(const [data,slots] of batch.slots) if(!slots.size) batch.slots.delete(data);
+      if(verifyMatrices && (batch.entries.length!==selected.count || [...batch.slots.values()].reduce((sum,slots)=>sum+slots.size,0)!==selected.count)) throw Error("Pine instance membership mismatch: "+key);
       for(let partIndex=0;partIndex<batch.parts.length;partIndex++) {
+        yield;
+        let partStart=performance.now();
         const mesh=batch.parts[partIndex];
         const local=selected.asset.parts[partIndex].matrix;
-        let index=0;
-        for(const {data,offsets} of selected.chunks) {
-          if(selected.asset.billboard) offsets.sort((a,b)=>((data[b+4]-camera.position.x)**2+(-data[b+8]-camera.position.z)**2)-((data[a+4]-camera.position.x)**2+(-data[a+8]-camera.position.z)**2));
-          for(const offset of offsets) {
+        // Transparent tree planes keep the original per-tile back-to-front order.
+        const entries=selected.asset.billboard ? selected.chunks.flatMap(({data,offsets})=>offsets.sort((a,b)=>
+          ((data[b+4]-camera.position.x)**2+(-data[b+8]-camera.position.z)**2)-((data[a+4]-camera.position.x)**2+(-data[a+8]-camera.position.z)**2)).map(offset=>({data,offset}))) : batch.entries;
+        let first=Infinity,last=-1;
+        for(let index=0;index<entries.length;index++) {
+          if(index && index%1024===0) {
+            this.timings.matrixMs+=performance.now()-partStart;yield;partStart=performance.now();
+          }
+          if(!selected.asset.billboard && !changed.has(index)) continue;
+          const {data,offset}=entries[index];
           matrixAt(data,offset,this.matrix);
           if(selected.asset.billboard) {
             const center=selected.asset.billboard.center;
             this.worldCenter.copy(center).applyMatrix4(this.matrix);
             this.worldScale.setFromMatrixScale(this.matrix);
             this.localCamera.copy(camera.position).applyMatrix4(this.billboardInverse.copy(this.matrix).invert()).sub(center);
-            const angle=((Math.round(Math.atan2(this.localCamera.x,this.localCamera.z)/(Math.PI/4))%8)+8)%8;
+            const views=selected.asset.billboard.views;
+            const angle=((Math.round(Math.atan2(this.localCamera.x,this.localCamera.z)/(2*Math.PI/views))%views)+views)%views;
             const attribute=mesh.geometry.getAttribute("atlasAngle") as InstancedBufferAttribute;attribute.setX(index,angle);
             const facing=Math.atan2(camera.position.x-this.worldCenter.x,camera.position.z-this.worldCenter.z);
             this.instance.makeRotationY(facing).scale(this.worldScale).setPosition(this.worldCenter);
           } else this.instance.multiplyMatrices(this.matrix,local);
           mesh.setMatrixAt(index,this.instance);
-          index++;
-          }
+          first=Math.min(first,index);last=index;this.timings.matrixWrites++;
         }
         if(selected.asset.billboard) (mesh.geometry.getAttribute("atlasAngle") as InstancedBufferAttribute).needsUpdate=true;
-        mesh.count=selected.count;mesh.instanceMatrix.clearUpdateRanges();mesh.instanceMatrix.addUpdateRange(0,selected.count*16);mesh.instanceMatrix.needsUpdate=true;
+        mesh.count=selected.count;
+        if(last>=first) {
+          mesh.instanceMatrix.clearUpdateRanges();
+          if(selected.asset.billboard) {
+            mesh.instanceMatrix.addUpdateRange(first*16,(last-first+1)*16);this.timings.uploadBytes+=(last-first+1)*64;
+          } else {
+            // Merge small gaps, avoiding both full-buffer uploads and thousands
+            // of tiny bufferSubData calls for scattered swap removals.
+            const indices=[...changed].filter(i=>i<mesh.count).sort((a,b)=>a-b);
+            for(let i=0;i<indices.length;) {
+              const start=indices[i];let end=start;
+              while(++i<indices.length && indices[i]-end<=16) end=indices[i];
+              mesh.instanceMatrix.addUpdateRange(start*16,(end-start+1)*16);this.timings.uploadBytes+=(end-start+1)*64;
+            }
+          }
+          mesh.instanceMatrix.needsUpdate=true;
+        }
+        this.timings.matrixMs+=performance.now()-partStart;
+        if(verifyMatrices && !selected.asset.billboard) {
+          // Deterministic spread through old/new/swapped slots, outside timed
+          // acceptance. Compare against original source matrices, including UV
+          // part transforms; count/capacity changes are checked above.
+          for(let i=0;i<batch.entries.length;i+=Math.max(1,Math.floor(batch.entries.length/32))) {
+            const entry=batch.entries[i];matrixAt(entry.data,entry.offset,this.matrix);
+            this.instance.multiplyMatrices(this.matrix,local);
+            const actual=mesh.instanceMatrix.array;
+            for(let j=0;j<16;j++) {
+              const error=Math.abs(actual[i*16+j]-this.instance.elements[j]);this.audit.maxError=Math.max(this.audit.maxError,error);
+              if(error>0.00005) throw Error("Pine incremental matrix mismatch: "+key);
+            }
+            this.audit.matrices++;
+          }
+        }
       }
     }
     this.counters=counters;
+    this.audit.updates++;
     this.tickMs=performance.now()-tickStart;
+    // tickMs includes yields; selectMs/matrixMs report active CPU time.
     if(counters.trees>0 && counters.props>0) this.gl.domElement.dataset.forestGeometryReady="true";
   }
   private maintenance(now: number) {
@@ -341,9 +476,14 @@ export class PineStream {
       this.lastEvict=now;
     }
     if(now-this.lastReport>1000) {
+      const geometry:Record<string,{instances:number;triangles:number}>={};
+      for(const [key,batch] of this.batches) {
+        const triangles=batch.parts.reduce((sum,mesh)=>sum+(mesh.geometry.index?.count || mesh.geometry.getAttribute("position").count)/3*mesh.count,0);
+        if(triangles) geometry[key]={instances:batch.parts[0].count,triangles};
+      }
       this.gl.domElement.dataset.forestStreaming=JSON.stringify({tiles:[...this.tiles.keys()],pendingTiles:[...this.tileLoading.keys()],resources:[...this.resources.keys()],pendingResources:[...this.pending],queued:this.queue.size,
         retainedBytes:[...this.tiles.values()].reduce((s,t)=>s+t.data.byteLength+t.bounds.byteLength+t.lod.byteLength,0),...this.counters,released:this.released,tickMs:this.tickMs,
-        batches:this.batches.size,materials:this.materials.size,failures:[...this.failures]});
+        batches:this.batches.size,materials:this.materials.size,timings:this.timings,maxSliceMs:this.maxSliceMs,geometry,audit:this.options.audit ? this.audit:undefined,failures:[...this.failures]});
       this.lastReport=now;
     }
   }
@@ -354,6 +494,7 @@ export class PineStream {
   }
   dispose() {
     this.disposed=true;
+    this.work=null;
     for(const controller of this.tileLoading.values()) controller.abort();
     for(const [key,batch] of this.batches) this.removeBatch(key,batch);
     for(const resource of this.resources.values()) this.releaseResource(resource);

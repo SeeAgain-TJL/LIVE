@@ -22,3 +22,15 @@
 - 可复现脚本：`scripts/forest-lab/verify-blender-workflow.py`；实际log、`workflow.json`、133,936,548-byte原精度rock GLB位于`artifacts-local/pine-batch3/blender/`。该导出只证明专业工具链可用，不进入运行时、不代表性能优化。副本位于`%LOCALAPPDATA%/UNIVERSE-OF-ME/asset-audit/candidate-assets/pine-source-conversion/batch3-work/pine-forest-copy.blend`。
 
 原针叶材质包含离线透射与多层混合，现有glTF的简单PBR不能等价；不凭改灯光或暴力减面声称修复。下一步先用代表树实验评估Alpha覆盖，再决定是否接受。
+
+## P2/P3：局部资产与运行时检查点
+
+保留原有地被40m、树95m和低档LOD条件。每tick按asset/tier解析一次资源，淘汰逐实例`request/now`；平方距离先裁掉远处候选。使用生成器对视锥选择、实例成员维护及矩阵写入分帧，约4ms主动预算（不是硬实时上限）；相机快照保持一次选择一致，旧画面继续渲染。固定静态实例槽位，新增/交换移除才写矩阵，合并相邻更新区间。Impostor仍按相机更新和原排序。批次容量加25%余量，减少反复扩容；资源释放策略保留。
+
+诊断版初测 `optimized-profile/`：原机位仍7,338,065 tris/141calls；密集前行46.70 FPS/P95 33.5ms，上传145.1MB（旧620.6MB）；调用次数54,595反而高于旧20,601，说明区间上传以更多小调用换较少字节，并非免费收益。CPU `update` self1237ms、`advance`约336ms，`request`不再是热点。不同速度引起细微路径差异，不能声称精确百分比提速。GPU timer非阻塞、丢弃disjoint样本：原机位中位24.73ms/P95 27.68ms；密集林带转向中位29.39ms/P95 51.38ms，CPU已大部idle。后者仍未达到每段P95<=40ms，后续只做独立干净复测，不无限调参。
+
+仅选`pine_04`（原近景每株669,452 tris，机位18m内至少5株）为更多角度图集试点，直接复用完整源网格、验证1K材质和批二烘焙场景。现有8视角384×768/视图提升到16视角512×1024，2048×4096 WebP，3,637,424 bytes，源bounding box/center不变。每22.5°切换，仍然是平面表示，没有声称消除切换或实现深度视差。只在较高精度加载该图集；低档仍用旧8视角，原资产全部保留。新增静态RGBA8+mip估算约30.67MiB（不是VRAM实测）。未重新处理其余10树种或修改任何散布坐标。
+
+`pine_02` Alpha-to-coverage 原图集/网格试验已截图：低阈值0.03+MSAA覆盖比BLEND近景显得较丰满，几何数量不变，但颜色/遮挡与源Cycles仍有差异。仅保留显式`alpha=coverage`试验参数，材质池隔离避免影响其他树种；不自动推广、不宣称完成针叶材质修复。8-sample Cycles原材质单树渲染完成，3317021 polygons，720×450，原世界/灯光；与Three.js环境不同，作为材质对照而非等价渲染。
+
+此检查点仍待最终干净漫游、高档、录屏、矩阵审计与回归。
