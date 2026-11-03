@@ -3,11 +3,11 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 
-const folder = path.resolve("artifacts-local/pine-batch1-recovery");
+const folder = path.resolve(process.env.PINE_EVIDENCE || "artifacts-local/pine-batch1-recovery");
 await mkdir(folder, { recursive: true });
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-const url = (process.env.FOREST_LAB_URL || "http://127.0.0.1:3311") + "/forest-origin-lab?diagnostic=fir";
+const url = (process.env.FOREST_LAB_URL || "http://127.0.0.1:3311") + (process.env.PINE_ROUTE || "/forest-origin-lab?diagnostic=fir");
 try {
   await page.goto(url);
   const ready = page.locator("canvas[data-forest-origin-ready='true']");

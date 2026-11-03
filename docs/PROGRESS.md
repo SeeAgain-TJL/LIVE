@@ -1,5 +1,16 @@
 # 开发进度
 
+## Pine Forest 第二批：动态分区、LOD 与性能（2026-11-03）
+
+- 从干净的 `codex/pine-forest-vertical-slice` / `08bec0f` 继续。保留原相机 reorder、Shader 诊断/上下文丢失提示与重载、第一批已验证 1K 地被。原 `.blend` SHA-256 再验不变；585 棵树和 879,825 地被的全部源名/原矩阵逐条验证，60 源分区及既有仅树边缘块完整保留。没有重布森林、生成替代树种、修改正式 Galaxy/Planet/Memory、localStorage 或 IndexedDB。
+- P1 实际生产基线：原固定 170 树/18,000 地被约 81.41M 三角形、188 calls、5.71 平均 FPS/P95 200.6ms。拆分显示地被约 63M 提交三角形，是主要几何负担；逐实例审计发现约 69.38M 视野外三角形仍因大组可见而提交。树枝叶约占树几何 92%；透明 single pass 仅小幅改善，不采用高阈值 alpha 裁切换帧数。
+- P2/P3：新增同源地被三档 gltfpack LOD、近景 10% 原树真实几何、中远完整原树八方向 impostor；Shared atlas/材质、逐实例视锥剔除、4m 小单元、紧凑 float32+gzip 原分区、距离优先/两路异步加载、两个 meshopt 解码 worker、离开宽限与显式 dispose。保留粗档显示，局部加载不让整场景 Suspense 白屏。查到 gltfpack 会直通既有 WebP，已显式用 Sharp 缩放并实际验证近景树贴图最大 1024；第一批 38 张 1K 地被图像保持。所有大资产留在忽略目录及仓库外 SHA-256 校验副本（217 文件/约 1.69GB），不纳入普通 Git。
+- P4 独立 production Chrome 156 / Intel Graphics ANGLE D3D11 / 1440×900 / DPR1：原机位约 7.34M 三角形、141 calls、78 textures，36.24 平均 FPS/P95 33.6ms；密集前行 38.51 FPS/P95 50.1ms，其他段约 31.4–58.4 FPS。约 2.25s 首次真实森林、6.84s 初始资源补全，约 137MB 完整运动累计资源传输。另一次 98.36s 实际录屏中密集前行 31.09 FPS/P95 83.5ms；视频本身 25fps，不当作渲染帧率。80% 内部分辨率（1152×720 放大至 1440×900）密集前行 35.24 FPS/P95 83.1ms，未消除 CPU/上传尖峰。23 个旧分区及 10 个 LOD 资源释放得到逐秒记录，未声称测到独占 GPU 显存。
+- **整体验收未通过并按本批停止条件停止**：平均 FPS 已接近或超过目标，密集移动 P95 仍明显超出稳定 30 FPS 帧预算；atlas 有模糊/角度跳变/深度/固定光照限制，近景减面针叶及原 Cycles/地形/河流差距需要保留在审阅结论。25m 地被试验出现空白带，已放弃并恢复 40m，未用删树或绿色代理达标。当前推荐低画质 DPR1 作视觉审阅，80% 为可选余量，均不保证稳定 30。只交付实验，不推进正式星球或第三批。
+- 实际检查通过：`npm.cmd run lint`（无 warning）、`npm.cmd run typecheck`、`npm.cmd test` **46/46**、`npm.cmd run build`、`npm.cmd run test:e2e` **33/33**、`git diff --check`；已启动 dev 与 production 服务。全量矩阵/计数/source SHA、三档源名/atlas alpha/真实 1K 尺寸、独立移动/转向/资源释放、三次独立 Shader 编译/链接/显式 validate（每次 9 程序）、像素非白屏与相机方向检查通过。无 Shader/页面/上下文异常；主动注入 context loss 后就绪撤销、提示和重载恢复通过。运动脚本监测 Storage 调用为零。工程/回归通过不代表视觉达标。
+- 失败/未验证：早期索引映射/404、简化为空 patch、没有植被的过早 ready 均在联调修复，未作为通过样本；80% 一次与截图任务重叠的采样已排除。没有真实手机/其他 GPU/长时热稳定/全森林同时加载验收，没有可靠 GPU 显存实测。下一步仅在用户再次授权后针对主线程分帧、近景针叶成本和 impostor 过渡继续验证。
+- 交付：[第二批完整审阅、性能表、近中远截图与源树对照](reviews/pine-batch2/README.md)，原始 JSON/98 秒连续真实录屏在 `artifacts-local/pine-batch2/accepted-dpr1/`；最终无录屏性能在 `accepted-dpr1-clean/`，80% 在 `accepted-80/`。运行入口 `/forest-runtime-lab`，资产对照 `/forest-lod-lab`。
+
 ## Pine Forest 第一批：恢复与渲染稳定性（2026-11-02）
 
 - 延续 `codex/pine-forest-vertical-slice`，先以 `6a342c2` 保存全部上轮未提交工作（53 个文件，含此前的分区、预算与诊断草稿），没有重置、删除或合并 main。原 `.blend` SHA-256 仍为 `FDCE77741081F462F11E5CEFE8BF79A0BC796727DBB6E51D12FC6CF20E9C9CFB`；源清单校验仍为 11 树种／585 根实例、114 地表网格／879,825 实例、60 源分区。未改正式场景、记忆或浏览器存储。

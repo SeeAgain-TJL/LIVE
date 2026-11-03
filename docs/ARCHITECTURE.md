@@ -1,5 +1,11 @@
 # 技术架构与数据模型
 
+## Pine Forest 第二批隔离运行时（2026-11-03）
+
+`/forest-runtime-lab` 使用 `forest-runtime-lab.tsx` 协调独立 Canvas、原地形/天空、相机与健康提示。`pine-stream.ts` 是 render-only 资源所有者：加载原坐标的紧凑 float32 分区、4m 单元和逐实例视锥筛选、屏幕占比/距离 LOD、InstancedMesh、两个 meshopt 解码 worker、分级异步资源队列、引用计数与显式 dispose。运行时不依赖 Provider，不读写个人仓库。共有 60 个源地被分区和既有额外仅树边缘块，原 585 树/879,825 地被矩阵完整保留；不引入持久化版本变化。
+
+近景是完整源树经 gltfpack 10% 简化的真实几何，中远是完整原树烘焙的 8 方向 impostor；二者都采用原变换。地被三档共享第一批验证的 1K 贴图；近景树显式重采样 1K、按原材质名共享。原高精度模型/纹理继续保留在仓库外及忽略目录。`/forest-lod-lab` 仅用于同机位 source/LOD 审阅及透明 atlas 烘焙。保留第一批 reorder 相机、Shader 日志与 context loss 恢复。该技术路径没有通过稳定帧时间与最终视觉门槛，不能视为正式世界实现；具体边界见 [第二批审阅](reviews/pine-batch2/README.md)。
+
 ## V4.1-R1 默认世界入口
 
 `PlanetMemorySpace` 继续拥有档案业务状态和原 CRUD，通过强类型 props 向 `PlanetWorld` 传入星球/记忆/媒体与选择回调。全屏世界默认挂载，管理抽屉默认关闭；MemoryDetails 从当前星球的完整记录集合读取所选 ID，列表过滤不会使空间对象失效。

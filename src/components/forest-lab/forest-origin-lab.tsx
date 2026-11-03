@@ -2,18 +2,16 @@
 
 /* eslint-disable react-hooks/immutability -- R3F owns camera, matrices and WebGL diagnostics. */
 
-import { Component, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Component, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
-import { ACESFilmicToneMapping, DoubleSide, InstancedMesh, Matrix4, Mesh, Vector3 } from "three";
+import { ACESFilmicToneMapping, DoubleSide, Frustum, InstancedMesh, Matrix4, Mesh, Sphere, Vector3 } from "three";
 
 type Instance = { source: string; matrix: number[][] };
 type SourceInventory = { sourceSha256: string; treeSpeciesCounts: Record<string, number>; sourceAssetNames: string[] };
 type Preview = { assetNames: string[]; records: [number, number[][]][] };
 type Collision = { origin: number[]; step: number; columns: number; rows: number; heights: (number | null)[] };
 type LabBudget = { trees: number; props: number; radius: number };
-type WebTile = { tile: string; trees: Instance[]; props: [number, number[][]][] };
-type WebManifest = { tiles: Record<string, { trees: number; props: number; bytes: number }> };
 const root = "/forest-origin-assets/";
 const cameraSource = new Vector3(23.155473709106445, -47.55979919433594, 0.9223032593727112);
 const cameraTarget = new Vector3(-25.951723098754883, -40.576786041259766, 7.224738121032715);
@@ -26,13 +24,13 @@ class RenderBoundary extends Component<{ children: ReactNode }, { error: string 
   render() { return this.state.error ? <RenderFailure message={this.state.error} /> : this.props.children; }
 }
 
-function RenderFailure({ message }: { message: string }) {
+export function RenderFailure({ message }: { message: string }) {
   return <div className="forest-lab-status" role="alert">{message}
     <button type="button" onClick={() => window.location.reload()}>重新加载场景</button>
   </div>;
 }
 
-function RenderHealth() {
+export function RenderHealth() {
   const { gl } = useThree();
   const [error, setError] = useState("");
   useEffect(() => {
@@ -65,7 +63,7 @@ function RenderHealth() {
   return null;
 }
 
-function ForestSurface({ children }: { children: ReactNode }) {
+export function ForestSurface({ children }: { children: ReactNode }) {
   const [error, setError] = useState("");
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -96,13 +94,17 @@ function groundHeight(collision: Collision, x: number, z: number) {
     b * ((1 - a) * at(column, row + 1) + a * at(column + 1, row + 1));
 }
 
-function Instances({ part, matrices, diagnostic = false }: { part: Mesh; matrices: number[][][]; diagnostic?: boolean }) {
+function Instances({ part, matrices, diagnostic = false, alpha, category }: { part: Mesh; matrices: number[][][]; diagnostic?: boolean; alpha?: string; category: string }) {
   const ref = useRef<InstancedMesh>(null);
   const material = useMemo(() => {
     const copy = Array.isArray(part.material) ? part.material.map(value => value.clone()) : part.material.clone();
-    for (const value of Array.isArray(copy) ? copy : [copy]) if (value.transparent || value.alphaTest > 0) value.side = DoubleSide;
+    for (const value of Array.isArray(copy) ? copy : [copy]) if (value.transparent || value.alphaTest > 0) {
+      value.side = DoubleSide;
+      if (alpha === "single") value.forceSinglePass = true;
+      if (alpha === "mask") { value.transparent = false; value.alphaTest = 0.08; }
+    }
     return copy;
-  }, [part]);
+  }, [part, alpha]);
   useEffect(() => () => { for (const value of Array.isArray(material) ? material : [material]) value.dispose(); }, [material]);
   useLayoutEffect(() => {
     if (!ref.current) return;
@@ -114,10 +116,10 @@ function Instances({ part, matrices, diagnostic = false }: { part: Mesh; matrice
     ref.current.instanceMatrix.needsUpdate = true;
     ref.current.computeBoundingSphere();
   }, [part, matrices]);
-  return <instancedMesh ref={ref} args={[part.geometry, material, matrices.length]} frustumCulled={!diagnostic} />;
+  return <instancedMesh ref={ref} args={[part.geometry, material, matrices.length]} frustumCulled={!diagnostic} userData={{ category }} />;
 }
 
-function SourceAsset({ file, matrices, name, diagnostic }: { file: string; matrices: number[][][]; name?: string; diagnostic?: boolean }) {
+function SourceAsset({ file, matrices, name, diagnostic, alpha }: { file: string; matrices: number[][][]; name?: string; diagnostic?: boolean; alpha?: string }) {
   const gltf = useGLTF(root + file);
   const meshes = useMemo(() => {
     gltf.scene.updateMatrixWorld(true);
@@ -127,10 +129,43 @@ function SourceAsset({ file, matrices, name, diagnostic }: { file: string; matri
     parent.traverse(object => { if (object instanceof Mesh) found.push(object); });
     return found;
   }, [gltf, name]);
-  return <group>{meshes.map(mesh => <Instances key={mesh.uuid} part={mesh} matrices={matrices} diagnostic={diagnostic} />)}</group>;
+  return <group>{meshes.map(mesh => <Instances key={mesh.uuid} part={mesh} matrices={matrices} diagnostic={diagnostic} alpha={alpha} category={name ? `props/${name}` : file} />)}</group>;
 }
 
-function Walker({ collision, onPosition, trunks = [] }: { collision: Collision; onPosition?: (point: Vector3) => void; trunks?: number[][][] }) {
+// Optional baseline audit runs once, outside the timed steady-state sample.
+function SubmissionAudit() {
+  const { scene, camera, gl } = useThree();
+  useEffect(() => {
+    if (!new URLSearchParams(window.location.search).has("audit")) return;
+    const timer = window.setTimeout(() => {
+      camera.updateMatrixWorld();
+      const frustum = new Frustum().setFromProjectionMatrix(new Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
+      const rows: Record<string, { instances: number; outside: number; submitted: number; outsideTriangles: number }> = {};
+      scene.traverse(object => {
+        if (!(object instanceof InstancedMesh) || !frustum.intersectsObject(object)) return;
+        const category = object.userData.category as string;
+        const row = rows[category] ??= { instances: 0, outside: 0, submitted: 0, outsideTriangles: 0 };
+        object.geometry.computeBoundingSphere();
+        const material = Array.isArray(object.material) ? object.material[0] : object.material;
+        const triangles = (object.geometry.index?.count ?? object.geometry.attributes.position.count) / 3 *
+          (material.transparent && material.side === DoubleSide && !material.forceSinglePass ? 2 : 1);
+        const matrix = new Matrix4();
+        const sphere = new Sphere();
+        for (let i = 0; i < object.count; i++) {
+          object.getMatrixAt(i, matrix);
+          sphere.copy(object.geometry.boundingSphere!).applyMatrix4(matrix).applyMatrix4(object.matrixWorld);
+          row.instances++; row.submitted += triangles;
+          if (!frustum.intersectsSphere(sphere)) { row.outside++; row.outsideTriangles += triangles; }
+        }
+      });
+      gl.domElement.dataset.forestSubmissionAudit = JSON.stringify(rows);
+    }, 2000);
+    return () => window.clearTimeout(timer);
+  }, [scene, camera, gl]);
+  return null;
+}
+
+export function Walker({ collision, onPosition, trunks = [] }: { collision: Collision; onPosition?: (point: Vector3) => void; trunks?: number[][][] }) {
   const { camera, gl } = useThree();
   const keys = useRef(new Set<string>());
   const dragging = useRef(false);
@@ -180,7 +215,8 @@ function Walker({ collision, onPosition, trunks = [] }: { collision: Collision; 
     samples.current.push(delta * 1000);
     if (samples.current.length > 120) samples.current.shift();
     if (performance.now() - last.current > 1000) {
-      if (gl.domElement.dataset.forestRenderError || gl.getContext().isContextLost() || gl.info.render.calls === 0) {
+      if (gl.domElement.dataset.forestRenderError || gl.getContext().isContextLost() || gl.info.render.calls === 0 ||
+          (gl.domElement.dataset.forestStreamingRuntime && !gl.domElement.dataset.forestGeometryReady)) {
         delete gl.domElement.dataset.forestOriginReady;
         return;
       }
@@ -198,8 +234,8 @@ function Walker({ collision, onPosition, trunks = [] }: { collision: Collision; 
   return null;
 }
 
-function Scene({ trees, props, collision, onPosition, sourceTextures = false, diagnostic = false }: { trees: Record<string, number[][][]>; props: Record<string, number[][][]>;
-  collision: Collision; onPosition?: (point: Vector3) => void; sourceTextures?: boolean; diagnostic?: boolean }) {
+function Scene({ trees, props, collision, onPosition, sourceTextures = false, diagnostic = false, alpha }: { trees: Record<string, number[][][]>; props: Record<string, number[][][]>;
+  collision: Collision; onPosition?: (point: Vector3) => void; sourceTextures?: boolean; diagnostic?: boolean; alpha?: string }) {
   const terrain = useGLTF(root + "terrain.glb");
   return <>
     <fog attach="fog" args={["#adb2a5", 0.013]} />
@@ -209,15 +245,16 @@ function Scene({ trees, props, collision, onPosition, sourceTextures = false, di
     <primitive object={terrain.scene} />
     {Object.entries(trees).map(([key, matrices]) => {
       const [source, lod] = key.split("|");
-      return <SourceAsset key={key} file={`trees/${source}-${lod}-meshopt-webp.glb`} matrices={matrices} diagnostic={diagnostic} />;
+      return <SourceAsset key={key} file={`trees/${source}-${lod}-meshopt-webp.glb`} matrices={matrices} diagnostic={diagnostic} alpha={alpha} />;
     })}
-    {Object.entries(props).map(([name, matrices]) => <SourceAsset key={name} file={sourceTextures ? "source-props.glb" : "source-props-web-1k.glb"} name={name} matrices={matrices} diagnostic={diagnostic} />)}
+    {Object.entries(props).map(([name, matrices]) => <SourceAsset key={name} file={sourceTextures ? "source-props.glb" : "source-props-web-1k.glb"} name={name} matrices={matrices} diagnostic={diagnostic} alpha={alpha} />)}
+    <SubmissionAudit />
     <Walker collision={collision} onPosition={onPosition} trunks={Object.values(trees).flat()} />
   </>;
 }
 
 export function ForestOriginLab() {
-  const [payload, setPayload] = useState<{ trees: Record<string, number[][][]>; props: Record<string, number[][][]>; collision: Collision; counts: [number, number]; sourceTextures: boolean; diagnostic: boolean }>();
+  const [payload, setPayload] = useState<{ trees: Record<string, number[][][]>; props: Record<string, number[][][]>; collision: Collision; counts: [number, number]; sourceTextures: boolean; diagnostic: boolean; alpha?: string }>();
   const [error, setError] = useState("");
   const [budget, setBudget] = useState<LabBudget>({ trees: 8, props: 500, radius: 35 });
   useEffect(() => {
@@ -255,7 +292,7 @@ export function ForestOriginLab() {
           (props[name] ??= []).push(matrix);
         }
         if (active) { setBudget(requested); setPayload({ trees, props, collision: layout.collision, counts: [nearby.length, chosen.length],
-          sourceTextures: params.get("sourceTextures") === "1", diagnostic: diagnostic === "fir" || diagnostic === "fern" }); }
+          sourceTextures: params.get("sourceTextures") === "1", diagnostic: diagnostic === "fir" || diagnostic === "fern", alpha: params.get("alpha") ?? undefined }); }
       }).catch(cause => { if (active) setError(String(cause)); });
     return () => { active = false; };
   }, []);
@@ -267,115 +304,6 @@ export function ForestOriginLab() {
     </Canvas></ForestSurface>}
     <div className="forest-lab-bar"><div><strong>Pine Forest 原场景转换验证</strong>
       <span>源树 {payload?.counts[0] ?? "…"}/{budget.trees} · 地被 {payload?.counts[1] ?? "…"}/{budget.props} · 分级诊断</span></div></div>
-    {error && <div className="forest-lab-status" role="alert">{error}</div>}
-  </main>;
-}
-
-function tileKey(point: Vector3) { return `${Math.floor(point.x / 32)}_${Math.floor(-point.z / 32)}`; }
-function nearbyTileKeys(point: Vector3, manifest: WebManifest) {
-  const x = Math.floor(point.x / 32);
-  const y = Math.floor(-point.z / 32);
-  const keys = [];
-  for (let dx = -2; dx <= 2; dx++) for (let dy = -2; dy <= 2; dy++) {
-    const key = `${x + dx}_${y + dy}`;
-    if (manifest.tiles[key]) keys.push(key);
-  }
-  return keys;
-}
-
-function selectRuntimeInstances(tiles: WebTile[], assetNames: string[], camera: Vector3) {
-  const trees: Record<string, number[][][]> = {};
-  const props: Record<string, number[][][]> = {};
-  let treeCount = 0;
-  let propCount = 0;
-  for (const tile of tiles) {
-    for (const item of tile.trees) {
-      const distance = Math.hypot(item.matrix[0][3] - camera.x, item.matrix[1][3] + camera.z);
-      if (distance > 80) continue;
-      // All LODs are generated from the exact source tree. No proxy mesh is used.
-      const lod = distance < 8 ? "lod03" : distance < 18 ? "lod01" : "lod003";
-      (trees[`${item.source}|${lod}`] ??= []).push(item.matrix);
-      treeCount += 1;
-    }
-    for (const [index, rows] of tile.props) {
-      const name = assetNames[index];
-      const distance = Math.hypot(rows[0][3] - camera.x, rows[1][3] + camera.z);
-      if (distance > 18) continue;
-      if (name.startsWith("moss_patch") && distance > 7) continue;
-      if (name.startsWith("pine_cover") && distance > 12) continue;
-      if ((name.startsWith("tree_roots") || name.startsWith("dry_branches")) && distance > 9) continue;
-      const sourceName = name.endsWith("_lod0") && distance > 3 && assetNames.includes(name.slice(0, -1) + "1")
-        ? name.slice(0, -1) + "1" : name;
-      (props[sourceName] ??= []).push([...rows, [0, 0, 0, 1]]);
-      propCount += 1;
-    }
-  }
-  return { trees, props, counts: [treeCount, propCount] as [number, number] };
-}
-
-export function ForestRuntimeLab() {
-  const [inventory, setInventory] = useState<SourceInventory>();
-  const [manifest, setManifest] = useState<WebManifest>();
-  const [collision, setCollision] = useState<Collision>();
-  const [camera, setCamera] = useState(() => sourceToWorld(cameraSource));
-  const [loaded, setLoaded] = useState<Record<string, WebTile>>({});
-  const [error, setError] = useState("");
-  const loading = useRef(new Map<string, AbortController>());
-  const reportPosition = useCallback((point: Vector3) => {
-    setCamera(point);
-    if (!manifest) return;
-    const wanted = new Set(nearbyTileKeys(point, manifest));
-    setLoaded(current => {
-      const retained = Object.fromEntries(Object.entries(current).filter(([key]) => wanted.has(key)));
-      return Object.keys(retained).length === Object.keys(current).length ? current : retained;
-    });
-  }, [manifest]);
-  useEffect(() => {
-    let active = true;
-    Promise.all([
-      fetch(root + "render-inventory.json").then(response => response.json()) as Promise<SourceInventory>,
-      fetch(root + "runtime-web-tiles/manifest.json").then(response => response.json()) as Promise<WebManifest>,
-      fetch(root + "collision-layout.json").then(response => response.json()) as Promise<{ collision: Collision }>,
-    ]).then(([source, tiles, terrain]) => {
-      if (!active) return;
-      setInventory(source); setManifest(tiles); setCollision(terrain.collision);
-    }).catch(cause => { if (active) setError(String(cause)); });
-    return () => { active = false; };
-  }, []);
-  useEffect(() => {
-    if (!manifest) return;
-    const wanted = new Set(nearbyTileKeys(camera, manifest));
-    for (const [key, controller] of loading.current) if (!wanted.has(key)) { controller.abort(); loading.current.delete(key); }
-    for (const key of wanted) {
-      if (loaded[key] || loading.current.has(key)) continue;
-      const controller = new AbortController();
-      loading.current.set(key, controller);
-      fetch(root + `runtime-web-tiles/${key}.json.gz`, { signal: controller.signal })
-        .then(response => {
-          if (!response.ok || !response.body) throw new Error(`分区 ${key} HTTP ${response.status}`);
-          return new Response(response.body.pipeThrough(new DecompressionStream("gzip"))).json() as Promise<WebTile>;
-        }).then(tile => {
-          if (!controller.signal.aborted) setLoaded(current => ({ ...current, [key]: tile }));
-        })
-        .catch(cause => { if (!controller.signal.aborted) setError(String(cause)); })
-        .finally(() => loading.current.delete(key));
-    }
-  }, [camera, manifest, loaded]);
-  const wantedKeys = useMemo(() => manifest ? nearbyTileKeys(camera, manifest) : [], [camera, manifest]);
-  const selection = useMemo(() => inventory ? selectRuntimeInstances(wantedKeys.map(key => loaded[key]).filter((tile): tile is WebTile => Boolean(tile)),
-    inventory.sourceAssetNames, camera) : null, [loaded, inventory, camera, wantedKeys]);
-  const currentTile = tileKey(camera);
-  const ready = inventory && manifest && collision && loaded[currentTile];
-  return <main className="forest-lab" aria-label="Pine Forest 原资产实时漫游实验">
-    {inventory && manifest && collision && <ForestSurface><Canvas camera={{ position: sourceToWorld(cameraSource).toArray(), fov: 48.5, near: 0.08, far: 280 }}
-      fallback={<RenderFailure message="无法创建 WebGL 场景，请检查浏览器的图形支持。" />}
-      dpr={1} gl={{ antialias: true, powerPreference: "high-performance", toneMapping: ACESFilmicToneMapping }}>
-      <RenderHealth /><Suspense fallback={null}><Scene trees={selection?.trees ?? {}} props={selection?.props ?? {}} collision={collision}
-        onPosition={reportPosition} /></Suspense>
-    </Canvas></ForestSurface>}
-    <div className="forest-lab-bar"><div><strong>Pine Forest 原资产漫游</strong>
-      <span>分区 {Object.keys(loaded).length}/61 · 可见源树 {selection?.counts[0] ?? 0} · 地被 {selection?.counts[1] ?? 0}</span></div></div>
-    {!ready && !error && <div className="forest-lab-status" role="status">正在加载周边森林分区</div>}
     {error && <div className="forest-lab-status" role="alert">{error}</div>}
   </main>;
 }

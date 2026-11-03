@@ -78,6 +78,10 @@ for (const [index, route] of routes.entries()) {
     await page.waitForFunction(() => document.querySelector("canvas[data-forest-origin-ready='true']") ||
       window.__pineDiagnostics.events.length || window.__pineDiagnostics.programs.some(p => !p.linked), null, { timeout: 120000 });
     assert.equal(await page.locator("canvas[data-forest-origin-ready='true']").count(), 1, "Rendering failed before readiness");
+    if (process.env.PINE_SETTLE === "1") await page.waitForFunction(() => {
+      const value=JSON.parse(document.querySelector("canvas")?.dataset.forestStreaming || "null");
+      return value && value.trees>0 && value.props>0 && !value.pendingTiles.length && !value.pendingResources.length && !value.queued;
+    }, null, { timeout: 120000 });
     await page.waitForTimeout(3000);
     result.initial = JSON.parse(await canvas.getAttribute("data-forest-origin-metrics"));
     const screenshot = path.join(folder, `load-${index + 1}.png`);
