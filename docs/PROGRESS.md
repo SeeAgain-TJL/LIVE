@@ -591,3 +591,7 @@
 - Chrome 156 / Intel Graphics / 1440×900 / DPR 1：已固化 `silver_fir_02` 单树实际截图在 `pine-source-conversion/browser-evidence/realized-fir-{near,mid}.png`；单树加载约 21.5 秒，近景中位约 52 FPS / p95 39.6 ms，中景约 47 FPS / p95 48.6 ms，仍与源 Cycles 材质有明显差距。旧局部森林重复运行又出现 `fir_twig` shader 校验错误和一次 WebGL 上下文拒绝创建。
 - 隔离 `/forest-origin-lab` 使用原树、原地被模型和原始矩阵试验可见集（170/585 棵树、18,000/879,825 个地表实例），可自由行走代码已接入，但实际 Chrome 画面白屏并报 `fern_02_source_pbr` shader `VALIDATE_STATUS false`。约 8,141 万三角形、188 draw calls；白屏时记录的 60 FPS **无效**。证据在 `pine-source-conversion/browser-evidence/origin-*`。首次 47.8 MB JSON 传输还触发 `ERR_CACHE_WRITE_FAILURE`，改 gzip 后能进入渲染阶段。该页不能称为完整移植或视觉验收通过。
 - 未等价转换：Cycles 的针叶透射/遮罩、草的干湿混合、苔藓与枯木混合、河流 Geometry Nodes/材质、天空与体积光照。当前地形仍沿用此前较浅的烘焙。停止扩大森林与正式接入；下一步需先在独立目标硬件上解决 alpha 植被 shader/显存稳定性，针对原材质逐层烘焙、以源构图分区流送并验证同源 LOD 的画质与预算。Three.js 根本能力限制尚未被证明。
+
+### Pine Forest 第三批 P0（2026-11-03）
+- 从 bfe419b 和干净分支恢复；读取批二报告/性能数据与流送代码。真实 Chrome 复现密集前行 P95 83.4ms，CPU sampling 指向逐实例 request/now、同步 tick；静止仍受几何/GPU限制。新增可开关诊断脚本，详细证据见 docs/reviews/pine-batch3/README.md。此检查点没有优化运行时，尚未验收。
+- 原 .blend、布局、正式 Galaxy/Planet/Memory 和存储未改；下一步先验证 Blender 副本原生自动化，再实施有证据的局部修复。
