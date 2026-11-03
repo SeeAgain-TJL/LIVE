@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /* eslint-disable react-hooks/immutability -- R3F owns the mutable scene and canvas diagnostics. */
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -7,7 +7,7 @@ import { Environment, useGLTF } from "@react-three/drei";
 import { ACESFilmicToneMapping, Mesh, PerspectiveCamera, Vector3 } from "three";
 import { ForestSurface, RenderFailure, RenderHealth, Walker } from "./forest-origin-lab";
 import { PineStream, pineRoot, type TileManifest, type SourceTree } from "./pine-stream";
-import { loadPineTerrainMaterial } from "./pine-materials";
+import { loadPineTerrainLayeredMaterial, loadPineTerrainMaterial } from "./pine-materials";
 
 type Collision = { origin: number[]; step: number; columns: number; rows: number; heights: (number | null)[] };
 type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][]; trees: SourceTree[] };
@@ -51,16 +51,18 @@ function Terrain() {
   const terrain = useGLTF(pineRoot+"terrain.glb");
   const { gl } = useThree();
   useEffect(()=>{
-    if(new URLSearchParams(window.location.search).get("terrain")==="legacy") return;
+    const mode=new URLSearchParams(window.location.search).get("terrain");
+    if(mode==="legacy") return;
     let disposed=false;
     let release=()=>{};
     gl.domElement.dataset.pineTerrain="loading";
-    loadPineTerrainMaterial().then(({material,maps})=>{
+    const loader=mode==="batch3b" ? loadPineTerrainMaterial():loadPineTerrainLayeredMaterial();
+    loader.then(({material,maps})=>{
       const original = new Map<Mesh, Mesh["material"]>();
       release=()=>{for(const [mesh,previous] of original) mesh.material=previous;material.dispose();for(const map of maps) map.dispose();};
       if(disposed) {release();return;}
       terrain.scene.traverse(object=>{if(object instanceof Mesh){original.set(object,object.material);object.material=material;}});
-      gl.domElement.dataset.pineTerrain="pbr";
+      gl.domElement.dataset.pineTerrain=mode==="batch3b" ? "pbr":"layered";
     }).catch(error=>console.error("Pine terrain PBR",error));
     return ()=>{disposed=true;release();delete gl.domElement.dataset.pineTerrain;};
   },[terrain,gl]);

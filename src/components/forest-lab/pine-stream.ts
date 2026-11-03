@@ -1,4 +1,4 @@
-import { Box3, DoubleSide, DynamicDrawUsage, Frustum, Group, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, PlaneGeometry, Sphere, SRGBColorSpace, Texture, TextureLoader, Vector3, type WebGLRenderer } from "three";
+﻿import { Box3, DoubleSide, DynamicDrawUsage, Frustum, Group, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, PlaneGeometry, Sphere, SRGBColorSpace, Texture, TextureLoader, Vector3, type WebGLRenderer } from "three";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 
@@ -125,7 +125,14 @@ export class PineStream {
   }
   private file(key: string) {
     const [name,tier] = key.split("/");
-    return name === "props" ? `batch2/props-${tier}.gltf` : tier==="near" ? `batch2/trees/${name}-near.gltf` : `trees/${name}-lod03-meshopt-webp.glb`;
+    if (name === "props") return `batch2/props-${tier}.gltf`;
+    if (tier === "near") return `batch2/trees/${name}-near.gltf`;
+    // Batch4: pine_04's mid tier is real reduced geometry (not the far billboard),
+    // so trees crossing from near to mid keep actual branch silhouettes instead of
+    // popping straight to a flat atlas card. Other species still use the billboard
+    // for both mid and far until the same reduction is produced for them.
+    if (tier === "mid" && name === "pine_04") return "batch4/trees/pine_04-mid.gltf";
+    return `trees/${name}-lod03-meshopt-webp.glb`;
   }
   private request(key: string, priority: number) {
     const resource = this.resources.get(key);
