@@ -1,6 +1,14 @@
 # 技术架构与数据模型
 
-## Pine Forest 第二批隔离运行时（2026-11-03）
+## Pine Forest 隔离运行时（更新至第三批 B，2026-11-03）
+
+### 第三批 B 局部视觉修复
+
+`pine-materials.ts` 加载从原地形Generated/path/river材质烘焙的4K颜色、2K切线法线、1K粗糙度；`forest-runtime-lab.tsx` 在新材质就绪后替换，旧材质及terrain.glb缓存保留，卸载恢复并释放本轮贴图。`terrain=legacy` 可审阅旧效果。不修改地形几何，不宣称恢复原Cycles位移或森林光影。`review`相机事件与`review=terrain`仅用于证据采集；隐藏植被的材质比较不作性能验收。
+
+仅`pine_04`采用16方向相邻图集预乘RGB/Alpha插值、alpha-to-coverage和depthWrite。低档使用第三批PBR图集，高档用本轮原材质Cycles派生图集；其余树种仍8方向。可用`impostor=legacy`回看旧路径。图集仍是无深度视差的平面，固定光照、近中景突变和重影风险未解决。近景几何不增密，未采用无收益的35%实验。
+
+`PineStream`把已用于碰撞的585条原树记录作为分区尚未驻留时的同坐标概览；按空间key快照跳过已驻留分区，仍用原视锥/95m/LOD规则。每轮新LOD填充后统一发布mesh.count，减少先清旧表示导致的跨帧空洞；原稳定槽和增量上传保留。首次地形/地被就绪仍有延迟，不保证完整加载无弹出。实际低档性能、资产完整性与美术未通过项见[第三批 B 审阅](reviews/pine-batch3b/README.md)。以下保留前批实现背景。
 
 ### 第三批增量实现
 

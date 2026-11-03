@@ -1,0 +1,125 @@
+{
+  "sourceHashVerified": true,
+  "sourcePartitions": 60,
+  "runtimePartitions": 61,
+  "treeInstances": 585,
+  "propInstances": 879825,
+  "records": 880410,
+  "maxMatrixAbsoluteError": 5.000000058430487e-8,
+  "axisConversionVerified": true,
+  "unchangedAtlasImages": 38,
+  "verifiedTreeTextureLimit": 1024,
+  "sharedNearTreeImages": 21,
+  "estimatedNearTreeRgbaMipMiB": 111.99999999999996,
+  "tiers": [
+    {
+      "tier": "near",
+      "ratio": 0.25,
+      "error": 0.003,
+      "triangles": 382339,
+      "geometryBytes": 5217565,
+      "sourceObjects": 114,
+      "fallbacks": {}
+    },
+    {
+      "tier": "mid",
+      "ratio": 0.04,
+      "error": 0.01,
+      "triangles": 81221,
+      "geometryBytes": 1002103,
+      "sourceObjects": 114,
+      "fallbacks": {
+        "source__moss_patch_01_lod0": "source__moss_patch_01_lod1",
+        "source__moss_patch_02_lod0": "source__moss_patch_02_lod1",
+        "source__moss_patch_03_lod0": "source__moss_patch_03_lod1"
+      }
+    },
+    {
+      "tier": "far",
+      "ratio": 0.008,
+      "error": 0.02,
+      "triangles": 45644,
+      "geometryBytes": 650322,
+      "sourceObjects": 114,
+      "fallbacks": {
+        "source__fern_02_a_lod1": "source__fern_02_a_lod0",
+        "source__fern_02_d_lod1": "source__fern_02_d_lod0",
+        "source__grass_medium_01_mid_a_lod1": "source__grass_medium_01_mid_a_lod0",
+        "source__moss_patch_01_lod0": "source__moss_patch_01_lod1",
+        "source__moss_patch_02_lod0": "source__moss_patch_02_lod1",
+        "source__moss_patch_03_lod0": "source__moss_patch_03_lod1"
+      }
+    }
+  ],
+  "atlas": [
+    {
+      "name": "pine_01",
+      "bytes": 815956,
+      "nonzeroPixels": 461988,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "pine_02",
+      "bytes": 905746,
+      "nonzeroPixels": 526260,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "pine_03",
+      "bytes": 920064,
+      "nonzeroPixels": 529361,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "pine_04",
+      "bytes": 1061820,
+      "nonzeroPixels": 622085,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "pine_05",
+      "bytes": 941346,
+      "nonzeroPixels": 543722,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "silver_fir_01",
+      "bytes": 833340,
+      "nonzeroPixels": 510363,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "silver_fir_02",
+      "bytes": 850454,
+      "nonzeroPixels": 519171,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "silver_fir_03",
+      "bytes": 721952,
+      "nonzeroPixels": 430003,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "silver_fir_04",
+      "bytes": 671262,
+      "nonzeroPixels": 416096,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "silver_fir_05",
+      "bytes": 444304,
+      "nonzeroPixels": 227494,
+      "estimatedRgbaMipMiB": 12
+    },
+    {
+      "name": "silver_fir_06",
+      "bytes": 563718,
+      "nonzeroPixels": 296178,
+      "estimatedRgbaMipMiB": 12
+    }
+  ],
+  "atlasBytes": 8729962,
+  "estimatedAtlasRgbaMipMiB": 132,
+  "note": "Memory numbers are static RGBA8+mipmap estimates, not measured GPU allocation."
+}

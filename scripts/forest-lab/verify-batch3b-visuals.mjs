@@ -34,12 +34,12 @@ async function settleCanvas(page,selector='') {
   return base;
 }
 try {
-  const base=await open('/forest-runtime-lab?scale=0.8&review=1','terrain-base');
+  const base=await open('/forest-runtime-lab?scale=0.8&review=1&terrain=legacy&impostor=legacy&overview=off','terrain-base');
   const initial=await settleCanvas(base.page);
   await base.page.screenshot({path:path.join(root,'terrain-before.png')});
   result.variants.push({name:'terrain-before',...initial});
   await base.page.close();await base.context.close();
-  const after=await open('/forest-runtime-lab?scale=0.8&review=1&terrain=pbr','terrain-pbr');
+  const after=await open('/forest-runtime-lab?scale=0.8&review=1&terrain=pbr&impostor=legacy&overview=off','terrain-pbr');
   await after.page.waitForFunction(()=>document.querySelector('canvas')?.dataset.pineReviewPoseReady==='true');
   await after.page.evaluate(pose=>window.dispatchEvent(new CustomEvent('pine-runtime-review-camera',{detail:{position:pose.metrics.camera,direction:pose.metrics.direction}})),initial);
   await after.page.waitForTimeout(500);

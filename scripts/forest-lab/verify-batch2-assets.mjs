@@ -69,7 +69,7 @@ for(const tier of ['near','mid','far']) {
   assert.ok(Object.keys(fallback).every(name=>fallback[name].startsWith('source__') && !fallback[name].includes('proxy')));
   tiers.push({tier,...lods.tiers[tier],args:undefined});
 }
-const folder=path.resolve('artifacts-local/pine-batch2');await mkdir(folder,{recursive:true});
+const folder=path.resolve(process.env.PINE_EVIDENCE||'artifacts-local/pine-batch2');await mkdir(folder,{recursive:true});
 const report={sourceHashVerified:true,sourcePartitions:60,runtimePartitions:61,treeInstances:585,propInstances:879825,records,maxMatrixAbsoluteError:maxError,axisConversionVerified:true,unchangedAtlasImages:imageHashes.length,verifiedTreeTextureLimit:1024,sharedNearTreeImages:uniqueTreeImages.size,estimatedNearTreeRgbaMipMiB:[...uniqueTreeImages.values()].reduce((s,i)=>s+i.width*i.height*4*4/3/1048576,0),tiers,atlas,atlasBytes:atlas.reduce((s,a)=>s+a.bytes,0),estimatedAtlasRgbaMipMiB:atlas.reduce((s,a)=>s+a.estimatedRgbaMipMiB,0),note:'Memory numbers are static RGBA8+mipmap estimates, not measured GPU allocation.'};
 await writeFile(path.join(folder,'asset-validation.json'),JSON.stringify(report,null,2));
 console.log(JSON.stringify({...report,tiers:undefined,atlas:undefined},null,2));
