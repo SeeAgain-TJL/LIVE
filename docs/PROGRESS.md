@@ -595,3 +595,6 @@
 ### Pine Forest 第三批 P0（2026-11-03）
 - 从 bfe419b 和干净分支恢复；读取批二报告/性能数据与流送代码。真实 Chrome 复现密集前行 P95 83.4ms，CPU sampling 指向逐实例 request/now、同步 tick；静止仍受几何/GPU限制。新增可开关诊断脚本，详细证据见 docs/reviews/pine-batch3/README.md。此检查点没有优化运行时，尚未验收。
 - 原 .blend、布局、正式 Galaxy/Planet/Memory 和存储未改；下一步先验证 Blender 副本原生自动化，再实施有证据的局部修复。
+
+### Pine Forest 第三批 P1（2026-11-03）
+- 研究官方Codex MCP与社区Blender MCP实际代码/权限；当前会话未接入该MCP，不为插件重启/全局配置阻塞本轮。已通过Blender4.4.3原生Python，在原工程字节相同副本上读取场景、原针叶材质和Geometry Nodes，并完成岩石副本临时修改/恢复/GLB导出；未保存任何blend。工具验证不是美术或性能验收。详见第三批审阅。
