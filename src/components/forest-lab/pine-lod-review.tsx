@@ -7,6 +7,7 @@ import { ACESFilmicToneMapping, Box3, InstancedBufferAttribute, InstancedMesh, M
 import { useGLTF } from "@react-three/drei";
 import { ForestSurface, RenderFailure, RenderHealth } from "./forest-origin-lab";
 import { loadPineImpostorAsset, pineRoot } from "./pine-stream";
+import { pineSourceNeedleSurface } from "./pine-materials";
 type Props = { species: string; level: string; view: string; bake: boolean; angle: number };
 function AtlasModel({species,level,view}: Props) {
   const {scene,camera,gl,size}=useThree();
@@ -14,16 +15,28 @@ function AtlasModel({species,level,view}: Props) {
   useEffect(()=>{
     let disposed=false;
     let release:()=>void=()=>{};
-    loadPineImpostorAsset(species,new URLSearchParams(window.location.search).get("impostor")==="detail").then(({asset,geometry,material,texture,metadata})=>{
+    const params=new URLSearchParams(window.location.search);
+    loadPineImpostorAsset(species,params.get("impostor")==="detail",params.get("impostor")==="smooth",params.get("impostor")==="source").then(({asset,geometry,material,texture,metadata})=>{
       const center=asset.billboard!.center;
       geometry.setAttribute("atlasAngle",new InstancedBufferAttribute(new Float32Array([asset.billboard!.views/8]),1));
       const mesh=new InstancedMesh(geometry,material,1);
       mesh.setMatrixAt(0,new Matrix4().makeRotationY(Math.PI/4).setPosition(center));scene.add(mesh);
       const distance=view==="near" ? 27:view==="mid" ? 52:90;
       camera.position.set(center.x+distance*0.7,center.y+distance*0.08,center.z+distance*0.7);camera.lookAt(center);
-      gl.domElement.dataset.pineReview=JSON.stringify({...metadata,species,level,view,representation:"source 8-view impostor",viewport:[size.width,size.height]});
+      gl.domElement.dataset.pineReview=JSON.stringify({...metadata,species,level,view,representation:`source ${asset.billboard!.views}-view impostor`,viewport:[size.width,size.height]});
       ready.current=true;
-      release=()=>{ready.current=false;scene.remove(mesh);mesh.dispose();geometry.dispose();material.dispose();texture.dispose();};
+      const rotate=(event:Event)=>{
+        const index=(event as CustomEvent<number>).detail;
+        const angle=index*2*Math.PI/asset.billboard!.views;
+        const c=Math.cos(angle),s=Math.sin(angle);
+        camera.position.set(center.x+distance*s,center.y+distance*0.08,center.z+distance*c);camera.lookAt(center);
+        const attribute=geometry.getAttribute("atlasAngle") as InstancedBufferAttribute;
+        const selected=["smooth","source"].includes(params.get("impostor")||"") ? ((index+asset.billboard!.views)%asset.billboard!.views):Math.round(index)%asset.billboard!.views;
+        attribute.setX(0,selected);attribute.needsUpdate=true;
+        mesh.setMatrixAt(0,new Matrix4().makeRotationY(angle).setPosition(center));mesh.instanceMatrix.needsUpdate=true;
+      };
+      window.addEventListener("pine-review-angle",rotate);
+      release=()=>{window.removeEventListener("pine-review-angle",rotate);ready.current=false;scene.remove(mesh);mesh.dispose();geometry.dispose();material.dispose();texture.dispose();};
       if(disposed) release();
     }).catch(error=>console.error(error));
     return ()=>{disposed=true;release();};
@@ -32,12 +45,19 @@ function AtlasModel({species,level,view}: Props) {
   return null;
 }
 function Model({species,level,view,bake,angle}: Props) {
-  const file=level==="source" || level==="near" ? `batch2/trees/${species}-${level}.gltf` : `trees/${species}-${level==="mid" ? "lod03":"lod003"}-meshopt-webp.glb`;
+  const uvTrial=typeof window!=="undefined" && new URLSearchParams(window.location.search).get("uv")==="float" && species==="pine_04" && level==="near";
+  const file=uvTrial ? "batch3b/trees/pine_04-near.gltf":level==="source" || level==="near" ? `batch2/trees/${species}-${level}.gltf` : `trees/${species}-${level==="mid" ? "lod03":"lod003"}-meshopt-webp.glb`;
   const gltf=useGLTF(pineRoot+file);
   const {camera,gl,size}=useThree();
   useLayoutEffect(()=>{
     gltf.scene.updateMatrixWorld(true);
     gltf.scene.traverse(object=>{if(object instanceof Mesh) for(const material of Array.isArray(object.material) ? object.material:[object.material]) if(material.transparent) material.forceSinglePass=true;});
+    if(new URLSearchParams(window.location.search).get("needles")==="double") gltf.scene.traverse(object=>{
+      if(object instanceof Mesh) for(const material of Array.isArray(object.material) ? object.material:[object.material]) if(material.name.includes("twig")) material.forceSinglePass=false;
+    });
+    if(species==="pine_04" && new URLSearchParams(window.location.search).get("needles")==="source") gltf.scene.traverse(object=>{
+      if(object instanceof Mesh) for(const material of Array.isArray(object.material) ? object.material:[object.material]) pineSourceNeedleSurface(material);
+    });
     if(new URLSearchParams(window.location.search).get("alpha")==="coverage") gltf.scene.traverse(object=>{
       if(object instanceof Mesh) for(const material of Array.isArray(object.material) ? object.material:[object.material]) if(material.name.includes("twig")) {
         material.transparent=false;material.alphaTest=0.03;material.alphaToCoverage=true;material.depthWrite=true;material.needsUpdate=true;

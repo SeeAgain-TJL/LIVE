@@ -1,0 +1,13 @@
+import {spawnSync} from 'node:child_process';
+import {mkdir,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {packageSharedGlb} from './package-shared-gltf.mjs';
+const root=path.join(process.env.LOCALAPPDATA,'UNIVERSE-OF-ME');
+const source=path.join(root,'asset-audit/candidate-assets/pine-source-conversion/trees-realized/pine_04_unreduced.glb');
+const tool=path.join(root,'tools/gltfpack-1.3/gltfpack.exe');
+const out=path.resolve('artifacts-local/pine-batch3b/uv-trial');await mkdir(out,{recursive:true});
+const ratio=process.env.PINE_RATIO||'0.1';
+const args=['-i',source,'-o',path.join(out,'pine_04-uv.glb'),'-c','-tw','-km','-si',ratio,'-se','0.01','-vtf'];
+const run=spawnSync(tool,args,{encoding:'utf8',maxBuffer:4*1024*1024});if(run.status!==0)throw Error(run.stderr||run.stdout);
+const result=await packageSharedGlb(path.join(out,'pine_04-uv.glb'),path.resolve('public/forest-origin-assets/batch3b/trees'),'pine_04-near',1024);
+await writeFile(path.join(out,'result.json'),JSON.stringify({args,...result},null,2));console.log(result);

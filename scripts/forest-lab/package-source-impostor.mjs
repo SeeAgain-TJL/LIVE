@@ -1,0 +1,15 @@
+import sharp from 'sharp';
+import { readFile,writeFile,mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import path from 'node:path';
+const source=path.resolve('artifacts-local/pine-batch3b/blender/pine04-atlas');
+const output=path.resolve('public/forest-origin-assets/batch3b/impostors');
+await mkdir(output,{recursive:true});
+const metadata=JSON.parse(await readFile('public/forest-origin-assets/batch3/impostors/pine_04.json'));
+const report=JSON.parse(await readFile(path.join(source,'render.json')));
+const parts=[];
+for(let i=0;i<16;i++)parts.push({input:await readFile(path.join(source,`original-pine04-${String(i).padStart(2,'0')}.png`)),left:i%4*512,top:Math.floor(i/4)*1024});
+const bytes=await sharp({create:{width:2048,height:4096,channels:4,background:'#00000000'}}).composite(parts).webp({quality:95,alphaQuality:100}).toBuffer();
+await writeFile(path.join(output,'pine_04.webp'),bytes);
+await writeFile(path.join(output,'pine_04.json'),JSON.stringify({...metadata,version:5,bytes:bytes.length,source:'Original pine_04 full-source geometry and Cycles material incl. translucency, original world, Blender 4.4.3; no layout changes',bake:report,sha256:createHash('sha256').update(bytes).digest('hex')},null,2));
+console.log({bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});

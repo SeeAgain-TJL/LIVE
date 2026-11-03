@@ -4,30 +4,66 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
-import { ACESFilmicToneMapping, PerspectiveCamera } from "three";
+import { ACESFilmicToneMapping, Mesh, PerspectiveCamera, Vector3 } from "three";
 import { ForestSurface, RenderFailure, RenderHealth, Walker } from "./forest-origin-lab";
-import { PineStream, pineRoot, type TileManifest } from "./pine-stream";
+import { PineStream, pineRoot, type TileManifest, type SourceTree } from "./pine-stream";
+import { loadPineTerrainMaterial } from "./pine-materials";
 
 type Collision = { origin: number[]; step: number; columns: number; rows: number; heights: (number | null)[] };
-type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][] };
-function Streaming({ manifest, onError, quality }: { manifest: TileManifest; onError: (message: string) => void; quality: "low" | "high" }) {
+type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][]; trees: SourceTree[] };
+function RuntimeReviewPose() {
+  const {camera,gl} = useThree();
+  useEffect(()=>{
+    if(!new URLSearchParams(window.location.search).has("review")) return;
+    gl.domElement.dataset.pineReviewPoseReady="true";
+    const setPose=(event:Event)=>{
+      const pose=(event as CustomEvent<{position:number[];direction:number[]}>).detail;
+      if(pose.position.length!==3 || pose.direction.length!==3 || ![...pose.position,...pose.direction].every(Number.isFinite)) return;
+      camera.position.fromArray(pose.position);
+      camera.lookAt(new Vector3().fromArray(pose.direction).add(camera.position));camera.rotation.reorder("YXZ");
+    };
+    window.addEventListener("pine-runtime-review-camera",setPose);
+    return ()=>window.removeEventListener("pine-runtime-review-camera",setPose);
+  },[camera,gl]);
+  return null;
+}
+function Streaming({ manifest, trees, onError, quality }: { manifest: TileManifest; trees:SourceTree[]; onError: (message: string) => void; quality: "low" | "high" }) {
   const { gl, camera, scene } = useThree();
   const owner = useRef<PineStream | null>(null);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const frozen = params.get("lod");
     const runtime = new PineStream(manifest,gl,onError,{alpha:params.get("alpha") === "coverage" ? "coverage":params.get("alpha") === "mask" ? "mask":"single",quality,audit:params.has("audit"),
+      smoothImpostor:params.get("impostor")!=="legacy",
+      sourceImpostor:params.get("impostor")==="source" || (quality==="high" && params.get("impostor")!=="legacy"),
+      sourceTrees:params.get("overview")==="off" ? undefined:trees,
       frozenLod:frozen === "near" || frozen === "mid" || frozen === "far" ? frozen:undefined});
     owner.current = runtime;
+    if(params.get("review")==="terrain") runtime.group.visible=false;
     scene.add(runtime.group);
     gl.domElement.dataset.forestStreamingRuntime="true";
     return () => { owner.current=null;scene.remove(runtime.group);runtime.dispose();delete gl.domElement.dataset.forestGeometryReady;delete gl.domElement.dataset.forestStreaming; };
-  }, [manifest,gl,onError,scene,quality]);
+  }, [manifest,trees,gl,onError,scene,quality]);
   useFrame(()=>{if(camera instanceof PerspectiveCamera) owner.current?.tick(camera,performance.now());});
   return null;
 }
 function Terrain() {
   const terrain = useGLTF(pineRoot+"terrain.glb");
+  const { gl } = useThree();
+  useEffect(()=>{
+    if(new URLSearchParams(window.location.search).get("terrain")==="legacy") return;
+    let disposed=false;
+    let release=()=>{};
+    gl.domElement.dataset.pineTerrain="loading";
+    loadPineTerrainMaterial().then(({material,maps})=>{
+      const original = new Map<Mesh, Mesh["material"]>();
+      release=()=>{for(const [mesh,previous] of original) mesh.material=previous;material.dispose();for(const map of maps) map.dispose();};
+      if(disposed) {release();return;}
+      terrain.scene.traverse(object=>{if(object instanceof Mesh){original.set(object,object.material);object.material=material;}});
+      gl.domElement.dataset.pineTerrain="pbr";
+    }).catch(error=>console.error("Pine terrain PBR",error));
+    return ()=>{disposed=true;release();delete gl.domElement.dataset.pineTerrain;};
+  },[terrain,gl]);
   return <primitive object={terrain.scene} />;
 }
 export function ForestRuntimeLab() {
@@ -45,7 +81,7 @@ export function ForestRuntimeLab() {
     };
     Promise.all([load("batch2/tiles/manifest.json"),load("collision-layout.json"),load("source-tree-placements.json")])
       .then(([manifest,layout,trees])=>{if(!controller.signal.aborted) {
-        setPayload({manifest,collision:layout.collision,trunks:trees.map((tree:{matrix:number[][]})=>tree.matrix)});
+        setPayload({manifest,collision:layout.collision,trees,trunks:trees.map((tree:SourceTree)=>tree.matrix)});
         if(new URLSearchParams(window.location.search).get("scale")==="0.8") setScale(0.8);
         if(new URLSearchParams(window.location.search).get("quality")==="high") setQuality("high");
       }})
@@ -68,8 +104,9 @@ export function ForestRuntimeLab() {
       <ambientLight intensity={0.65} /><directionalLight position={[-30,45,12]} intensity={2.1} />
       <Suspense fallback={null}><Environment files={pineRoot+"sky.hdr"} background environmentIntensity={0.75} /></Suspense>
       <Suspense fallback={null}><Terrain /></Suspense>
-      <Streaming manifest={payload.manifest} onError={setError} quality={quality} />
+      <Streaming manifest={payload.manifest} trees={payload.trees} onError={setError} quality={quality} />
       <Walker collision={payload.collision} trunks={payload.trunks} />
+      <RuntimeReviewPose />
     </Canvas></ForestSurface>}
     <div className="forest-lab-bar"><div><strong>Pine Forest · 原布局动态 LOD</strong><span ref={status}>正在加载场景清单</span></div>
       <label>资源精度<select aria-label="森林资源精度" value={quality} onChange={event=>setQuality(event.target.value==="high" ? "high":"low")}>

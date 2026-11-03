@@ -2,12 +2,12 @@ import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-const folder=path.resolve('artifacts-local/pine-batch3/instance-audit');await mkdir(folder,{recursive:true});
+const folder=path.resolve(process.env.PINE_EVIDENCE||'artifacts-local/pine-batch3/instance-audit');await mkdir(folder,{recursive:true});
 const browser=await chromium.launch({channel:'chrome',headless:true});const errors=[];const samples=[];
 try {
   const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
   page.on('pageerror',error=>errors.push(error.stack));page.on('console',message=>{if(message.type()==='error') errors.push(message.text());});
-  await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3310')+'/forest-runtime-lab?audit=1');
+  await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3310')+(process.env.PINE_ROUTE||'/forest-runtime-lab?audit=1'));
   await page.locator('canvas[data-forest-origin-ready=true]').waitFor({timeout:120000});
   const read=()=>page.locator('canvas').evaluate(c=>JSON.parse(c.dataset.forestStreaming));
   await page.waitForTimeout(4000);samples.push(await read());

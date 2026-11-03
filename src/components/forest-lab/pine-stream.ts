@@ -4,6 +4,7 @@ import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.j
 
 export const pineRoot = "/forest-origin-assets/";
 export type TileManifest = { names: string[]; propAssetCount: number; tiles: Record<string, { trees: number; props: number; bytes: number }> };
+export type SourceTree = { source: string; matrix: number[][] };
 type Tier = "near" | "mid" | "far";
 type Part = { geometry: Mesh["geometry"]; material: Material | Material[]; matrix: Matrix4 };
 type Asset = { parts: Part[]; sphere: Sphere; billboard?: { center: Vector3; views: number } };
@@ -26,8 +27,9 @@ function tileDistance(key: string, point: Vector3) {
   return Math.hypot(Math.max(x*32-point.x,0,point.x-(x+1)*32), Math.max(y*32+point.z,0,-point.z-(y+1)*32));
 }
 
-export async function loadPineImpostorAsset(name: string, detail=false) {
-  const folder=detail && name==="pine_04" ? "batch3/impostors":"batch2/impostors";
+export async function loadPineImpostorAsset(name: string, detail=false, smooth=false, sourceMaterial=false) {
+  const interpolate=(smooth || sourceMaterial) && name==="pine_04";
+  const folder=sourceMaterial && name==="pine_04" ? "batch3b/impostors" : (detail || interpolate) && name==="pine_04" ? "batch3/impostors":"batch2/impostors";
   const response=await fetch(pineRoot+`${folder}/${name}.json`);
   if(!response.ok) throw Error(`Impostor ${name} HTTP ${response.status}`);
   const metadata=await response.json() as {center:number[];width:number;height:number;views?:number;bounds:{min:number[];max:number[]}};
@@ -35,11 +37,32 @@ export async function loadPineImpostorAsset(name: string, detail=false) {
   const texture=await new TextureLoader().loadAsync(pineRoot+`${folder}/${name}.webp`);texture.colorSpace=SRGBColorSpace;
   const material=new MeshBasicMaterial({map:texture,transparent:true,alphaTest:0.015,depthWrite:false,side:DoubleSide,toneMapped:false});
   material.forceSinglePass=true;
+  if(interpolate) {material.transparent=false;material.alphaTest=0.03;material.alphaToCoverage=true;material.depthWrite=true;texture.anisotropy=4;}
   material.onBeforeCompile=shader=>{
     shader.vertexShader=shader.vertexShader.replace("#include <common>","#include <common>\nattribute float atlasAngle;");
     shader.vertexShader=shader.vertexShader.replace("#include <uv_vertex>",`#include <uv_vertex>\nvMapUv = vec2((vMapUv.x + mod(atlasAngle, 4.0)) / 4.0, (vMapUv.y + ${rows-1}.0 - floor(atlasAngle / 4.0)) / ${rows}.0);`);
+    if(interpolate) {
+      const declarations="varying vec2 pineNextUv; varying float pineViewBlend;";
+      shader.vertexShader=shader.vertexShader.replace("#include <common>",`#include <common>\n${declarations}`);
+      shader.fragmentShader=shader.fragmentShader.replace("#include <common>",`#include <common>\n${declarations}`);
+      // Adjacent source views share their exact source center and bounds.
+      // Interpolate premultiplied samples so transparent atlas RGB cannot halo.
+      shader.vertexShader=shader.vertexShader.replace("#include <uv_vertex>",`#include <uv_vertex>
+        float pineFirst = floor(atlasAngle);
+        float pineNext = mod(pineFirst + 1.0, ${views}.0);
+        pineViewBlend = fract(atlasAngle);
+        pineNextUv = vec2((uv.x + mod(pineNext, 4.0))/4.0, (uv.y + ${rows-1}.0 - floor(pineNext/4.0))/${rows}.0);`);
+      // Replace only the atlas address line installed above.
+      shader.vertexShader=shader.vertexShader.replace("mod(atlasAngle, 4.0)","mod(pineFirst, 4.0)").replace("floor(atlasAngle / 4.0)","floor(pineFirst / 4.0)");
+      shader.fragmentShader=shader.fragmentShader.replace("#include <map_fragment>",`
+        vec4 pineA = texture2D(map, vMapUv);
+        vec4 pineB = texture2D(map, pineNextUv);
+        float pineAlpha = mix(pineA.a,pineB.a,pineViewBlend);
+        vec3 pineColor = mix(pineA.rgb*pineA.a,pineB.rgb*pineB.a,pineViewBlend)/max(pineAlpha,0.00001);
+        diffuseColor *= vec4(pineColor,pineAlpha);`);
+    }
   };
-  material.customProgramCacheKey=()=>`pine-source-view-atlas-${views}`;
+  material.customProgramCacheKey=()=>`pine-source-view-atlas-${views}-${interpolate}`;
   const geometry=new PlaneGeometry(metadata.width,metadata.height);
   const center=new Vector3().fromArray(metadata.center);
   const sphere=new Box3(new Vector3().fromArray(metadata.bounds.min),new Vector3().fromArray(metadata.bounds.max)).getBoundingSphere(new Sphere());
@@ -88,9 +111,11 @@ export class PineStream {
   private generation = 0;
   private timings = { selectMs: 0, matrixMs: 0, tileBuildMs: 0, prepareMs: 0, matrixWrites: 0, uploadBytes: 0 };
   private failures = new Set<string>();
+  private overview: Tile | null = null;
+  private overviewKeys: string[] = [];
 
   constructor(private manifest: TileManifest, private gl: WebGLRenderer, private reportError: (message: string) => void,
-    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: "low" | "high"; audit?: boolean } = { alpha: "single" }) {
+    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: "low" | "high"; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[] } = { alpha: "single" }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Meshoptimizer API, not a React hook.
     MeshoptDecoder.useWorkers(2);
     this.request("props/far", 0);
@@ -122,7 +147,7 @@ export class PineStream {
   }
   private async loadImpostor(key: string): Promise<Resource> {
     const name=key.split("/")[0];
-    const {asset,geometry,material}=await loadPineImpostorAsset(name,this.options.quality==="high");
+    const {asset,geometry,material}=await loadPineImpostorAsset(name,this.options.quality==="high",this.options.smoothImpostor,this.options.sourceImpostor);
     const materialKey=`impostor/${name}`;this.materials.set(materialKey,{material,refs:1});
     return {assets:new Map([[name,asset]]),geometries:new Set([geometry]),materialKeys:new Set([materialKey]),lastUsed:performance.now()};
   }
@@ -247,6 +272,31 @@ export class PineStream {
       }).catch(error=>{if(!controller.signal.aborted && !this.disposed) this.reportError(String(error));}).finally(()=>this.tileLoading.delete(key));
     }
   }
+  private prepareTreeOverview() {
+    if(this.overview || !this.options.sourceTrees) return;
+    // The already-loaded original collision/tree list is only 585 records. It
+    // supplies the SAME trees while dense ground-cover partitions decode. Once
+    // a source partition is resident its overview records are skipped, avoiding
+    // duplicates or any alternate forest layout.
+    const trees=this.options.sourceTrees;
+    const data=new Float32Array(trees.length*13),bounds=new Float32Array(trees.length*4);
+    const cells=new Map<string,{box:Box3;offsets:number[]}>();
+    for(let i=0;i<trees.length;i++) {
+      const {source,matrix}=trees[i],offset=i*13;
+      data[offset]=this.manifest.names.indexOf(source);
+      if(data[offset]<this.manifest.propAssetCount) throw Error("Unknown original overview tree "+source);
+      for(let row=0;row<3;row++)for(let column=0;column<4;column++)data[offset+1+row*4+column]=matrix[row][column];
+      matrixAt(data,offset,this.matrix);
+      const asset=this.resources.get(`${source}/far`)!.assets.get(source)!;
+      this.sphere.copy(asset.sphere).applyMatrix4(this.matrix);this.sphere.radius+=0.15;
+      bounds.set([...this.sphere.center.toArray(),this.sphere.radius],i*4);
+      const key=`${Math.floor(data[offset+4]/32)}_${Math.floor(data[offset+8]/32)}`;
+      this.overviewKeys.push(key);
+      const cell=cells.get(key) || {box:new Box3(),offsets:[]};
+      cell.box.union(this.sphere.getBoundingBox(this.boundsBox));cell.offsets.push(offset);cells.set(key,cell);
+    }
+    this.overview={data,bounds,cells:[...cells.values()],lod:new Uint8Array(trees.length).fill(2),lastUsed:0};
+  }
   tick(camera: PerspectiveCamera, now: number) {
     if(this.disposed) return;
     this.pump();
@@ -254,6 +304,7 @@ export class PineStream {
     this.maintenance(now);
     const boundsReady = this.resources.has("props/far") && this.manifest.names.slice(this.manifest.propAssetCount).every(name=>this.resources.has(`${name}/far`));
     if (!boundsReady) return;
+    this.prepareTreeOverview();
     camera.getWorldDirection(this.currentDirection);
     if(now-this.lastTick<90 || (!this.dirty && camera.position.distanceToSquared(this.position)<0.09 && this.direction.dot(this.currentDirection)>0.998)) return;
     // A coherent camera snapshot lets selection span frames without mixing
@@ -286,7 +337,8 @@ export class PineStream {
     let selectActiveMs=0,activeStart=performance.now();
     const high=this.options.quality==="high";
     const counters={candidates:0,frustumRejected:0,pixelRejected:0,trees:0,props:0,near:0,mid:0,far:0};
-    for(const tile of this.tiles.values()) {
+    const residentKeys=new Set(this.tiles.keys());
+    for(const tile of [...this.tiles.values(),...(this.overview ? [this.overview]:[])]) {
       const chunks=new Map<string,{data:Float32Array;offsets:number[]}>();
       for(const cell of tile.cells) {
       selectActiveMs+=performance.now()-activeStart;
@@ -298,6 +350,7 @@ export class PineStream {
           selectActiveMs+=performance.now()-activeStart;yield;activeStart=performance.now();
         }
         const offset=cell.offsets[cellIndex];
+        if(tile===this.overview && residentKeys.has(this.overviewKeys[offset/13])) continue;
         counters.candidates++;
         const i=offset/13;
         const tree=tile.data[offset]>=this.manifest.propAssetCount;
@@ -342,8 +395,9 @@ export class PineStream {
     this.timings.selectMs=selectActiveMs+selectedAt-activeStart;
     this.timings.matrixWrites=0;this.timings.uploadBytes=0;
     this.timings.matrixMs=0;
+    const counts = new Map<InstancedMesh,number>();
     for(const [key,batch] of this.batches) if(!selection.has(key)) {
-      for(const mesh of batch.parts) mesh.count=0;
+      for(const mesh of batch.parts) counts.set(mesh,0);
       batch.entries=[];batch.slots.clear();
     }
     for(const [key,selected] of selection) {
@@ -414,7 +468,8 @@ export class PineStream {
             this.worldScale.setFromMatrixScale(this.matrix);
             this.localCamera.copy(camera.position).applyMatrix4(this.billboardInverse.copy(this.matrix).invert()).sub(center);
             const views=selected.asset.billboard.views;
-            const angle=((Math.round(Math.atan2(this.localCamera.x,this.localCamera.z)/(2*Math.PI/views))%views)+views)%views;
+            const viewAngle=Math.atan2(this.localCamera.x,this.localCamera.z)/(2*Math.PI/views);
+            const angle=((((this.options.smoothImpostor || this.options.sourceImpostor) && key.includes("pine_04/") ? viewAngle:Math.round(viewAngle))%views)+views)%views;
             const attribute=mesh.geometry.getAttribute("atlasAngle") as InstancedBufferAttribute;attribute.setX(index,angle);
             const facing=Math.atan2(camera.position.x-this.worldCenter.x,camera.position.z-this.worldCenter.z);
             this.instance.makeRotationY(facing).scale(this.worldScale).setPosition(this.worldCenter);
@@ -423,7 +478,10 @@ export class PineStream {
           first=Math.min(first,index);last=index;this.timings.matrixWrites++;
         }
         if(selected.asset.billboard) (mesh.geometry.getAttribute("atlasAngle") as InstancedBufferAttribute).needsUpdate=true;
-        mesh.count=selected.count;
+        // Publish membership together after every incoming LOD is populated.
+        // Clearing the old LOD before yielding through the new one caused
+        // several frames with holes as vegetation changed representation.
+        counts.set(mesh,selected.count);
         if(last>=first) {
           mesh.instanceMatrix.clearUpdateRanges();
           if(selected.asset.billboard) {
@@ -431,7 +489,7 @@ export class PineStream {
           } else {
             // Merge small gaps, avoiding both full-buffer uploads and thousands
             // of tiny bufferSubData calls for scattered swap removals.
-            const indices=[...changed].filter(i=>i<mesh.count).sort((a,b)=>a-b);
+            const indices=[...changed].filter(i=>i<selected.count).sort((a,b)=>a-b);
             for(let i=0;i<indices.length;) {
               const start=indices[i];let end=start;
               while(++i<indices.length && indices[i]-end<=16) end=indices[i];
@@ -458,6 +516,7 @@ export class PineStream {
         }
       }
     }
+    for(const [mesh,count] of counts) mesh.count=count;
     this.counters=counters;
     this.audit.updates++;
     this.tickMs=performance.now()-tickStart;
@@ -486,7 +545,7 @@ export class PineStream {
       }
       this.gl.domElement.dataset.forestStreaming=JSON.stringify({tiles:[...this.tiles.keys()],pendingTiles:[...this.tileLoading.keys()],resources:[...this.resources.keys()],pendingResources:[...this.pending],queued:this.queue.size,
         retainedBytes:[...this.tiles.values()].reduce((s,t)=>s+t.data.byteLength+t.bounds.byteLength+t.lod.byteLength,0),...this.counters,released:this.released,tickMs:this.tickMs,
-        batches:this.batches.size,materials:this.materials.size,timings:this.timings,maxSliceMs:this.maxSliceMs,geometry,audit:this.options.audit ? this.audit:undefined,failures:[...this.failures]});
+        batches:this.batches.size,materials:this.materials.size,overviewTrees:this.overview?.lod.length || 0,timings:this.timings,maxSliceMs:this.maxSliceMs,geometry,audit:this.options.audit ? this.audit:undefined,failures:[...this.failures]});
       this.lastReport=now;
     }
   }
@@ -498,6 +557,7 @@ export class PineStream {
   dispose() {
     this.disposed=true;
     this.work=null;
+    this.overview=null;this.overviewKeys=[];
     for(const controller of this.tileLoading.values()) controller.abort();
     for(const [key,batch] of this.batches) this.removeBatch(key,batch);
     for(const resource of this.resources.values()) this.releaseResource(resource);
