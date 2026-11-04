@@ -1,7 +1,8 @@
 ﻿"use client";
 
 /* eslint-disable react-hooks/immutability -- R3F owns the mutable scene and canvas diagnostics. */
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
 import { ACESFilmicToneMapping, FogExp2, Mesh, PerspectiveCamera, TextureLoader, Vector3, type Material, type Texture } from "three";
@@ -10,9 +11,14 @@ import { PineStream, pineRoot, type TileManifest, type SourceTree } from "./pine
 import { loadPineTerrainLayeredMaterial, loadPineTerrainMaterial } from "./pine-materials";
 import { applyPineCanopyField, applyPineUnderstory, makePineRiver } from "./pine-environment";
 import { PineOuterForest, pineVisualRoot } from "./pine-outer-forest";
+import type { Memory } from "@/domain/types";
+import { derivePineMemoryAnchors, type PineMemoryAnchor } from "./pine-memory-anchors";
 
 type Quality = "low" | "mid" | "high";
 type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][]; trees: SourceTree[] };
+const NO_MEMORIES: Memory[] = [];
+import { PineMemoryScene, type PineMemorySceneProps } from "./pine-memory-scene";
+
 function ForestHaze() {
   // Ground-level haze stays dense, while a raised overview can look down
   // through clearer air. No extra render pass or shadow-map dependency.
@@ -144,12 +150,12 @@ function SourceLandmarks({field,quality}: {field: Texture; quality: Quality}) {
   return <primitive object={scene} />;
 }
 
-type ContentProps = { payload: Payload; quality: Quality; onError: (message:string)=>void };
+type ContentProps = { payload: Payload; quality: Quality; onError: (message:string)=>void; anchors: PineMemoryAnchor[]; experience?: PineMemorySceneProps };
 function EnvironmentContent(props: ContentProps) {
   const [field,floor]=useLoader(TextureLoader,[pineRoot+"environment/height-light.png",pineVisualRoot+"understory.webp"]);
   return <ForestContent {...props} field={field} floor={floor} />;
 }
-function ForestContent({payload,quality,onError,field,floor}: ContentProps & {field?: Texture;floor?: Texture}) {
+function ForestContent({payload,quality,onError,field,floor,anchors,experience}: ContentProps & {field?: Texture;floor?: Texture}) {
   const [terrainReady,setTerrainReady] = useState(false);
   const [terrainMaterial,setTerrainMaterial] = useState<Material|null>(null);
   return <>
@@ -157,16 +163,23 @@ function ForestContent({payload,quality,onError,field,floor}: ContentProps & {fi
     {field && terrainReady && terrainMaterial && <Suspense fallback={null}><PineOuterForest terrainMaterial={terrainMaterial} /></Suspense>}
     {field && <Suspense fallback={null}><SourceLandmarks field={field} quality={quality} /></Suspense>}
     {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} />}
+    {terrainReady && experience && <PineMemoryScene anchors={anchors} {...experience} />}
   </>;
 }
 
-export function ForestRuntimeLab() {
+export function ForestRuntimeLab({ memories = NO_MEMORIES, experience }: { memories?: Memory[]; experience?: PineMemorySceneProps }) {
   const [payload,setPayload] = useState<Payload>();
   const [error,setError] = useState("");
   const [scale,setScale] = useState(1);
   const [quality,setQuality] = useState<Quality>("low");
   const [sample,setSample] = useState(false);
   const status = useRef<HTMLSpanElement>(null);
+  const immersive=!!experience;
+  const [qualityHost,setQualityHost]=useState<HTMLElement|null>(null);
+  // The host lives inside the independently mounted reading settings dialog.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(()=>{if(immersive)setQualityHost(document.getElementById("fm-quality-slot"));},[immersive]);
+  const anchors = useMemo(()=>payload ? derivePineMemoryAnchors(memories,payload.collision,payload.trunks):[],[payload,memories]);
   useEffect(()=>{
     const controller = new AbortController();
     const load = async (file: string) => {
@@ -202,22 +215,7 @@ export function ForestRuntimeLab() {
     },1000);
     return ()=>{controller.abort();window.clearInterval(timer);};
   },[]);
-  return <main className="forest-lab" aria-label="Pine Forest 实时漫游">
-    {payload && <ForestSurface><Canvas camera={{position:[23.155473709106445,0.9223032593727112,47.55979919433594],fov:48.5,near:0.08,far:sample ? 220:520}}
-      fallback={<RenderFailure message="无法创建 WebGL 场景，请检查浏览器的图形支持。" />}
-      onCreated={({gl})=>{gl.domElement.dataset.forestStreamingRuntime="true";}}
-      dpr={scale} gl={{antialias:true,powerPreference:"high-performance",toneMapping:ACESFilmicToneMapping}}>
-      <RenderHealth />
-      {sample ? <fogExp2 attach="fog" args={["#aab8b2",0.008]} />:<ForestHaze />}
-      <ambientLight intensity={sample ? 0.3:0.075} />
-      <hemisphereLight args={sample ? ["#dce8ee","#414c2d",0.45]:["#c9d1ba","#454626",0.38]} />
-      <directionalLight position={sample ? [-30,45,12]:[-0.273,0.513,-0.814]} intensity={sample ? 1.6:1.85} color={sample ? "#fff0da":"#ffe0a2"} />
-      <Suspense fallback={null}><Environment files={pineRoot+"sky.hdr"} background backgroundIntensity={sample ? 1:0.46} environmentIntensity={sample ? 0.6:0.30} /></Suspense>
-      <Suspense fallback={null}>{sample ? <ForestContent payload={payload} quality={quality} onError={setError} />:<EnvironmentContent payload={payload} quality={quality} onError={setError} />}</Suspense>
-      <Walker collision={payload.collision} trunks={payload.trunks} sliding />
-      <RuntimeReviewPose />
-    </Canvas></ForestSurface>}
-    <div className="forest-lab-bar"><div><strong>{sample ? "Pine Forest · 河床森林样板":"Pine Forest · 原布局动态 LOD"}</strong><span ref={status}>正在加载地表与周边森林</span></div>
+  const controls = <div className="forest-lab-bar"><div><strong>{sample ? "Pine Forest · 河床森林样板":"Pine Forest · 原布局动态 LOD"}</strong><span ref={status}>正在加载地表与周边森林</span></div>
       <label>资源精度<select aria-label="森林资源精度" value={quality} onChange={event=>{
         const next=event.target.value as Quality;
         setQuality(next);
@@ -228,7 +226,23 @@ export function ForestRuntimeLab() {
       <label>内部分辨率 <select aria-label="内部渲染分辨率" value={scale} onChange={event=>setScale(Number(event.target.value))}>
         <option value={1}>100% · DPR1</option><option value={0.8}>80% · 1152×720</option>{!sample && <option value={0.7}>70% · 1008×630</option>}
       </select></label>
-    </div>
+    </div>;
+  return <main className={`forest-lab${experience ? " forest-memory-enabled" : ""}`} aria-label="Pine Forest 实时漫游">
+    {payload && <ForestSurface><Canvas camera={{position:[23.155473709106445,0.9223032593727112,47.55979919433594],fov:48.5,near:0.08,far:sample ? 220:520}}
+      fallback={<RenderFailure message="无法创建 WebGL 场景，请检查浏览器的图形支持。" />}
+      onCreated={({gl})=>{gl.domElement.dataset.forestStreamingRuntime="true";}}
+      dpr={scale} gl={{antialias:true,powerPreference:"high-performance",toneMapping:ACESFilmicToneMapping}}>
+      <RenderHealth />
+      {sample ? <fogExp2 attach="fog" args={["#aab8b2",0.008]} />:<ForestHaze />}
+      <ambientLight intensity={sample ? 0.3:0.075} />
+      <hemisphereLight args={sample ? ["#dce8ee","#414c2d",0.45]:["#c9d1ba","#454626",0.38]} />
+      <directionalLight position={sample ? [-30,45,12]:[-0.273,0.513,-0.814]} intensity={sample ? 1.6:1.85} color={sample ? "#fff0da":"#ffe0a2"} />
+      <Suspense fallback={null}><Environment files={pineRoot+"sky.hdr"} background backgroundIntensity={sample ? 1:0.46} environmentIntensity={sample ? 0.6:0.30} /></Suspense>
+      <Suspense fallback={null}>{sample ? <ForestContent payload={payload} quality={quality} onError={setError} anchors={anchors} experience={experience} />:<EnvironmentContent payload={payload} quality={quality} onError={setError} anchors={anchors} experience={experience} />}</Suspense>
+      <Walker collision={payload.collision} trunks={payload.trunks} sliding paused={!!experience && (!experience.enabled || experience.phase!=="exploring")} />
+      <RuntimeReviewPose />
+    </Canvas></ForestSurface>}
+    {immersive ? (qualityHost && createPortal(controls,qualityHost)) : controls}
     {error && <div className="forest-lab-status" role="alert">{error}<button type="button" onClick={()=>window.location.reload()}>重新加载场景</button></div>}
   </main>;
 }

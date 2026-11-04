@@ -176,13 +176,18 @@ function SubmissionAudit() {
   return null;
 }
 
-export function Walker({ collision, onPosition, trunks = [], sliding = false }: { collision: Collision; onPosition?: (point: Vector3) => void; trunks?: number[][][]; sliding?: boolean }) {
+export function Walker({ collision, onPosition, trunks = [], sliding = false, onInteract, paused = false }: { collision: Collision; onPosition?: (point: Vector3) => void; trunks?: number[][][]; sliding?: boolean; onInteract?: () => void; paused?: boolean }) {
   const { camera, gl } = useThree();
   const keys = useRef(new Set<string>());
   const dragging = useRef(false);
   const samples = useRef<number[]>([]);
   const last = useRef(0);
   const lastPositionReport = useRef(0);
+  const input = useRef({ onPosition, onInteract, paused });
+  useLayoutEffect(() => {
+    input.current = { onPosition, onInteract, paused };
+    if (paused) { keys.current.clear(); dragging.current = false; }
+  }, [onPosition, onInteract, paused]);
   useEffect(() => {
     camera.position.copy(sourceToWorld(cameraSource));
     camera.lookAt(sourceToWorld(cameraTarget));
@@ -190,15 +195,19 @@ export function Walker({ collision, onPosition, trunks = [], sliding = false }: 
     const canvas = gl.domElement;
     canvas.tabIndex = 0;
     canvas.setAttribute("aria-label", "Pine Forest 原资产隔离场景，拖动观察，WASD 行走");
-    const down = (event: PointerEvent) => { dragging.current = true; canvas.setPointerCapture(event.pointerId); canvas.focus(); };
+    const down = (event: PointerEvent) => { if (input.current.paused || event.button > 0) return; dragging.current = true; canvas.setPointerCapture(event.pointerId); canvas.focus(); };
     const move = (event: PointerEvent) => {
-      if (!dragging.current) return;
+      if (!dragging.current || input.current.paused) return;
       camera.rotation.y -= event.movementX * 0.0025;
       camera.rotation.x = Math.max(-1.2, Math.min(1.2, camera.rotation.x - event.movementY * 0.0025));
     };
     const up = () => { dragging.current = false; };
     const blur = () => { dragging.current = false; keys.current.clear(); };
-    const keydown = (event: KeyboardEvent) => { keys.current.add(event.key.toLowerCase()); };
+    const keydown = (event: KeyboardEvent) => {
+      if (input.current.paused) return;
+      if (event.key.toLowerCase() === "e" && input.current.onInteract) { event.preventDefault(); if (!event.repeat) input.current.onInteract(); return; }
+      if (/^[wasd]$/i.test(event.key)) { event.preventDefault(); keys.current.add(event.key.toLowerCase()); }
+    };
     const keyup = (event: KeyboardEvent) => { keys.current.delete(event.key.toLowerCase()); };
     canvas.addEventListener("pointerdown", down); canvas.addEventListener("pointermove", move);
     canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up);
@@ -208,11 +217,12 @@ export function Walker({ collision, onPosition, trunks = [], sliding = false }: 
       canvas.removeEventListener("pointerup", up); canvas.removeEventListener("pointercancel", up);
       canvas.removeEventListener("blur", blur); window.removeEventListener("blur", blur);
       canvas.removeEventListener("keydown", keydown); window.removeEventListener("keyup", keyup); };
-  }, [camera, gl, onPosition]);
+  }, [camera, gl]);
   useFrame((_, delta) => {
+    if (paused) keys.current.clear();
     const forward = Number(keys.current.has("w")) - Number(keys.current.has("s"));
     const sideways = Number(keys.current.has("d")) - Number(keys.current.has("a"));
-    if (forward || sideways) {
+    if (!paused && (forward || sideways)) {
       const angle = camera.rotation.y;
       const speed = Math.min(delta, 0.05) * 3.5 / Math.hypot(forward, sideways);
       const x = camera.position.x + (Math.sin(-angle) * forward + Math.cos(angle) * sideways) * speed;
@@ -229,7 +239,9 @@ export function Walker({ collision, onPosition, trunks = [], sliding = false }: 
       }
     }
     if (onPosition && performance.now() - lastPositionReport.current > 350) {
-      onPosition(camera.position.clone());
+      const position = camera.position.clone();
+      gl.domElement.dataset.forestWalkerPosition = JSON.stringify({ position: position.toArray(), direction: camera.getWorldDirection(new Vector3()).toArray() });
+      onPosition(position);
       lastPositionReport.current = performance.now();
     }
     samples.current.push(delta * 1000);

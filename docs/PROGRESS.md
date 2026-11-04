@@ -1,10 +1,14 @@
 # 开发进度
 
-## 森林记忆体验 · 阶段一（2026-11-05）
+## 森林记忆体验 · 阶段二（2026-11-05）
 
-- 从 `f7b9250`、干净且同步的开发分支接续，原 stash 保留。`7386e8c` 命名判断修补已 Push，但不足以修复染色；实际根因是实例颜色 `(LOD权重,1,1)` 在树皮跳过淡变时仍乘入 RGB。
-- 修正让所有树部件去掉该实例颜色乘法，刚性树皮保留不透明和原贴图/顶点色，枝叶继续使用同一权重淡变。未重做材质、针叶或资源。Shader 回归确认旧光照钩子与顶点色保留，树干不读取权重为颜色。
-- 已执行 lint、typecheck、51 单测和 production build。隔离 Chrome 的记忆功能底稿完整行走/阅读/返回用例通过（30.4秒）；其代码尚在制作阶段，后续独立提交。视觉制作和真实 GPU 性能验收仍在进行。
+- 基于 `f7b9250` 恢复后，先完成树干 LOD 染绿根因修正：`d393e06` 已 Push。当前新增独立 `/forest-memory-lab`，没有替换正式星球页面；复用 Pine Forest runtime、Walker、碰撞和分区流送。
+- 记忆锚点由真实 Memory ID、原森林导航高度和树干位置确定，不创建示例生产记忆。记忆实体使用轻量 Shader、透明壳、金属花瓣/丝线与地面微光；距离/视线反馈、鼠标聚焦、`E` 打开、镜头缓入/复位均由实际交互驱动。
+- 阅读层展示当前 Planet 名称、真实日期/正文及对应 Media；照片和视频 Blob 只从当前浏览器 IndexedDB 读取。目录支持寻找/直接阅读；Escape 收起后可继续行走。测试断言档案 JSON 未改变，并验证退出路由。独立路由绕开正式 Provider，首次读档在水合后只读执行；没有修改 Galaxy/Planet/Memory 持久化结构。
+- 验证：lint、typecheck、51 项 Node 测试、Next production build 均通过；独立 Chrome Playwright 完整流程通过（34.9 秒），包括真实 WASD/鼠标转向、发现、正文/照片/视频、Escape、继续移动、画质设置切档和退出。页面错误为空、WebGL context 未丢失。
+- 自动化浏览器本次近记忆移动采样约 60.24 FPS、中位 16.6ms、P95 18.8ms，约 2.07M triangles / 176 calls。此为 Playwright Chrome 帧间隔采样，不是 Intel 实机或 GPU timer-query 结果；Intel 核显长时/远景压力、低画质性能门槛仍待实机验收。
+- 截图和连续交互视频在 `artifacts-local/pine-memory-experience/`（本地忽略资产）。截图中的媒体为隔离验收 fixture，不是用户真实照片/视频。真实媒体展示通过本地 IndexedDB 流程验证，但不会在仓库/审阅图中泄露用户内容。
+- 下一步：由用户做视觉与交互验收；再用目标 Intel 核显进行真实 GPU/长路线性能测试。当前没有验证到其他设备的本地档案或 IndexedDB 媒体恢复能力。
 
 ## Pine Forest Batch5 最终交付候选（2026-11-04）
 
