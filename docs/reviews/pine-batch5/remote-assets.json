@@ -1,0 +1,20 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-batch5-sample-20261104",
+  "tag": "pine-batch5-sample-20261104",
+  "publishedFrom": "820b504a7f24527875efe97f9763e794323b189a",
+  "files": [
+    {
+      "name": "pine-batch5-runtime.zip",
+      "bytes": 181817406,
+      "sha256": "be2c18360edaab8109989ea156b4a3f41827a3cd4c498b3b0a853c4e1d48628d",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-batch5-sample-20261104/pine-batch5-runtime.zip"
+    },
+    {
+      "name": "pine-batch5-authoring.zip",
+      "bytes": 1277746715,
+      "sha256": "1da92b552bd593b76f181e8441e0028353bcd435801dff2d05ef2e0a6fed58cb",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-batch5-sample-20261104/pine-batch5-authoring.zip"
+    }
+  ]
+}
