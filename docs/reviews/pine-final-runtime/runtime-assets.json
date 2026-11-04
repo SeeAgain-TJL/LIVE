@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "optimized/landmarks.glb",
+      "bytes": 3317604,
+      "sha256": "340a6216562eb21c1979a20672feab2aacacc0d16f3363ee0633d1836c441eaa"
+    },
+    {
+      "path": "optimized/pine_01.glb",
+      "bytes": 4006192,
+      "sha256": "ab30411b8553e7b04649f4562916933d0a6f926cff54070848e487d8258d0664"
+    },
+    {
+      "path": "optimized/pine_02.glb",
+      "bytes": 3219720,
+      "sha256": "51b1d4d5b38bbfc4fd5240bada7b94f5dd3b29028fe3912425475249a16df765"
+    },
+    {
+      "path": "optimized/pine_03.glb",
+      "bytes": 3825036,
+      "sha256": "f820312976c5a949e0f2c4c960565ac107dc4243b9c30a75790dc44e91c81f83"
+    },
+    {
+      "path": "optimized/pine_04.glb",
+      "bytes": 3974296,
+      "sha256": "bb7e232889c9ac79c934a847379adaeeea24dc9a2358a83f4593338f7887c820"
+    },
+    {
+      "path": "optimized/pine_05.glb",
+      "bytes": 4228780,
+      "sha256": "2820125f151bc335f8e5011a4f39ed7b1576ef8e0673551be23e0f3f73684aab"
+    },
+    {
+      "path": "optimized/silver_fir_01.glb",
+      "bytes": 3761896,
+      "sha256": "86cd1885c968d76eab659504feafa65339278fd22d5d172796d4893a789fbdcc"
+    },
+    {
+      "path": "optimized/silver_fir_02.glb",
+      "bytes": 2834900,
+      "sha256": "50ceba77e20a9fb19eb6dbfd4d370a264eeb7fd96decbe2b0c212b895407e9f3"
+    },
+    {
+      "path": "optimized/silver_fir_03.glb",
+      "bytes": 3097520,
+      "sha256": "4aaf62d1d67569fe8760a9382e020f4291985412d2a9bb2ab5406161943c5ad8"
+    },
+    {
+      "path": "optimized/silver_fir_04.glb",
+      "bytes": 2917832,
+      "sha256": "b8550bb6933bdb43c8dc0ba268331676f8b85b98cd73f3a03b216ab6bdce126d"
+    },
+    {
+      "path": "optimized/silver_fir_05.glb",
+      "bytes": 2084224,
+      "sha256": "d9ff8e2080abb077d3339cbae673e0330189f01823688c4bf036f5454a577661"
+    },
+    {
+      "path": "optimized/silver_fir_06.glb",
+      "bytes": 2189648,
+      "sha256": "c12b4629638d975c43b592db8d152d31aba1ef2eba3f3e6455790a9fb1eaa444"
+    }
+  ],
+  "totalBytes": 39457648
+}

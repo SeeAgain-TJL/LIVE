@@ -7,6 +7,7 @@ export const pineRoot = "/forest-origin-assets/";
 export type TileManifest = { names: string[]; propAssetCount: number; tiles: Record<string, { trees: number; props: number; bytes: number }> };
 export type SourceTree = { source: string; matrix: number[][] };
 type Tier = "near" | "mid" | "far";
+type Quality = "low" | "mid" | "high";
 type Part = { geometry: Mesh["geometry"]; material: Material | Material[]; matrix: Matrix4 };
 type Asset = { parts: Part[]; sphere: Sphere; billboard?: { center: Vector3; views: number } };
 type Resource = { assets: Map<string, Asset>; geometries: Set<Mesh["geometry"]>; materialKeys: Set<string>; lastUsed: number };
@@ -96,6 +97,7 @@ export class PineStream {
   private matrix = new Matrix4();
   private instance = new Matrix4();
   private billboardInverse = new Matrix4();
+  private billboardTilt = new Matrix4();
   private worldCenter = new Vector3();
   private worldScale = new Vector3();
   private localCamera = new Vector3();
@@ -114,11 +116,15 @@ export class PineStream {
   private failures = new Set<string>();
   private overview: Tile | null = null;
   private overviewKeys: string[] = [];
+  private understory: Set<number>;
+  private microCover: Set<number>;
 
   constructor(private manifest: TileManifest, private gl: WebGLRenderer, private reportError: (message: string) => void,
-    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: "low" | "mid" | "high"; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture } = { alpha: "single" }) {
+    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: Quality; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture } = { alpha: "single" }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Meshoptimizer API, not a React hook.
     MeshoptDecoder.useWorkers(2);
+    this.understory=new Set(this.manifest.names.flatMap((name,i)=>/^(fern|(?:fir|pine)_sapling)/.test(name) ? [i]:[]));
+    this.microCover=new Set(this.manifest.names.flatMap((name,i)=>/^(cover_|pine_cover|moss_patch|grass_medium)/.test(name) ? [i]:[]));
     this.request("props/far", 0);
     // Coarse source trees are a small, bounded shared library. No full source
     // high-poly tree or 4K ground-cover package enters this runtime.
@@ -127,7 +133,7 @@ export class PineStream {
   private file(key: string) {
     const [name,tier] = key.split("/");
     if (name === "props") return `batch2/props-${tier}.gltf`;
-    if (tier === "near") return `batch2/trees/${name}-near.gltf`;
+    if (tier === "near") return this.options.field && this.options.quality!=="high" ? `optimized/${name}.glb` : `batch2/trees/${name}-near.gltf`;
     // Batch4: pine_04's mid tier is real reduced geometry (not the far billboard),
     // so trees crossing from near to mid keep actual branch silhouettes instead of
     // popping straight to a flat atlas card. Other species still use the billboard
@@ -141,7 +147,7 @@ export class PineStream {
     if (!this.pending.has(key) && !this.failures.has(key)) this.queue.set(key,Math.min(this.queue.get(key) ?? Infinity,priority));
   }
   private pump() {
-    while (!this.disposed && this.pending.size < 2 && this.queue.size) {
+    while (!this.disposed && this.pending.size < (this.options.field ? 4:2) && this.queue.size) {
       const [key] = [...this.queue].sort((a,b)=>a[1]-b[1])[0];
       this.queue.delete(key); this.pending.add(key);
       const load=key!=="props/far" && key.endsWith("/far") ? this.loadImpostor(key) : this.loader.loadAsync(pineRoot+this.file(key)).then(gltf=>this.prepare(gltf,key));
@@ -239,7 +245,8 @@ export class PineStream {
     this.released.resources++;
   }
   private loadTiles(camera: Vector3, now: number) {
-    const nearby = Object.keys(this.manifest.tiles).map(key=>({key,distance:tileDistance(key,camera)})).filter(t=>t.distance<80).sort((a,b)=>a.distance-b.distance);
+    const range=this.options.field ? this.options.quality==="high" ? 80:64 : 80;
+    const nearby = Object.keys(this.manifest.tiles).map(key=>({key,distance:tileDistance(key,camera)})).filter(t=>t.distance<range).sort((a,b)=>a.distance-b.distance);
     this.wantedTiles = new Set(nearby.map(t=>t.key));
     for (const [key,controller] of this.tileLoading) if (!this.wantedTiles.has(key)) controller.abort();
     for (const tile of nearby) if (this.tiles.has(tile.key)) this.tiles.get(tile.key)!.lastUsed=now;
@@ -312,7 +319,7 @@ export class PineStream {
   }
   tick(camera: PerspectiveCamera, now: number) {
     if(this.disposed) return;
-    this.pump();
+    this.preload();
     if(this.work) {this.advance();return;}
     this.maintenance(now);
     const boundsReady = this.resources.has("props/far") && this.manifest.names.slice(this.manifest.propAssetCount).every(name=>this.resources.has(`${name}/far`));
@@ -324,6 +331,9 @@ export class PineStream {
     // frusta/LOD distances. The previous complete visible set remains resident.
     this.work=this.update(camera.clone(),now);
     this.advance();
+  }
+  preload() {
+    this.pump();
   }
   private advance() {
     const start=performance.now();
@@ -350,7 +360,7 @@ export class PineStream {
     let selectActiveMs=0,activeStart=performance.now();
     const high=this.options.quality==="high";
     const middle=this.options.quality==="mid";
-    const understory=new Set(this.options.sample || this.options.field ? this.manifest.names.flatMap((name,i)=>/^(fern|(?:fir|pine)_sapling)/.test(name) ? [i]:[]):[]);
+    const tuned=!!this.options.field;
     const counters={candidates:0,frustumRejected:0,pixelRejected:0,trees:0,props:0,near:0,mid:0,far:0};
     const residentKeys=new Set(this.tiles.keys());
     for(const tile of [...this.tiles.values(),...(this.overview ? [this.overview]:[])]) {
@@ -372,18 +382,25 @@ export class PineStream {
         const dx=tile.data[offset+4]-camera.position.x,dz=-tile.data[offset+8]-camera.position.z;
         const distanceSquared=dx*dx+dz*dz;
         const inSample=tile.data[offset+4]>-40 && tile.data[offset+4]<40 && tile.data[offset+8]>-75 && tile.data[offset+8]<-15;
-        const propRange=(this.options.field || inSample) && understory.has(tile.data[offset]) ? 55:40;
-        const treeRange=this.options.field ? 200:95;
+        const micro=this.microCover.has(tile.data[offset]);
+        const propRange=tuned && micro && !high ? middle ? 31:24
+          : (tuned || (this.options.sample && inSample)) && this.understory.has(tile.data[offset]) ? 55:40;
+        const treeRange=tuned ? camera.position.y>55 ? 295:200 : 95;
         if(distanceSquared>(tree ? treeRange*treeRange:propRange*propRange)) {counters.pixelRejected++;continue;}
         this.sphere.center.fromArray(tile.bounds,i*4);this.sphere.radius=tile.bounds[i*4+3];
         if(!this.frustum.intersectsSphere(this.sphere)) {counters.frustumRejected++;continue;}
         const depth=Math.max(0.1,this.point.copy(this.sphere.center).sub(camera.position).dot(this.currentDirection));
         const pixels=2*this.sphere.radius*projectionScale/depth;
-        if(pixels<(tree ? 2:1.5)) {counters.pixelRejected++;continue;}
+        if(pixels<(tree ? 2:tuned && !high ? micro ? middle ? 3.2:4.5 : 2:1.5)) {counters.pixelRejected++;continue;}
         const previous=tile.lod[i];
         const hysteresis=previous===0 ? 1.12 : previous===2 ? 0.9 : 1;
-        const tierIndex=tree ? (distanceSquared<((high?26:middle?22:18)*hysteresis)**2 && pixels>(high?450:middle?580:700)/hysteresis ? 0 : distanceSquared<(45*hysteresis)**2 && pixels>260/hysteresis ? 1:2)
-          : (distanceSquared<((high?9:middle?8:6)*hysteresis)**2 && pixels>120/hysteresis ? 0 : distanceSquared<((high?22:middle?19:17)*hysteresis)**2 && pixels>24/hysteresis ? 1:2);
+        // Use the actual camera-to-tree base distance for near geometry. A
+        // raised overview must not select detailed trees directly below it.
+        const dy=tuned ? tile.data[offset+12]-camera.position.y:0;
+        const trueDistanceSquared=distanceSquared+dy*dy;
+        const nearRange=tuned ? high ? 22:middle ? 17:11 : high ? 26:middle ? 22:18;
+        const tierIndex=tree ? (trueDistanceSquared<(nearRange*hysteresis)**2 && pixels>(high?450:middle?580:700)/hysteresis ? 0 : trueDistanceSquared<(45*hysteresis)**2 && pixels>260/hysteresis ? 1:2)
+          : (trueDistanceSquared<((high?9:middle?8:6)*hysteresis)**2 && pixels>120/hysteresis ? 0 : trueDistanceSquared<((high?22:middle?19:14)*hysteresis)**2 && pixels>24/hysteresis ? 1:2);
         tile.lod[i]=tierIndex;
         const desired=this.options.frozenLod || tiers[tierIndex];
         // Trees previously had no real "mid" asset, so every tree mid-tier
@@ -499,7 +516,14 @@ export class PineStream {
             const angle=((((this.options.smoothImpostor || this.options.sourceImpostor) && key.includes("pine_04/") ? viewAngle:Math.round(viewAngle))%views)+views)%views;
             const attribute=mesh.geometry.getAttribute("atlasAngle") as InstancedBufferAttribute;attribute.setX(index,angle);
             const facing=Math.atan2(camera.position.x-this.worldCenter.x,camera.position.z-this.worldCenter.z);
-            this.instance.makeRotationY(facing).scale(this.worldScale).setPosition(this.worldCenter);
+            this.instance.makeRotationY(facing);
+            if(tuned && camera.position.y>34) {
+              const above=Math.min(1,(camera.position.y-34)/55);
+              const elevation=Math.atan2(camera.position.y-this.worldCenter.y,
+                Math.hypot(camera.position.x-this.worldCenter.x,camera.position.z-this.worldCenter.z));
+              this.instance.multiply(this.billboardTilt.makeRotationX(-Math.min(.95,elevation)*above));
+            }
+            this.instance.scale(this.worldScale).setPosition(this.worldCenter);
           } else this.instance.multiplyMatrices(this.matrix,local);
           mesh.setMatrixAt(index,this.instance);
           first=Math.min(first,index);last=index;this.timings.matrixWrites++;

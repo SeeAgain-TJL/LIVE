@@ -4,7 +4,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
-import { ACESFilmicToneMapping, Mesh, PerspectiveCamera, TextureLoader, Vector3, type Material, type Texture } from "three";
+import { ACESFilmicToneMapping, FogExp2, Mesh, PerspectiveCamera, TextureLoader, Vector3, type Material, type Texture } from "three";
 import { ForestSurface, RenderFailure, RenderHealth, Walker, type Collision } from "./forest-origin-lab";
 import { PineStream, pineRoot, type TileManifest, type SourceTree } from "./pine-stream";
 import { loadPineTerrainLayeredMaterial, loadPineTerrainMaterial } from "./pine-materials";
@@ -12,6 +12,17 @@ import { applyPineCanopyField, makePineRiver } from "./pine-environment";
 
 type Quality = "low" | "mid" | "high";
 type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][]; trees: SourceTree[] };
+function ForestHaze() {
+  // Ground-level haze stays dense, while a raised overview can look down
+  // through clearer air. No extra render pass or shadow-map dependency.
+  useFrame(({scene,camera})=>{
+    if (scene.fog instanceof FogExp2) {
+      const above = Math.min(1,Math.max(0,(camera.position.y-26)/140));
+      scene.fog.density = 0.0085-0.0062*above;
+    }
+  });
+  return <fogExp2 attach="fog" args={["#68786d",0.0085]} />;
+}
 function RuntimeReviewPose() {
   const {camera,gl} = useThree();
   useEffect(()=>{
@@ -28,7 +39,7 @@ function RuntimeReviewPose() {
   },[camera,gl]);
   return null;
 }
-function Streaming({ manifest, trees, onError, quality, field }: { manifest: TileManifest; trees:SourceTree[]; onError: (message: string) => void; quality: Quality; field?: Texture }) {
+function Streaming({ manifest, trees, onError, quality, field, terrainReady }: { manifest: TileManifest; trees:SourceTree[]; onError: (message: string) => void; quality: Quality; field?: Texture; terrainReady: boolean }) {
   const { gl, camera, scene } = useThree();
   const owner = useRef<PineStream | null>(null);
   useEffect(() => {
@@ -40,12 +51,20 @@ function Streaming({ manifest, trees, onError, quality, field }: { manifest: Til
       sourceTrees:params.get("overview")==="off" ? undefined:trees,field,
       frozenLod:frozen === "near" || frozen === "mid" || frozen === "far" ? frozen:undefined});
     owner.current = runtime;
-    if(params.get("review")==="terrain") runtime.group.visible=false;
+    runtime.group.visible=false;
+    runtime.preload();
     scene.add(runtime.group);
     gl.domElement.dataset.forestStreamingRuntime="true";
     return () => { owner.current=null;scene.remove(runtime.group);runtime.dispose();delete gl.domElement.dataset.forestGeometryReady;delete gl.domElement.dataset.forestStreaming; };
   }, [manifest,trees,gl,onError,scene,quality,field]);
-  useFrame(()=>{if(camera instanceof PerspectiveCamera) owner.current?.tick(camera,performance.now());});
+  useFrame(()=>{
+    const runtime=owner.current;
+    if (!runtime || !terrainReady || !(camera instanceof PerspectiveCamera)) return;
+    runtime.tick(camera,performance.now());
+  });
+  useEffect(()=>{
+    if (owner.current) owner.current.group.visible=terrainReady && new URLSearchParams(window.location.search).get("review")!=="terrain";
+  },[terrainReady,quality]);
   return null;
 }
 function Terrain({ onReady, onError, field, sample }: { onReady: (ready: boolean) => void; onError: (message: string) => void; field?: Texture; sample: boolean }) {
@@ -78,12 +97,20 @@ function Terrain({ onReady, onError, field, sample }: { onReady: (ready: boolean
   },[terrain,gl,onReady,onError,sample,field]);
   return <primitive object={terrain.scene} />;
 }
-function SourceLandmarks({field}: {field: Texture}) {
-  const { scene } = useGLTF(pineRoot+"batch6/landmarks.glb");
+function SourceLandmarks({field,quality}: {field: Texture; quality: Quality}) {
+  const { scene } = useGLTF(pineRoot+(quality==="high" ? "batch6/landmarks.glb":"optimized/landmarks.glb"));
   const { gl } = useThree();
   const waterTime = useRef({value:0});
+  const reducedMotion = useRef(false);
+  useEffect(()=>{
+    const media=window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync=()=>{reducedMotion.current=media.matches;};
+    sync();
+    media.addEventListener("change",sync);
+    return ()=>media.removeEventListener("change",sync);
+  },[]);
   useFrame((_,delta)=>{
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) waterTime.current.value+=Math.min(delta,.05);
+    if (!reducedMotion.current) waterTime.current.value+=Math.min(delta,.05);
   });
   useEffect(()=>{
     const original = new Map<Mesh,Mesh["material"]>();
@@ -124,8 +151,8 @@ function ForestContent({payload,quality,onError,field}: ContentProps & {field?: 
   const [terrainReady,setTerrainReady] = useState(false);
   return <>
     <Suspense fallback={null}><Terrain sample={!field} field={field} onReady={setTerrainReady} onError={onError} /></Suspense>
-    {field && <Suspense fallback={null}><SourceLandmarks field={field} /></Suspense>}
-    {terrainReady && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} />}
+    {field && <Suspense fallback={null}><SourceLandmarks field={field} quality={quality} /></Suspense>}
+    {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} />}
   </>;
 }
 
@@ -143,14 +170,20 @@ export function ForestRuntimeLab() {
       if(!response.ok) throw Error(`${file} HTTP ${response.status}`);
       return response.json();
     };
-    const creek=new URLSearchParams(window.location.search).get("sample")==="creek";
+    const params=new URLSearchParams(window.location.search);
+    const creek=params.get("sample")==="creek";
+    const requested=params.get("quality");
+    if (!creek) {
+      useGLTF.preload(pineRoot+"environment/terrain.glb");
+      useGLTF.preload(pineRoot+(requested==="high" ? "batch6/landmarks.glb":"optimized/landmarks.glb"));
+      useLoader.preload(TextureLoader,pineRoot+"environment/height-light.png");
+    }
     Promise.all([load("batch2/tiles/manifest.json"),load(creek ? "batch5/collision-layout.json":"environment/navigation.json"),load("source-tree-placements.json")])
       .then(([manifest,layout,trees])=>{if(!controller.signal.aborted) {
         setSample(creek);
         setPayload({manifest,collision:creek ? layout.collision:layout,trees,trunks:trees.map((tree:SourceTree)=>tree.matrix)});
-        if(new URLSearchParams(window.location.search).get("scale")==="0.8") setScale(0.8);
-        const requested=new URLSearchParams(window.location.search).get("quality");
-        if(requested==="high" || requested==="mid") setQuality(requested);
+        if(params.get("scale")==="0.8" || (!creek && !params.has("scale") && requested!=="high")) setScale(0.8);
+        if(requested==="high" || (requested==="mid" && !creek)) setQuality(requested);
       }})
       .catch(cause=>{if(!controller.signal.aborted) setError(String(cause));});
     const timer=window.setInterval(()=>{
@@ -163,12 +196,12 @@ export function ForestRuntimeLab() {
     return ()=>{controller.abort();window.clearInterval(timer);};
   },[]);
   return <main className="forest-lab" aria-label="Pine Forest 实时漫游">
-    {payload && <ForestSurface><Canvas camera={{position:[23.155473709106445,0.9223032593727112,47.55979919433594],fov:48.5,near:0.08,far:220}}
+    {payload && <ForestSurface><Canvas camera={{position:[23.155473709106445,0.9223032593727112,47.55979919433594],fov:48.5,near:0.08,far:sample ? 220:360}}
       fallback={<RenderFailure message="无法创建 WebGL 场景，请检查浏览器的图形支持。" />}
       onCreated={({gl})=>{gl.domElement.dataset.forestStreamingRuntime="true";}}
       dpr={scale} gl={{antialias:true,powerPreference:"high-performance",toneMapping:ACESFilmicToneMapping}}>
       <RenderHealth />
-      <fogExp2 attach="fog" args={sample ? ["#aab8b2",0.008]:["#68786d",0.0085]} />
+      {sample ? <fogExp2 attach="fog" args={["#aab8b2",0.008]} />:<ForestHaze />}
       <ambientLight intensity={sample ? 0.3:0.10} />
       <hemisphereLight args={sample ? ["#dce8ee","#414c2d",0.45]:["#bccde1","#48412a",0.45]} />
       <directionalLight position={sample ? [-30,45,12]:[-0.273,0.513,-0.814]} intensity={sample ? 1.6:1.92} color={sample ? "#fff0da":"#ffe0a2"} />
