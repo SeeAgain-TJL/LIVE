@@ -1,0 +1,6 @@
+{
+  "intentionalContextLoss": true,
+  "alertShown": true,
+  "staleReadyCleared": true,
+  "reloadRecovered": true
+}

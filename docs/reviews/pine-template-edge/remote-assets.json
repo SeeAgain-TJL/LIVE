@@ -1,0 +1,14 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-template-edge-20261104",
+  "tag": "pine-template-edge-20261104",
+  "publishedFrom": "53d2f143cbbcd9d41692dc545ed8df433fcbbc88",
+  "files": [
+    {
+      "name": "pine-template-edge-runtime.zip",
+      "bytes": 433759,
+      "sha256": "2311b733d8c7af2e2ad7d7909b7f25ae440bd5c6b526b6458c35e668954b9b73",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-template-edge-20261104/pine-template-edge-runtime.zip"
+    }
+  ]
+}
