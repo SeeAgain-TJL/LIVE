@@ -1,6 +1,7 @@
 import { Box3, DoubleSide, DynamicDrawUsage, Frustum, Group, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, PlaneGeometry, Sphere, SRGBColorSpace, Texture, TextureLoader, Vector3, type WebGLRenderer } from "three";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
+import { applyPineCanopyField } from "./pine-environment";
 
 export const pineRoot = "/forest-origin-assets/";
 export type TileManifest = { names: string[]; propAssetCount: number; tiles: Record<string, { trees: number; props: number; bytes: number }> };
@@ -115,7 +116,7 @@ export class PineStream {
   private overviewKeys: string[] = [];
 
   constructor(private manifest: TileManifest, private gl: WebGLRenderer, private reportError: (message: string) => void,
-    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: "low" | "high"; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean } = { alpha: "single" }) {
+    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: "low" | "mid" | "high"; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture } = { alpha: "single" }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Meshoptimizer API, not a React hook.
     MeshoptDecoder.useWorkers(2);
     this.request("props/far", 0);
@@ -155,6 +156,10 @@ export class PineStream {
   private async loadImpostor(key: string): Promise<Resource> {
     const name=key.split("/")[0];
     const {asset,geometry,material}=await loadPineImpostorAsset(name,this.options.quality==="high",this.options.smoothImpostor,this.options.sourceImpostor);
+    if(this.options.field) {
+      material.color.set("#a9afa0");
+      applyPineCanopyField(material,this.options.field,true);
+    }
     const materialKey=`impostor/${name}`;this.materials.set(materialKey,{material,refs:1});
     return {assets:new Map([[name,asset]]),geometries:new Set([geometry]),materialKeys:new Set([materialKey]),lastUsed:performance.now()};
   }
@@ -190,6 +195,7 @@ export class PineStream {
               material.transparent=false;material.alphaTest=0.03;material.alphaToCoverage=true;material.depthWrite=true;
             }
           }
+          if (this.options.field) applyPineCanopyField(material,this.options.field);
           this.materials.set(poolKey,{material,refs:0});
         }
         if (!resource.materialKeys.has(poolKey)) { this.materials.get(poolKey)!.refs++; resource.materialKeys.add(poolKey); }
@@ -343,7 +349,8 @@ export class PineStream {
     const verifyMatrices=this.options.audit;
     let selectActiveMs=0,activeStart=performance.now();
     const high=this.options.quality==="high";
-    const understory=new Set(this.options.sample ? this.manifest.names.flatMap((name,i)=>/^(fern|fir_sapling)/.test(name) ? [i]:[]):[]);
+    const middle=this.options.quality==="mid";
+    const understory=new Set(this.options.sample || this.options.field ? this.manifest.names.flatMap((name,i)=>/^(fern|(?:fir|pine)_sapling)/.test(name) ? [i]:[]):[]);
     const counters={candidates:0,frustumRejected:0,pixelRejected:0,trees:0,props:0,near:0,mid:0,far:0};
     const residentKeys=new Set(this.tiles.keys());
     for(const tile of [...this.tiles.values(),...(this.overview ? [this.overview]:[])]) {
@@ -365,8 +372,9 @@ export class PineStream {
         const dx=tile.data[offset+4]-camera.position.x,dz=-tile.data[offset+8]-camera.position.z;
         const distanceSquared=dx*dx+dz*dz;
         const inSample=tile.data[offset+4]>-40 && tile.data[offset+4]<40 && tile.data[offset+8]>-75 && tile.data[offset+8]<-15;
-        const propRange=inSample && understory.has(tile.data[offset]) ? 55:40;
-        if(distanceSquared>(tree ? 95*95:propRange*propRange)) {counters.pixelRejected++;continue;}
+        const propRange=(this.options.field || inSample) && understory.has(tile.data[offset]) ? 55:40;
+        const treeRange=this.options.field ? 200:95;
+        if(distanceSquared>(tree ? treeRange*treeRange:propRange*propRange)) {counters.pixelRejected++;continue;}
         this.sphere.center.fromArray(tile.bounds,i*4);this.sphere.radius=tile.bounds[i*4+3];
         if(!this.frustum.intersectsSphere(this.sphere)) {counters.frustumRejected++;continue;}
         const depth=Math.max(0.1,this.point.copy(this.sphere.center).sub(camera.position).dot(this.currentDirection));
@@ -374,8 +382,8 @@ export class PineStream {
         if(pixels<(tree ? 2:1.5)) {counters.pixelRejected++;continue;}
         const previous=tile.lod[i];
         const hysteresis=previous===0 ? 1.12 : previous===2 ? 0.9 : 1;
-        const tierIndex=tree ? (distanceSquared<((high?26:18)*hysteresis)**2 && pixels>(high?450:700)/hysteresis ? 0 : distanceSquared<(45*hysteresis)**2 && pixels>260/hysteresis ? 1:2)
-          : (distanceSquared<((high?9:6)*hysteresis)**2 && pixels>120/hysteresis ? 0 : distanceSquared<((high?22:17)*hysteresis)**2 && pixels>24/hysteresis ? 1:2);
+        const tierIndex=tree ? (distanceSquared<((high?26:middle?22:18)*hysteresis)**2 && pixels>(high?450:middle?580:700)/hysteresis ? 0 : distanceSquared<(45*hysteresis)**2 && pixels>260/hysteresis ? 1:2)
+          : (distanceSquared<((high?9:middle?8:6)*hysteresis)**2 && pixels>120/hysteresis ? 0 : distanceSquared<((high?22:middle?19:17)*hysteresis)**2 && pixels>24/hysteresis ? 1:2);
         tile.lod[i]=tierIndex;
         const desired=this.options.frozenLod || tiers[tierIndex];
         // Trees previously had no real "mid" asset, so every tree mid-tier

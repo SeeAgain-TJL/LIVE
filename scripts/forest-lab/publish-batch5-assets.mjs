@@ -7,8 +7,14 @@ import { createHash } from 'node:crypto';
 import { request } from 'node:https';
 import path from 'node:path';
 const batch6=process.argv.includes('--batch6');
-const batch=batch6 ? 'pine-batch6':'pine-batch5';
-const repo='SeeAgain-TJL/LIVE',tag=batch6 ? 'pine-batch6-landmarks-20261104':'pine-batch5-sample-20261104';
+const profiles={
+  '--forest-art':{batch:'pine-final-art',tag:'pine-forest-environment-20261104',name:'Pine Forest · integrated environment',files:['pine-final-art-runtime.zip']},
+  '--forest-runtime':{batch:'pine-final-runtime',tag:'pine-forest-runtime-20261104',name:'Pine Forest · runtime optimization',files:['pine-final-runtime.zip']},
+  '--forest-review':{batch:'pine-final',tag:'pine-forest-review-20261104',name:'Pine Forest · browser review',files:['pine-forest-walk.webm']},
+};
+const profile=Object.entries(profiles).find(([flag])=>process.argv.includes(flag))?.[1];
+const batch=profile?.batch ?? (batch6 ? 'pine-batch6':'pine-batch5');
+const repo='SeeAgain-TJL/LIVE',tag=profile?.tag ?? (batch6 ? 'pine-batch6-landmarks-20261104':'pine-batch5-sample-20261104');
 const credential=spawnSync('git',['credential','fill'],{input:'protocol=https\nhost=github.com\n\n',encoding:'utf8',windowsHide:true});
 if(credential.status!==0)throw Error('GitHub credential helper unavailable');
 const fields=Object.fromEntries(credential.stdout.trim().split('\n').map(l=>{const i=l.indexOf('=');return [l.slice(0,i),l.slice(i+1)];}));
@@ -23,7 +29,7 @@ async function upload(url,file,bytes,name) {
   // Native streaming HTTPS avoids fetch's five-minute response-header limit
   // while a large packed DCC asset is still being uploaded.
   return new Promise((resolve,reject)=>{
-    const req=request(url,{method:'POST',headers:{...headers,'Content-Type':'application/zip','Content-Length':String(bytes)}},response=>{
+    const req=request(url,{method:'POST',headers:{...headers,'Content-Type':name.endsWith('.webm') ? 'video/webm':'application/zip','Content-Length':String(bytes)}},response=>{
       const blocks=[];response.on('data',b=>blocks.push(b));response.on('error',reject);
       response.on('end',()=>{
         const body=Buffer.concat(blocks).toString();
@@ -46,9 +52,9 @@ if(process.argv.includes('--check')) {
   if(branch!=='codex/pine-forest-vertical-slice')throw Error('Unexpected branch');
   const url=`https://api.github.com/repos/${repo}/releases`;
   let release=await fetch(`${url}/tags/${tag}`,{headers});
-  if(release.status===404)release=await api(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tag_name:tag,target_commitish:head,name:batch6 ? 'Pine Forest Batch6 · source landmarks':'Pine Forest Batch5 · editable creek sample',prerelease:true,body:batch6 ? 'Development runtime for the original river and ruins. See docs/reviews/pine-batch6 for restoration and remaining work.':'Runtime and packed Blender authoring assets for the current development sample. Restore using docs/reviews/pine-batch5/README.md and SHA-256 manifests. Performance and visual review remain open; this is not a production release.'})});
+  if(release.status===404)release=await api(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tag_name:tag,target_commitish:head,name:profile?.name ?? (batch6 ? 'Pine Forest Batch6 · source landmarks':'Pine Forest Batch5 · editable creek sample'),prerelease:true,body:profile ? `Pine Forest development artifacts. See docs/reviews/${batch} for scope and verification.`:batch6 ? 'Development runtime for the original river and ruins. See docs/reviews/pine-batch6 for restoration and remaining work.':'Runtime and packed Blender authoring assets for the current development sample. Restore using docs/reviews/pine-batch5/README.md and SHA-256 manifests. Performance and visual review remain open; this is not a production release.'})});
   else if(release.ok)release=await release.json();else throw Error(`Release lookup HTTP ${release.status}`);
-  const files=batch6 ? ['pine-batch6-runtime.zip']:['pine-batch5-runtime.zip','pine-batch5-authoring.zip'];const published=[];
+  const files=profile?.files ?? (batch6 ? ['pine-batch6-runtime.zip']:['pine-batch5-runtime.zip','pine-batch5-authoring.zip']);const published=[];
   for(const name of files) {
     const file=path.resolve('artifacts-local',batch,'handoff',name);const bytes=(await stat(file)).size;
     if(bytes>=2_000_000_000)throw Error('Archive exceeds conservative upload limit');

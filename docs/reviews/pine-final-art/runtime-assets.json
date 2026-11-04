@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "environment/height-light.png",
+      "bytes": 915850,
+      "sha256": "ec25684e8efa711aed5b13e0f4d8bca4053149db4f1aec4b4561806c7a6f1454"
+    },
+    {
+      "path": "environment/navigation.json",
+      "bytes": 1383752,
+      "sha256": "cb96aa24d527270e7470c75dfbd9bf6fa7cdc8e0cb0660cddb4bc8db0aaac476"
+    },
+    {
+      "path": "environment/production.json",
+      "bytes": 390,
+      "sha256": "5b9fa63069f91b51b865f8114e349085eefe042677e61444bb1a6cc940f55625"
+    },
+    {
+      "path": "environment/terrain.glb",
+      "bytes": 6594864,
+      "sha256": "3d7169c20386a510cc5e89967374da5e7ea5a869392115ffe7f43c63fd133334"
+    }
+  ],
+  "totalBytes": 8894856
+}

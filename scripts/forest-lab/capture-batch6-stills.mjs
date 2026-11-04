@@ -4,12 +4,13 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const high=process.argv.includes('--high');
-const folder=path.resolve('artifacts-local/pine-batch6',high ? 'stills-high':'stills');
+const folder=path.resolve(process.env.PINE_EVIDENCE || 'artifacts-local/pine-batch6',high ? 'stills-high':'stills');
 await mkdir(folder,{recursive:true});
 const poses={
   near:{position:[23.155473709106445,.9223032593727112,47.55979919433594],direction:[-.9821439487,.1260486988,-.1396602648]},
   ruins:{position:[-24,9,44],direction:[-1,.04,-.37]},
   far:{position:[10,18,60],direction:[.1,-.5,-1]},
+  ...(process.env.PINE_PANORAMA ? {panorama:{position:[95,133,132],direction:[-95,-130,-132]}} : {}),
 };
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const result={browser:browser.version(),viewport:[1440,900],verticalFov:48.5,errors:[],shots:[]};

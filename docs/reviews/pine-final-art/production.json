@@ -1,0 +1,16 @@
+{
+  "source": "polyhaven_pine_fir_forest.blend",
+  "terrainVertices": 66049,
+  "terrainFaces": 65536,
+  "reliefPeakMeters": 0.23696955991908908,
+  "treesUsedForField": 585,
+  "ruinColliders": 4,
+  "walkableSamples": 160080,
+  "blockedSamples": 1677,
+  "fieldResolution": 768,
+  "originalSun": [
+    -0.27278822660446167,
+    0.8140254020690918,
+    0.5127858519554138
+  ]
+}

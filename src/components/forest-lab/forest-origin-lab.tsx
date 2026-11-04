@@ -10,7 +10,7 @@ import { ACESFilmicToneMapping, DoubleSide, Frustum, InstancedMesh, Matrix4, Mes
 type Instance = { source: string; matrix: number[][] };
 type SourceInventory = { sourceSha256: string; treeSpeciesCounts: Record<string, number>; sourceAssetNames: string[] };
 type Preview = { assetNames: string[]; records: [number, number[][]][] };
-type Collision = { origin: number[]; step: number; columns: number; rows: number; heights: (number | null)[] };
+export type Collision = { origin: number[]; step: number; columns: number; rows: number; heights: (number | null)[]; blocked?: number[] };
 type LabBudget = { trees: number; props: number; radius: number };
 const root = "/forest-origin-assets/";
 const cameraSource = new Vector3(23.155473709106445, -47.55979919433594, 0.9223032593727112);
@@ -92,6 +92,17 @@ function groundHeight(collision: Collision, x: number, z: number) {
   const at = (col: number, r: number) => collision.heights[r * collision.columns + col] ?? 0;
   return (1 - b) * ((1 - a) * at(column, row) + a * at(column + 1, row)) +
     b * ((1 - a) * at(column, row + 1) + a * at(column + 1, row + 1));
+}
+
+function walkable(collision: Collision, x: number, z: number) {
+  if (!collision.blocked) return x > -70 && x < 70 && z > -100 && z < 95;
+  const fx = (x-collision.origin[0])/collision.step;
+  const fy = (-z-collision.origin[1])/collision.step;
+  const col = Math.floor(fx), row = Math.floor(fy);
+  if (col < 0 || row < 0 || col+1 >= collision.columns || row+1 >= collision.rows) return false;
+  const index = row*collision.columns+col;
+  const ids = [index,index+1,index+collision.columns,index+collision.columns+1];
+  return ids.every(i=>collision.heights[i] != null && !collision.blocked![i]);
 }
 
 function Instances({ part, matrices, diagnostic = false, alpha, category }: { part: Mesh; matrices: number[][][]; diagnostic?: boolean; alpha?: string; category: string }) {
@@ -186,13 +197,16 @@ export function Walker({ collision, onPosition, trunks = [], sliding = false }: 
       camera.rotation.x = Math.max(-1.2, Math.min(1.2, camera.rotation.x - event.movementY * 0.0025));
     };
     const up = () => { dragging.current = false; };
+    const blur = () => { dragging.current = false; keys.current.clear(); };
     const keydown = (event: KeyboardEvent) => { keys.current.add(event.key.toLowerCase()); };
     const keyup = (event: KeyboardEvent) => { keys.current.delete(event.key.toLowerCase()); };
     canvas.addEventListener("pointerdown", down); canvas.addEventListener("pointermove", move);
     canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up);
+    canvas.addEventListener("blur", blur); window.addEventListener("blur", blur);
     canvas.addEventListener("keydown", keydown); window.addEventListener("keyup", keyup);
     return () => { canvas.removeEventListener("pointerdown", down); canvas.removeEventListener("pointermove", move);
       canvas.removeEventListener("pointerup", up); canvas.removeEventListener("pointercancel", up);
+      canvas.removeEventListener("blur", blur); window.removeEventListener("blur", blur);
       canvas.removeEventListener("keydown", keydown); window.removeEventListener("keyup", keyup); };
   }, [camera, gl, onPosition]);
   useFrame((_, delta) => {
@@ -203,7 +217,8 @@ export function Walker({ collision, onPosition, trunks = [], sliding = false }: 
       const speed = Math.min(delta, 0.05) * 3.5 / Math.hypot(forward, sideways);
       const x = camera.position.x + (Math.sin(-angle) * forward + Math.cos(angle) * sideways) * speed;
       const z = camera.position.z + (-Math.cos(angle) * forward + Math.sin(angle) * sideways) * speed;
-      const clear=(px:number,pz:number)=>px > -70 && px < 70 && pz > -100 && pz < 95 &&
+      const clear=(px:number,pz:number)=>walkable(collision,px,pz) &&
+          (!collision.blocked || Math.abs(groundHeight(collision,px,pz)-groundHeight(collision,camera.position.x,camera.position.z)) < 0.55) &&
           !trunks.some(matrix => Math.hypot(matrix[0][3] - px, -matrix[1][3] - pz) < 0.8);
       if (clear(x,z)) {
         camera.position.set(x, groundHeight(collision, x, z) + 1.2, z);
