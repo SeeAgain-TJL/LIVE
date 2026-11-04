@@ -115,7 +115,7 @@ export class PineStream {
   private overviewKeys: string[] = [];
 
   constructor(private manifest: TileManifest, private gl: WebGLRenderer, private reportError: (message: string) => void,
-    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: "low" | "high"; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[] } = { alpha: "single" }) {
+    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: "low" | "high"; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean } = { alpha: "single" }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Meshoptimizer API, not a React hook.
     MeshoptDecoder.useWorkers(2);
     this.request("props/far", 0);
@@ -343,6 +343,7 @@ export class PineStream {
     const verifyMatrices=this.options.audit;
     let selectActiveMs=0,activeStart=performance.now();
     const high=this.options.quality==="high";
+    const understory=new Set(this.options.sample ? this.manifest.names.flatMap((name,i)=>/^(fern|fir_sapling)/.test(name) ? [i]:[]):[]);
     const counters={candidates:0,frustumRejected:0,pixelRejected:0,trees:0,props:0,near:0,mid:0,far:0};
     const residentKeys=new Set(this.tiles.keys());
     for(const tile of [...this.tiles.values(),...(this.overview ? [this.overview]:[])]) {
@@ -363,7 +364,9 @@ export class PineStream {
         const tree=tile.data[offset]>=this.manifest.propAssetCount;
         const dx=tile.data[offset+4]-camera.position.x,dz=-tile.data[offset+8]-camera.position.z;
         const distanceSquared=dx*dx+dz*dz;
-        if(distanceSquared>(tree ? 95*95:40*40)) {counters.pixelRejected++;continue;}
+        const inSample=tile.data[offset+4]>-40 && tile.data[offset+4]<40 && tile.data[offset+8]>-75 && tile.data[offset+8]<-15;
+        const propRange=inSample && understory.has(tile.data[offset]) ? 55:40;
+        if(distanceSquared>(tree ? 95*95:propRange*propRange)) {counters.pixelRejected++;continue;}
         this.sphere.center.fromArray(tile.bounds,i*4);this.sphere.radius=tile.bounds[i*4+3];
         if(!this.frustum.intersectsSphere(this.sphere)) {counters.frustumRejected++;continue;}
         const depth=Math.max(0.1,this.point.copy(this.sphere.center).sub(camera.position).dot(this.currentDirection));

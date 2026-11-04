@@ -1,0 +1,1116 @@
+{
+  "version": 1,
+  "archives": [
+    {
+      "name": "pine-batch5-runtime.zip",
+      "bytes": 181817406,
+      "sha256": "be2c18360edaab8109989ea156b4a3f41827a3cd4c498b3b0a853c4e1d48628d",
+      "verifiedZipMembers": true,
+      "files": [
+        {
+          "path": "runtime/batch2/impostors/pine_01.json",
+          "bytes": 715,
+          "sha256": "986e1df97599f7c22b8850757ba049846cc6c8e88919ae5942e7efbf08ad78bd"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_01.webp",
+          "bytes": 815956,
+          "sha256": "0f9558f8a81795546472770b68fc2d2c6808204f1d2afa67c68a955d33356fbe"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_02.json",
+          "bytes": 725,
+          "sha256": "e1d60b8513cc631e01a7871d9cfc4e7265fd5bf9ee41926252d00cad502fdd94"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_02.webp",
+          "bytes": 905746,
+          "sha256": "691cfc1796c1f7344a153629a04821e0e9863c4afff383c8d30876bb6cf28975"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_03.json",
+          "bytes": 714,
+          "sha256": "3aa70dcd3b87b4ec4dbba7ca50afcdc93ec203bd0b85ef67eb19603cdfe88341"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_03.webp",
+          "bytes": 920064,
+          "sha256": "ca01b9f43886df0682e09e7fe366f798a136468b404e9a69b5b70d3c9cc415b3"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_04.json",
+          "bytes": 726,
+          "sha256": "1f0c1acf66d3414e49b55fd49b21eab14344f3c7f7155a846f18940dcafe39e2"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_04.webp",
+          "bytes": 1061820,
+          "sha256": "ee1793ca5778d151cd49c41af518edf5279f18986f42ded652b0974af02daac0"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_05.json",
+          "bytes": 721,
+          "sha256": "ba8449431e7b6038403a118d6901d0392b24801c7d243b2767d105701320f353"
+        },
+        {
+          "path": "runtime/batch2/impostors/pine_05.webp",
+          "bytes": 941346,
+          "sha256": "469acd99804f442c6a0019e25319584760dfbfdd909640d3bfb27c7ce2679cb0"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_01.json",
+          "bytes": 727,
+          "sha256": "5fa5713b888ea9a4c59aadc834bd59965cc44faa6d8f3d28f56d17dced5cfbf7"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_01.webp",
+          "bytes": 833340,
+          "sha256": "c8a14cea5b9eecb050777685c081a66bc653b8af1d9b500666291fb7aa275e4f"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_02.json",
+          "bytes": 735,
+          "sha256": "ff440a4b0a46b0e4c909029876dab4c53c8468440d65bacd3715e1b4f72771b4"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_02.webp",
+          "bytes": 850454,
+          "sha256": "6bc1198ecb8d33fdbb03600650f9cf89f3ded1aefbf919b895a4c0eb00669576"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_03.json",
+          "bytes": 714,
+          "sha256": "188bead40f3f0294840f202fb05d31d18c13e2bba8d6e54503f1832a18b3c91e"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_03.webp",
+          "bytes": 721952,
+          "sha256": "6abe0ce4725c30e97f32302ac5ff9ff18a0d594a864425f010c498f6325bb25b"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_04.json",
+          "bytes": 723,
+          "sha256": "a9edeacd2846b9a9826915136a53ae5696c8b37cf418a700dfcfd586b5f07ab1"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_04.webp",
+          "bytes": 671262,
+          "sha256": "37a477b819200158ff96a3bd6180bf296b05a78917d0bc9c97fc417e13493c6b"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_05.json",
+          "bytes": 728,
+          "sha256": "8e6ae6823894456b5b9ab8274ae54a4bdaacfae2634b8f9eead2011aecb258c4"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_05.webp",
+          "bytes": 444304,
+          "sha256": "0cac87cab2e09a9dd6645875e949854a47271a0002b8fb1ae671556ec89124f8"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_06.json",
+          "bytes": 722,
+          "sha256": "c92b294c7df73565a623d513ff97659c0fcc7d96540ed7ba9677a2af03336927"
+        },
+        {
+          "path": "runtime/batch2/impostors/silver_fir_06.webp",
+          "bytes": 563718,
+          "sha256": "d2be4d8ad5d0cf995dc523b646b8f5fd2059c45efa1d2e708e59c906653e0c9e"
+        },
+        {
+          "path": "runtime/batch2/props-far.bin",
+          "bytes": 650322,
+          "sha256": "08aaf66c0b647d049f2461223b5e7e14cedb1a4242e6ba382d95160ff4463714"
+        },
+        {
+          "path": "runtime/batch2/props-far.gltf",
+          "bytes": 89082,
+          "sha256": "50dd5d47b9d6b908fa4b9a3658b0661b4b85b9b5a34afb5e253ca10b8b9554df"
+        },
+        {
+          "path": "runtime/batch2/props-mid.bin",
+          "bytes": 1002103,
+          "sha256": "8ba60a9c2d47648b834e599a4fc9c3ebaab6318f45fc6ed5a3707abd00c2dfe0"
+        },
+        {
+          "path": "runtime/batch2/props-mid.gltf",
+          "bytes": 91242,
+          "sha256": "4762f0e69b5abba29f363bc4a4f5f9373e2cebbe7b5c8d3ab2416aabade6a32c"
+        },
+        {
+          "path": "runtime/batch2/props-near.bin",
+          "bytes": 5217565,
+          "sha256": "91d1c91cad6162afa9f24ed0021962b39637c9f6f0d95b75003a1ede456a627a"
+        },
+        {
+          "path": "runtime/batch2/props-near.gltf",
+          "bytes": 83849,
+          "sha256": "7744908aeac2a1199a8d01453c53ab3d5b98a323d35d3ebf30cc5fcbd5ca54de"
+        },
+        {
+          "path": "runtime/batch2/textures/09aa0139ee991f6b4537.webp",
+          "bytes": 270644,
+          "sha256": "09aa0139ee991f6b4537bfe8c33df0d220f3435614eada5d72aa7a10dcc945ec"
+        },
+        {
+          "path": "runtime/batch2/textures/0f9efa945262fc06c79e.webp",
+          "bytes": 484644,
+          "sha256": "0f9efa945262fc06c79ebd0a768bab38de6233d08cf2365acb28b7a92d533786"
+        },
+        {
+          "path": "runtime/batch2/textures/0fa4b280720f40b6b473.webp",
+          "bytes": 259396,
+          "sha256": "0fa4b280720f40b6b473ba2f7ba70607f2bb81f74946082058139295bc1338fc"
+        },
+        {
+          "path": "runtime/batch2/textures/1969631e428b633104e9.webp",
+          "bytes": 182952,
+          "sha256": "1969631e428b633104e9a1b508413d2d1ae2e5f2c14e340a4d31e0533eed54ea"
+        },
+        {
+          "path": "runtime/batch2/textures/199a31df08a4d751d8ab.webp",
+          "bytes": 299678,
+          "sha256": "199a31df08a4d751d8abc0494fa8fc3533a7cdd8ec51f0baa803754a6f2b5424"
+        },
+        {
+          "path": "runtime/batch2/textures/1a69c26fc17fe2d4dd48.webp",
+          "bytes": 183794,
+          "sha256": "1a69c26fc17fe2d4dd48c9a98a9c1d8752fde98a1e770fc8925052583661145f"
+        },
+        {
+          "path": "runtime/batch2/textures/1d41a2323c83dccaa3af.webp",
+          "bytes": 192814,
+          "sha256": "1d41a2323c83dccaa3afcfd837ebd5e1d3c04fc9beefcd399297850ec666cfad"
+        },
+        {
+          "path": "runtime/batch2/textures/20b25aa567143a37f45d.webp",
+          "bytes": 161122,
+          "sha256": "20b25aa567143a37f45de0e3e7215eaf4ffbe76592b5806e90d1153ef922ed13"
+        },
+        {
+          "path": "runtime/batch2/textures/285d52c5301c5202ce31.webp",
+          "bytes": 424798,
+          "sha256": "285d52c5301c5202ce3120c29ed0c1106d5863e1c6afe530cc36fee97e81fb47"
+        },
+        {
+          "path": "runtime/batch2/textures/3697e1b07fcd0218ebb5.webp",
+          "bytes": 73052,
+          "sha256": "3697e1b07fcd0218ebb51fc3b449529d5982545e0941f87f88bb2d42145f7c8a"
+        },
+        {
+          "path": "runtime/batch2/textures/387d0f115be5faa27880.webp",
+          "bytes": 54832,
+          "sha256": "387d0f115be5faa27880f233052a2f6d6b9d22c0e37af216089ae8ad28c79aa2"
+        },
+        {
+          "path": "runtime/batch2/textures/4dbcf0d2906e71fb2565.webp",
+          "bytes": 368558,
+          "sha256": "4dbcf0d2906e71fb25657d5b8d62fce8e288badfc64bfcae822a7f86b6f54d61"
+        },
+        {
+          "path": "runtime/batch2/textures/50c68874378e69f8baea.webp",
+          "bytes": 172914,
+          "sha256": "50c68874378e69f8baea8c78bc38ca42e233b6bc229d15c557a6ab86ae1d72cf"
+        },
+        {
+          "path": "runtime/batch2/textures/52dc2a0576fb6ce5674e.webp",
+          "bytes": 94782,
+          "sha256": "52dc2a0576fb6ce5674e40ee49b6676435158ab4e5d9e3e8d09210b1322eeece"
+        },
+        {
+          "path": "runtime/batch2/textures/652343468dcf25628825.webp",
+          "bytes": 278400,
+          "sha256": "652343468dcf256288250c2f9cf3f976b57d7ea4edb54b1b35dd057f18fea164"
+        },
+        {
+          "path": "runtime/batch2/textures/66c0a31a337f3a4f264c.webp",
+          "bytes": 221366,
+          "sha256": "66c0a31a337f3a4f264ca1b0a8e026cbe2a8959cd53c155ce2a16f90f3330c5d"
+        },
+        {
+          "path": "runtime/batch2/textures/6bb3fb2fe3882ff8efdc.webp",
+          "bytes": 235438,
+          "sha256": "6bb3fb2fe3882ff8efdc6c2b7467af4734bf1cf0ec413bb721b23600df15b04e"
+        },
+        {
+          "path": "runtime/batch2/textures/6ff8b292aa5c9dacdbb7.webp",
+          "bytes": 369232,
+          "sha256": "6ff8b292aa5c9dacdbb799cf36e490cc45485de175e338fcca616e0ab59e6187"
+        },
+        {
+          "path": "runtime/batch2/textures/7a8a5f82ce8b79fa7e80.webp",
+          "bytes": 68916,
+          "sha256": "7a8a5f82ce8b79fa7e803a8a223bf3562d9675d055ed513d3a52a97c4b953fe6"
+        },
+        {
+          "path": "runtime/batch2/textures/7bd742b9ee8e9a540abd.webp",
+          "bytes": 347684,
+          "sha256": "7bd742b9ee8e9a540abd4265b5875e2278bd2bef7c7ebde0ef75586b11a01a67"
+        },
+        {
+          "path": "runtime/batch2/textures/7dff4f9b0777767b1d1c.webp",
+          "bytes": 405668,
+          "sha256": "7dff4f9b0777767b1d1cefb9893df1c4d4ba05b7732c2a2020b86edb8243c4e4"
+        },
+        {
+          "path": "runtime/batch2/textures/7fe31326dea1133cbbd0.webp",
+          "bytes": 386930,
+          "sha256": "7fe31326dea1133cbbd0600f9d702750d15a3112178e8ea8e7438517171ffd4c"
+        },
+        {
+          "path": "runtime/batch2/textures/85e132dff58673c68258.webp",
+          "bytes": 43974,
+          "sha256": "85e132dff58673c68258de9058dddf0653819c4baf26786192a79f08faebd9c9"
+        },
+        {
+          "path": "runtime/batch2/textures/941868cad0255b466e99.webp",
+          "bytes": 211332,
+          "sha256": "941868cad0255b466e99c43d01f261e20479a6455f5a70adefc030249e2081b1"
+        },
+        {
+          "path": "runtime/batch2/textures/9be79d81f99f439e3da5.webp",
+          "bytes": 49528,
+          "sha256": "9be79d81f99f439e3da5a929472663d216d814aede834e84e7c9c98f24ac1e4f"
+        },
+        {
+          "path": "runtime/batch2/textures/a2bde4f22153f3a2fbc4.webp",
+          "bytes": 37912,
+          "sha256": "a2bde4f22153f3a2fbc4906deb50adad3bd3b4a78423a7d956a5ddc83652ab27"
+        },
+        {
+          "path": "runtime/batch2/textures/b53bd4a904d465a928fc.webp",
+          "bytes": 169850,
+          "sha256": "b53bd4a904d465a928fc4fa9693919f664daa78b94c5ff80a1d52b0582e52a58"
+        },
+        {
+          "path": "runtime/batch2/textures/bc03eada03445dd2a1b2.webp",
+          "bytes": 139318,
+          "sha256": "bc03eada03445dd2a1b29e8eb85da566562628c83c58dd69c7a83b941b684a14"
+        },
+        {
+          "path": "runtime/batch2/textures/bf32433a6a3ef826d16c.webp",
+          "bytes": 79120,
+          "sha256": "bf32433a6a3ef826d16cc7133e5ae38f995eb1197a9b5a08fd4687039f4a8eb3"
+        },
+        {
+          "path": "runtime/batch2/textures/c83669b4709c7e19433f.webp",
+          "bytes": 74798,
+          "sha256": "c83669b4709c7e19433fb446a3d85f75cb7b159bf9aae9f2f5e9d689a595a12b"
+        },
+        {
+          "path": "runtime/batch2/textures/cb20002db6f0c8a16a75.webp",
+          "bytes": 126816,
+          "sha256": "cb20002db6f0c8a16a757dfee2c2c5157fdb47be740afa80125eb72c98557e5e"
+        },
+        {
+          "path": "runtime/batch2/textures/dac89befcb4caa1b2c8c.webp",
+          "bytes": 262408,
+          "sha256": "dac89befcb4caa1b2c8c06aa773f7d1f71ecd97589d2402e002f6246015dd5db"
+        },
+        {
+          "path": "runtime/batch2/textures/e331695bdc90c24a4328.webp",
+          "bytes": 260562,
+          "sha256": "e331695bdc90c24a432829c80555e74e131b1871c02d0af401eb5bdea79bab14"
+        },
+        {
+          "path": "runtime/batch2/textures/e5b1b36fc08f436227fc.webp",
+          "bytes": 89452,
+          "sha256": "e5b1b36fc08f436227fc1825fccd395723c29ecabf9ea9a77b9c375a47b5079b"
+        },
+        {
+          "path": "runtime/batch2/textures/eecfafe1e240cc7a5df9.webp",
+          "bytes": 377226,
+          "sha256": "eecfafe1e240cc7a5df9c17d8c18f737e8f6a0eca90178cdbe69726cfb186b2c"
+        },
+        {
+          "path": "runtime/batch2/textures/eee4f5f6058d8485db77.webp",
+          "bytes": 406238,
+          "sha256": "eee4f5f6058d8485db772d2daa56107e47fc1932a66c170165413cd791e8d788"
+        },
+        {
+          "path": "runtime/batch2/textures/f6731afbbf2ad26f24a1.webp",
+          "bytes": 154820,
+          "sha256": "f6731afbbf2ad26f24a1ae6bc9b0e74b08d686d47a2e675eed44796cc948e368"
+        },
+        {
+          "path": "runtime/batch2/textures/fef80f007e71807efd6a.webp",
+          "bytes": 155588,
+          "sha256": "fef80f007e71807efd6aeae3ea988c2b1c8204242370a43737340691382599f8"
+        },
+        {
+          "path": "runtime/batch2/tiles/-1_-1.bin.gz",
+          "bytes": 2437456,
+          "sha256": "6b4b9a0d6c32b2d4b287fbda99e018c1806216a0972ad5aa8ecc0812b3bc1a53"
+        },
+        {
+          "path": "runtime/batch2/tiles/-1_-2.bin.gz",
+          "bytes": 3504705,
+          "sha256": "d80f8c0becdb5151cdbcfbcf6a3731faa72a96ba91f66f7841ef7c6049fc8eb1"
+        },
+        {
+          "path": "runtime/batch2/tiles/-1_-3.bin.gz",
+          "bytes": 3073157,
+          "sha256": "8ca4e7fd036f68f141a2a59b4e759124569467cf05d3a538d48fef727062780f"
+        },
+        {
+          "path": "runtime/batch2/tiles/-1_-4.bin.gz",
+          "bytes": 149584,
+          "sha256": "cac6b62e0eaeea23e051389995e56b487bc7ef91d6011282151c5cce2e39b07c"
+        },
+        {
+          "path": "runtime/batch2/tiles/-1_0.bin.gz",
+          "bytes": 302689,
+          "sha256": "1826b0eeb6da3e17402438e08b249991e602e2b6044e3f2eb56be311e1265ea2"
+        },
+        {
+          "path": "runtime/batch2/tiles/-1_1.bin.gz",
+          "bytes": 1174,
+          "sha256": "80d1ea2c442807e4837c4b77bd1488a55e84778c133b4cb0eaa9672b314d5114"
+        },
+        {
+          "path": "runtime/batch2/tiles/-1_2.bin.gz",
+          "bytes": 2075,
+          "sha256": "5f039aca9b588b077199ab35df46ecf5e147ed5e4084eb49a37d7947f501efef"
+        },
+        {
+          "path": "runtime/batch2/tiles/-1_3.bin.gz",
+          "bytes": 283,
+          "sha256": "24a744c6511eee5c5f11689b0e9fe67248b07364ffd42b4843b5801eb0614c6f"
+        },
+        {
+          "path": "runtime/batch2/tiles/-2_-1.bin.gz",
+          "bytes": 111949,
+          "sha256": "bd70926ef806feb46cb49f569e3c8321419df7112df094a89f5799680a54d0b2"
+        },
+        {
+          "path": "runtime/batch2/tiles/-2_-2.bin.gz",
+          "bytes": 417574,
+          "sha256": "46ecbcf045d7557fa6fcc64655d76b621e565a6e922253b754a2ed7b1662cbf7"
+        },
+        {
+          "path": "runtime/batch2/tiles/-2_-3.bin.gz",
+          "bytes": 227836,
+          "sha256": "696b9b99d21ebeba338b782bd19a7c9c3ed3ab0295309f048d4b93618e03887a"
+        },
+        {
+          "path": "runtime/batch2/tiles/-2_-4.bin.gz",
+          "bytes": 335,
+          "sha256": "838678e2c2e5c4457c8f35b3c7e528cb6a8a2c6485a68647836986318c0e1ecb"
+        },
+        {
+          "path": "runtime/batch2/tiles/-2_0.bin.gz",
+          "bytes": 2185,
+          "sha256": "c49265f927fd5d9dc49a7ce849c3877be22c594552d46632413cf9707a4b5680"
+        },
+        {
+          "path": "runtime/batch2/tiles/-2_1.bin.gz",
+          "bytes": 1294,
+          "sha256": "cdc23b1591280fe884e956000398745ce416dd3e4e1842cd3be1665f2d7d81af"
+        },
+        {
+          "path": "runtime/batch2/tiles/-2_2.bin.gz",
+          "bytes": 1225,
+          "sha256": "170a09685a12e2d3ff37abf7c5dc3d60178f9ae616fb870c7a733a8d279e9c77"
+        },
+        {
+          "path": "runtime/batch2/tiles/-2_3.bin.gz",
+          "bytes": 179,
+          "sha256": "b7b96aa05660b5f317a6de736689cc28168769f8fe40ef2ffe60d360b63f6746"
+        },
+        {
+          "path": "runtime/batch2/tiles/-3_-1.bin.gz",
+          "bytes": 2310,
+          "sha256": "b76a7781a3e207071af5f88cb78643fc1a7f9b9cef469c9c3afa00c8b012dd21"
+        },
+        {
+          "path": "runtime/batch2/tiles/-3_-2.bin.gz",
+          "bytes": 1774,
+          "sha256": "f1355b5795ba7aab7a7b71259c9a228c1d962c3d2724ceae12faaa7d0932e052"
+        },
+        {
+          "path": "runtime/batch2/tiles/-3_-3.bin.gz",
+          "bytes": 2175,
+          "sha256": "0fb3441625f9ac7b9c77b99223fb84677c085abc5108b7fb52a67df24ee955cb"
+        },
+        {
+          "path": "runtime/batch2/tiles/-3_-4.bin.gz",
+          "bytes": 179,
+          "sha256": "67e75c5c6bab4cafeba73dedc61a5d9eee335d0028824669e252d8f5fe156a58"
+        },
+        {
+          "path": "runtime/batch2/tiles/-3_0.bin.gz",
+          "bytes": 2180,
+          "sha256": "9e5f8f5832275899cea29acf7e81b0388773ac85cb73303e01cfbee259e3cc35"
+        },
+        {
+          "path": "runtime/batch2/tiles/-3_1.bin.gz",
+          "bytes": 2060,
+          "sha256": "cd801eb1b46585c3e8ff782899457141b78c4191536c9f791344c572ede2eef5"
+        },
+        {
+          "path": "runtime/batch2/tiles/-3_2.bin.gz",
+          "bytes": 1522,
+          "sha256": "9a129272eb5954e772751f455b55813bbd75bd996db5d20d3beb6888295754da"
+        },
+        {
+          "path": "runtime/batch2/tiles/-3_3.bin.gz",
+          "bytes": 75,
+          "sha256": "789d506f2da5dffac87d9aba66325718110c8408d4cbabb0a7fd015631dfb9e0"
+        },
+        {
+          "path": "runtime/batch2/tiles/-4_-1.bin.gz",
+          "bytes": 283,
+          "sha256": "ab2fecf69f827f3fbc904fd39dc40fd0336c5e8551a865d80694f93049c48d12"
+        },
+        {
+          "path": "runtime/batch2/tiles/-4_-2.bin.gz",
+          "bytes": 231,
+          "sha256": "7f205a664266a3ad12a255a28a019d45637a3b671bb87e70a97edb2f0f398bef"
+        },
+        {
+          "path": "runtime/batch2/tiles/-4_-3.bin.gz",
+          "bytes": 179,
+          "sha256": "13b82c31ffc76a65c9edce9ebf1c70f420cfb6b6a3f70df2be108329932ebe04"
+        },
+        {
+          "path": "runtime/batch2/tiles/-4_-4.bin.gz",
+          "bytes": 75,
+          "sha256": "819df15706e52daa747c96c92ded22bd55c3cb39ee5b72ae89947bede18cadd9"
+        },
+        {
+          "path": "runtime/batch2/tiles/-4_0.bin.gz",
+          "bytes": 577,
+          "sha256": "8d3c3f2a612edfc545b6819aa1ef48da6e9dfb5fb64e488368e7d76f8b09eeb8"
+        },
+        {
+          "path": "runtime/batch2/tiles/-4_1.bin.gz",
+          "bytes": 634,
+          "sha256": "367ebaea1a086ed6db35a3288f679144e3fe60f1927911c7c5836f05ab7dc5a6"
+        },
+        {
+          "path": "runtime/batch2/tiles/-4_2.bin.gz",
+          "bytes": 387,
+          "sha256": "6491d8465b490d8ff4076ce693f4f6bcb4f49a00229bb3dd6abbb444d0de88f8"
+        },
+        {
+          "path": "runtime/batch2/tiles/0_-1.bin.gz",
+          "bytes": 2697005,
+          "sha256": "39b9e27787791b341c1ce5b6dd017ef24a8f6abea84fc3e677ff7fa3e3ffdd28"
+        },
+        {
+          "path": "runtime/batch2/tiles/0_-2.bin.gz",
+          "bytes": 3045829,
+          "sha256": "206c461c193cc74d5eb88c38f40690f31d1a95fa04436d768768418a7f80c351"
+        },
+        {
+          "path": "runtime/batch2/tiles/0_-3.bin.gz",
+          "bytes": 4328120,
+          "sha256": "7b6182a3201f85519ec23589da7026136c6c1b2ccbace494859aa34b77ecf0f2"
+        },
+        {
+          "path": "runtime/batch2/tiles/0_-4.bin.gz",
+          "bytes": 443102,
+          "sha256": "317cd6c2a8655eb70c756bdbef7e3d77de703f18967982040f03122c404a80f1"
+        },
+        {
+          "path": "runtime/batch2/tiles/0_0.bin.gz",
+          "bytes": 1338336,
+          "sha256": "595baa8698c693d61000773a144afcbebdfa99c940623a3ba831a253b8417c34"
+        },
+        {
+          "path": "runtime/batch2/tiles/0_1.bin.gz",
+          "bytes": 1411,
+          "sha256": "9b4d66effbc3dc05995f8a0fbf634d26128d388e2ad99465d948f2d163077ef2"
+        },
+        {
+          "path": "runtime/batch2/tiles/0_2.bin.gz",
+          "bytes": 1645,
+          "sha256": "42a28a22545882395567ad71eed37970d582889d43ada6ea3350f5958b1887a8"
+        },
+        {
+          "path": "runtime/batch2/tiles/0_3.bin.gz",
+          "bytes": 335,
+          "sha256": "fbfbf6e702db032a949f34c5fa5cedfa2d95c11b5d5965e629b5f500719b8d9e"
+        },
+        {
+          "path": "runtime/batch2/tiles/1_-1.bin.gz",
+          "bytes": 4001853,
+          "sha256": "54f26290728101e622b0df46bc7d873ac363ac5c9b75ecd733850fb3864cc526"
+        },
+        {
+          "path": "runtime/batch2/tiles/1_-2.bin.gz",
+          "bytes": 2923157,
+          "sha256": "803ed741cb37d05171c7ee98e51552a72b7a3857af5513d1b150519444902398"
+        },
+        {
+          "path": "runtime/batch2/tiles/1_-3.bin.gz",
+          "bytes": 3843981,
+          "sha256": "feb2e218aca07b8fceb24d58b6735670e4f63db04549e43bc42ec4ba74045f60"
+        },
+        {
+          "path": "runtime/batch2/tiles/1_-4.bin.gz",
+          "bytes": 319100,
+          "sha256": "0b7956785ecb89ffe854af87871624de98a202e2b6f5e4a1536d03c61fb1a692"
+        },
+        {
+          "path": "runtime/batch2/tiles/1_0.bin.gz",
+          "bytes": 988265,
+          "sha256": "662293b74f094f08903b273334ba54fab4f7d4394d91daa95b3a811993f1d957"
+        },
+        {
+          "path": "runtime/batch2/tiles/1_1.bin.gz",
+          "bytes": 1831,
+          "sha256": "fc30057498bde731a6896e8cb43967f4ccc8379cc78c4e37d688f0a82e35ac56"
+        },
+        {
+          "path": "runtime/batch2/tiles/1_2.bin.gz",
+          "bytes": 2139,
+          "sha256": "8d3c74dab4acb666a1d8c3f7ec013c6863b5969e49eaf44608e7bb2bf7828d86"
+        },
+        {
+          "path": "runtime/batch2/tiles/1_3.bin.gz",
+          "bytes": 179,
+          "sha256": "b8148ab068cc34d4938fc27163e6e33b270e734802e10e3cc855d016047314a5"
+        },
+        {
+          "path": "runtime/batch2/tiles/2_-1.bin.gz",
+          "bytes": 1274097,
+          "sha256": "632875f8f91dee0be485bcba07b4d8edcdfde584ea8da7a6d9990d23ee449174"
+        },
+        {
+          "path": "runtime/batch2/tiles/2_-2.bin.gz",
+          "bytes": 1872224,
+          "sha256": "399930eb74c812d294e9bf9ab35e4000890f6bb00b334feb0ffcba386dcd0bd8"
+        },
+        {
+          "path": "runtime/batch2/tiles/2_-3.bin.gz",
+          "bytes": 633642,
+          "sha256": "96aab9702a062585c6e5b8947759b8e3d1fd9ee5f95d9a151c2327005bfc09d9"
+        },
+        {
+          "path": "runtime/batch2/tiles/2_-4.bin.gz",
+          "bytes": 25684,
+          "sha256": "6692115c414e37a19a92d13e6231a18c598813b9e43b377a786637380e21c759"
+        },
+        {
+          "path": "runtime/batch2/tiles/2_0.bin.gz",
+          "bytes": 50924,
+          "sha256": "567fdff29c661c4a6a5dc5e30edae571642ab8822c774bff6546c48c1271053a"
+        },
+        {
+          "path": "runtime/batch2/tiles/2_1.bin.gz",
+          "bytes": 1768,
+          "sha256": "7783cad929b0fee020e5239b433827430061097cd82dbc21a9af6d37e153c336"
+        },
+        {
+          "path": "runtime/batch2/tiles/2_2.bin.gz",
+          "bytes": 1947,
+          "sha256": "6401a5ac86d914ccd636bcd7cc645790e7ae4d6d62f8a363f8a2f734a7b95e61"
+        },
+        {
+          "path": "runtime/batch2/tiles/2_3.bin.gz",
+          "bytes": 283,
+          "sha256": "bcd1eef80c88762dad45c9d697fd65c3a68e3d4934870ca8bca62e1dac2ff5c9"
+        },
+        {
+          "path": "runtime/batch2/tiles/3_-1.bin.gz",
+          "bytes": 387,
+          "sha256": "7514df09eaf24c3f6ef4caca7a3d148da29f4bfcfec3df4977ca70d2a7e6a488"
+        },
+        {
+          "path": "runtime/batch2/tiles/3_-2.bin.gz",
+          "bytes": 1056,
+          "sha256": "c240c224f19f43eace6cfb8a58252dbf4744044c0db496db3af89c57f1e6a2ed"
+        },
+        {
+          "path": "runtime/batch2/tiles/3_-3.bin.gz",
+          "bytes": 231,
+          "sha256": "b95d31273e68512c31a67acaab13618d613810c41920e48488a6bf05307a4999"
+        },
+        {
+          "path": "runtime/batch2/tiles/3_0.bin.gz",
+          "bytes": 283,
+          "sha256": "8f5f41457ce6c60088e37f4d5d0fb79ab2b4022e12bbe88cb7a7572c3aa22869"
+        },
+        {
+          "path": "runtime/batch2/tiles/3_1.bin.gz",
+          "bytes": 543,
+          "sha256": "bd18e44381849137b6a43df6127b5b431b6a90c69ec059691da61bd4990a2525"
+        },
+        {
+          "path": "runtime/batch2/tiles/3_2.bin.gz",
+          "bytes": 491,
+          "sha256": "12bf0e0d078f6d3a8a92e388fc3f0f071a5257700209f781b798a03d9e9ed802"
+        },
+        {
+          "path": "runtime/batch2/tiles/manifest.json",
+          "bytes": 8994,
+          "sha256": "90a03cffaadf4df2edf23f13a92e544d574e18520ff5c1db4747e2b3465eea1a"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_01-near.bin",
+          "bytes": 8434627,
+          "sha256": "79f2ba5ba1bf4727de43e1fa689d3bef11976f4f8cf38b43ae296ba3f0515b20"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_01-near.gltf",
+          "bytes": 8069,
+          "sha256": "d30a538f12296e02037b2fcb8460e320b725db2abce16b44c70b49d072969fd3"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_02-near.bin",
+          "bytes": 5231277,
+          "sha256": "2a10c99de56c62affefa2b0e3bee2f8875bcd27a31b9e68b63835543b4789a2f"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_02-near.gltf",
+          "bytes": 8024,
+          "sha256": "cdb9d3736b95670a0b5d9a5d454f0da2b2abf999ccffc9c5c78ff07a30d9086a"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_03-near.bin",
+          "bytes": 7395369,
+          "sha256": "3fe80665987759bff43aa7e8ed1cb170d40c0600f54144a6869d0e8eb782ae10"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_03-near.gltf",
+          "bytes": 8057,
+          "sha256": "1b0e907f41ca7a41e9132ad11ff45e506843d3e3329addd33a3bcf3d3ee995f5"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_04-near.bin",
+          "bytes": 8457611,
+          "sha256": "138a0c2207c1c41bf95ce2547da6837f47666990faeb08ec2722b0da32bcfc3b"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_04-near.gltf",
+          "bytes": 8025,
+          "sha256": "3f50c7f0c8def61697d92c02ca756c641a0ab58e013ac9a2db5edfc77a9f1acd"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_05-near.bin",
+          "bytes": 9938103,
+          "sha256": "c024f2d9dca58af5a0525a5d66658985bce582026df586e4f08554ed84a8f65d"
+        },
+        {
+          "path": "runtime/batch2/trees/pine_05-near.gltf",
+          "bytes": 8023,
+          "sha256": "2d4cd0712c3bf01f186778c4e1b6d64e757aed3bc5782d09207ac60cf00a3df9"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_01-near.bin",
+          "bytes": 11465726,
+          "sha256": "740ac025a1a442cd4660d3aa32fa60928504b5f5cf652ef758d8885694b1824b"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_01-near.gltf",
+          "bytes": 8102,
+          "sha256": "91f84e01230632212b6e568b68a86238dcb38bce1e9a2fd7697a08d4ca45e75b"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_02-near.bin",
+          "bytes": 6353850,
+          "sha256": "f74438bb0694ef065e856041766977b3b8fb70b01e136cde02e25a6f145c2d0f"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_02-near.gltf",
+          "bytes": 8033,
+          "sha256": "506cb8ce2b5b8b671c7faffbdf560fc27e5755e75c6083e7c2d9c1b8c82f2b37"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_03-near.bin",
+          "bytes": 6819596,
+          "sha256": "1b96f2622e5945b657923ffe2793ce193482f454823f930e930ed3caddc0c3b9"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_03-near.gltf",
+          "bytes": 8071,
+          "sha256": "1cedad745c07b995dcc8eb9ba964aa8d3ed8f3e40b381e43ab5b05411a7e636b"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_04-near.bin",
+          "bytes": 6471658,
+          "sha256": "d53f13d6170098c18d12ea5d85d36623fa504da1adb5a6c4bef27c7976dad6d4"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_04-near.gltf",
+          "bytes": 8044,
+          "sha256": "6dfc9e0878207f2c0d55bf0a63c8c0663ed59008e87fe62b4cf85d12c2b51288"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_05-near.bin",
+          "bytes": 1639351,
+          "sha256": "747e6ffc7846ce41f65c1a6f50abf260ec761a3eef075443c0b3b7b33ce03d56"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_05-near.gltf",
+          "bytes": 8016,
+          "sha256": "53ef8338f45b703e314115c97661ef6b755e28c6c3c98cdf23e0b4c51069dc66"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_06-near.bin",
+          "bytes": 1396960,
+          "sha256": "c9f4d42d83b1e1d2c1d89d392d7c3105ffec343ced15240fdc78fb0dad5854f0"
+        },
+        {
+          "path": "runtime/batch2/trees/silver_fir_06-near.gltf",
+          "bytes": 8050,
+          "sha256": "9bdc8032fa3d21597614510030676187756d4ab1a828181749f2d8d6a502ce45"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/0638bedad7c161573d7f.webp",
+          "bytes": 148266,
+          "sha256": "0638bedad7c161573d7f165690d8ea8eee1dc4dad2aa4d30c74ee558a0a13c76"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/13b5542fe7d3f1d4391a.webp",
+          "bytes": 165164,
+          "sha256": "13b5542fe7d3f1d4391a073dd8f99451bbea87510d2ddd46cc9b5e83cf280dd4"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/273655888eace9f964ea.webp",
+          "bytes": 191216,
+          "sha256": "273655888eace9f964ea10f0552c37704147753c76e7fa05d9ad4449a58f62d8"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/286598e3601ad04ea942.webp",
+          "bytes": 368982,
+          "sha256": "286598e3601ad04ea942e9af08ca7e7c96b0351e9dfa8d298d167b4955e9828e"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/29373c4b2f679edb304f.webp",
+          "bytes": 123876,
+          "sha256": "29373c4b2f679edb304f2a453df9fd3062228dde6d31a89dc2145efd980ace28"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/2b1f9689b8fd775a32e9.webp",
+          "bytes": 308564,
+          "sha256": "2b1f9689b8fd775a32e9e35e0b9e789321f1d6caed5b8a749033a81f681a20af"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/3023bcead551823e9832.webp",
+          "bytes": 421632,
+          "sha256": "3023bcead551823e983215540318b97393676e81474a674abb2b614e219f9b59"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/3f757e98f534aa931ac8.webp",
+          "bytes": 73178,
+          "sha256": "3f757e98f534aa931ac8f52b5ab310ccd03d61e5044395d1e2f62a710e8b8b19"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/43fd64fa5d18f24041df.webp",
+          "bytes": 240740,
+          "sha256": "43fd64fa5d18f24041df70a159940552c15ba78a47574957adb569e01b6126d9"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/4888aec57116ba154256.webp",
+          "bytes": 442400,
+          "sha256": "4888aec57116ba1542567a0a9d349b51afe70490e96571f2a7af69f11e685b14"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/4f218daa1b8cac300a36.webp",
+          "bytes": 189698,
+          "sha256": "4f218daa1b8cac300a3615005c4c8c444d326a7457adbeb6411cb21c5f29a820"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/60e1ac86773c08249f65.webp",
+          "bytes": 269388,
+          "sha256": "60e1ac86773c08249f657eccfe6f3fe2263cfc6f6e9f3e27c305e76e9ea2d1fd"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/6a70c8600b2c303dda82.webp",
+          "bytes": 229918,
+          "sha256": "6a70c8600b2c303dda82af0c182c4516a6780c20ef1f35ae86495f8cd4e9cd5d"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/7306dc023de419c1aaf9.webp",
+          "bytes": 226252,
+          "sha256": "7306dc023de419c1aaf9fa5c95b85b1d797dfa297cb87a5f3a8004be02e573d6"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/7b7dc75fd4d5bbe1821a.webp",
+          "bytes": 348858,
+          "sha256": "7b7dc75fd4d5bbe1821a83cb2e1c89ec7569edceaa45a539714f0057477cf9c8"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/8677b4f569a1313f4a53.webp",
+          "bytes": 84916,
+          "sha256": "8677b4f569a1313f4a532b218e6593c0cf8660a82fb0a8b2af8b788e7a1d8e8d"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/962a4a543d93ec8054db.webp",
+          "bytes": 55646,
+          "sha256": "962a4a543d93ec8054dbe3d4d25f40dbcb95b355a39da1f4342a384a20dfa99d"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/c20c495347340ec73a2e.webp",
+          "bytes": 380286,
+          "sha256": "c20c495347340ec73a2e3eafd3914ab9a337c155e91f65ae2a6212729f1330c9"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/e9960c8ea6899284e4d1.webp",
+          "bytes": 294174,
+          "sha256": "e9960c8ea6899284e4d1ba6529afae59a5660613800d6c5623b1cf34b6f8db3b"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/e9a023180de05fc3d34a.webp",
+          "bytes": 301204,
+          "sha256": "e9a023180de05fc3d34aabdce9d598d1bc4e9b7661d31fbf30849ea34295e376"
+        },
+        {
+          "path": "runtime/batch2/trees/textures/f0c55bd2086b56dea6ab.webp",
+          "bytes": 57352,
+          "sha256": "f0c55bd2086b56dea6ab49b6feaa66bbcb544f92d7b9270eb6aee954ced8e824"
+        },
+        {
+          "path": "runtime/batch3/impostors/pine_04.json",
+          "bytes": 721,
+          "sha256": "6f8fefbafa4056ce0a0149a6968cce62e3afa4e942d1fdf849e756157a76cfbe"
+        },
+        {
+          "path": "runtime/batch3/impostors/pine_04.webp",
+          "bytes": 3637424,
+          "sha256": "fea1ef996e9892e88dfbf7f58b42c60ebd49264a0fdc03a9274942426b6a553e"
+        },
+        {
+          "path": "runtime/batch3b/impostors/pine_04.json",
+          "bytes": 1492,
+          "sha256": "b88652f8c537336250bd59759294c95f7b5fc6c20acc3cff27b4430d2e33e5b7"
+        },
+        {
+          "path": "runtime/batch3b/impostors/pine_04.webp",
+          "bytes": 3515020,
+          "sha256": "dc86012c2b57261a44d6697eede4810bb057bc05325ccf0e2af28fd093c9c3c5"
+        },
+        {
+          "path": "runtime/batch3b/terrain/basecolor.webp",
+          "bytes": 12193892,
+          "sha256": "d853dcabfd248b2806c6fe527225dd4ecba42dc5cd78a026286175d87491f335"
+        },
+        {
+          "path": "runtime/batch3b/terrain/normal.webp",
+          "bytes": 2577894,
+          "sha256": "20c3e905a4f7d2956b0201a54e4aa007326abbe30caf67872b2f44b769d7d938"
+        },
+        {
+          "path": "runtime/batch3b/terrain/roughness.webp",
+          "bytes": 372116,
+          "sha256": "57e3eaac49010bbead0c739cf01bedff9095f3aa8edfe6de8d3c8fce9e56d39c"
+        },
+        {
+          "path": "runtime/batch4/terrain/blend-masks.webp",
+          "bytes": 42036,
+          "sha256": "41cc4ed330cdcfebec64e8dbc717f4626236bc908c50917e16bac89c4b788a03"
+        },
+        {
+          "path": "runtime/batch4/terrain/forest_ground_04_diff.webp",
+          "bytes": 1983662,
+          "sha256": "638d6da4fb60ebd8d5cf02c598e50ea6dd75fa7a201160476a883cef174a6539"
+        },
+        {
+          "path": "runtime/batch4/terrain/forest_ground_04_disp.webp",
+          "bytes": 6828,
+          "sha256": "da818d03705a478fd97015d0e5b3088cb1386b101ff5b467cd301bb472bc07a7"
+        },
+        {
+          "path": "runtime/batch4/terrain/forest_ground_04_nor_gl.webp",
+          "bytes": 522532,
+          "sha256": "d8ea09fb896c22cd98c4065e6e7c5dc4abec369e5d25453f6768a06daa845bff"
+        },
+        {
+          "path": "runtime/batch4/terrain/forest_ground_04_rough.webp",
+          "bytes": 42382,
+          "sha256": "7b9ecc462c0dd61f6799d705ef69e264797658e2f18c445c58f5eda631151081"
+        },
+        {
+          "path": "runtime/batch4/terrain/forest_leaves_04_diff.webp",
+          "bytes": 1963888,
+          "sha256": "9e7c18dea835e0ccd13a338b242bc0cf834912e08c39003a1ae8f921ba6d312c"
+        },
+        {
+          "path": "runtime/batch4/terrain/forest_leaves_04_disp.webp",
+          "bytes": 44884,
+          "sha256": "5dcbc25e48fefe17ea9e0967992c70dd60fc12dd8b1e42682a823f1d1502c0d1"
+        },
+        {
+          "path": "runtime/batch4/terrain/forest_leaves_04_nor_gl.webp",
+          "bytes": 628280,
+          "sha256": "00de4d7cb7ff4203e7f4a1e19553e153f3cf591f27ead4e1a8be084b4a47a6c3"
+        },
+        {
+          "path": "runtime/batch4/terrain/forest_leaves_04_rough.webp",
+          "bytes": 91162,
+          "sha256": "e8c19b6d0f9f9df5ca0fe5ceab89e6f8e38645d90eb28896ea46f8e44bb6e2a3"
+        },
+        {
+          "path": "runtime/batch4/terrain/manifest.json",
+          "bytes": 3351,
+          "sha256": "75e4d6133d317624b8c6fd28061ca5258f7e1115f886bbfa3ebfc3d039d7542b"
+        },
+        {
+          "path": "runtime/batch4/terrain/rocky_trail_diff.webp",
+          "bytes": 1741954,
+          "sha256": "fe28aefe5cfc36fdd2f8031bde392fb64127f6ec7550862151e00b6c4be441e3"
+        },
+        {
+          "path": "runtime/batch4/terrain/rocky_trail_disp.webp",
+          "bytes": 36646,
+          "sha256": "0b9a60b8cabe4d77aed21f65a34956f2d66d2823685cca783b0d8103842c27dc"
+        },
+        {
+          "path": "runtime/batch4/terrain/rocky_trail_nor_gl.webp",
+          "bytes": 571350,
+          "sha256": "a91b80b2b3a7287e81dc5f50466b77eb9428cfae36e96f8f1247b983c253f296"
+        },
+        {
+          "path": "runtime/batch4/terrain/rocky_trail_rough.webp",
+          "bytes": 77760,
+          "sha256": "71277c1372d7321bc8868b68381cd11be2ad8839a38bdfc357ce8051177ad578"
+        },
+        {
+          "path": "runtime/batch4/trees/pine_04-mid.bin",
+          "bytes": 857854,
+          "sha256": "859d78f7c08092e301d4742f639766425caa68287c5f1c80cc0c20d8c1f222fd"
+        },
+        {
+          "path": "runtime/batch4/trees/pine_04-mid.gltf",
+          "bytes": 6663,
+          "sha256": "251cc346f78a24d56eaaac794c125193306204fdfa6d63982017bc4c45b0da33"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/0638bedad7c161573d7f.webp",
+          "bytes": 148266,
+          "sha256": "0638bedad7c161573d7f165690d8ea8eee1dc4dad2aa4d30c74ee558a0a13c76"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/273655888eace9f964ea.webp",
+          "bytes": 191216,
+          "sha256": "273655888eace9f964ea10f0552c37704147753c76e7fa05d9ad4449a58f62d8"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/286598e3601ad04ea942.webp",
+          "bytes": 368982,
+          "sha256": "286598e3601ad04ea942e9af08ca7e7c96b0351e9dfa8d298d167b4955e9828e"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/43fd64fa5d18f24041df.webp",
+          "bytes": 240740,
+          "sha256": "43fd64fa5d18f24041df70a159940552c15ba78a47574957adb569e01b6126d9"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/4f218daa1b8cac300a36.webp",
+          "bytes": 189698,
+          "sha256": "4f218daa1b8cac300a3615005c4c8c444d326a7457adbeb6411cb21c5f29a820"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/60e1ac86773c08249f65.webp",
+          "bytes": 269388,
+          "sha256": "60e1ac86773c08249f657eccfe6f3fe2263cfc6f6e9f3e27c305e76e9ea2d1fd"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/8677b4f569a1313f4a53.webp",
+          "bytes": 84916,
+          "sha256": "8677b4f569a1313f4a532b218e6593c0cf8660a82fb0a8b2af8b788e7a1d8e8d"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/c20c495347340ec73a2e.webp",
+          "bytes": 380286,
+          "sha256": "c20c495347340ec73a2e3eafd3914ab9a337c155e91f65ae2a6212729f1330c9"
+        },
+        {
+          "path": "runtime/batch4/trees/textures/e9960c8ea6899284e4d1.webp",
+          "bytes": 294174,
+          "sha256": "e9960c8ea6899284e4d1ba6529afae59a5660613800d6c5623b1cf34b6f8db3b"
+        },
+        {
+          "path": "runtime/batch5/collision-layout.json",
+          "bytes": 2587953,
+          "sha256": "c987e230466874f126e522795aee529804f67d17cf012146d0b710c3f92004c8"
+        },
+        {
+          "path": "runtime/batch5/contact-ao.webp",
+          "bytes": 1236712,
+          "sha256": "f0ea6cc2b10af3bf0ad02e07c54713486b1822378cd295fa8b92f5b45ccde31c"
+        },
+        {
+          "path": "runtime/batch5/sample-terrain.glb",
+          "bytes": 12774480,
+          "sha256": "6f0dc0cb86851416a34c0fad81972c25ef558e5ce8ac575709829ad0debecb0d"
+        },
+        {
+          "path": "runtime/batch5/sample.json",
+          "bytes": 4550,
+          "sha256": "3357e72988629d9ce5b903ff1206df9a2ceb808bc3c8ede66fc90d2b2ae54900"
+        },
+        {
+          "path": "runtime/collision-layout.json",
+          "bytes": 2489478,
+          "sha256": "023635bac6c3e0e83bc2031ff7672fd53eb1a376582aede7596a63414c8bd862"
+        },
+        {
+          "path": "runtime/sky.hdr",
+          "bytes": 4988605,
+          "sha256": "b4d69c7a9675fa98679eef76e0fa0308844afb1118cf3019b8c700569d6060dd"
+        },
+        {
+          "path": "runtime/source-tree-placements.json",
+          "bytes": 120943,
+          "sha256": "a2b30e8b452b2b8fb57d2f879a355ba8b9e41b666914d5f7a250fd3e0a2946b0"
+        },
+        {
+          "path": "runtime/terrain.glb",
+          "bytes": 17758404,
+          "sha256": "2b5c457cef8c8f10025ccee43859c8e91dbcc5b6b0a08cadb511f7a18e643cc8"
+        },
+        {
+          "path": "runtime/runtime-assets.json",
+          "bytes": 35993,
+          "sha256": "7eaa933fe5f1744a747501dd9fc363d4a531527f16735d903d35307c8975fff0"
+        }
+      ]
+    },
+    {
+      "name": "pine-batch5-authoring.zip",
+      "bytes": 1277746715,
+      "sha256": "1da92b552bd593b76f181e8441e0028353bcd435801dff2d05ef2e0a6fed58cb",
+      "verifiedZipMembers": true,
+      "files": [
+        {
+          "path": "authoring/pine-batch5-creek-stand.blend",
+          "bytes": 1743789130,
+          "sha256": "27105d2e59f943223a33fc8880392dfa38a2911eb11bba9a08a634ca4067a3e2"
+        },
+        {
+          "path": "authoring/sample.json",
+          "bytes": 4550,
+          "sha256": "3357e72988629d9ce5b903ff1206df9a2ceb808bc3c8ede66fc90d2b2ae54900"
+        },
+        {
+          "path": "authoring/comparison.json",
+          "bytes": 1057,
+          "sha256": "6c849fcdd42c2d97ba4c757f0c53e5efb77750034ec47dc45f4c195f11f54203"
+        },
+        {
+          "path": "authoring/contact-ao.png",
+          "bytes": 3129076,
+          "sha256": "e0fb41f72e53cb23a7575532868b2e5a252e66da77a2bcfcfc0655f05e7f1a88"
+        },
+        {
+          "path": "scripts/build-batch5-sample.py",
+          "bytes": 10129,
+          "sha256": "3b8ccf21691b7e7cf74e98f0275e003de38da8ba10052e3c2f8bdae95df5c0ae"
+        },
+        {
+          "path": "scripts/prepare-batch5-blender-inputs.mjs",
+          "bytes": 1727,
+          "sha256": "26eeac039ecfc99c8ffed83fe4a3d70a59714ff31e14677264f5f788f80c9782"
+        },
+        {
+          "path": "scripts/render-batch5-comparison.py",
+          "bytes": 2437,
+          "sha256": "db4b0dc0e037fc6f035bcc9722ded6dee891ec8b82cbfcc549eb2575b33d4ce4"
+        }
+      ]
+    }
+  ]
+}

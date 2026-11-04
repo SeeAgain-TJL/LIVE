@@ -165,7 +165,7 @@ function SubmissionAudit() {
   return null;
 }
 
-export function Walker({ collision, onPosition, trunks = [] }: { collision: Collision; onPosition?: (point: Vector3) => void; trunks?: number[][][] }) {
+export function Walker({ collision, onPosition, trunks = [], sliding = false }: { collision: Collision; onPosition?: (point: Vector3) => void; trunks?: number[][][]; sliding?: boolean }) {
   const { camera, gl } = useThree();
   const keys = useRef(new Set<string>());
   const dragging = useRef(false);
@@ -203,9 +203,14 @@ export function Walker({ collision, onPosition, trunks = [] }: { collision: Coll
       const speed = Math.min(delta, 0.05) * 3.5 / Math.hypot(forward, sideways);
       const x = camera.position.x + (Math.sin(-angle) * forward + Math.cos(angle) * sideways) * speed;
       const z = camera.position.z + (-Math.cos(angle) * forward + Math.sin(angle) * sideways) * speed;
-      if (x > -70 && x < 70 && z > -100 && z < 95 &&
-          !trunks.some(matrix => Math.hypot(matrix[0][3] - x, -matrix[1][3] - z) < 0.8)) {
+      const clear=(px:number,pz:number)=>px > -70 && px < 70 && pz > -100 && pz < 95 &&
+          !trunks.some(matrix => Math.hypot(matrix[0][3] - px, -matrix[1][3] - pz) < 0.8);
+      if (clear(x,z)) {
         camera.position.set(x, groundHeight(collision, x, z) + 1.2, z);
+      } else if(sliding) {
+        // Preserve trunk/boundary collision while allowing motion along it.
+        if(clear(x,camera.position.z)) camera.position.set(x,groundHeight(collision,x,camera.position.z)+1.2,camera.position.z);
+        if(clear(camera.position.x,z)) camera.position.set(camera.position.x,groundHeight(collision,camera.position.x,z)+1.2,z);
       }
     }
     if (onPosition && performance.now() - lastPositionReport.current > 350) {

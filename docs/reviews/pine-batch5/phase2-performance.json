@@ -1,0 +1,157 @@
+{
+  "route": "/forest-runtime-lab?scale=0.8&sample=creek",
+  "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "motion": {
+    "seconds": 89.097199999952,
+    "frames": 4066,
+    "averageFps": 45.63555308137844,
+    "p95Ms": 33.5,
+    "p99Ms": 50,
+    "over100ms": 0
+  },
+  "passed": true,
+  "qualityTargetMet": false,
+  "firstForestMs": 5363,
+  "settledMs": 8381,
+  "returnDistanceFromStart": 113.52247960755777,
+  "errors": [],
+  "archiveAccess": [],
+  "released": {
+    "tiles": 23,
+    "resources": 15,
+    "batches": 475,
+    "materials": 9
+  },
+  "stages": [
+    {
+      "name": "near-static",
+      "averageFps": 37.10824841376658,
+      "p95Ms": 33.69999999999891,
+      "trianglesRange": [
+        6404680,
+        6404680
+      ],
+      "callsRange": [
+        147,
+        147
+      ]
+    },
+    {
+      "name": "walk-forward",
+      "averageFps": 52.817619468253774,
+      "p95Ms": 33.400000000001455,
+      "trianglesRange": [
+        2285789,
+        6400988
+      ],
+      "callsRange": [
+        107,
+        170
+      ]
+    },
+    {
+      "name": "walk-diagonal",
+      "averageFps": 57.238532824280696,
+      "p95Ms": 17.900000000001455,
+      "trianglesRange": [
+        273058,
+        5372773
+      ],
+      "callsRange": [
+        16,
+        101
+      ]
+    },
+    {
+      "name": "turn-and-walk",
+      "averageFps": 48.14686751767695,
+      "p95Ms": 33.5,
+      "trianglesRange": [
+        3007054,
+        6494904
+      ],
+      "callsRange": [
+        39,
+        57
+      ]
+    },
+    {
+      "name": "mid-static-release",
+      "averageFps": 37.52767437910795,
+      "p95Ms": 33.60000000000582,
+      "trianglesRange": [
+        5472904,
+        5472904
+      ],
+      "callsRange": [
+        53,
+        53
+      ]
+    },
+    {
+      "name": "continuous-turn",
+      "averageFps": 32.75075118753982,
+      "p95Ms": 50,
+      "trianglesRange": [
+        6783375,
+        6783375
+      ],
+      "callsRange": [
+        53,
+        53
+      ]
+    },
+    {
+      "name": "far-static",
+      "averageFps": 32.82477590793186,
+      "p95Ms": 50.10000000000582,
+      "trianglesRange": [
+        6783375,
+        6783375
+      ],
+      "callsRange": [
+        53,
+        53
+      ]
+    },
+    {
+      "name": "walk-return",
+      "averageFps": 34.13492351013288,
+      "p95Ms": 34.19999999999709,
+      "trianglesRange": [
+        4884124,
+        5474955
+      ],
+      "callsRange": [
+        48,
+        55
+      ]
+    },
+    {
+      "name": "diagonal-return",
+      "averageFps": 47.07392746379383,
+      "p95Ms": 33.5,
+      "trianglesRange": [
+        4790804,
+        4790804
+      ],
+      "callsRange": [
+        57,
+        57
+      ]
+    },
+    {
+      "name": "dense-return",
+      "averageFps": 46.384551329559024,
+      "p95Ms": 33.5,
+      "trianglesRange": [
+        4790804,
+        4790804
+      ],
+      "callsRange": [
+        57,
+        57
+      ]
+    }
+  ]
+}

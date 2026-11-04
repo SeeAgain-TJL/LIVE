@@ -7,7 +7,7 @@ import path from 'node:path';
 const [mode, ...args] = process.argv.slice(2);
 const option = name => args[args.indexOf(name) + 1];
 const runtime = path.resolve('public/forest-origin-assets');
-const manifestFile = path.resolve('docs/reviews/pine-batch4/runtime-assets.json');
+const manifestFile = path.resolve(args.includes('--manifest') ? option('--manifest') : 'docs/reviews/pine-batch4/runtime-assets.json');
 function inside(root, relative) {
   const result = path.resolve(root, relative);
   if (!result.startsWith(root + path.sep)) throw Error(`Unsafe asset path: ${relative}`);
@@ -46,6 +46,10 @@ if (mode === 'snapshot') {
   for (const name of ['basecolor', 'normal', 'roughness']) paths.add(`batch3b/terrain/${name}.webp`);
   for (const name of await readdir(path.join(runtime, 'batch4/terrain'))) {
     if (name.endsWith('.webp') || name === 'manifest.json') paths.add('batch4/terrain/' + name);
+  }
+  if(args.includes('--extra')) {
+    const folder=option('--extra');
+    for(const name of await readdir(inside(runtime,folder))) paths.add(path.posix.join(folder,name));
   }
   const files = [];
   for (const file of [...paths].sort()) files.push({ path: file, bytes: (await stat(inside(runtime, file))).size, sha256: await digest(inside(runtime, file)) });

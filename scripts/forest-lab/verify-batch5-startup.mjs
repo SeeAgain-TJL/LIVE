@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
-const out='artifacts-local/pine-batch5/startup';await mkdir(out,{recursive:true});
+const out=process.env.PINE_EVIDENCE || 'artifacts-local/pine-batch5/startup';await mkdir(out,{recursive:true});
 const browser=await chromium.launch({channel:'chrome'});
 const result={errors:[]};
 try {
@@ -9,7 +9,7 @@ try {
   page.on('pageerror',e=>result.errors.push(String(e)));
   let release;const barrier=new Promise(r=>release=r);
   await page.route('**/batch4/terrain/blend-masks.webp',async route=>{await barrier;await route.continue();});
-  await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3318')+'/forest-runtime-lab?scale=0.8');
+  await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3318')+(process.env.PINE_ROUTE || '/forest-runtime-lab?scale=0.8'));
   await page.locator('canvas[data-pine-terrain=loading]').waitFor({timeout:120000});
   await page.waitForTimeout(1500);
   result.blocked=await page.locator('canvas').evaluate(c=>({...c.dataset}));
