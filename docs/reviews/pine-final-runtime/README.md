@@ -7,3 +7,5 @@
 生产构建首次低档实走（Chrome Intel 1440×900，内部 1152×720，42 秒输入）：59.59 FPS / P95 17.0 ms；首次就绪 6.15 秒、初始区块静止完全补齐 11.42 秒。四段均有位移；释放 18 分区和 6 个流送资源，无档案访问、页面错误或 WebGL 上下文丢失。这一轮不录像；最终三档对比另见集中验收。lint、typecheck 和生产构建通过。
 
 恢复：先还原 [Batch6](https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-batch6-landmarks-20261104) 与 [美术阶段](../pine-final-art/README.md)；再解压 [性能阶段增量](https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-forest-runtime-20261104)，用 transfer-batch4-assets.mjs restore --manifest docs/reviews/pine-final-runtime/runtime-assets.json --from <解压目录>/runtime。原 Blender 及纹理来源不变。
+
+复测记录：80% 的低档另一次实走为 44.78 FPS / P95 49.8 ms，故最终低档默认 70% 渲染比例，微地被范围由 24m 缩至 22m，最小投影阈值由 4.5px 提至 5px。高、中不改。最终 Intel 核显同路线低档不录像为 59.37 FPS / P95 17.1 ms，首次就绪 5.57 秒、初始补齐 10.49 秒。运行资产无需重新发布，复用本阶段同一已校验增量。

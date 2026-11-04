@@ -182,7 +182,10 @@ export function ForestRuntimeLab() {
       .then(([manifest,layout,trees])=>{if(!controller.signal.aborted) {
         setSample(creek);
         setPayload({manifest,collision:creek ? layout.collision:layout,trees,trunks:trees.map((tree:SourceTree)=>tree.matrix)});
-        if(params.get("scale")==="0.8" || (!creek && !params.has("scale") && requested!=="high")) setScale(0.8);
+        const pixels=params.get("scale");
+        if (pixels==="0.8") setScale(.8);
+        else if (pixels==="0.7" && !creek) setScale(.7);
+        else if (!creek && !pixels && requested!=="high") setScale(requested==="mid" ? .8:.7);
         if(requested==="high" || (requested==="mid" && !creek)) setQuality(requested);
       }})
       .catch(cause=>{if(!controller.signal.aborted) setError(String(cause));});
@@ -211,11 +214,15 @@ export function ForestRuntimeLab() {
       <RuntimeReviewPose />
     </Canvas></ForestSurface>}
     <div className="forest-lab-bar"><div><strong>{sample ? "Pine Forest · 河床森林样板":"Pine Forest · 原布局动态 LOD"}</strong><span ref={status}>正在加载地表与周边森林</span></div>
-      <label>资源精度<select aria-label="森林资源精度" value={quality} onChange={event=>setQuality(event.target.value as Quality)}>
+      <label>资源精度<select aria-label="森林资源精度" value={quality} onChange={event=>{
+        const next=event.target.value as Quality;
+        setQuality(next);
+        if (!sample) setScale(next==="low" ? .7:next==="mid" ? .8:1);
+      }}>
         <option value="low">低 · 核显推荐</option>{!sample && <option value="mid">中 · 平衡</option>}<option value="high">高 · 扩大真实几何范围</option>
       </select></label>
       <label>内部分辨率 <select aria-label="内部渲染分辨率" value={scale} onChange={event=>setScale(Number(event.target.value))}>
-        <option value={1}>100% · DPR1</option><option value={0.8}>80% · 1152×720</option>
+        <option value={1}>100% · DPR1</option><option value={0.8}>80% · 1152×720</option>{!sample && <option value={0.7}>70% · 1008×630</option>}
       </select></label>
     </div>
     {error && <div className="forest-lab-status" role="alert">{error}<button type="button" onClick={()=>window.location.reload()}>重新加载场景</button></div>}

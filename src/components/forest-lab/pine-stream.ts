@@ -383,7 +383,7 @@ export class PineStream {
         const distanceSquared=dx*dx+dz*dz;
         const inSample=tile.data[offset+4]>-40 && tile.data[offset+4]<40 && tile.data[offset+8]>-75 && tile.data[offset+8]<-15;
         const micro=this.microCover.has(tile.data[offset]);
-        const propRange=tuned && micro && !high ? middle ? 31:24
+        const propRange=tuned && micro && !high ? middle ? 31:22
           : (tuned || (this.options.sample && inSample)) && this.understory.has(tile.data[offset]) ? 55:40;
         const treeRange=tuned ? camera.position.y>55 ? 295:200 : 95;
         if(distanceSquared>(tree ? treeRange*treeRange:propRange*propRange)) {counters.pixelRejected++;continue;}
@@ -391,7 +391,7 @@ export class PineStream {
         if(!this.frustum.intersectsSphere(this.sphere)) {counters.frustumRejected++;continue;}
         const depth=Math.max(0.1,this.point.copy(this.sphere.center).sub(camera.position).dot(this.currentDirection));
         const pixels=2*this.sphere.radius*projectionScale/depth;
-        if(pixels<(tree ? 2:tuned && !high ? micro ? middle ? 3.2:4.5 : 2:1.5)) {counters.pixelRejected++;continue;}
+        if(pixels<(tree ? 2:tuned && !high ? micro ? middle ? 3.2:5 : 2:1.5)) {counters.pixelRejected++;continue;}
         const previous=tile.lod[i];
         const hysteresis=previous===0 ? 1.12 : previous===2 ? 0.9 : 1;
         // Use the actual camera-to-tree base distance for near geometry. A
