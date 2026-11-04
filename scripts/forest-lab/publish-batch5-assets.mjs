@@ -8,6 +8,8 @@ import { request } from 'node:https';
 import path from 'node:path';
 const batch6=process.argv.includes('--batch6');
 const profiles={
+  '--visual-finish':{batch:'pine-visual-finish-art',tag:'pine-visual-finish-20261104',name:'Pine Forest · source-derived visual finish',files:['pine-visual-finish-runtime.zip']},
+  '--visual-review':{batch:'pine-visual-finish',tag:'pine-visual-review-20261104',name:'Pine Forest · visual finish walkthrough',files:['pine-visual-finish-walk.webm']},
   '--forest-art':{batch:'pine-final-art',tag:'pine-forest-environment-20261104',name:'Pine Forest · integrated environment',files:['pine-final-art-runtime.zip']},
   '--forest-runtime':{batch:'pine-final-runtime',tag:'pine-forest-runtime-20261104',name:'Pine Forest · runtime optimization',files:['pine-final-runtime.zip']},
   '--forest-review':{batch:'pine-final',tag:'pine-forest-review-20261104',name:'Pine Forest · browser review',files:['pine-forest-walk.webm']},

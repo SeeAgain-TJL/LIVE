@@ -1,0 +1,70 @@
+{
+  "floorResolution": 1024,
+  "world": {
+    "low": [
+      -104,
+      -101
+    ],
+    "span": [
+      206,
+      202
+    ]
+  },
+  "counts": {
+    "moss": 653902,
+    "understory": 17797,
+    "needles": 156104,
+    "trees": 585
+  },
+  "crowns": [
+    {
+      "name": "pine_01.webp",
+      "crownAlphaIncrease": 53.3
+    },
+    {
+      "name": "pine_02.webp",
+      "crownAlphaIncrease": 53
+    },
+    {
+      "name": "pine_03.webp",
+      "crownAlphaIncrease": 51.4
+    },
+    {
+      "name": "pine_04.webp",
+      "crownAlphaIncrease": 46.6
+    },
+    {
+      "name": "pine_04-detail.webp",
+      "crownAlphaIncrease": 43.4
+    },
+    {
+      "name": "pine_05.webp",
+      "crownAlphaIncrease": 47.6
+    },
+    {
+      "name": "silver_fir_02.webp",
+      "crownAlphaIncrease": 44.6
+    },
+    {
+      "name": "silver_fir_04.webp",
+      "crownAlphaIncrease": 44.7
+    },
+    {
+      "name": "silver_fir_06.webp",
+      "crownAlphaIncrease": 63.8
+    }
+  ],
+  "edgeTrees": 951,
+  "ridgeNames": [
+    "pine_02",
+    "pine_04",
+    "silver_fir_04",
+    "silver_fir_06"
+  ],
+  "borders": [
+    -102.7,
+    100,
+    -100,
+    100
+  ]
+}

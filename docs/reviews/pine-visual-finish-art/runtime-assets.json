@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "visual-finish/edge-crowns.webp",
+      "bytes": 72846,
+      "sha256": "9984937f38b2f9fddda60070f672a4fc306070c1eba0e0b7c24dc0dd212eb3f5"
+    },
+    {
+      "path": "visual-finish/edge-ground.json",
+      "bytes": 149860,
+      "sha256": "6062758bbffc3b2a48cb347eba2b36cf2f2d3a88b1f7b12a4a23b3f0ececda76"
+    },
+    {
+      "path": "visual-finish/edge-stands.json",
+      "bytes": 26516,
+      "sha256": "d688f36c2cd5331e3a7e02456b6628ccdeaf633f483da465c61f8d2fbc1d5097"
+    },
+    {
+      "path": "visual-finish/pine_01.webp",
+      "bytes": 901090,
+      "sha256": "ef98afd4fcc2226c18db599e56a95b8881e0c5841d9a357ffe833bf512df4503"
+    },
+    {
+      "path": "visual-finish/pine_02.webp",
+      "bytes": 994862,
+      "sha256": "337b384138dc078b8dbbeff2ba2074a72348f7b93cdabae8049b6e1f1d1df3f8"
+    },
+    {
+      "path": "visual-finish/pine_03.webp",
+      "bytes": 989436,
+      "sha256": "aa0775943c7386fc50456e94b6a75bc01528c7ebb9388eb98f1a1ed3509f90ff"
+    },
+    {
+      "path": "visual-finish/pine_04-detail.webp",
+      "bytes": 3727124,
+      "sha256": "3cdab18a2bab2c34a0cb494cfa076a7b35e79debedce330157b9603144fb063f"
+    },
+    {
+      "path": "visual-finish/pine_04.webp",
+      "bytes": 1121310,
+      "sha256": "d6e56cd0282d015112d9b91bb6445701dcd2e8872cc566e209036a6b9c890b8b"
+    },
+    {
+      "path": "visual-finish/pine_05.webp",
+      "bytes": 983598,
+      "sha256": "ed0d760b4eb20f75cf4d5528c1604ca5ba6455b45ccc7b7ce7baa8bfec03f7f4"
+    },
+    {
+      "path": "visual-finish/production.json",
+      "bytes": 1134,
+      "sha256": "67060df7b4c1d10727c9a7bb7f50cd53e8473ffb1a88536ab16a24b737039ed5"
+    },
+    {
+      "path": "visual-finish/silver_fir_02.webp",
+      "bytes": 870650,
+      "sha256": "05f6763a941f8675f5f71ed0580d9dac402a0e2e33b87f314f20d37442145802"
+    },
+    {
+      "path": "visual-finish/silver_fir_04.webp",
+      "bytes": 697132,
+      "sha256": "65e9a71a376f710b8db4aed4d0aa41f5494325811aba0f08dff6e2fa0a700bf5"
+    },
+    {
+      "path": "visual-finish/silver_fir_06.webp",
+      "bytes": 645980,
+      "sha256": "b3b79af55fc26a0d14bcc29e9b19e1a80d146d6d0fa0ac4557fdf275fcb11674"
+    },
+    {
+      "path": "visual-finish/understory.webp",
+      "bytes": 528056,
+      "sha256": "30c2be16aa46f544777151261aa9e46cdba8dd33d865b3c98d159290ff7f8fe6"
+    }
+  ],
+  "totalBytes": 11709594
+}
