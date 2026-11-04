@@ -1,0 +1,323 @@
+{
+  "terrainReference": {
+    "camera": {
+      "blender_position": [
+        23.155473709106445,
+        -47.55979919433594,
+        0.9223032593727112
+      ],
+      "blender_direction": [
+        -0.9741345047950745,
+        0.13852132856845856,
+        -0.17853209376335144
+      ],
+      "three_position": [
+        23.155473709106445,
+        0.9223032593727112,
+        47.55979919433594
+      ],
+      "three_direction": [
+        -0.9741345047950745,
+        -0.17853209376335144,
+        -0.13852132856845856
+      ],
+      "fov": 48.5,
+      "samples": 16,
+      "resolution": [
+        720,
+        450
+      ],
+      "terrain_only": true,
+      "savedBlend": false
+    },
+    "originalImage": "artifacts-local/pine-batch3b/blender/terrain-reference/original-terrain-same-camera.png",
+    "priorBrowserImage": "artifacts-local/pine-batch3b/final-visuals/terrain-only-pbr.png",
+    "currentBrowserImage": "C:\\Users\\tingjie.li\\Desktop\\LIVE\\artifacts-local\\pine-batch4\\final-stills\\terrain-same-camera.png",
+    "limitations": "Reused Blender render; terrain only, 720x450, 16 samples, denoised. Browser uses 1152x720 scaled to 1440x900. Lighting, tone mapping, displacement and UV mapping differ. Not full forest equivalence."
+  },
+  "historicalMidAB": {
+    "source": "artifacts-local/pine-batch4/tree-mid-ab3/results.json",
+    "errors": [],
+    "note": "Before quality=high gate. Forced far vs real mid; not current low vs high comparison.",
+    "results": [
+      {
+        "mode": "far-forced",
+        "pose": "18m",
+        "warmupMs": 6382,
+        "timedOut": false,
+        "metrics": {
+          "fps": 45.248868485389025,
+          "medianMs": 22.100000143051147,
+          "p95Ms": 31.5,
+          "triangles": 158945,
+          "calls": 16,
+          "textures": 61,
+          "geometries": 87,
+          "camera": [
+            -70,
+            2,
+            19
+          ],
+          "direction": [
+            0,
+            -0.0399680383488716,
+            -0.9992009587217896
+          ],
+          "contextLost": false
+        },
+        "resources": [
+          "pine_01/far",
+          "props/far",
+          "pine_02/far",
+          "pine_03/far",
+          "pine_04/far",
+          "pine_05/far",
+          "silver_fir_01/far",
+          "silver_fir_02/far",
+          "silver_fir_04/far",
+          "silver_fir_03/far",
+          "silver_fir_05/far",
+          "silver_fir_06/far"
+        ]
+      },
+      {
+        "mode": "far-forced",
+        "pose": "25m",
+        "warmupMs": 7418,
+        "timedOut": false,
+        "metrics": {
+          "fps": 53.475936374316866,
+          "medianMs": 18.699999809265137,
+          "p95Ms": 33.90000009536743,
+          "triangles": 163931,
+          "calls": 17,
+          "textures": 32,
+          "geometries": 29,
+          "camera": [
+            -70,
+            2,
+            26
+          ],
+          "direction": [
+            0,
+            -0.0399680383488716,
+            -0.9992009587217896
+          ],
+          "contextLost": false
+        },
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "pine_03/far",
+          "props/far",
+          "pine_05/far",
+          "pine_04/far",
+          "silver_fir_01/far",
+          "silver_fir_03/far",
+          "silver_fir_02/far",
+          "silver_fir_05/far",
+          "silver_fir_04/far",
+          "silver_fir_06/far"
+        ]
+      },
+      {
+        "mode": "far-forced",
+        "pose": "35m",
+        "warmupMs": 7107,
+        "timedOut": false,
+        "metrics": {
+          "fps": 59.52380884801991,
+          "medianMs": 16.800000190734863,
+          "p95Ms": 23.5,
+          "triangles": 163733,
+          "calls": 17,
+          "textures": 32,
+          "geometries": 29,
+          "camera": [
+            -70,
+            2,
+            36
+          ],
+          "direction": [
+            0,
+            -0.0399680383488716,
+            -0.9992009587217896
+          ],
+          "contextLost": false
+        },
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "props/far",
+          "pine_03/far",
+          "pine_05/far",
+          "pine_04/far",
+          "silver_fir_01/far",
+          "silver_fir_02/far",
+          "silver_fir_03/far",
+          "silver_fir_05/far",
+          "silver_fir_04/far",
+          "silver_fir_06/far"
+        ]
+      },
+      {
+        "mode": "real-mid",
+        "pose": "18m",
+        "warmupMs": 6493,
+        "timedOut": false,
+        "metrics": {
+          "fps": 31.545741514727847,
+          "medianMs": 31.699999809265133,
+          "p95Ms": 37.10000014305115,
+          "triangles": 7330019,
+          "calls": 54,
+          "textures": 68,
+          "geometries": 66,
+          "camera": [
+            -70,
+            2,
+            19
+          ],
+          "direction": [
+            0,
+            -0.0399680383488716,
+            -0.9992009587217896
+          ],
+          "contextLost": false
+        },
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "props/far",
+          "pine_03/far",
+          "pine_04/far",
+          "pine_05/far",
+          "silver_fir_02/far",
+          "silver_fir_01/far",
+          "silver_fir_04/far",
+          "silver_fir_03/far",
+          "silver_fir_05/far",
+          "silver_fir_06/far",
+          "silver_fir_03/near",
+          "pine_04/near",
+          "pine_02/near",
+          "pine_01/near",
+          "silver_fir_01/near",
+          "props/mid",
+          "silver_fir_06/near",
+          "silver_fir_05/near",
+          "pine_05/near",
+          "pine_03/near",
+          "pine_04/mid"
+        ]
+      },
+      {
+        "mode": "real-mid",
+        "pose": "25m",
+        "warmupMs": 7485,
+        "timedOut": false,
+        "metrics": {
+          "fps": 30.21148044958282,
+          "medianMs": 33.09999990463257,
+          "p95Ms": 37.59999990463257,
+          "triangles": 8099133,
+          "calls": 57,
+          "textures": 71,
+          "geometries": 69,
+          "camera": [
+            -70,
+            2,
+            26
+          ],
+          "direction": [
+            0,
+            -0.0399680383488716,
+            -0.9992009587217896
+          ],
+          "contextLost": false
+        },
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "pine_03/far",
+          "props/far",
+          "pine_05/far",
+          "pine_04/far",
+          "silver_fir_01/far",
+          "silver_fir_02/far",
+          "silver_fir_03/far",
+          "silver_fir_04/far",
+          "silver_fir_05/far",
+          "silver_fir_06/far",
+          "silver_fir_03/near",
+          "pine_04/near",
+          "pine_02/near",
+          "pine_03/near",
+          "silver_fir_02/near",
+          "pine_01/near",
+          "props/near",
+          "props/mid",
+          "silver_fir_06/near",
+          "silver_fir_01/near",
+          "silver_fir_05/near",
+          "pine_04/mid"
+        ]
+      },
+      {
+        "mode": "real-mid",
+        "pose": "35m",
+        "warmupMs": 7074,
+        "timedOut": false,
+        "metrics": {
+          "fps": 43.290043468764516,
+          "medianMs": 23.09999990463257,
+          "p95Ms": 26.299999952316284,
+          "triangles": 4455749,
+          "calls": 45,
+          "textures": 68,
+          "geometries": 57,
+          "camera": [
+            -70,
+            2,
+            36
+          ],
+          "direction": [
+            0,
+            -0.0399680383488716,
+            -0.9992009587217896
+          ],
+          "contextLost": false
+        },
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "props/far",
+          "pine_03/far",
+          "pine_05/far",
+          "pine_04/far",
+          "silver_fir_01/far",
+          "silver_fir_03/far",
+          "silver_fir_02/far",
+          "silver_fir_05/far",
+          "silver_fir_04/far",
+          "silver_fir_06/far",
+          "silver_fir_03/near",
+          "pine_04/near",
+          "silver_fir_02/near",
+          "pine_01/near",
+          "pine_02/near",
+          "props/near",
+          "props/mid",
+          "pine_03/near",
+          "silver_fir_01/near",
+          "silver_fir_06/near",
+          "pine_04/mid"
+        ]
+      }
+    ]
+  },
+  "excluded": {
+    "source": "artifacts-local/pine-batch4/mid-lod-fps/results.json",
+    "reason": "Requested poses differ but actual recorded camera is unchanged across all samples."
+  }
+}
