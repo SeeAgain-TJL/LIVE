@@ -36,6 +36,7 @@ try {
  await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3197')+`/forest-runtime-lab?scale=${scale}&quality=${quality}`,{waitUntil:'domcontentloaded'});
  const canvas=page.locator('canvas[data-forest-origin-ready=true][data-pine-landmarks=ready]');
  await canvas.waitFor({timeout:120000});
+ if(process.env.PINE_VISUAL_FINISH) await page.locator('canvas[data-pine-outer-forest=ready]').waitFor({timeout:120000});
  result.firstReadyMs=Date.now()-start;
  result.display=await canvas.evaluate(c=>{
   const gl=c.getContext('webgl2');
@@ -64,6 +65,20 @@ try {
  }
  all.sort((a,b)=>a-b);
  result.combined={seconds:all.reduce((a,b)=>a+b,0)/1000,fps:all.length*1000/all.reduce((a,b)=>a+b,0),p95Ms:all[Math.floor(all.length*.95)]};
+ if(recording && process.env.PINE_VISUAL_FINISH) {
+  // Keep the 42 s benchmark route comparable across tiers. In the recorded
+  // take, also demonstrate strafing and reversing on the actual input path.
+  result.extraInputs=[];
+  await page.mouse.move(720,420);await page.mouse.down();await page.mouse.move(606,467,{steps:19});await page.mouse.up();
+  let prior=(await read()).camera;
+  for(const key of ['a','s','d']) {
+   await page.keyboard.down(key);await page.waitForTimeout(1400);await page.keyboard.up(key);
+   const {camera}=await read();
+   const displacement=Math.hypot(camera[0]-prior[0],camera[2]-prior[2]);
+   result.extraInputs.push({key,camera,displacement});prior=camera;
+  }
+  assert.ok(result.extraInputs.every(input=>input.displacement>.35));
+ }
  await page.waitForTimeout(9000);
  result.final=await read();
  result.contextLost=await canvas.evaluate(c=>c.getContext('webgl2').isContextLost());

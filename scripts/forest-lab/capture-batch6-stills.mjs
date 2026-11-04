@@ -24,6 +24,7 @@ try {
     const route=`/forest-runtime-lab?scale=${process.env.PINE_SCALE || '0.8'}&review=1`+(high ? '&quality=high':'');
     await page.goto((process.env.FOREST_LAB_URL || 'http://127.0.0.1:3320')+route);
     await page.locator('canvas[data-pine-review-pose-ready=true][data-pine-terrain=layered][data-pine-landmarks=ready]').waitFor({timeout:120000});
+    if(process.env.PINE_VISUAL_FINISH) await page.locator('canvas[data-pine-outer-forest=ready]').waitFor({timeout:120000});
     if(name==="panorama") await page.locator('canvas[data-forest-origin-ready=true]').waitFor({timeout:120000});
     await page.evaluate(detail=>window.dispatchEvent(new CustomEvent('pine-runtime-review-camera',{detail})),pose);
     await page.waitForFunction(()=>{
