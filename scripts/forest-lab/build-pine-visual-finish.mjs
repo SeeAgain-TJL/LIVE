@@ -12,7 +12,6 @@ const source=process.argv[2];
 if(!source) throw Error('Pass the original Pine Forest textures directory');
 const json=async file=>JSON.parse(await readFile(file,'utf8'));
 const manifest=await json(path.join(tiles,'manifest.json'));
-const species=manifest.names.slice(manifest.propAssetCount);
 await mkdir(out,{recursive:true});
 
 const size=1024, low=[-104,-101], span=[206,202];

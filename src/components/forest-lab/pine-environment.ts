@@ -12,11 +12,15 @@ const fieldPosition = `
   #endif
   pineWorld = (modelMatrix * pinePosition).xyz;
 `;
+const sourceFieldUv = `vec2 pineFieldUv() {
+  return (vec2(pineWorld.x, -pineWorld.z) + vec2(104.0,101.0))/vec2(206.0,202.0);
+}`;
 const fieldFragment = `
   varying vec3 pineWorld;
   uniform sampler2D pineField;
+  ${sourceFieldUv}
   vec3 pineGround() {
-    return texture2D(pineField, (vec2(pineWorld.x, -pineWorld.z) + vec2(104.0,101.0))/vec2(206.0,202.0)).rgb;
+    return texture2D(pineField, pineFieldUv()).rgb;
   }
   float pineHeight(vec3 field) {
     return (field.r*65280.0 + field.g*255.0)*(64.0/65535.0)-20.0;
@@ -45,11 +49,33 @@ export function applyPineCanopyField(material: Material, field: Texture, unlit=f
   material.needsUpdate = true;
 }
 
+/** Existing PBR remains the surface; this restores source scatter color and
+ * soft contact where individual low cover is culled or below a pixel. */
+export function applyPineUnderstory(material: Material, floor: Texture) {
+  const previous = material.onBeforeCompile;
+  const key = material.customProgramCacheKey();
+  material.customProgramCacheKey = () => key + "|pine-understory";
+  material.onBeforeCompile = (shader, renderer) => {
+    previous.call(material,shader,renderer);
+    shader.uniforms.pineFloor = {value:floor};
+    shader.fragmentShader = shader.fragmentShader.replace("#include <common>","#include <common>\nuniform sampler2D pineFloor;")
+      .replace("#include <opaque_fragment>",`
+        vec3 pineScatter = texture2D(pineFloor,pineFieldUv()).rgb;
+        float pineGreen = max(pineScatter.r, pineScatter.g * .75);
+        // Needles keep their warm color between moss colonies and along paths.
+        float pineMoss = smoothstep(.04,.62,pineGreen);
+        vec3 pineFloorColor = mix(vec3(.95,.90,.76),vec3(.31,.59,.30),pineMoss);
+        outgoingLight *= pineFloorColor * mix(1.0,.74,pineScatter.g) * mix(1.0,.88,pineScatter.b);
+        #include <opaque_fragment>`);
+  };
+  material.needsUpdate = true;
+}
+
 /** Water geometry remains the original river. Its shore opacity is derived
  * from the water/terrain height difference, with a single HDR reflection. */
 export function makePineRiver(field: Texture, time: {value:number}) {
-  const material = new MeshStandardMaterial({color:0x69796a,roughness:0.22,metalness:0.3,
-    transparent:true,depthWrite:false,side:DoubleSide,envMapIntensity:0.53});
+  const material = new MeshStandardMaterial({color:0x506455,roughness:0.25,metalness:0.26,
+    transparent:true,depthWrite:false,side:DoubleSide,envMapIntensity:0.42});
   material.forceSinglePass = true;
   material.onBeforeCompile = shader => {
     shader.uniforms.pineField = {value:field};
@@ -64,8 +90,8 @@ export function makePineRiver(field: Texture, time: {value:number}) {
         vec3 pineBed = pineGround();
         float pineDepth = max(0.0,pineWorld.y-pineHeight(pineBed));
         float pineDeep = 1.0-exp(-pineDepth*1.8);
-        diffuseColor.rgb *= mix(vec3(.66,.65,.42),vec3(.12,.25,.25),pineDeep);
-        diffuseColor.a *= mix(.08,.86,smoothstep(.04,.85,pineDepth));
+        diffuseColor.rgb *= mix(vec3(.51,.54,.38),vec3(.075,.16,.15),pineDeep);
+        diffuseColor.a *= mix(.12,.93,smoothstep(.03,.61,pineDepth));
       `)
       .replace("#include <normal_fragment_maps>",`
         #include <normal_fragment_maps>
@@ -78,7 +104,7 @@ export function makePineRiver(field: Texture, time: {value:number}) {
       `)
       .replace("#include <opaque_fragment>",`
         float pineGrazing = pow(1.0-clamp(abs(dot(normal,normalize(vViewPosition))),0.0,1.0),5.0);
-        outgoingLight *= mix(.33,.85,pineBed.b);
+        outgoingLight *= mix(.25,.76,pineBed.b);
         diffuseColor.a = mix(diffuseColor.a,.74,pineGrazing*smoothstep(.02,.30,pineDepth));
         #include <opaque_fragment>`);
   };

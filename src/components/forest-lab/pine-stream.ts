@@ -9,7 +9,7 @@ export type SourceTree = { source: string; matrix: number[][] };
 type Tier = "near" | "mid" | "far";
 type Quality = "low" | "mid" | "high";
 type Part = { geometry: Mesh["geometry"]; material: Material | Material[]; matrix: Matrix4 };
-type Asset = { parts: Part[]; sphere: Sphere; billboard?: { center: Vector3; views: number } };
+type Asset = { crown?: Asset; parts: Part[]; sphere: Sphere; billboard?: { center: Vector3; views: number } };
 type Resource = { assets: Map<string, Asset>; geometries: Set<Mesh["geometry"]>; materialKeys: Set<string>; lastUsed: number };
 type Tile = { data: Float32Array; bounds: Float32Array; lod: Uint8Array; cells: { box: Box3; offsets: number[] }[]; lastUsed: number };
 type Slot = { data: Float32Array; offset: number; seen: number };
@@ -29,14 +29,18 @@ function tileDistance(key: string, point: Vector3) {
   return Math.hypot(Math.max(x*32-point.x,0,point.x-(x+1)*32), Math.max(y*32+point.z,0,-point.z-(y+1)*32));
 }
 
-export async function loadPineImpostorAsset(name: string, detail=false, smooth=false, sourceMaterial=false) {
+const finishedCrowns = new Set(["pine_01","pine_02","pine_03","pine_04","pine_05","silver_fir_02","silver_fir_04","silver_fir_06"]);
+
+export async function loadPineImpostorAsset(name: string, detail=false, smooth=false, sourceMaterial=false, finish=false) {
   const interpolate=(smooth || sourceMaterial) && name==="pine_04";
   const folder=sourceMaterial && name==="pine_04" ? "batch3b/impostors" : (detail || interpolate) && name==="pine_04" ? "batch3/impostors":"batch2/impostors";
   const response=await fetch(pineRoot+`${folder}/${name}.json`);
   if(!response.ok) throw Error(`Impostor ${name} HTTP ${response.status}`);
   const metadata=await response.json() as {center:number[];width:number;height:number;views?:number;bounds:{min:number[];max:number[]}};
   const views=metadata.views || 8,rows=views/4;
-  const texture=await new TextureLoader().loadAsync(pineRoot+`${folder}/${name}.webp`);texture.colorSpace=SRGBColorSpace;
+  const image=finish && !interpolate && finishedCrowns.has(name)
+    ? `visual-finish/${name}${detail && name==="pine_04" ? "-detail":""}.webp` : `${folder}/${name}.webp`;
+  const texture=await new TextureLoader().loadAsync(pineRoot+image);texture.colorSpace=SRGBColorSpace;
   const material=new MeshBasicMaterial({map:texture,transparent:true,alphaTest:0.015,depthWrite:false,side:DoubleSide,toneMapped:false});
   material.forceSinglePass=true;
   if(interpolate) {material.transparent=false;material.alphaTest=0.03;material.alphaToCoverage=true;material.depthWrite=true;texture.anisotropy=4;}
@@ -161,13 +165,37 @@ export class PineStream {
   }
   private async loadImpostor(key: string): Promise<Resource> {
     const name=key.split("/")[0];
-    const {asset,geometry,material}=await loadPineImpostorAsset(name,this.options.quality==="high",this.options.smoothImpostor,this.options.sourceImpostor);
+    const {asset,geometry,material}=await loadPineImpostorAsset(name,this.options.quality==="high",this.options.smoothImpostor,this.options.sourceImpostor,!!this.options.field);
     if(this.options.field) {
-      material.color.set("#a9afa0");
+      material.color.set("#989f87");
       applyPineCanopyField(material,this.options.field,true);
     }
     const materialKey=`impostor/${name}`;this.materials.set(materialKey,{material,refs:1});
-    return {assets:new Map([[name,asset]]),geometries:new Set([geometry]),materialKeys:new Set([materialKey]),lastUsed:performance.now()};
+    const materialKeys=new Set([materialKey]);
+    if(this.options.field && finishedCrowns.has(name) && material.transparent) {
+      // At mid-near distances add one translucent crown back layer to the real
+      // branches. Reuse the exact source atlas/placement; mask out the trunk.
+      const crown=material.clone();
+      const base=material.onBeforeCompile;
+      crown.onBeforeCompile=(shader,renderer)=>{
+        base.call(crown,shader,renderer);
+        shader.vertexShader=shader.vertexShader.replace("#include <common>","#include <common>\nvarying float pineCrownY;")
+          .replace("#include <uv_vertex>","#include <uv_vertex>\npineCrownY=uv.y;");
+        shader.fragmentShader=shader.fragmentShader.replace("#include <common>","#include <common>\nvarying float pineCrownY;")
+          .replace("#include <alphatest_fragment>",`
+            float pineCrownFade = 1.0;
+            #ifdef USE_FOG
+              pineCrownFade = smoothstep(5.0,11.0,vFogDepth);
+            #endif
+            diffuseColor.a *= .56 * smoothstep(.32,.53,pineCrownY) * pineCrownFade;
+            #include <alphatest_fragment>`);
+      };
+      crown.customProgramCacheKey=()=>material.customProgramCacheKey()+"|crown-back-layer";
+      // These two materials share the same map; they are released together.
+      asset.crown={...asset,parts:[{...asset.parts[0],material:crown}]};
+      const crownKey=materialKey+"/crown";this.materials.set(crownKey,{material:crown,refs:1});materialKeys.add(crownKey);
+    }
+    return {assets:new Map([[name,asset]]),geometries:new Set([geometry]),materialKeys,lastUsed:performance.now()};
   }
   private textures(material: Material) {
     return Object.values(material).filter((value): value is Texture => value instanceof Texture);
@@ -383,6 +411,7 @@ export class PineStream {
         const distanceSquared=dx*dx+dz*dz;
         const inSample=tile.data[offset+4]>-40 && tile.data[offset+4]<40 && tile.data[offset+8]>-75 && tile.data[offset+8]<-15;
         const micro=this.microCover.has(tile.data[offset]);
+        const under=tuned && this.understory.has(tile.data[offset]);
         const propRange=tuned && micro && !high ? middle ? 31:22
           : (tuned || (this.options.sample && inSample)) && this.understory.has(tile.data[offset]) ? 55:40;
         const treeRange=tuned ? camera.position.y>55 ? 295:200 : 95;
@@ -391,7 +420,7 @@ export class PineStream {
         if(!this.frustum.intersectsSphere(this.sphere)) {counters.frustumRejected++;continue;}
         const depth=Math.max(0.1,this.point.copy(this.sphere.center).sub(camera.position).dot(this.currentDirection));
         const pixels=2*this.sphere.radius*projectionScale/depth;
-        if(pixels<(tree ? 2:tuned && !high ? micro ? middle ? 3.2:5 : 2:1.5)) {counters.pixelRejected++;continue;}
+        if(pixels<(tree ? 2:tuned && !high ? micro ? middle ? 3.2:5 : under ? 1.45 : 2:1.5)) {counters.pixelRejected++;continue;}
         const previous=tile.lod[i];
         const hysteresis=previous===0 ? 1.12 : previous===2 ? 0.9 : 1;
         // Use the actual camera-to-tree base distance for near geometry. A
@@ -430,6 +459,18 @@ export class PineStream {
         let chunk=chunks.get(batchKey);
         if(!chunk) {chunk={data:tile.data,offsets:[]};chunks.set(batchKey,chunk);batch.chunks.push(chunk);}
         chunk.offsets.push(offset);batch.count++;selection.set(batchKey,batch);
+        if(tree && tuned && !asset.billboard && depth>5 && pixels<1500) {
+          const name=this.manifest.names[tile.data[offset]], far=`${name}/far`;
+          const resource=this.resources.get(far), crown=resource?.assets.get(name)?.crown;
+          if(crown && resource) {
+            resource.lastUsed=now;
+            const crownKey=far+"/crown";
+            const layer=selection.get(crownKey) || {resource:far,asset:crown,chunks:[],count:0};
+            let stems=chunks.get(crownKey);
+            if(!stems) {stems={data:tile.data,offsets:[]};chunks.set(crownKey,stems);layer.chunks.push(stems);}
+            stems.offsets.push(offset);layer.count++;selection.set(crownKey,layer);
+          }
+        }
         if(tree) counters.trees++;else counters.props++;
         counters[tree && available==="far" ? tiers[tierIndex]:available]++;
       }

@@ -8,7 +8,8 @@ import { ACESFilmicToneMapping, FogExp2, Mesh, PerspectiveCamera, TextureLoader,
 import { ForestSurface, RenderFailure, RenderHealth, Walker, type Collision } from "./forest-origin-lab";
 import { PineStream, pineRoot, type TileManifest, type SourceTree } from "./pine-stream";
 import { loadPineTerrainLayeredMaterial, loadPineTerrainMaterial } from "./pine-materials";
-import { applyPineCanopyField, makePineRiver } from "./pine-environment";
+import { applyPineCanopyField, applyPineUnderstory, makePineRiver } from "./pine-environment";
+import { PineOuterForest, pineVisualRoot } from "./pine-outer-forest";
 
 type Quality = "low" | "mid" | "high";
 type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][]; trees: SourceTree[] };
@@ -18,10 +19,10 @@ function ForestHaze() {
   useFrame(({scene,camera})=>{
     if (scene.fog instanceof FogExp2) {
       const above = Math.min(1,Math.max(0,(camera.position.y-26)/140));
-      scene.fog.density = 0.0085-0.0062*above;
+      scene.fog.density = 0.0066-0.0041*above;
     }
   });
-  return <fogExp2 attach="fog" args={["#68786d",0.0085]} />;
+  return <fogExp2 attach="fog" args={["#5f6b59",0.0066]} />;
 }
 function RuntimeReviewPose() {
   const {camera,gl} = useThree();
@@ -67,7 +68,7 @@ function Streaming({ manifest, trees, onError, quality, field, terrainReady }: {
   },[terrainReady,quality]);
   return null;
 }
-function Terrain({ onReady, onError, field, sample }: { onReady: (ready: boolean) => void; onError: (message: string) => void; field?: Texture; sample: boolean }) {
+function Terrain({ onReady, onError, field, floor, sample }: { onReady: (ready: boolean) => void; onError: (message: string) => void; field?: Texture; floor?: Texture; sample: boolean }) {
   const terrain = useGLTF(pineRoot+(sample ? "batch5/sample-terrain.glb":"environment/terrain.glb"));
   const { gl } = useThree();
   useEffect(()=>{
@@ -85,6 +86,7 @@ function Terrain({ onReady, onError, field, sample }: { onReady: (ready: boolean
         ao.flipY=false;material.aoMap=ao;material.aoMapIntensity=0.85;maps.push(ao);
       }
       if(field) applyPineCanopyField(material,field);
+      if(field && floor) applyPineUnderstory(material,floor);
       if(disposed) {release();return;}
       terrain.scene.traverse(object=>{if(object instanceof Mesh){original.set(object,object.material);object.material=material;}});
       // Upload the surface before vegetation starts; async material loading used
@@ -94,7 +96,7 @@ function Terrain({ onReady, onError, field, sample }: { onReady: (ready: boolean
       onReady(true);
     }).catch(error=>{release();if(!disposed) onError(`地表加载失败：${String(error)}`);});
     return ()=>{disposed=true;onReady(false);release();delete gl.domElement.dataset.pineTerrain;};
-  },[terrain,gl,onReady,onError,sample,field]);
+  },[terrain,gl,onReady,onError,sample,field,floor]);
   return <primitive object={terrain.scene} />;
 }
 function SourceLandmarks({field,quality}: {field: Texture; quality: Quality}) {
@@ -144,13 +146,14 @@ function SourceLandmarks({field,quality}: {field: Texture; quality: Quality}) {
 
 type ContentProps = { payload: Payload; quality: Quality; onError: (message:string)=>void };
 function EnvironmentContent(props: ContentProps) {
-  const field=useLoader(TextureLoader,pineRoot+"environment/height-light.png");
-  return <ForestContent {...props} field={field} />;
+  const [field,floor]=useLoader(TextureLoader,[pineRoot+"environment/height-light.png",pineVisualRoot+"understory.webp"]);
+  return <ForestContent {...props} field={field} floor={floor} />;
 }
-function ForestContent({payload,quality,onError,field}: ContentProps & {field?: Texture}) {
+function ForestContent({payload,quality,onError,field,floor}: ContentProps & {field?: Texture;floor?: Texture}) {
   const [terrainReady,setTerrainReady] = useState(false);
   return <>
-    <Suspense fallback={null}><Terrain sample={!field} field={field} onReady={setTerrainReady} onError={onError} /></Suspense>
+    <Suspense fallback={null}><Terrain sample={!field} field={field} floor={floor} onReady={setTerrainReady} onError={onError} /></Suspense>
+    {field && terrainReady && <Suspense fallback={null}><PineOuterForest /></Suspense>}
     {field && <Suspense fallback={null}><SourceLandmarks field={field} quality={quality} /></Suspense>}
     {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} />}
   </>;
@@ -199,16 +202,16 @@ export function ForestRuntimeLab() {
     return ()=>{controller.abort();window.clearInterval(timer);};
   },[]);
   return <main className="forest-lab" aria-label="Pine Forest 实时漫游">
-    {payload && <ForestSurface><Canvas camera={{position:[23.155473709106445,0.9223032593727112,47.55979919433594],fov:48.5,near:0.08,far:sample ? 220:360}}
+    {payload && <ForestSurface><Canvas camera={{position:[23.155473709106445,0.9223032593727112,47.55979919433594],fov:48.5,near:0.08,far:sample ? 220:520}}
       fallback={<RenderFailure message="无法创建 WebGL 场景，请检查浏览器的图形支持。" />}
       onCreated={({gl})=>{gl.domElement.dataset.forestStreamingRuntime="true";}}
       dpr={scale} gl={{antialias:true,powerPreference:"high-performance",toneMapping:ACESFilmicToneMapping}}>
       <RenderHealth />
       {sample ? <fogExp2 attach="fog" args={["#aab8b2",0.008]} />:<ForestHaze />}
-      <ambientLight intensity={sample ? 0.3:0.10} />
-      <hemisphereLight args={sample ? ["#dce8ee","#414c2d",0.45]:["#bccde1","#48412a",0.45]} />
-      <directionalLight position={sample ? [-30,45,12]:[-0.273,0.513,-0.814]} intensity={sample ? 1.6:1.92} color={sample ? "#fff0da":"#ffe0a2"} />
-      <Suspense fallback={null}><Environment files={pineRoot+"sky.hdr"} background backgroundIntensity={sample ? 1:0.56} environmentIntensity={sample ? 0.6:0.36} /></Suspense>
+      <ambientLight intensity={sample ? 0.3:0.075} />
+      <hemisphereLight args={sample ? ["#dce8ee","#414c2d",0.45]:["#c9d1ba","#454626",0.38]} />
+      <directionalLight position={sample ? [-30,45,12]:[-0.273,0.513,-0.814]} intensity={sample ? 1.6:1.85} color={sample ? "#fff0da":"#ffe0a2"} />
+      <Suspense fallback={null}><Environment files={pineRoot+"sky.hdr"} background backgroundIntensity={sample ? 1:0.46} environmentIntensity={sample ? 0.6:0.30} /></Suspense>
       <Suspense fallback={null}>{sample ? <ForestContent payload={payload} quality={quality} onError={setError} />:<EnvironmentContent payload={payload} quality={quality} onError={setError} />}</Suspense>
       <Walker collision={payload.collision} trunks={payload.trunks} sliding />
       <RuntimeReviewPose />

@@ -1,0 +1,14 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-visual-finish-20261104",
+  "tag": "pine-visual-finish-20261104",
+  "publishedFrom": "6ba0ec1e3092dfe71c5ea08d6f7a8c8e3ea9b62c",
+  "files": [
+    {
+      "name": "pine-visual-finish-runtime.zip",
+      "bytes": 11576417,
+      "sha256": "b385eae7a56524d8ee482dc3ce518c0b918f788afe5c9217100a8ed183ff42d0",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-visual-finish-20261104/pine-visual-finish-runtime.zip"
+    }
+  ]
+}
