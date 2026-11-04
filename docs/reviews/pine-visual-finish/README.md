@@ -40,3 +40,4 @@ npm.cmd start
 打开 `/forest-runtime-lab`。增量 ZIP 重新从 GitHub 下载验证 SHA-256，解包后 14 个文件逐项验证，见[发布回执](../pine-visual-finish-art/remote-assets.json)。原始 Blender、纹理和已有运行包沿用上轮位置。没有第二台设备或真机移动端性能数据。正式 Galaxy、Planet、Memory 没有改动，未合并 `main`。
 
 检查：lint、typecheck、46 项单测、生产构建、2 项正式 `travel-comfort` 浏览器回归、四机位、三档连续漫游和单独录屏。未运行其余正式浏览器回归。
+录像发布目标是 `35a151b`。本地完整解码，SHA-256 与 GitHub 返回的附件摘要一致；未完成录像的独立回下载，见[发布回执](remote-assets.json)。
