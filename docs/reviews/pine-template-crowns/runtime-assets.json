@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "template-crowns/pine_02.glb",
+      "bytes": 348972,
+      "sha256": "a6d36a8d4900e52d4291748766165219f394defa584c979ba102300673a501de"
+    },
+    {
+      "path": "template-crowns/pine_04.glb",
+      "bytes": 535684,
+      "sha256": "cd66f652792682941df11a225ae8a859c5bd73aa968ba9d5752e6b85f2376970"
+    },
+    {
+      "path": "template-crowns/production.json",
+      "bytes": 1041,
+      "sha256": "e750319c67288be22d95437fd3c1a78c08e87f2015b6d2634374403dd08fbed9"
+    },
+    {
+      "path": "template-crowns/silver_fir_04.glb",
+      "bytes": 260372,
+      "sha256": "be640f15734e0ed0e2efa20835363889b8cbe30d80859a37362114b994ffd168"
+    }
+  ],
+  "totalBytes": 1146069
+}

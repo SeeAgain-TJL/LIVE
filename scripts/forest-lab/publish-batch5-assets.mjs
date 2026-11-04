@@ -8,6 +8,9 @@ import { request } from 'node:https';
 import path from 'node:path';
 const batch6=process.argv.includes('--batch6');
 const profiles={
+  '--template-crowns':{batch:'pine-template-crowns',tag:'pine-template-crowns-20261104',name:'Pine Forest ? near crown closure',files:['pine-template-crowns-runtime.zip','pine-template-crowns-authoring.zip']},
+  '--template-edge':{batch:'pine-template-edge',tag:'pine-template-edge-20261104',name:'Pine Forest ? grounded forest boundary',files:['pine-template-edge-runtime.zip']},
+  '--template-review':{batch:'pine-template-final',tag:'pine-template-review-20261104',name:'Pine Forest ? template pre-acceptance',files:['pine-template-walk.webm']},
   '--visual-finish':{batch:'pine-visual-finish-art',tag:'pine-visual-finish-20261104',name:'Pine Forest · source-derived visual finish',files:['pine-visual-finish-runtime.zip']},
   '--visual-review':{batch:'pine-visual-finish',tag:'pine-visual-review-20261104',name:'Pine Forest · visual finish walkthrough',files:['pine-visual-finish-walk.webm']},
   '--forest-art':{batch:'pine-final-art',tag:'pine-forest-environment-20261104',name:'Pine Forest · integrated environment',files:['pine-final-art-runtime.zip']},

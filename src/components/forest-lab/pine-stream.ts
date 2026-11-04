@@ -2,6 +2,7 @@ import { Box3, DoubleSide, DynamicDrawUsage, Frustum, Group, InstancedBufferAttr
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { applyPineCanopyField } from "./pine-environment";
+import { applyPineLodFade } from "./pine-lod-fade";
 
 export const pineRoot = "/forest-origin-assets/";
 export type TileManifest = { names: string[]; propAssetCount: number; tiles: Record<string, { trees: number; props: number; bytes: number }> };
@@ -9,13 +10,16 @@ export type SourceTree = { source: string; matrix: number[][] };
 type Tier = "near" | "mid" | "far";
 type Quality = "low" | "mid" | "high";
 type Part = { geometry: Mesh["geometry"]; material: Material | Material[]; matrix: Matrix4 };
-type Asset = { crown?: Asset; parts: Part[]; sphere: Sphere; billboard?: { center: Vector3; views: number } };
-type Resource = { assets: Map<string, Asset>; geometries: Set<Mesh["geometry"]>; materialKeys: Set<string>; lastUsed: number };
+type Asset = { needles?: Asset; crown?: Asset; parts: Part[]; sphere: Sphere; billboard?: { center: Vector3; views: number } };
+type Resource = { assets: Map<string, Asset>; geometries: Set<Mesh["geometry"]>; materialKeys: Set<string>; lastUsed: number; readyAt?: number };
 type Tile = { data: Float32Array; bounds: Float32Array; lod: Uint8Array; cells: { box: Box3; offsets: number[] }[]; lastUsed: number };
 type Slot = { data: Float32Array; offset: number; seen: number };
 type Batch = { resource: string; parts: InstancedMesh[]; capacity: number; ownedGeometry: Mesh["geometry"][]; lastUsed: number;
   entries: Slot[]; slots: Map<Float32Array, Map<number, Slot>> };
-type Selection = { resource: string; asset: Asset; chunks: { data: Float32Array; offsets: number[] }[]; count: number };
+type Chunk = { data: Float32Array; offsets: number[]; weights?: Map<number,number> };
+type Selection = { resource: string; asset: Asset; chunks: Chunk[]; count: number };
+const needleSpecies = new Set(["pine_02","pine_04","silver_fir_04"]);
+const smooth=(a:number,b:number,x:number)=>{const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t);};
 const tiers: Tier[] = ["near", "mid", "far"];
 function matrixAt(data: Float32Array, offset: number, target: Matrix4) {
   // Exact A * source * inverse(A), A = rotationX(-PI/2). Avoid two
@@ -33,6 +37,7 @@ const finishedCrowns = new Set(["pine_01","pine_02","pine_03","pine_04","pine_05
 
 export async function loadPineImpostorAsset(name: string, detail=false, smooth=false, sourceMaterial=false, finish=false) {
   const interpolate=(smooth || sourceMaterial) && name==="pine_04";
+  const blendViews=interpolate || finish;
   const folder=sourceMaterial && name==="pine_04" ? "batch3b/impostors" : (detail || interpolate) && name==="pine_04" ? "batch3/impostors":"batch2/impostors";
   const response=await fetch(pineRoot+`${folder}/${name}.json`);
   if(!response.ok) throw Error(`Impostor ${name} HTTP ${response.status}`);
@@ -47,7 +52,7 @@ export async function loadPineImpostorAsset(name: string, detail=false, smooth=f
   material.onBeforeCompile=shader=>{
     shader.vertexShader=shader.vertexShader.replace("#include <common>","#include <common>\nattribute float atlasAngle;");
     shader.vertexShader=shader.vertexShader.replace("#include <uv_vertex>",`#include <uv_vertex>\nvMapUv = vec2((vMapUv.x + mod(atlasAngle, 4.0)) / 4.0, (vMapUv.y + ${rows-1}.0 - floor(atlasAngle / 4.0)) / ${rows}.0);`);
-    if(interpolate) {
+    if(blendViews) {
       const declarations="varying vec2 pineNextUv; varying float pineViewBlend;";
       shader.vertexShader=shader.vertexShader.replace("#include <common>",`#include <common>\n${declarations}`);
       shader.fragmentShader=shader.fragmentShader.replace("#include <common>",`#include <common>\n${declarations}`);
@@ -68,7 +73,7 @@ export async function loadPineImpostorAsset(name: string, detail=false, smooth=f
         diffuseColor *= vec4(pineColor,pineAlpha);`);
     }
   };
-  material.customProgramCacheKey=()=>`pine-source-view-atlas-${views}-${interpolate}`;
+  material.customProgramCacheKey=()=>`pine-source-view-atlas-${views}-${interpolate}-${finish}`;
   const geometry=new PlaneGeometry(metadata.width,metadata.height);
   const center=new Vector3().fromArray(metadata.center);
   const sphere=new Box3(new Vector3().fromArray(metadata.bounds.min),new Vector3().fromArray(metadata.bounds.max)).getBoundingSphere(new Sphere());
@@ -154,14 +159,41 @@ export class PineStream {
     while (!this.disposed && this.pending.size < (this.options.field ? 4:2) && this.queue.size) {
       const [key] = [...this.queue].sort((a,b)=>a[1]-b[1])[0];
       this.queue.delete(key); this.pending.add(key);
-      const load=key!=="props/far" && key.endsWith("/far") ? this.loadImpostor(key) : this.loader.loadAsync(pineRoot+this.file(key)).then(gltf=>this.prepare(gltf,key));
+      const load=key!=="props/far" && key.endsWith("/far") ? this.loadImpostor(key) : this.loadGeometry(key);
       load.then(resource => {
         if (this.disposed) this.releaseResource(resource);
-        else { this.resources.set(key,resource); this.dirty = true; }
+        else { resource.readyAt=performance.now();this.resources.set(key,resource); this.dirty = true; }
       }).catch(error => {
         if (!this.disposed) { this.failures.add(key); this.reportError(`森林资源加载失败 ${key}：${String(error)}`); }
       }).finally(()=>{this.pending.delete(key);this.pump();});
     }
+  }
+  private async loadGeometry(key:string):Promise<Resource> {
+    const gltf=await this.loader.loadAsync(pineRoot+this.file(key));
+    const [name,tier]=key.split("/");
+    // Only these three existing source species receive a near needle layer.
+    const needles=this.options.field && tier==="near" && needleSpecies.has(name)
+      ? await this.loader.loadAsync(pineRoot+`template-crowns/${name}.glb`) : null;
+    const resource=this.prepare(gltf,key);
+    if(needles) {
+      needles.scene.updateMatrixWorld(true);
+      const parts:Part[]=[];
+      needles.scene.traverse(object=>{
+        if(!(object instanceof Mesh))return;
+        const materials=Array.isArray(object.material) ? object.material:[object.material];
+        for(const material of materials) {
+          if(this.options.field)applyPineCanopyField(material,this.options.field);
+          applyPineLodFade(material);
+          const materialKey=key+"/source-needles/"+material.uuid;
+          this.materials.set(materialKey,{material,refs:1});resource.materialKeys.add(materialKey);
+        }
+        resource.geometries.add(object.geometry);
+        parts.push({geometry:object.geometry,material:object.material,matrix:object.matrixWorld.clone()});
+      });
+      const asset=resource.assets.get(name)!;
+      asset.needles={parts,sphere:asset.sphere};
+    }
+    return resource;
   }
   private async loadImpostor(key: string): Promise<Resource> {
     const name=key.split("/")[0];
@@ -195,6 +227,7 @@ export class PineStream {
       asset.crown={...asset,parts:[{...asset.parts[0],material:crown}]};
       const crownKey=materialKey+"/crown";this.materials.set(crownKey,{material:crown,refs:1});materialKeys.add(crownKey);
     }
+    if(this.options.field) {applyPineLodFade(material);if(asset.crown)for(const part of asset.crown.parts)applyPineLodFade(part.material as Material);}
     return {assets:new Map([[name,asset]]),geometries:new Set([geometry]),materialKeys,lastUsed:performance.now()};
   }
   private textures(material: Material) {
@@ -229,7 +262,7 @@ export class PineStream {
               material.transparent=false;material.alphaTest=0.03;material.alphaToCoverage=true;material.depthWrite=true;
             }
           }
-          if (this.options.field) applyPineCanopyField(material,this.options.field);
+          if (this.options.field) {applyPineCanopyField(material,this.options.field);if(name!=="props")applyPineLodFade(material);}
           this.materials.set(poolKey,{material,refs:0});
         }
         if (!resource.materialKeys.has(poolKey)) { this.materials.get(poolKey)!.refs++; resource.materialKeys.add(poolKey); }
@@ -392,7 +425,7 @@ export class PineStream {
     const counters={candidates:0,frustumRejected:0,pixelRejected:0,trees:0,props:0,near:0,mid:0,far:0};
     const residentKeys=new Set(this.tiles.keys());
     for(const tile of [...this.tiles.values(),...(this.overview ? [this.overview]:[])]) {
-      const chunks=new Map<string,{data:Float32Array;offsets:number[]}>();
+      const chunks=new Map<string,Chunk>();
       for(const cell of tile.cells) {
       selectActiveMs+=performance.now()-activeStart;
       yield;
@@ -428,7 +461,8 @@ export class PineStream {
         const dy=tuned ? tile.data[offset+12]-camera.position.y:0;
         const trueDistanceSquared=distanceSquared+dy*dy;
         const nearRange=tuned ? high ? 22:middle ? 17:11 : high ? 26:middle ? 22:18;
-        const tierIndex=tree ? (trueDistanceSquared<(nearRange*hysteresis)**2 && pixels>(high?450:middle?580:700)/hysteresis ? 0 : trueDistanceSquared<(45*hysteresis)**2 && pixels>260/hysteresis ? 1:2)
+        const nearBlend=tuned && tree ? (1-smooth(nearRange-2,nearRange+1,Math.sqrt(trueDistanceSquared))) * smooth((high?450:middle?580:700)*.80,(high?450:middle?580:700),pixels) : 1;
+        const tierIndex=tree && tuned && !this.options.frozenLod && nearBlend>.002 ? 0 : tree ? (trueDistanceSquared<(nearRange*hysteresis)**2 && pixels>(high?450:middle?580:700)/hysteresis ? 0 : trueDistanceSquared<(45*hysteresis)**2 && pixels>260/hysteresis ? 1:2)
           : (trueDistanceSquared<((high?9:middle?8:6)*hysteresis)**2 && pixels>120/hysteresis ? 0 : trueDistanceSquared<((high?22:middle?19:14)*hysteresis)**2 && pixels>24/hysteresis ? 1:2);
         tile.lod[i]=tierIndex;
         const desired=this.options.frozenLod || tiers[tierIndex];
@@ -458,7 +492,32 @@ export class PineStream {
         const batch=selection.get(batchKey) || {resource:key,asset,chunks:[],count:0};
         let chunk=chunks.get(batchKey);
         if(!chunk) {chunk={data:tile.data,offsets:[]};chunks.set(batchKey,chunk);batch.chunks.push(chunk);}
+        let weight=1;
+        const blendLod=tree && tuned && !this.options.frozenLod && available!=="far";
+        if(blendLod) {
+          const spatial=available==="near" ? nearBlend : 1-smooth(40,46,Math.sqrt(trueDistanceSquared));
+          const ready=this.resources.get(key)?.readyAt ?? 0;
+          const arrival=smooth(0,240,now-ready);
+          if(arrival<1)this.dirty=true;
+          weight=spatial*arrival;
+          chunk.weights ??=new Map();chunk.weights.set(offset,weight);
+        }
         chunk.offsets.push(offset);batch.count++;selection.set(batchKey,batch);
+        const addLayer=(layerKey:string,resourceKey:string,layerAsset:Asset,alpha:number)=>{
+          const layer=selection.get(layerKey)||{resource:resourceKey,asset:layerAsset,chunks:[],count:0};
+          let stems=chunks.get(layerKey);
+          if(!stems) {stems={data:tile.data,offsets:[],weights:new Map()};chunks.set(layerKey,stems);layer.chunks.push(stems);}
+          stems.offsets.push(offset);stems.weights!.set(offset,alpha);layer.count++;selection.set(layerKey,layer);
+        };
+        if(blendLod && weight<.998) {
+          const far=`${this.manifest.names[tile.data[offset]]}/far`,resource=this.resources.get(far)!;
+          resource.lastUsed=now;
+          addLayer(far+"/transition",far,resource.assets.get(this.manifest.names[tile.data[offset]])!,1-weight);
+        }
+        if(asset.needles && weight>.01 && trueDistanceSquared<144) {
+          const needleWeight=weight*(1-smooth(8.5,12,Math.sqrt(trueDistanceSquared)));
+          addLayer(batchKey+"/needles",key,asset.needles,needleWeight);
+        }
         if(tree && tuned && !asset.billboard && depth>5 && pixels<1500) {
           const name=this.manifest.names[tile.data[offset]], far=`${name}/far`;
           const resource=this.resources.get(far), crown=resource?.assets.get(name)?.crown;
@@ -468,7 +527,7 @@ export class PineStream {
             const layer=selection.get(crownKey) || {resource:far,asset:crown,chunks:[],count:0};
             let stems=chunks.get(crownKey);
             if(!stems) {stems={data:tile.data,offsets:[]};chunks.set(crownKey,stems);layer.chunks.push(stems);}
-            stems.offsets.push(offset);layer.count++;selection.set(crownKey,layer);
+            stems.weights ??=new Map();stems.weights.set(offset,weight);stems.offsets.push(offset);layer.count++;selection.set(crownKey,layer);
           }
         }
         if(tree) counters.trees++;else counters.props++;
@@ -499,6 +558,7 @@ export class PineStream {
           // Parts are populated across frames. Never submit identity matrices
           // from a newly allocated but not yet populated batch.
           mesh.count=0;
+          if(tuned && selected.resource!=="props/near" && !selected.resource.startsWith("props/"))mesh.instanceColor=new InstancedBufferAttribute(new Float32Array(capacity*3).fill(1),3);
           mesh.instanceMatrix.setUsage(DynamicDrawUsage);mesh.frustumCulled=!selected.asset.billboard;mesh.name=key;
           this.group.add(mesh);return mesh;
         });
@@ -539,6 +599,11 @@ export class PineStream {
         // Transparent tree planes keep the original per-tile back-to-front order.
         const entries=selected.asset.billboard ? selected.chunks.flatMap(({data,offsets})=>offsets.sort((a,b)=>
           ((data[b+4]-camera.position.x)**2+(-data[b+8]-camera.position.z)**2)-((data[a+4]-camera.position.x)**2+(-data[a+8]-camera.position.z)**2)).map(offset=>({data,offset}))) : batch.entries;
+        const weights=new Map(selected.chunks.map(chunk=>[chunk.data,chunk.weights]));
+        if(mesh.instanceColor) {
+          entries.forEach(({data,offset},index)=>mesh.instanceColor!.setXYZ(index,weights.get(data)?.get(offset) ?? 1,1,1));
+          mesh.instanceColor.needsUpdate=true;
+        }
         let first=Infinity,last=-1;
         for(let index=0;index<entries.length;index++) {
           if(index && index%1024===0) {
@@ -554,7 +619,7 @@ export class PineStream {
             this.localCamera.copy(camera.position).applyMatrix4(this.billboardInverse.copy(this.matrix).invert()).sub(center);
             const views=selected.asset.billboard.views;
             const viewAngle=Math.atan2(this.localCamera.x,this.localCamera.z)/(2*Math.PI/views);
-            const angle=((((this.options.smoothImpostor || this.options.sourceImpostor) && key.includes("pine_04/") ? viewAngle:Math.round(viewAngle))%views)+views)%views;
+            const angle=(((tuned || ((this.options.smoothImpostor || this.options.sourceImpostor) && key.includes("pine_04/")) ? viewAngle:Math.round(viewAngle))%views)+views)%views;
             const attribute=mesh.geometry.getAttribute("atlasAngle") as InstancedBufferAttribute;attribute.setX(index,angle);
             const facing=Math.atan2(camera.position.x-this.worldCenter.x,camera.position.z-this.worldCenter.z);
             this.instance.makeRotationY(facing);

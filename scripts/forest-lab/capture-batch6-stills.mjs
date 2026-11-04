@@ -10,6 +10,13 @@ const poses={
   near:{position:[23.155473709106445,.9223032593727112,47.55979919433594],direction:[-.9821439487,.1260486988,-.1396602648]},
   ruins:{position:[-24,9,44],direction:[-1,.04,-.37]},
   far:{position:[10,18,60],direction:[.1,-.5,-1]},
+  ...(process.env.PINE_TEMPLATE ? {
+    crown:{position:[20.4,2.15,46.7],direction:[-4.5,4.6,-4.0]},
+    walkMid:{position:[-9.3,2.6,31.1],direction:[-.84,.045,-.54]},
+    walkFar:{position:[20.9,1.8,44.0],direction:[-.34,.035,-1]},
+    edge:{position:[88,3.7,50],direction:[1,.015,.11]},
+    raisedEdge:{position:[55,41,48],direction:[1,-.40,-.22]},
+  } : {}),
   ...(process.env.PINE_PANORAMA ? {panorama:{position:[0,264,50],direction:[0,-261,-50]}} : {}),
 };
 const browser=await chromium.launch({channel:'chrome',headless:true});
@@ -25,7 +32,7 @@ try {
     await page.goto((process.env.FOREST_LAB_URL || 'http://127.0.0.1:3320')+route);
     await page.locator('canvas[data-pine-review-pose-ready=true][data-pine-terrain=layered][data-pine-landmarks=ready]').waitFor({timeout:120000});
     if(process.env.PINE_VISUAL_FINISH) await page.locator('canvas[data-pine-outer-forest=ready]').waitFor({timeout:120000});
-    if(name==="panorama") await page.locator('canvas[data-forest-origin-ready=true]').waitFor({timeout:120000});
+    await page.locator('canvas[data-forest-origin-ready=true]').waitFor({timeout:120000});
     await page.evaluate(detail=>window.dispatchEvent(new CustomEvent('pine-runtime-review-camera',{detail})),pose);
     await page.waitForFunction(()=>{
       const c=document.querySelector('canvas');const s=JSON.parse(c?.dataset.forestStreaming || 'null');
