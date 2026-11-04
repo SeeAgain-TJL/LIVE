@@ -1,5 +1,7 @@
 # UNIVERSE OF ME · 我的人生宇宙
 
+Pine Forest **Batch4 收尾已完成**：保留三层源PBR及path/river混合、低档Billboard和仅高档pine_04真实中景LOD。近中远截图、Blender同机位地表对照、157秒真实WASD/鼠标连续视频及恢复说明见 [Batch4审阅](docs/reviews/pine-batch4/README.md)。本机低档80%移动输入段：不录屏41.55FPS/P95 50.0ms，录屏32.99/P95 50.1ms；**整体美术和全路段性能仍未通过**。Git不含运行资产，换设备需另复制约191MB运行包；原始DCC资料另带。下段第三批B为历史记录。
+
 Pine Forest 第三批 B 已完成局部视觉修复：原地形 PBR 烘焙、代表树种16方向插值与同源树木概览；源资产和布局保留。Intel 核显推荐低档80%内部渲染（1152×720→1440×900/DPR1），独立漫游45.10 FPS/P95 33.5ms，真实录屏42.48/P95 33.6ms。**近景针叶、地面位移质感和首次补齐仍未解决，整体美术验收未通过**。入口 `/forest-runtime-lab?scale=0.8`；真实截图、2分36.76秒未剪辑录屏、Blender对照与性能代价见 [第三批 B 审阅](docs/reviews/pine-batch3b/README.md)，[第三批历史](docs/reviews/pine-batch3/README.md)保留。正式星球和用户数据未修改；本批停止，不自动封装森林星球模板。
 
 > 人生不是一条直线，而是一个不断扩张的宇宙。
