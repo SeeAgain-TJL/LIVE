@@ -1,0 +1,2962 @@
+{
+  "phase": "after",
+  "recordedAt": "2026-11-04T06:40:37.656Z",
+  "baseURL": "http://127.0.0.1:3320",
+  "browserMode": "installed Google Chrome, headless, hardware WebGL",
+  "cpu": "Intel(R) Core(TM) 5 220H",
+  "totalMemoryBytes": 16699781120,
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "deviceScaleFactor": 1.5,
+  "samples": [
+    {
+      "scene": "five-planets",
+      "quality": "low",
+      "still": [
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.2,
+          "maxMs": 17.6,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 17460912,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.3,
+          "maxMs": 17.9,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 20016444,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.3,
+          "maxMs": 17.6,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 20816386,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.1,
+          "maxMs": 17.7,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 15640992,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.69,
+          "p95Ms": 17.6,
+          "maxMs": 18.5,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 17129474,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.63,
+          "p95Ms": 17.1,
+          "maxMs": 17.8,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 17777068,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "moving": [
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.65,
+          "p95Ms": 17.7,
+          "maxMs": 18.2,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 19738618,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            -2.3505582427985017,
+            11.999999999999996,
+            42.104469255235486
+          ],
+          "target": [
+            -4.350558242798502,
+            -4.081593806853231e-18,
+            -2.8955307447645118
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5696.131413313581,
+              "y": -8188.215540460728,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.831112319531,
+              "y": 264.77578406855696,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.64,
+          "p95Ms": 17,
+          "maxMs": 17.2,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 21710344,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            -0.00861059623064575,
+            11.999999999999996,
+            42.000382693165804
+          ],
+          "target": [
+            -2.0086105962306458,
+            -1.4951748741392997e-20,
+            -2.999617306834195
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4435.13066622174,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5927950439998,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.5,
+          "maxMs": 18.7,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 15615972,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            -2.203299758475363,
+            11.999999999999996,
+            42.09792443371001
+          ],
+          "target": [
+            -4.203299758475363,
+            -3.825888882518196e-18,
+            -2.902075566289985
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5616.8414005674695,
+              "y": -8188.215540460728,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.6274913314826,
+              "y": 264.77578406855696,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.2,
+          "maxMs": 17.6,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 15866085,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            -0.042501747330828454,
+            11.999999999999996,
+            42.00188896654804
+          ],
+          "target": [
+            -2.0425017473308285,
+            -7.380156148755363e-20,
+            -2.9981110334519654
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4453.379053165728,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.6396578764188,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.2,
+          "maxMs": 17.2,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 16154009,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            -2.3747910275787243,
+            11.999999999999996,
+            42.105546267892386
+          ],
+          "target": [
+            -4.374791027578724,
+            -4.123672485220299e-18,
+            -2.8944537321076163
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5709.179339366395,
+              "y": -8188.215540460728,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.8646200905964,
+              "y": 264.77578406855696,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "low",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.3,
+          "maxMs": 17.6,
+          "calls": 26,
+          "points": 1600,
+          "triangles": 28882,
+          "dpr": 1,
+          "geometries": 27,
+          "textures": 11,
+          "programs": 12,
+          "heapBytes": 15347633,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "560x350",
+          "camera": [
+            -0.1814461736185229,
+            11.999999999999996,
+            42.008064274383045
+          ],
+          "target": [
+            -2.181446173618523,
+            -3.150696566603141e-19,
+            -2.991935725616958
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4528.192435783313,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.8317826391758,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "five-planets",
+      "quality": "medium",
+      "still": [
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.2,
+          "maxMs": 17.7,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 29672250,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.3,
+          "maxMs": 20.9,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 30014320,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.1,
+          "maxMs": 17.4,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 27870876,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.3,
+          "maxMs": 17.7,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 28620604,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.3,
+          "maxMs": 17.4,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 30108596,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.6,
+          "maxMs": 18,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 30941872,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "moving": [
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.64,
+          "p95Ms": 17.9,
+          "maxMs": 18.2,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 32770010,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            -2.365615412364897,
+            11.999999999999996,
+            42.10513846277177
+          ],
+          "target": [
+            -4.365615412364897,
+            -4.107739617210932e-18,
+            -2.894861537228228
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5704.238811487123,
+              "y": -8188.215540460728,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.8519325511015,
+              "y": 264.77578406855696,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.68,
+          "p95Ms": 18.8,
+          "maxMs": 21.1,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 27888596,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            -0.004481033484755592,
+            11.999999999999996,
+            42.00019915704377
+          ],
+          "target": [
+            -2.0044810334847556,
+            -7.781027581730517e-21,
+            -2.999800842956235
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4432.907140125688,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5870849102143,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.5,
+          "maxMs": 18.7,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 28257557,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            -2.2969295333191146,
+            11.999999999999996,
+            42.1020857570364
+          ],
+          "target": [
+            -4.296929533319115,
+            -3.988470988411607e-18,
+            -2.8979142429636
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5667.255514734812,
+              "y": -8188.215540460728,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.75695746956,
+              "y": 264.77578406855696,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 17.7,
+          "maxMs": 18.7,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 21093442,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            -0.020570168208414064,
+            11.999999999999996,
+            42.00091422969815
+          ],
+          "target": [
+            -2.020570168208414,
+            -3.571877932514248e-20,
+            -2.999085770301854
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4441.570190700848,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.6093320868326,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.1,
+          "maxMs": 17.9,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 21577097,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            -2.3802655555081467,
+            11.999999999999996,
+            42.1057895802448
+          ],
+          "target": [
+            -4.380265555508147,
+            -4.133178652259826e-18,
+            -2.894210419755196
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5712.127049926489,
+              "y": -8188.215540460728,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.8721899687682,
+              "y": 264.77578406855696,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "medium",
+          "fps": 60,
+          "meanMs": 16.68,
+          "p95Ms": 17.8,
+          "maxMs": 18.5,
+          "calls": 30,
+          "points": 3800,
+          "triangles": 85250,
+          "dpr": 1.35,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 21116927,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "640x400",
+          "camera": [
+            -0.09442694159669296,
+            11.999999999999996,
+            42.00419675295985
+          ],
+          "target": [
+            -2.094426941596693,
+            -1.6396633489171116e-19,
+            -2.9958032470401488
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4481.3377092262535,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.7114571986083,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "five-planets",
+      "quality": "high",
+      "still": [
+        {
+          "tier": "high",
+          "fps": 60,
+          "meanMs": 16.64,
+          "p95Ms": 17.4,
+          "maxMs": 17.8,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 41109216,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "meanMs": 16.68,
+          "p95Ms": 18.1,
+          "maxMs": 21.8,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 40841084,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 17.9,
+          "maxMs": 21,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 41688590,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "meanMs": 16.66,
+          "p95Ms": 18.6,
+          "maxMs": 20.8,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 43171182,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "meanMs": 16.69,
+          "p95Ms": 18.9,
+          "maxMs": 20.7,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 41033104,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 60,
+          "meanMs": 16.67,
+          "p95Ms": 18.3,
+          "maxMs": 19.8,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 41896226,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0,
+            11.999999999999996,
+            42
+          ],
+          "target": [
+            -2,
+            0,
+            -3
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4430.494367756374,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.5808887818905,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "moving": [
+        {
+          "tier": "high",
+          "fps": 54,
+          "meanMs": 18.46,
+          "p95Ms": 29.9,
+          "maxMs": 35,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 43484507,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -2.2585100674103895,
+            11.999999999999996,
+            42.100378225218236
+          ],
+          "target": [
+            -4.2585100674103895,
+            -3.9217580470939e-18,
+            -2.8996217747817616
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5646.56889721596,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.7038331307851,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 55,
+          "meanMs": 18.07,
+          "p95Ms": 28.2,
+          "maxMs": 37.4,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 45510065,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -0.045700968940147746,
+            11.999999999999996,
+            42.002031154175114
+          ],
+          "target": [
+            -2.0457009689401477,
+            -7.935680486318648e-20,
+            -2.9979688458248837
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4455.1016454044475,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.6440815853011,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 54,
+          "meanMs": 18.68,
+          "p95Ms": 36.1,
+          "maxMs": 41.4,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 47406207,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -2.3641766614630297,
+            11.999999999999996,
+            42.105074518287246
+          ],
+          "target": [
+            -4.36417666146303,
+            -4.1052413184392886e-18,
+            -2.8949254817127557
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5703.464128942555,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.8499431249468,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 39,
+          "meanMs": 25.76,
+          "p95Ms": 54.1,
+          "maxMs": 61.8,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 39161842,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -0.0528379164112347,
+            11.999999999999996,
+            42.002348351840496
+          ],
+          "target": [
+            -2.0528379164112347,
+            -9.174965693867551e-20,
+            -2.9976516481595015
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4458.944470886113,
+              "y": -8188.215540460728,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.6539501664047,
+              "y": 264.77578406855696,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 41,
+          "meanMs": 24.56,
+          "p95Ms": 47.3,
+          "maxMs": 52.6,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 39025962,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -2.339055967053346,
+            11.999999999999996,
+            42.103958042980146
+          ],
+          "target": [
+            -4.339055967053346,
+            -4.061620841882053e-18,
+            -2.896041957019853
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -5689.93811589758,
+              "y": -8188.215540460728,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1150.8152076009487,
+              "y": 264.77578406855696,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 41,
+          "meanMs": 24.15,
+          "p95Ms": 42.1,
+          "maxMs": 50.5,
+          "calls": 30,
+          "points": 5000,
+          "triangles": 137110,
+          "dpr": 1.5,
+          "geometries": 31,
+          "textures": 11,
+          "programs": 14,
+          "heapBytes": 38949367,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -0.036753547410527165,
+            11.999999999999996,
+            42.00163349099602
+          ],
+          "target": [
+            -2.036753547410527,
+            -6.382018056787502e-20,
+            -2.9983665090039797
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -4450.283986371833,
+              "y": -8188.215540460755,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 1147.6317095795675,
+              "y": 264.7757840685571,
+              "visible": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "ringed",
+      "quality": "high",
+      "bookmark": {
+        "target": [
+          1,
+          0,
+          0
+        ],
+        "position": [
+          -12.6656,
+          5.694,
+          11.8625
+        ]
+      },
+      "samples": [
+        {
+          "tier": "high",
+          "fps": 43,
+          "meanMs": 23.53,
+          "p95Ms": 46.5,
+          "maxMs": 82.6,
+          "calls": 24,
+          "points": 5000,
+          "triangles": 125622,
+          "dpr": 1.5,
+          "geometries": 25,
+          "textures": 11,
+          "programs": 11,
+          "heapBytes": 43106031,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -12.665600000000001,
+            5.693999999999999,
+            11.8625
+          ],
+          "target": [
+            1,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -13816.150245931396,
+              "y": -3060.05109228678,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -118.01714828594392,
+              "y": 217.11100193503296,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 45,
+          "meanMs": 22.01,
+          "p95Ms": 42.2,
+          "maxMs": 65.7,
+          "calls": 24,
+          "points": 5000,
+          "triangles": 125622,
+          "dpr": 1.5,
+          "geometries": 25,
+          "textures": 11,
+          "programs": 11,
+          "heapBytes": 43022594,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -12.665600000000001,
+            5.693999999999999,
+            11.8625
+          ],
+          "target": [
+            1,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -13816.150245931396,
+              "y": -3060.05109228678,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -118.01714828594392,
+              "y": 217.11100193503296,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 47,
+          "meanMs": 21.28,
+          "p95Ms": 37.4,
+          "maxMs": 45.4,
+          "calls": 24,
+          "points": 5000,
+          "triangles": 125622,
+          "dpr": 1.5,
+          "geometries": 25,
+          "textures": 11,
+          "programs": 11,
+          "heapBytes": 43557623,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -12.665600000000001,
+            5.693999999999999,
+            11.8625
+          ],
+          "target": [
+            1,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -13816.150245931396,
+              "y": -3060.05109228678,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -118.01714828594392,
+              "y": 217.11100193503296,
+              "visible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "ocean",
+      "quality": "high",
+      "bookmark": {
+        "target": [
+          -9,
+          2.5,
+          1
+        ],
+        "position": [
+          -12.96,
+          4.15,
+          4.4375
+        ]
+      },
+      "samples": [
+        {
+          "tier": "high",
+          "fps": 38,
+          "meanMs": 26.4,
+          "p95Ms": 60.6,
+          "maxMs": 89.6,
+          "calls": 24,
+          "points": 5000,
+          "triangles": 125622,
+          "dpr": 1.5,
+          "geometries": 25,
+          "textures": 11,
+          "programs": 11,
+          "heapBytes": 70329239,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -12.96,
+            4.15,
+            4.4375
+          ],
+          "target": [
+            -9,
+            2.5,
+            1
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -6314.541794262813,
+              "y": -1011.5967569363063,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -114.16795953196868,
+              "y": 215.1196999780684,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 30,
+          "meanMs": 33.39,
+          "p95Ms": 69.8,
+          "maxMs": 73,
+          "calls": 24,
+          "points": 5000,
+          "triangles": 125622,
+          "dpr": 1.5,
+          "geometries": 25,
+          "textures": 11,
+          "programs": 11,
+          "heapBytes": 70676126,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -12.96,
+            4.15,
+            4.4375
+          ],
+          "target": [
+            -9,
+            2.5,
+            1
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -6314.541794262813,
+              "y": -1011.5967569363063,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -114.16795953196868,
+              "y": 215.1196999780684,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 28,
+          "meanMs": 35.71,
+          "p95Ms": 72.6,
+          "maxMs": 95.8,
+          "calls": 24,
+          "points": 5000,
+          "triangles": 125622,
+          "dpr": 1.5,
+          "geometries": 25,
+          "textures": 11,
+          "programs": 11,
+          "heapBytes": 71015581,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -12.96,
+            4.15,
+            4.4375
+          ],
+          "target": [
+            -9,
+            2.5,
+            1
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -6314.541794262813,
+              "y": -1011.5967569363063,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -114.16795953196868,
+              "y": 215.1196999780684,
+              "visible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "rocky",
+      "quality": "high",
+      "bookmark": {
+        "target": [
+          10,
+          -2,
+          -5
+        ],
+        "position": [
+          4.7728,
+          0.17799999999999994,
+          -0.46250000000000036
+        ]
+      },
+      "samples": [
+        {
+          "tier": "high",
+          "fps": 51,
+          "meanMs": 19.58,
+          "p95Ms": 36.1,
+          "maxMs": 59.2,
+          "calls": 12,
+          "points": 5000,
+          "triangles": 58326,
+          "dpr": 1.5,
+          "geometries": 13,
+          "textures": 3,
+          "programs": 9,
+          "heapBytes": 58898894,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            4.772799999999999,
+            0.1779999999999995,
+            -0.46250000000000036
+          ],
+          "target": [
+            10,
+            -2,
+            -5
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -1185.7065820206085,
+              "y": -64.68877231661862,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -149.3506405747894,
+              "y": 210.54077371109193,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 52,
+          "meanMs": 19.39,
+          "p95Ms": 43.4,
+          "maxMs": 55,
+          "calls": 12,
+          "points": 5000,
+          "triangles": 58326,
+          "dpr": 1.5,
+          "geometries": 13,
+          "textures": 3,
+          "programs": 9,
+          "heapBytes": 53665945,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            4.772799999999999,
+            0.1779999999999995,
+            -0.46250000000000036
+          ],
+          "target": [
+            10,
+            -2,
+            -5
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -1185.7065820206085,
+              "y": -64.68877231661862,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -149.3506405747894,
+              "y": 210.54077371109193,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 43,
+          "meanMs": 23.13,
+          "p95Ms": 44.5,
+          "maxMs": 68.5,
+          "calls": 12,
+          "points": 5000,
+          "triangles": 58326,
+          "dpr": 1.5,
+          "geometries": 13,
+          "textures": 3,
+          "programs": 9,
+          "heapBytes": 54006448,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            4.772799999999999,
+            0.1779999999999995,
+            -0.46250000000000036
+          ],
+          "target": [
+            10,
+            -2,
+            -5
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -1185.7065820206085,
+              "y": -64.68877231661862,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -149.3506405747894,
+              "y": 210.54077371109193,
+              "visible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "ice",
+      "quality": "high",
+      "bookmark": {
+        "target": [
+          -4,
+          -4.5,
+          -9
+        ],
+        "position": [
+          -7.168,
+          -3.1799999999999997,
+          -6.25
+        ]
+      },
+      "samples": [
+        {
+          "tier": "high",
+          "fps": 44,
+          "meanMs": 22.48,
+          "p95Ms": 39.4,
+          "maxMs": 51.7,
+          "calls": 13,
+          "points": 5000,
+          "triangles": 60246,
+          "dpr": 1.5,
+          "geometries": 14,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 80373023,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -7.167999999999999,
+            -3.1799999999999993,
+            -6.25
+          ],
+          "target": [
+            -4,
+            -4.5,
+            -9
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -2267.4351441373674,
+              "y": 111.6859996400385,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -123.05647762464567,
+              "y": 203.84269465663968,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 47,
+          "meanMs": 21.06,
+          "p95Ms": 47.3,
+          "maxMs": 53.2,
+          "calls": 13,
+          "points": 5000,
+          "triangles": 60246,
+          "dpr": 1.5,
+          "geometries": 14,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 81872348,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -7.167999999999999,
+            -3.1799999999999993,
+            -6.25
+          ],
+          "target": [
+            -4,
+            -4.5,
+            -9
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -2267.4351441373674,
+              "y": 111.6859996400385,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -123.05647762464567,
+              "y": 203.84269465663968,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 44,
+          "meanMs": 22.72,
+          "p95Ms": 41,
+          "maxMs": 45.2,
+          "calls": 13,
+          "points": 5000,
+          "triangles": 60246,
+          "dpr": 1.5,
+          "geometries": 14,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 82215910,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -7.167999999999999,
+            -3.1799999999999993,
+            -6.25
+          ],
+          "target": [
+            -4,
+            -4.5,
+            -9
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -2267.4351441373674,
+              "y": 111.6859996400385,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -123.05647762464567,
+              "y": 203.84269465663968,
+              "visible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "gas",
+      "quality": "high",
+      "bookmark": {
+        "target": [
+          6,
+          5,
+          -13
+        ],
+        "position": [
+          0.9311999999999996,
+          7.112,
+          -8.6
+        ]
+      },
+      "samples": [
+        {
+          "tier": "high",
+          "fps": 28,
+          "meanMs": 35.34,
+          "p95Ms": 66.6,
+          "maxMs": 67.9,
+          "calls": 13,
+          "points": 5000,
+          "triangles": 60246,
+          "dpr": 1.5,
+          "geometries": 14,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 84542389,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0.9311999999999987,
+            7.112,
+            -8.599999999999998
+          ],
+          "target": [
+            6,
+            5,
+            -13
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -1593.0871027813675,
+              "y": -420.4469856730538,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -134.5609604559524,
+              "y": 223.24883834811743,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 22,
+          "meanMs": 44.58,
+          "p95Ms": 79.7,
+          "maxMs": 88,
+          "calls": 13,
+          "points": 5000,
+          "triangles": 60246,
+          "dpr": 1.5,
+          "geometries": 14,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 84733858,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0.9311999999999987,
+            7.112,
+            -8.599999999999998
+          ],
+          "target": [
+            6,
+            5,
+            -13
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -1593.0871027813675,
+              "y": -420.4469856730538,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -134.5609604559524,
+              "y": 223.24883834811743,
+              "visible": false
+            }
+          ]
+        },
+        {
+          "tier": "high",
+          "fps": 35,
+          "meanMs": 28.61,
+          "p95Ms": 63.4,
+          "maxMs": 66.2,
+          "calls": 13,
+          "points": 5000,
+          "triangles": 60246,
+          "dpr": 1.5,
+          "geometries": 14,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 85010882,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            0.9311999999999987,
+            7.112,
+            -8.599999999999998
+          ],
+          "target": [
+            6,
+            5,
+            -13
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -1593.0871027813675,
+              "y": -420.4469856730538,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": -134.5609604559524,
+              "y": 223.24883834811743,
+              "visible": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "tier": "low",
+      "fps": 60,
+      "meanMs": 16.63,
+      "p95Ms": 24.1,
+      "maxMs": 25.3,
+      "calls": 26,
+      "points": 1600,
+      "triangles": 28882,
+      "dpr": 1,
+      "geometries": 27,
+      "textures": 11,
+      "programs": 12,
+      "heapBytes": 93855086,
+      "auxiliaryPasses": 1,
+      "volumeTarget": "560x350",
+      "camera": [
+        0,
+        11.999999999999996,
+        42
+      ],
+      "target": [
+        -2,
+        0,
+        -3
+      ],
+      "fov": 43,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": -4430.494367756374,
+          "y": -8188.215540460755,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1147.5808887818905,
+          "y": 264.7757840685571,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "tier": "medium",
+      "fps": 54,
+      "meanMs": 18.66,
+      "p95Ms": 35.6,
+      "maxMs": 43.3,
+      "calls": 30,
+      "points": 3800,
+      "triangles": 85250,
+      "dpr": 1.35,
+      "geometries": 31,
+      "textures": 11,
+      "programs": 14,
+      "heapBytes": 103126747,
+      "auxiliaryPasses": 1,
+      "volumeTarget": "640x400",
+      "camera": [
+        0,
+        11.999999999999996,
+        42
+      ],
+      "target": [
+        -2,
+        0,
+        -3
+      ],
+      "fov": 43,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": -4430.494367756374,
+          "y": -8188.215540460755,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1147.5808887818905,
+          "y": 264.7757840685571,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "tier": "high",
+      "fps": 39,
+      "meanMs": 25.86,
+      "p95Ms": 58,
+      "maxMs": 68.7,
+      "calls": 30,
+      "points": 5000,
+      "triangles": 137110,
+      "dpr": 1.5,
+      "geometries": 31,
+      "textures": 11,
+      "programs": 14,
+      "heapBytes": 104794894,
+      "auxiliaryPasses": 1,
+      "volumeTarget": "800x500",
+      "camera": [
+        0,
+        11.999999999999996,
+        42
+      ],
+      "target": [
+        -2,
+        0,
+        -3
+      ],
+      "fov": 43,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": -4430.494367756374,
+          "y": -8188.215540460755,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1147.5808887818905,
+          "y": 264.7757840685571,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "tier": "low",
+      "fps": 60,
+      "meanMs": 16.67,
+      "p95Ms": 20,
+      "maxMs": 24.3,
+      "calls": 26,
+      "points": 1600,
+      "triangles": 28882,
+      "dpr": 1,
+      "geometries": 27,
+      "textures": 11,
+      "programs": 11,
+      "heapBytes": 55656746,
+      "auxiliaryPasses": 1,
+      "volumeTarget": "560x350",
+      "camera": [
+        0,
+        11.999999999999996,
+        42
+      ],
+      "target": [
+        -2,
+        0,
+        -3
+      ],
+      "fov": 43,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": -4430.494367756374,
+          "y": -8188.215540460755,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1147.5808887818905,
+          "y": 264.7757840685571,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "tier": "high",
+      "fps": 35,
+      "meanMs": 28.95,
+      "p95Ms": 96.9,
+      "maxMs": 183.2,
+      "calls": 30,
+      "points": 5000,
+      "triangles": 137110,
+      "dpr": 1.5,
+      "geometries": 31,
+      "textures": 11,
+      "programs": 14,
+      "heapBytes": 76825985,
+      "auxiliaryPasses": 1,
+      "volumeTarget": "800x500",
+      "camera": [
+        0,
+        11.999999999999996,
+        42
+      ],
+      "target": [
+        -2,
+        0,
+        -3
+      ],
+      "fov": 43,
+      "landmarks": [
+        {
+          "world": [
+            10,
+            -3,
+            48
+          ],
+          "x": -4430.494367756374,
+          "y": -8188.215540460755,
+          "visible": false
+        },
+        {
+          "world": [
+            210,
+            -60,
+            -900
+          ],
+          "x": 1147.5808887818905,
+          "y": 264.7757840685571,
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "overview-low.png",
+    "overview-medium.png",
+    "overview-high.png",
+    "ringed-high.png",
+    "ocean-high.png",
+    "ocean-medium.png",
+    "ocean-low.png",
+    "rocky-high.png",
+    "ice-high.png",
+    "gas-high.png"
+  ],
+  "screenshotHashes": {
+    "overview-low.png": "ca504e915e6191b5afee0a0a6d72f2dd1d54d86b6b113a2a268d6b7bc7503a7a",
+    "overview-medium.png": "df919972224dc88fc83df8c80d5dd0977ccee866bf4f13416f142a0499216984",
+    "overview-high.png": "5c4b5eb5851181a6d87221e80824f8e3a8ac3641273fc91fe30f9fc83f994add",
+    "ringed-high.png": "9b515d885efb61560914064ba38b5a8416dc4536823d810f59cb0a938f13b14b",
+    "ocean-high.png": "a5f53d6ac51193fba6c0711861ca14f87678f55a2b5622abf69cff696056a463",
+    "ocean-medium.png": "af4dea3bc0d03ab2415170374df7f00cf5db84f55b6d4d98b29682bbed6c1322",
+    "ocean-low.png": "fd5fa5b518eeffa2deb42ad2e5acafa207b02fed4748ecf3357fefaec49e6f60",
+    "rocky-high.png": "675e580db3f21e40fb97b8261cb11603e08b10ddf8e84197def4c42d885f5f23",
+    "ice-high.png": "3885c1e356ac3b0eda4e5cd19891deb92d8856aa620b0d04a1345d3bf6641e81",
+    "gas-high.png": "7a02e9a6913b37317c21d86e48958149f4ba9929afdf9e91214ce56d1b662afd"
+  },
+  "failedResponses": [],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "dataUnchanged": true,
+  "browser": "156.0.8078.80",
+  "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+}

@@ -1,0 +1,57 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { LinearMipmapLinearFilter, NoColorSpace, RepeatWrapping, SRGBColorSpace } from "three";
+import { bakePlanetMaps, createPlanetTextures, EXTERIOR_BUDGETS, planetSurfaceSampler } from "../src/components/three/planet-texture.ts";
+import { createSeed } from "../src/data/seed.ts";
+
+test("all five surfaces are deterministic, seam/pole continuous and do not mutate appearances", () => {
+  const data = createSeed(), original = JSON.stringify(data);
+  for (const { appearance } of data.planets) {
+    const maps = bakePlanetMaps(appearance, "low");
+    assert.deepEqual(maps, bakePlanetMaps(appearance, "low"));
+    assert.notDeepEqual(maps.albedo, bakePlanetMaps({ ...appearance, seed: appearance.seed + 1 }, "low").albedo);
+    for (const pixels of [maps.albedo, maps.surface]) {
+      for (let y = 0; y < maps.height; y++) {
+        const start = y * maps.width * 4;
+        assert.deepEqual(pixels.slice(start, start + 4), pixels.slice(start + (maps.width - 1) * 4, start + maps.width * 4));
+      }
+      for (const y of [0, maps.height - 1]) for (let x = 1; x < maps.width; x++) {
+        const start = y * maps.width * 4;
+        assert.deepEqual(pixels.slice(start, start + 4), pixels.slice(start + x * 4, start + x * 4 + 4));
+      }
+    }
+  }
+  assert.equal(JSON.stringify(data), original);
+});
+
+test("recolouring never changes topography, roughness or weather; water remains smooth beside rough land", () => {
+  for (const { appearance } of createSeed().planets) {
+    const a = bakePlanetMaps({ ...appearance, color: "#ffffff" }, "low");
+    const b = bakePlanetMaps({ ...appearance, color: "#8b3546" }, "low");
+    assert.deepEqual(a.surface, b.surface);
+    assert.notDeepEqual(a.albedo, b.albedo);
+  }
+  const sample = planetSurfaceSampler({ type: "ocean", color: "#5c93aa", seed: 91 });
+  let sea = 0, land = 0, weather = 0;
+  for (let i = 0; i < 1000; i++) {
+    const y = 1 - 2 * (i + .5) / 1000, radius = Math.sqrt(1 - y * y), angle = i * 2.399963;
+    const s = sample(Math.cos(angle) * radius, y, Math.sin(angle) * radius);
+    assert(s.height >= 0 && s.height <= 1 && s.roughness >= 0 && s.roughness <= 1);
+    if (s.roughness < .25) { sea++; assert(Math.abs(s.height - .17) < .02); }
+    if (s.roughness > .85) land++;
+    if (s.cloud > .1) weather++;
+  }
+  assert(sea > 50 && land > 50 && weather > 20);
+});
+
+test("three quality tiers bound texture/geometry cost and give GPU maps the correct colour space and disposal", () => {
+  assert(EXTERIOR_BUDGETS.low.width < EXTERIOR_BUDGETS.medium.width && EXTERIOR_BUDGETS.medium.width < EXTERIOR_BUDGETS.high.width);
+  assert(EXTERIOR_BUDGETS.low.segments < EXTERIOR_BUDGETS.medium.segments && EXTERIOR_BUDGETS.medium.segments < EXTERIOR_BUDGETS.high.segments);
+  assert(!EXTERIOR_BUDGETS.low.bump && !EXTERIOR_BUDGETS.low.clouds);
+  const maps = createPlanetTextures(createSeed().planets[0].appearance, "low");
+  assert.equal(maps.albedo.colorSpace, SRGBColorSpace); assert.equal(maps.surface.colorSpace, NoColorSpace);
+  assert.equal(maps.albedo.minFilter, LinearMipmapLinearFilter); assert.equal(maps.surface.wrapS, RepeatWrapping);
+  let disposed = 0;
+  maps.albedo.addEventListener("dispose", () => disposed++); maps.surface.addEventListener("dispose", () => disposed++);
+  maps.dispose(); assert.equal(disposed, 2);
+});
