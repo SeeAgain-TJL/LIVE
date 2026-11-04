@@ -1,0 +1,14 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-batch6-landmarks-20261104",
+  "tag": "pine-batch6-landmarks-20261104",
+  "publishedFrom": "5d8cbf79dc574a6de517edb629cde54c2b99b7f3",
+  "files": [
+    {
+      "name": "pine-batch6-runtime.zip",
+      "bytes": 197475711,
+      "sha256": "ffa3ce96133993bfa56e4d88126a16dbb9431e35c90bd094db89e848bb781aa4",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-batch6-landmarks-20261104/pine-batch6-runtime.zip"
+    }
+  ]
+}

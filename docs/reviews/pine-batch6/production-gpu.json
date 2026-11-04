@@ -1,0 +1,270 @@
+{
+  "low": {
+    "route": "/forest-runtime-lab?scale=0.8&review=1",
+    "browser": "156.0.8078.80",
+    "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "canvasSize": {
+      "internal": [
+        1152,
+        720
+      ],
+      "css": [
+        1440,
+        900
+      ],
+      "devicePixelRatio": 1
+    },
+    "passed": true,
+    "errors": [],
+    "stages": [
+      {
+        "name": "near",
+        "pose": {
+          "position": [
+            23.155473709106445,
+            0.9223032593727112,
+            47.55979919433594
+          ],
+          "direction": [
+            -0.9821439487,
+            0.1260486988,
+            -0.1396602648
+          ]
+        },
+        "settleMs": 594,
+        "averageFps": 26.478042137793384,
+        "p95Ms": 66.70000000000073,
+        "p99Ms": 150,
+        "gpu": {
+          "samples": 276,
+          "medianMs": 31.610989,
+          "p95Ms": 42.842552,
+          "disjointEvents": 0
+        },
+        "uploads": {
+          "calls": 349,
+          "bytes": 8466426,
+          "cpuMs": 6.100000619888306
+        },
+        "trianglesRange": [
+          7569829,
+          7569829
+        ],
+        "callsRange": [
+          153,
+          153
+        ]
+      },
+      {
+        "name": "mid",
+        "pose": {
+          "position": [
+            0,
+            3,
+            43
+          ],
+          "direction": [
+            0,
+            -0.08,
+            -1
+          ]
+        },
+        "settleMs": 13,
+        "averageFps": 41.741094153286035,
+        "p95Ms": 50,
+        "p99Ms": 133.40000000000146,
+        "gpu": {
+          "samples": 447,
+          "medianMs": 19.045989,
+          "p95Ms": 27.92427,
+          "disjointEvents": 0
+        },
+        "uploads": {
+          "calls": 430,
+          "bytes": 33418656,
+          "cpuMs": 40.799999475479126
+        },
+        "trianglesRange": [
+          4231155,
+          4231155
+        ],
+        "callsRange": [
+          147,
+          147
+        ]
+      },
+      {
+        "name": "far",
+        "pose": {
+          "position": [
+            10,
+            18,
+            60
+          ],
+          "direction": [
+            0.1,
+            -0.5,
+            -1
+          ]
+        },
+        "settleMs": 23,
+        "averageFps": 22.857790539519424,
+        "p95Ms": 67.79999999999563,
+        "p99Ms": 150,
+        "gpu": {
+          "samples": 238,
+          "medianMs": 38.119843,
+          "p95Ms": 53.247343,
+          "disjointEvents": 0
+        },
+        "uploads": {
+          "calls": 452,
+          "bytes": 51621104,
+          "cpuMs": 100.50000023841858
+        },
+        "trianglesRange": [
+          8450898,
+          8450898
+        ],
+        "callsRange": [
+          185,
+          185
+        ]
+      }
+    ]
+  },
+  "high": {
+    "route": "/forest-runtime-lab?scale=0.8&review=1&quality=high",
+    "browser": "156.0.8078.80",
+    "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "canvasSize": {
+      "internal": [
+        1152,
+        720
+      ],
+      "css": [
+        1440,
+        900
+      ],
+      "devicePixelRatio": 1
+    },
+    "passed": true,
+    "errors": [],
+    "stages": [
+      {
+        "name": "near",
+        "pose": {
+          "position": [
+            23.155473709106445,
+            0.9223032593727112,
+            47.55979919433594
+          ],
+          "direction": [
+            -0.9821439487,
+            0.1260486988,
+            -0.1396602648
+          ]
+        },
+        "settleMs": 1968,
+        "averageFps": 22.416154959163002,
+        "p95Ms": 84.5,
+        "p99Ms": 117.20000000000073,
+        "gpu": {
+          "samples": 230,
+          "medianMs": 37.971822,
+          "p95Ms": 59.458072,
+          "disjointEvents": 0
+        },
+        "uploads": {
+          "calls": 437,
+          "bytes": 8726424,
+          "cpuMs": 3.9000000953674316
+        },
+        "trianglesRange": [
+          9303930,
+          9303930
+        ],
+        "callsRange": [
+          177,
+          177
+        ]
+      },
+      {
+        "name": "mid",
+        "pose": {
+          "position": [
+            0,
+            3,
+            43
+          ],
+          "direction": [
+            0,
+            -0.08,
+            -1
+          ]
+        },
+        "settleMs": 17,
+        "averageFps": 30.393706715254044,
+        "p95Ms": 50.400000000001455,
+        "p99Ms": 67.20000000000437,
+        "gpu": {
+          "samples": 319,
+          "medianMs": 26.911302,
+          "p95Ms": 39.108645,
+          "disjointEvents": 0
+        },
+        "uploads": {
+          "calls": 497,
+          "bytes": 51790648,
+          "cpuMs": 57.40000081062317
+        },
+        "trianglesRange": [
+          5447116,
+          5447116
+        ],
+        "callsRange": [
+          169,
+          169
+        ]
+      },
+      {
+        "name": "far",
+        "pose": {
+          "position": [
+            10,
+            18,
+            60
+          ],
+          "direction": [
+            0.1,
+            -0.5,
+            -1
+          ]
+        },
+        "settleMs": 37,
+        "averageFps": 16.033115671864653,
+        "p95Ms": 116.80000000000291,
+        "p99Ms": 150.1999999999971,
+        "gpu": {
+          "samples": 160,
+          "medianMs": 54.839478,
+          "p95Ms": 73.650676,
+          "disjointEvents": 0
+        },
+        "uploads": {
+          "calls": 477,
+          "bytes": 54840936,
+          "cpuMs": 140.79999995231628
+        },
+        "trianglesRange": [
+          9916236,
+          9916236
+        ],
+        "callsRange": [
+          212,
+          212
+        ]
+      }
+    ]
+  }
+}

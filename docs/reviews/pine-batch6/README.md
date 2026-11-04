@@ -22,3 +22,21 @@ npm.cmd start
 ```
 
 重新导出地标：用 Blender 后台打开原 blend，执行 `--python-exit-code 1 --python scripts/forest-lab/export-batch6-landmarks.py -- OUTPUT_DIR`；再用 gltfpack `-i RAW/landmarks.glb -o RUNTIME/batch6/landmarks.glb -c -tw -tl 2048 -kn -si 0.15 -se 0.004 -slb`。原 blend 不保存修改。
+
+## 生产构建补测与发布
+
+[起点源相机对照](source-comparison.webp)复用原工程归档的 Cycles 2 样本渲染（关闭合成、简化细分），与本轮实际 WebGL 画面并排；岩石、水道和废墟的构图位置可核对。水面色泽、林下密度和背光差距明显。中远景没有新增 Blender 对照。
+
+[生产 GPU 采样](production-gpu.json)：Chrome Headless 的 WebGL ANGLE Intel Graphics / D3D11，低/高档均为 1152×720 内部像素。启用 WebGL GPU 查询及 CPU 采样，有诊断开销；近/中/远为固定机位，其中中景机位与上表废墟机位不同。
+
+| 生产固定机位 | 低档平均 FPS / 帧 P95 / GPU P95 | 高档平均 FPS / 帧 P95 / GPU P95 |
+| --- | ---: | ---: |
+| 近景 | 26.48 / 66.7 ms / 42.84 ms | 22.42 / 84.5 ms / 59.46 ms |
+| 中景 | 41.74 / 50.0 ms / 27.92 ms | 30.39 / 50.4 ms / 39.11 ms |
+| 远景 | 22.86 / 67.8 ms / 53.25 ms | 16.03 / 116.8 ms / 73.65 ms |
+
+六组均无 disjoint 或捕获的页面错误。另有不启用 GPU 查询的[高档静止测量](production-high-stills.json)。GPU 和帧时间结果均不能视为整林性能通过。
+
+运行 ZIP 197,475,711 字节，发布目标提交 `5d8cbf7`；GitHub 的 SHA-256 与本地一致。已从发布 URL 下载、重新核对 ZIP 并解压验证全部 209 项，见[附件回执](remote-assets.json)。
+
+[连续键鼠试走](production-walk.json)：低档生产构建新浏览器会话首次就绪 12.61 秒、首轮流送稳定 14.10 秒。42 秒 W/D/S 输入配合真实鼠标拖动，第一段由起点位移约 48.5 米，最后一段几乎原地，不能视为无阻通行。各段平均 26.74/29.00/37.35 FPS，P95 68.1/66.6/50.0 ms。试走结束累计释放 10 分区、6 流送资源、383 批次及 5 材质，无捕获的浏览器错误或 WebGL context loss。这里的释放计数来自运行时，未测实际 GPU 显存；废墟没有专用碰撞。

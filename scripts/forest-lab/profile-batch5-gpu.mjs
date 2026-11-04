@@ -3,11 +3,13 @@
 import { chromium } from 'playwright';
 import { mkdir,writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
-const folder='artifacts-local/pine-batch5/final-gpu';await mkdir(folder,{recursive:true});
+const full=process.argv.includes('--full');
+const high=process.argv.includes('--high');
+const folder=full ? 'artifacts-local/pine-batch6/gpu-'+(high ? 'high':'low'):'artifacts-local/pine-batch5/final-gpu';await mkdir(folder,{recursive:true});
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
 const cdp=await page.context().newCDPSession(page);await cdp.send('Profiler.enable');await cdp.send('Profiler.setSamplingInterval',{interval:1000});
-const result={route:'/forest-runtime-lab?scale=0.8&sample=creek&review=1',diagnostic:true,browser:browser.version(),errors:[],stages:[]};
+const result={route:'/forest-runtime-lab?scale=0.8&review=1'+(full ? '' : '&sample=creek')+(high ? '&quality=high':''),diagnostic:true,browser:browser.version(),errors:[],stages:[]};
 page.on('pageerror',e=>result.errors.push(String(e)));page.on('console',m=>{if(m.type()==='error')result.errors.push(m.text());});
 await page.addInitScript(()=>{
  window.__gpu=[];window.__disjoint=0;window.__collect=false;window.__uploads={calls:0,bytes:0,cpuMs:0};window.__longTasks=[];
@@ -27,7 +29,7 @@ await page.addInitScript(()=>{
 const poses={near:{position:[23.155473709106445,.9223032593727112,47.55979919433594],direction:[-.9821439487,.1260486988,-.1396602648]},mid:{position:[0,3,43],direction:[0,-.08,-1]},far:{position:[10,18,60],direction:[.1,-.5,-1]}};
 try {
  await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3331')+result.route);
- await page.locator('canvas[data-pine-review-pose-ready=true][data-pine-terrain=layered]').waitFor({timeout:120000});
+ await page.locator('canvas[data-pine-review-pose-ready=true][data-pine-terrain=layered]'+(full ? '[data-pine-landmarks=ready]':'' )).waitFor({timeout:120000});
  result.renderer=await page.evaluate(()=>{const g=document.querySelector('canvas').getContext('webgl2'),e=g.getExtension('WEBGL_debug_renderer_info');return g.getParameter(e.UNMASKED_RENDERER_WEBGL);});
  result.canvasSize=await page.locator('canvas').evaluate(c=>({internal:[c.width,c.height],css:[c.clientWidth,c.clientHeight],devicePixelRatio:devicePixelRatio}));
  result.gpuTimerSupported=await page.evaluate(()=>!!document.querySelector('canvas').getContext('webgl2').getExtension('EXT_disjoint_timer_query_webgl2'));assert.ok(result.gpuTimerSupported);
