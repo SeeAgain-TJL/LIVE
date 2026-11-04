@@ -7,11 +7,11 @@ import path from 'node:path';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { Vector3 } from 'three';
 
-const root='public/forest-origin-assets', out=path.join(root,'template-crowns');
+const root='public/forest-origin-assets', folder=process.argv[2] || 'template-crowns-v2', out=path.join(root,folder);
 await mkdir(out,{recursive:true});
 await MeshoptDecoder.ready;
 const tool=path.join(process.env.LOCALAPPDATA,'UNIVERSE-OF-ME/tools/gltfpack-1.3/gltfpack.exe');
-const authoring='artifacts-local/pine-template-crowns/authoring';
+const authoring=path.join('artifacts-local',folder,'authoring');
 await mkdir(authoring,{recursive:true});
 const reports=[];
 const selected=['pine_02','pine_04','silver_fir_04'];
@@ -62,19 +62,23 @@ for(const name of selected) {
   const fir=name.startsWith('silver');
   let sampled=0;
   for(const cell of cells.values())for(const [origin,tangent,side,n,size,aspect] of cell) {
-    const halfLength=Math.min(.085,Math.max(.035,size*.40));
-    const halfWidth=Math.min(.015,Math.max(.007,size*aspect*.85));
+    const halfLength=Math.min(.115,Math.max(.048,size*.59));
+    const halfWidth=Math.min(.010,Math.max(.0055,size*aspect*.58));
     const varied=.78+.44*(.5+.5*Math.sin(sampled*2.399963229));
     const color=(fir ? [.043,.073,.028]:[.038,.068,.023]).map(v=>v*varied);
-    const base=origin.clone().addScaledVector(tangent,-halfLength);
-    const tip=origin.clone().addScaledVector(tangent,halfLength);
-    const left=origin.clone().addScaledVector(side,halfWidth);
-    const right=origin.clone().addScaledVector(side,-halfWidth);
-    const crease=origin.clone().addScaledVector(n,.009);
-    for(const [v,shade] of [[base,.82],[left,1.01],[crease,1.15],[left,1.01],[tip,.83],[crease,1.15],
-      [tip,.83],[right,.88],[crease,1.1],[right,.88],[base,.82],[crease,1.1]]) {
-      const xyz=v.toArray();raw.push(...xyz);normals.push(...n.toArray());colors.push(...color.map(x=>x*shade));
-      xyz.forEach((x,k)=>{boundsMin[k]=Math.min(boundsMin[k],x);boundsMax[k]=Math.max(boundsMax[k],x);});
+    // A small three-needle fan follows the sampled original needle direction.
+    // Unlike the old single wide silhouette this stays slender at arm's length.
+    for(const angle of [-.56,0,.56]) {
+      const direction=tangent.clone().multiplyScalar(Math.cos(angle)).addScaledVector(side,Math.sin(angle));
+      const across=side.clone().multiplyScalar(Math.cos(angle)).addScaledVector(tangent,-Math.sin(angle));
+      const base=origin.clone().addScaledVector(direction,-halfLength*.65);
+      const tip=origin.clone().addScaledVector(direction,halfLength);
+      const left=origin.clone().addScaledVector(across,halfWidth);
+      const right=origin.clone().addScaledVector(across,-halfWidth);
+      for(const [v,shade] of [[base,.82],[left,1.07],[tip,.88],[base,.82],[tip,.88],[right,.94]]) {
+        const xyz=v.toArray();raw.push(...xyz);normals.push(...n.toArray());colors.push(...color.map(x=>x*shade));
+        xyz.forEach((x,k)=>{boundsMin[k]=Math.min(boundsMin[k],x);boundsMax[k]=Math.max(boundsMax[k],x);});
+      }
     }
     sampled++;
   }

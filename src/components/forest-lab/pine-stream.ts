@@ -173,7 +173,7 @@ export class PineStream {
     const [name,tier]=key.split("/");
     // Only these three existing source species receive a near needle layer.
     const needles=this.options.field && tier==="near" && needleSpecies.has(name)
-      ? await this.loader.loadAsync(pineRoot+`template-crowns/${name}.glb`) : null;
+      ? await this.loader.loadAsync(pineRoot+`template-crowns-v2/${name}.glb`) : null;
     const resource=this.prepare(gltf,key);
     if(needles) {
       needles.scene.updateMatrixWorld(true);

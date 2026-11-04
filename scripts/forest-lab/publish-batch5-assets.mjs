@@ -8,6 +8,7 @@ import { request } from 'node:https';
 import path from 'node:path';
 const batch6=process.argv.includes('--batch6');
 const profiles={
+  '--template-correction':{batch:'pine-template-crowns-v2',tag:'pine-template-closure-correction-20261104',name:'Pine Forest ? near needle bundle correction',files:['pine-template-crowns-v2-runtime.zip','pine-template-crowns-v2-authoring.zip']},
   '--template-crowns':{batch:'pine-template-crowns',tag:'pine-template-crowns-20261104',name:'Pine Forest ? near crown closure',files:['pine-template-crowns-runtime.zip','pine-template-crowns-authoring.zip']},
   '--template-edge':{batch:'pine-template-edge',tag:'pine-template-edge-20261104',name:'Pine Forest ? grounded forest boundary',files:['pine-template-edge-runtime.zip']},
   '--template-review':{batch:'pine-template-final',tag:'pine-template-review-20261104',name:'Pine Forest ? template pre-acceptance',files:['pine-template-walk.webm']},
