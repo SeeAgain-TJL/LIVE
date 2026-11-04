@@ -77,6 +77,16 @@ function Terrain({ onReady, onError }: { onReady: (ready: boolean) => void; onEr
   },[terrain,gl,onReady,onError,sample]);
   return <primitive object={terrain.scene} />;
 }
+function SourceLandmarks() {
+  const { scene } = useGLTF(pineRoot+"batch6/landmarks.glb");
+  const { gl } = useThree();
+  useEffect(()=>{
+    gl.domElement.dataset.pineLandmarks="ready";
+    return ()=>{delete gl.domElement.dataset.pineLandmarks;};
+  },[gl]);
+  return <primitive object={scene} />;
+}
+
 export function ForestRuntimeLab() {
   const [payload,setPayload] = useState<Payload>();
   const [error,setError] = useState("");
@@ -119,11 +129,12 @@ export function ForestRuntimeLab() {
       {sample ? <fogExp2 attach="fog" args={["#aab8b2",0.008]} />:<fog attach="fog" args={["#adb2a5",0.013]} />}
       <ambientLight intensity={sample ? 0.3:0.65} />
       {sample && <hemisphereLight args={["#dce8ee","#414c2d",0.45]} />}
-      <directionalLight position={[-30,45,12]} intensity={sample ? 1.6:2.1} color={sample ? "#fff0da":"#ffffff"} />
+      <directionalLight position={sample ? [-30,45,12]:[-0.273,0.513,-0.814]} intensity={sample ? 1.6:2.1} color={sample ? "#fff0da":"#ffdfb8"} />
       <Suspense fallback={null}><Environment files={pineRoot+"sky.hdr"} background environmentIntensity={sample ? 0.6:0.75} /></Suspense>
       <Suspense fallback={null}><Terrain onReady={setTerrainReady} onError={setError} /></Suspense>
+      {!sample && terrainReady && <Suspense fallback={null}><SourceLandmarks /></Suspense>}
       {terrainReady && <Streaming manifest={payload.manifest} trees={payload.trees} onError={setError} quality={quality} />}
-      <Walker collision={payload.collision} trunks={payload.trunks} sliding={sample} />
+      <Walker collision={payload.collision} trunks={payload.trunks} sliding />
       <RuntimeReviewPose />
     </Canvas></ForestSurface>}
     <div className="forest-lab-bar"><div><strong>{sample ? "Pine Forest · 河床森林样板":"Pine Forest · 原布局动态 LOD"}</strong><span ref={status}>正在加载地表与周边森林</span></div>

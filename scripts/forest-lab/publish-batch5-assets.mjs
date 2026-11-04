@@ -6,7 +6,9 @@ import { stat, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { request } from 'node:https';
 import path from 'node:path';
-const repo='SeeAgain-TJL/LIVE',tag='pine-batch5-sample-20261104';
+const batch6=process.argv.includes('--batch6');
+const batch=batch6 ? 'pine-batch6':'pine-batch5';
+const repo='SeeAgain-TJL/LIVE',tag=batch6 ? 'pine-batch6-landmarks-20261104':'pine-batch5-sample-20261104';
 const credential=spawnSync('git',['credential','fill'],{input:'protocol=https\nhost=github.com\n\n',encoding:'utf8',windowsHide:true});
 if(credential.status!==0)throw Error('GitHub credential helper unavailable');
 const fields=Object.fromEntries(credential.stdout.trim().split('\n').map(l=>{const i=l.indexOf('=');return [l.slice(0,i),l.slice(i+1)];}));
@@ -44,11 +46,11 @@ if(process.argv.includes('--check')) {
   if(branch!=='codex/pine-forest-vertical-slice')throw Error('Unexpected branch');
   const url=`https://api.github.com/repos/${repo}/releases`;
   let release=await fetch(`${url}/tags/${tag}`,{headers});
-  if(release.status===404)release=await api(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tag_name:tag,target_commitish:head,name:'Pine Forest Batch5 · editable creek sample',prerelease:true,body:'Runtime and packed Blender authoring assets for the current development sample. Restore using docs/reviews/pine-batch5/README.md and SHA-256 manifests. Performance and visual review remain open; this is not a production release.'})});
+  if(release.status===404)release=await api(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tag_name:tag,target_commitish:head,name:batch6 ? 'Pine Forest Batch6 · source landmarks':'Pine Forest Batch5 · editable creek sample',prerelease:true,body:batch6 ? 'Development runtime for the original river and ruins. See docs/reviews/pine-batch6 for restoration and remaining work.':'Runtime and packed Blender authoring assets for the current development sample. Restore using docs/reviews/pine-batch5/README.md and SHA-256 manifests. Performance and visual review remain open; this is not a production release.'})});
   else if(release.ok)release=await release.json();else throw Error(`Release lookup HTTP ${release.status}`);
-  const files=['pine-batch5-runtime.zip','pine-batch5-authoring.zip'];const published=[];
+  const files=batch6 ? ['pine-batch6-runtime.zip']:['pine-batch5-runtime.zip','pine-batch5-authoring.zip'];const published=[];
   for(const name of files) {
-    const file=path.resolve('artifacts-local/pine-batch5/handoff',name);const bytes=(await stat(file)).size;
+    const file=path.resolve('artifacts-local',batch,'handoff',name);const bytes=(await stat(file)).size;
     if(bytes>=2_000_000_000)throw Error('Archive exceeds conservative upload limit');
     const hash=createHash('sha256');for await(const b of createReadStream(file))hash.update(b);const sha256=hash.digest('hex');
     let asset=release.assets.find(a=>a.name===name);
@@ -65,5 +67,5 @@ if(process.argv.includes('--check')) {
     }
     published.push({name,bytes,sha256,url:asset.browser_download_url});console.log({uploaded:name,bytes,sha256});
   }
-  await writeFile('docs/reviews/pine-batch5/remote-assets.json',JSON.stringify({repository:repo,release:release.html_url,tag,publishedFrom:head,files:published},null,2)+'\n');
+  await writeFile(path.join('docs/reviews',batch,'remote-assets.json'),JSON.stringify({repository:repo,release:release.html_url,tag,publishedFrom:head,files:published},null,2)+'\n');
 }

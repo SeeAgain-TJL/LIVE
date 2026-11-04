@@ -393,3 +393,7 @@ Pine Forest 的原始 `.blend` 不变，转换流程以 Blender 原生 Geometry 
 Three.js r180 的 `VALIDATE_STATUS false` 错误实际由 LINK_STATUS 失败触发；本机完整源地被 4K 包在原 170 树／18,000 地被可见集重现 Shader 失败和 context lost，而真实最小冷杉／蕨类 Shader 通过。复用已有 1K 地被包后，相同几何、位置、实例数和约 8,141 万三角形五次独立 production Chrome 加载均正常。原 4K 路径对照再次失败。根因证据指向资源压力；RGBA8+mip 静态估算由约 3,233 MiB 降至 202 MiB，不能把此估算写成 GPU 显存实测，驱动内部 OOM/TDR 尚不能区分。
 
 浏览器实验默认使用 1K 派生贴图；原 4K 包及所有源数据保留，显式 sourceTextures=1 只用于诊断。旧 4K 对照两次失败，但追加 A/B 也有一次成功，故此结论描述间歇性资源故障，不声称 4K 每次必败。没有删减森林或改模型／实例来获得通过；仍保留 Shader 检查，完整日志与异常提示，context loss 时撤销就绪并提供重载。1K 近景贴图细节损失需单独视觉审核。本批短时固定可见集稳定不代表完整场景、动态流送或性能达标；高负载约 6 FPS，后续范围由用户单独授权。证据见 [第一批审阅](reviews/pine-batch1/README.md)。
+
+## Pine Forest Batch6：地标按源世界坐标转换
+
+通过 Blender 求值河道节点，再按实时面数预算简化；废墟保留四处原摆放与源贴图，运行资产经 meshopt/WebP 打包。整林先复用既有流送分区和地表；水面 PBR 和指数雾是实时近似。大型运行资源继续独立于 Git 发布，原始可编辑工程由官方归档恢复。
