@@ -1,4 +1,4 @@
-﻿import {mkdir,writeFile} from 'node:fs/promises';
+import {writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {packageSharedGlb} from './package-shared-gltf.mjs';
 const out=path.resolve('artifacts-local/pine-batch4/mid-lod-trials');

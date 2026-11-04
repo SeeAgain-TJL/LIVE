@@ -1,4 +1,4 @@
-﻿import { Box3, DoubleSide, DynamicDrawUsage, Frustum, Group, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, PlaneGeometry, Sphere, SRGBColorSpace, Texture, TextureLoader, Vector3, type WebGLRenderer } from "three";
+import { Box3, DoubleSide, DynamicDrawUsage, Frustum, Group, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, PlaneGeometry, Sphere, SRGBColorSpace, Texture, TextureLoader, Vector3, type WebGLRenderer } from "three";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 
@@ -375,7 +375,12 @@ export class PineStream {
           : (distanceSquared<((high?9:6)*hysteresis)**2 && pixels>120/hysteresis ? 0 : distanceSquared<((high?22:17)*hysteresis)**2 && pixels>24/hysteresis ? 1:2);
         tile.lod[i]=tierIndex;
         const desired=this.options.frozenLod || tiers[tierIndex];
-        const requestedTier=tree && desired==="mid" ? "far":desired;
+        // Trees previously had no real "mid" asset, so every tree mid-tier
+        // request was rewritten to "far" (the billboard). Batch4 gives pine_04
+        // a real reduced-geometry mid file; let that one species actually
+        // request "mid". Every other species keeps the old far-billboard
+        // rewrite until they get the same treatment.
+        const requestedTier=tree && desired==="mid" && this.manifest.names[tile.data[offset]]!=="pine_04" ? "far":desired;
         const lookup=tile.data[offset]*3+tiers.indexOf(requestedTier);
         let resolvedAsset=resolved.get(lookup);
         if(!resolvedAsset) {
