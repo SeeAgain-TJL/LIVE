@@ -29,17 +29,55 @@ function noiseField(seed: number) {
 }
 export interface SurfaceSample { color: [number, number, number]; height: number; roughness: number; cloud: number }
 
+/** Local tangent frames give glaciers a direction, a finite extent and no UV pole. */
+function iceCatchments(random: () => number) {
+  const phase = random() * Math.PI * 2;
+  return Array.from({ length: 13 }, (_, i) => {
+    const y = 1 - 2 * (i + .35 + random() * .3) / 13;
+    const angle = phase + i * 2.399963 + (random() - .5) * .41;
+    const c = Math.cos(angle), s = Math.sin(angle), r = Math.sqrt(1 - y * y);
+    const heading = random() * Math.PI * 2, a = Math.cos(heading), b = Math.sin(heading);
+    return { x: c * r, y, z: s * r,
+      ax: -s * a - c * y * b, ay: r * b, az: c * a - s * y * b,
+      bx: s * b - c * y * a, by: r * a, bz: -c * b - s * y * a,
+      length: .32 + random() * .35, width: .065 + random() * .128,
+      bend: (random() - .5) * 2, strength: .53 + random() * .47 };
+  });
+}
+
+/** Seeded succession of unequal belts and zones, sampled after advecting latitude. */
+function cloudJets(random: () => number, ringed: boolean) {
+  const samples = new Float32Array(513);
+  let start = -1, previous = .52;
+  while (start < 1) {
+    const width = .055 + random() ** 1.65 * (ringed ? .29 : .24), end = start + width;
+    const next = (previous > .53 ? .24 : .64) + random() * .25;
+    for (let i = Math.ceil((start + 1) * 256); i < samples.length && i <= (end + 1) * 256; i++) {
+      const t = (i / 256 - 1 - start) / width;
+      samples[i] = lerp(previous, next, smooth(0, .33, t)) + (smooth(.41, .55, t) - smooth(.67, .91, t)) * (previous - next) * .24;
+    }
+    previous = next; start = end;
+  }
+  return samples;
+}
+
 /** Unit-sphere sampling is continuous across the meridian and converges at both poles. */
 export function planetSurfaceSampler(appearance: Pick<PlanetAppearance, "type" | "color" | "seed">) {
   const { noise, random } = noiseField(appearance.seed);
   const base = [1, 3, 5].map(i => parseInt(appearance.color.slice(i, i + 2), 16));
-  const craters = Array.from({ length: 38 }, (_, i) => {
+  const craters = appearance.type === "rocky" ? Array.from({ length: 38 }, (_, i) => {
     const y = random() * 2 - 1, angle = random() * Math.PI * 2, r = Math.sqrt(1 - y * y);
     const radius = .035 + random() ** 2 * .23, age = .54 + ((i * .618034) % 1) * .46;
     return { x: Math.cos(angle) * r, y, z: Math.sin(angle) * r, inverseRadiusSquared: 1 / (radius * radius), age, radius };
-  });
-  const stormLongitude = random() * Math.PI * 2, stormLatitude = random() * .7 - .35;
-  const stormX = Math.cos(stormLongitude), stormZ = Math.sin(stormLongitude);
+  }) : [];
+  const catchments = appearance.type === "ice" ? iceCatchments(random) : [];
+  const ringed = appearance.type === "ringed";
+  const jets = appearance.type === "gas" || ringed ? cloudJets(random, ringed) : null;
+  const storms = jets ? Array.from({ length: 4 }, (_, i) => {
+    const longitude = random() * Math.PI * 2 + i * 2.399963;
+    return { x: Math.cos(longitude), z: Math.sin(longitude), latitude: (i - 1.5) * .36 + (random() - .5) * .17,
+      width: i === 1 ? .31 : .14 + random() * .11, height: i === 1 ? .15 : .075 + random() * .055, spin: i % 2 ? 1 : -1 };
+  }) : [];
   // Reused during baking; callers retaining samples must copy them.
   const result: SurfaceSample = { color: [0, 0, 0], height: .5, roughness: .9, cloud: 0 };
   return (x: number, y: number, z: number): SurfaceSample => {
@@ -47,79 +85,123 @@ export function planetSurfaceSampler(appearance: Pick<PlanetAppearance, "type" |
     const n1 = noise(x * 5.1 + n0, y * 5.1, z * 5.1);
     const n2 = noise(x * 13.7, y * 13.7 + n1, z * 13.7);
     const n3 = noise(x * 37.3 + n2, y * 37.3, z * 37.3);
-    const grain = noise(x * 113.7, y * 113.7, z * 113.7);
+    const grain = appearance.type === "rocky" ? noise(x * 113.7, y * 113.7, z * 113.7) : 0;
     const terrain = n0 * .59 + n1 * .26 + n2 * .11 + n3 * .04;
     let height = .5, roughness = .9, cloud = 0;
     let r: number, g: number, b: number;
     if (appearance.type === "rocky") {
-      let relief = 0, ejecta = 0;
+      let relief = 0, ejecta = 0, bedrock = 0;
       for (const crater of craters) {
         const distance = (2 - 2 * (x * crater.x + y * crater.y + z * crater.z)) * crater.inverseRadiusSquared;
         if (distance > 2.15) continue;
-        const d = distance + (n3 - .5) * .22 + (grain - .5) * .07;
-        const wall = smooth(.51, .87, d) * (1 - smooth(.9, 1.2, d));
-        const bowl = 1 - smooth(.14, .91, d);
-        const terrace = smooth(.28, .51, d) * (1 - smooth(.58, .76, d));
-        const centralPeak = crater.radius > .16 ? (1 - smooth(.025, .16, d)) * .052 : 0;
-        relief += (wall * (.067 + n2 * .083) - bowl * .25 + terrace * .026 + centralPeak) * crater.age;
-        ejecta += crater.age * smooth(.74, 1.02, d) * (1 - smooth(1.16, 2.04, d)) * smooth(.27, .65, n3);
+        const wear = smooth(.29, .76, n2) * (1.22 - crater.age);
+        const d = distance + (n2 - .5) * .20 + (n3 - .5) * (.13 + wear * .26);
+        const wall = smooth(.55, .89, d) * (1 - smooth(.94, 1.25 + wear * .23, d));
+        const bowl = 1 - smooth(.17, .87, d);
+        const shelf = (smooth(.23, .36, d) - smooth(.40, .51, d)) + (smooth(.50, .58, d) - smooth(.65, .76, d)) * .65;
+        const peak = crater.radius > .16 ? (1 - smooth(.025, .19, d)) * (.045 + n2 * .074) : 0;
+        relief += (wall * (.14 - wear * .16) - bowl * .27 + shelf * .044 + peak) * crater.age;
+        bedrock = Math.max(bedrock, shelf * (.45 + n2 * .55));
+        ejecta += crater.age * smooth(.81, 1.06, d) * (1 - smooth(1.23, 2.04, d)) * smooth(.29, .72, n2 * .66 + n3 * .34);
       }
-      const ridge = (1 - Math.abs(n1 * 2 - 1)) ** 5;
-      height = clamp(.12 + terrain * .58 + ridge * .10 + relief + n3 * .105 + grain * .058);
-      const mineral = smooth(.48, .72, n1) * .18;
-      const shade = .35 + terrain * .70 + ridge * .085 + relief * .59 + ejecta * .15 + n3 * .115 + grain * .082;
-      r = base[0] * shade + mineral * 48; g = base[1] * shade + mineral * 39; b = base[2] * shade + mineral * 30;
-      roughness = .86 + n2 * .12 - ejecta * .05;
+      const upland = smooth(.40, .69, n0);
+      const escarpment = 1 - smooth(.027, .23, Math.abs(n1 + (n2 - .5) * .21 - .56));
+      const ridge = upland * escarpment * (.54 + n2 * .46);
+      const sediment = smooth(.38, .68, n1 + relief * .37) * (.10 + bedrock * .19);
+      height = .25 + terrain * .44 + ridge * .27 + relief + n3 * .050 + grain * .018;
+      const shade = .43 + terrain * .57 + ridge * .19 + relief * .63 + ejecta * .10 + n3 * .063 + grain * .039;
+      r = base[0] * shade + sediment * 55; g = base[1] * shade + sediment * 43; b = base[2] * shade + sediment * 33;
+      roughness = .84 + n2 * .13 - ejecta * .05 - bedrock * .065;
     } else if (appearance.type === "ocean") {
-      const land = smooth(.505, .525, terrain), elevation = smooth(.52, .73, terrain);
-      const shelf = smooth(.47, .515, terrain);
-      const snow = smooth(.79, .94, Math.abs(y) + elevation * .15);
-      const mountain = (1 - Math.abs(n2 * 2 - 1)) ** 3 * elevation * n3;
-      const mineral = n3 * .12 + grain * .05;
-      r = lerp(lerp(5 + base[0] * .035, 18, shelf), 29 + elevation * 85 + mountain * 18 + mineral * 75, land);
-      g = lerp(lerp(14 + base[1] * .1, 66, shelf), 57 + elevation * 48 + mountain * 13 + mineral * 60, land);
-      b = lerp(lerp(30 + base[2] * .18, 86, shelf), 32 + elevation * 43 + mountain * 10 + mineral * 48, land);
-      r = lerp(r, 218, snow); g = lerp(g, 231, snow); b = lerp(b, 232, snow);
-      height = lerp(.17, .32 + elevation * .22 + mountain * .08 + n3 * .025 + grain * .012, land);
-      roughness = lerp(.176 + shelf * .043 + n3 * .021, .85 + n2 * .12, Math.max(land, snow));
-      const weather = noise(x * 3.8 + n1 * .7 + 13, y * 7.2, z * 3.8 + 9);
-      const wisps = noise(x * 33 + weather * 8, y * 43 + n1 * 5, z * 33 - weather * 6);
-      cloud = smooth(.49, .75, weather * .64 + wisps * .26 + grain * .10) * .94;
+      // Flood elongated basins, leaving broken microcontinents and shallow shelves.
+      const crust = noise(x * 3.7 + n0 * 1.55 + 11, y * 2.3 + n1 * .77, z * 3.7 - n0 * .96);
+      const coast = .575 * crust + .207 * n0 + .122 * n1 + .078 * n2 + .018 * n3;
+      const land = smooth(.538, .553, coast), elevation = smooth(.54, .79, coast);
+      const shelf = smooth(.446, .548, coast), lagoon = shelf * shelf * (1 - land);
+      const mountain = (1 - smooth(.03, .25, Math.abs(n2 - .51))) * elevation;
+      const highlands = elevation * (.54 + mountain * .46);
+      const dry = smooth(.34, .73, n0 * .55 + crust * .45);
+      r = lerp(6 + base[0] * .05 + lagoon * 29, 43 + dry * 57 + highlands * 70 + n3 * 12, land);
+      g = lerp(11 + base[1] * .18 + lagoon * 61, 59 + dry * 25 + highlands * 43 + n3 * 10, land);
+      b = lerp(19 + base[2] * .26 + lagoon * 41, 46 + dry * 18 + highlands * 38 + n3 * 9, land);
+      height = lerp(.17, .22 + elevation * .28 + mountain * .10 + n3 * .027, land);
+      const front = noise(x * 4.1 + n0 * 3.1 + 8, y * 6.6 + n1 * 1.1, z * 4.1 - n0 * 3.4);
+      const filament = noise(x * 9.6 + n1 * 1.6, y * 25 + front * 5, z * 9.6 - n1 * 1.3);
+      roughness = lerp(.155 + shelf * .046 + smooth(.33, .74, front) * .064, .86 + n2 * .10, land);
+      const shield = smooth(.51, .71, front * .72 + filament * .28);
+      const fringe = (1 - smooth(.025, .113, Math.abs(front - .51))) * smooth(.42, .80, filament);
+      cloud = clamp(shield * (.41 + filament * .42 + n3 * .17) + fringe * .27);
     } else if (appearance.type === "ice") {
-      const plate = noise(x * 6.6 + n0 * 2.4 + n3 * .16, y * 6.6 + n1 * 1.1, z * 6.6 - n1 * 1.5);
-      const offset = plate - .51 + (n3 - .5) * .024;
-      const stress = smooth(.30, .63, n1 * .61 + n2 * .39);
-      const trough = (1 - smooth(.004, .027, Math.abs(offset))) * stress;
-      const fault = (1 - smooth(.0015, .011 + stress * .009, Math.abs(offset))) * stress;
-      const branches = (1 - smooth(.001, .013, Math.abs(n2 + n3 * .12 - .55))) * stress * smooth(.10, .45, trough);
-      const frost = .66 + terrain * .36 + n3 * .10 + grain * .043 + trough * .09;
-      const blueIce = Math.max(fault, branches * .55);
-      r = lerp(base[0] * frost, 42, blueIce * .74); g = lerp(base[1] * frost, 90, blueIce * .64); b = lerp(base[2] * frost, 125, blueIce * .52);
-      height = .46 + terrain * .21 + trough * .062 - fault * .19 - branches * .055 + n3 * .073 + grain * .031;
-      roughness = lerp(.65 + n2 * .24, .39, blueIce);
-    } else {
-      const dy = (y - stormLatitude) / .145;
-      let storm = 0, curl = 0;
-      if (Math.abs(dy) < 1.45 && x * stormX + z * stormZ > .5) {
-        const dx = (z * stormX - x * stormZ) / .30;
-        const distance = Math.hypot(dx, dy);
-        storm = 1 - smooth(.28, 1.45, distance);
-        if (storm > 0) curl = Math.sin(Math.atan2(dy, dx) * 2 + distance * 10) * storm * smooth(.04, .36, distance);
+      let flow = 0, trench = 0, ridge = 0, moraine = 0, crevasses = 0;
+      for (const c of catchments) {
+        const facing = x * c.x + y * c.y + z * c.z;
+        if (facing < .67) continue;
+        const along = (x * c.ax + y * c.ay + z * c.az) / c.length;
+        if (Math.abs(along) >= 1) continue;
+        const end = smooth(-1, -.53, along) * (1 - smooth(.24, 1, along));
+        const bank = x * c.bx + y * c.by + z * c.bz;
+        const channel = (bank + c.bend * (.064 - along * along * .23) + (n1 - .5) * .16) / c.width;
+        const spread = .70 + smooth(-.63, -.05, along) * .43 - smooth(.25, .98, along) * .65;
+        const cross = Math.abs(channel) / spread;
+        if (cross >= 1.83) continue;
+        const fade = end * smooth(.67, .79, facing);
+        const lobe = (1 - smooth(.30, 1.18 + (n2 - .5) * .52, cross)) * fade * c.strength;
+        const rim = cross + (n2 - .5) * .28 + (n3 - .5) * .10;
+        const flank = (smooth(.49, .92, rim) - smooth(1.02, 1.55, rim)) * fade;
+        // Long streaks follow the ice. Offset crevasse steps follow pressure around bends.
+        const veins = noise(channel * 6 + c.strength * 19, along * 2.7, c.bend * 8 + n2 * .65);
+        const step = along + .29 * channel * channel + (n2 - .5) * .25;
+        const face = (smooth(-.43, -.36, step) - smooth(-.30, -.14, step)) * .63 +
+          (smooth(.16, .22, step) - smooth(.29, .49, step));
+        const split = Math.abs(channel - .62 * spread + (n2 - .5) * .46);
+        const broken = (1 - smooth(.022, .135, split)) * smooth(.24, .60, n2);
+        const pressure = step + (n3 - .5) * .13 + channel * (.23 - veins * .32);
+        const cracks = (1 - smooth(.012, .046, Math.abs(pressure - .18))) +
+          (1 - smooth(.007, .042, Math.abs(pressure + .25 + (veins - .5) * .21))) * .74;
+        flow = Math.max(flow, lobe * (.60 + .40 * veins));
+        ridge = Math.max(ridge, flank * (.26 + n2 * .60) + lobe * face * .78);
+        trench = Math.max(trench, fade * broken);
+        moraine = Math.max(moraine, (lobe * .7 + flank * .3) * smooth(.29, .78, veins));
+        crevasses = Math.max(crevasses, lobe * (.28 + .72 * smooth(.33, .63, veins)) * cracks);
       }
-      // Unequal jets shear the texture east/west; finer filaments follow the same flow.
-      const latitude = y + (n0 - .5) * .06 + (n1 - .5) * .038 + curl * .036;
-      const filament = noise(x * 13 + n1 * 2, latitude * 69, z * 13 - n1 * 3);
-      const broad = Math.sin(latitude * (31 + 22 * y * y) + n2 * .65) * .5 + .5;
-      const shear = Math.sin(latitude * 106 + n1 * 2.9 + filament * 3.8) * .5 + .5;
-      const belt = smooth(.20, .79, broad * .67 + shear * .19 + filament * .14);
-      const jetGroup = Math.sin(y * 11 + .55);
-      const contrast = .16 + .12 * (1 - y * y) + n0 * .075 + jetGroup * .055;
-      const shade = .54 + belt * contrast + jetGroup * .036 + filament * .134 + n3 * .052 + grain * .027;
-      const cream = smooth(.58, .91, broad * .72 + filament * .28) * .13;
-      r = base[0] * shade + cream * 132 + storm * 11 + curl * 15;
-      g = base[1] * shade + cream * 110 + storm * 5 + curl * 11;
-      b = base[2] * shade + cream * 93 - storm * 6 + curl * 7;
-      roughness = .92 + filament * .06; // No solid-surface bump or metallic glints.
+      const plain = smooth(.25, .72, n0 * .76 + n1 * .24);
+      const drift = smooth(.31, .69, n1 * .69 + n2 * .31);
+      const exposed = smooth(.018, .71, flow * .72 + moraine * .33 + trench * .45 + crevasses * .74);
+      const snow = .69 + plain * .15 + drift * .10 + ridge * .24 + n3 * .039;
+      r = lerp(base[0] * snow, 79 + moraine * 58, exposed * .73);
+      g = lerp(base[1] * snow, 133 + moraine * 49, exposed * .61);
+      b = lerp(base[2] * (snow + .022), 174 + moraine * 46, exposed * .43);
+      height = .30 + plain * .18 + drift * .089 + ridge * .34 - flow * .076 - trench * .118 - crevasses * .21 + moraine * .076 + n3 * .037;
+      roughness = lerp(.72 + plain * .19, .39 + moraine * .23, exposed);
+    } else if (jets) {
+      let drift = 0, eye = 0, shoulder = 0;
+      for (const storm of storms) {
+        const dy = (y - storm.latitude) / storm.height;
+        if (Math.abs(dy) > 1.5 || x * storm.x + z * storm.z < .52) continue;
+        const dx = (z * storm.x - x * storm.z) / storm.width;
+        const distance = dx * dx + dy * dy;
+        if (distance > 2.25) continue;
+        const envelope = 1 - smooth(.23, 2.25, distance);
+        const turn = storm.spin * envelope * 2.7;
+        drift += (dy * (Math.cos(turn) - 1) + dx * Math.sin(turn)) * storm.height;
+        eye += 1 - smooth(.045, .42, distance + (n2 - .5) * .18);
+        shoulder += envelope * (1 - smooth(.06, .30, Math.abs(distance - .68 + (n2 - .5) * .39)));
+      }
+      const jetPosition = clamp((y + drift + (n0 - .5) * .09 + (n1 - .5) * .041 + 1) * .5) * 512;
+      const index = Math.min(511, Math.floor(jetPosition));
+      const belt = lerp(jets[index], jets[index + 1], jetPosition - index);
+      const filament = noise(x * 7.3 + n1 * 2, (y + drift * .8) * 39 + belt * 1.8, z * 7.3 - n1 * 2);
+      const pole = smooth(.74, 1, Math.abs(y));
+      const shear = lerp(belt, n1 * .59 + n2 * .41, pole * .81);
+      const plumes = smooth(.42, .84, shear * .64 + filament * .36);
+      const shade = .51 + shear * (ringed ? .23 : .33) + filament * .16 + plumes * .06 + eye * .11;
+      const cream = plumes * (ringed ? .27 : .20) + shoulder * .22;
+      r = base[0] * shade + cream * 135 + eye * 22;
+      g = base[1] * shade + cream * 119 + eye * 9;
+      b = base[2] * shade + cream * 103 - eye * 9;
+      roughness = .93 + filament * .05;
+    } else {
+      [r, g, b] = base;
     }
     result.color[0] = r; result.color[1] = g; result.color[2] = b;
     result.height = clamp(height); result.roughness = clamp(roughness); result.cloud = cloud;

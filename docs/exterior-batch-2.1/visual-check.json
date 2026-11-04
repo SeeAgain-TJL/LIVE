@@ -1,0 +1,5393 @@
+{
+  "date": "2026-11-04T13:34:17.460Z",
+  "baseline": "713fe73",
+  "chrome": "156.0.8078.80",
+  "urls": {
+    "before": "http://127.0.0.1:3352",
+    "after": "http://127.0.0.1:3353"
+  },
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "dpr": 1.5,
+  "cpu": "Intel(R) Core(TM) 5 220H",
+  "ramBytes": 16699781120,
+  "gpu": {
+    "devices": [
+      {
+        "vendorId": 32902,
+        "deviceId": 42922,
+        "subSysId": 1067456426,
+        "revision": 4,
+        "vendorString": "",
+        "deviceString": "Intel(R) Graphics",
+        "driverVendor": "Intel",
+        "driverVersion": "32.0.101.7076"
+      },
+      {
+        "vendorId": 32902,
+        "deviceId": 42922,
+        "subSysId": 1067456426,
+        "revision": 4,
+        "vendorString": "",
+        "deviceString": "Intel(R) Graphics",
+        "driverVendor": "",
+        "driverVersion": "32.0.101.7076"
+      },
+      {
+        "vendorId": 5140,
+        "deviceId": 140,
+        "subSysId": 0,
+        "revision": 0,
+        "vendorString": "",
+        "deviceString": "Microsoft Basic Render Driver",
+        "driverVendor": "",
+        "driverVersion": "10.0.26100.9711"
+      }
+    ],
+    "auxAttributes": {
+      "amdSwitchable": false,
+      "bgra8OverlaySupport": "SCALING",
+      "canSupportThreadedTextureMailbox": false,
+      "directComposition": true,
+      "directMLFeatureLevel": "Not supported",
+      "directRenderingVersion": "",
+      "displayType": "ANGLE_D3D11",
+      "dx12FeatureLevel": "Not supported",
+      "glExtensions": "GL_AMD_performance_monitor GL_ANGLE_base_vertex_base_instance_shader_builtin GL_ANGLE_blob_cache GL_ANGLE_client_arrays GL_ANGLE_clip_cull_distance GL_ANGLE_copy_texture_3d GL_ANGLE_depth_texture GL_ANGLE_framebuffer_blit GL_ANGLE_framebuffer_multisample GL_ANGLE_get_serialized_context_string GL_ANGLE_get_tex_level_parameter GL_ANGLE_instanced_arrays GL_ANGLE_memory_size GL_ANGLE_multiview_multisample GL_ANGLE_pack_reverse_row_order GL_ANGLE_polygon_mode GL_ANGLE_program_binary_readiness_query GL_ANGLE_program_cache_control GL_ANGLE_provoking_vertex GL_ANGLE_renderability_validation GL_ANGLE_request_extension GL_ANGLE_robust_client_memory GL_ANGLE_shader_pixel_local_storage GL_ANGLE_shader_pixel_local_storage_coherent GL_ANGLE_stencil_texturing GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_ANGLE_texture_multisample GL_ANGLE_texture_usage GL_ANGLE_translated_shader_source GL_APPLE_clip_distance GL_ARM_rgba8 GL_CHROMIUM_bind_generates_resource GL_CHROMIUM_bind_uniform_location GL_CHROMIUM_copy_compressed_texture GL_CHROMIUM_copy_texture GL_CHROMIUM_lose_context GL_EXT_EGL_image_external_wrap_modes GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_conservative_depth GL_EXT_debug_label GL_EXT_debug_marker GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB GL_EXT_shader_texture_lod GL_EXT_texture_border_clamp GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_filter_anisotropic GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_rg GL_EXT_texture_storage GL_EXT_texture_type_2_10_10_10_REV GL_EXT_unpack_subimage GL_KHR_debug GL_KHR_parallel_shader_compile GL_KHR_robustness GL_NV_EGL_stream_consumer_external GL_NV_fence GL_NV_framebuffer_blit GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_shader_noperspective_interpolation GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_depth24 GL_OES_depth32 GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_get_program_binary GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_variables GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_surfaceless_context GL_OES_texture_border_clamp GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_vertex_array_object GL_OVR_multiview GL_OVR_multiview2 ",
+      "glImplementationParts": "(gl=egl-angle,angle=d3d11)",
+      "glRenderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.101.7076)",
+      "glResetNotificationStrategy": 33362,
+      "glVendor": "Google Inc. (Intel)",
+      "glVersion": "OpenGL ES 3.0 (ANGLE 2.1.28975 git hash: 127e783de334)",
+      "glWsExtensions": "EGL_EXT_create_context_robustness EGL_ANGLE_d3d_share_handle_client_buffer EGL_ANGLE_d3d_texture_client_buffer EGL_ANGLE_surface_d3d_texture_2d_share_handle EGL_ANGLE_query_surface_pointer EGL_ANGLE_window_fixed_size EGL_ANGLE_keyed_mutex EGL_ANGLE_surface_orientation EGL_ANGLE_direct_composition EGL_NV_post_sub_buffer EGL_KHR_create_context EGL_KHR_image EGL_KHR_image_base EGL_KHR_gl_texture_2D_image EGL_KHR_gl_texture_cubemap_image EGL_KHR_gl_renderbuffer_image EGL_KHR_get_all_proc_addresses EGL_KHR_stream EGL_KHR_stream_consumer_gltexture EGL_NV_stream_consumer_gltexture_yuv EGL_ANGLE_stream_producer_d3d_texture EGL_ANGLE_create_context_webgl_compatibility EGL_CHROMIUM_create_context_bind_generates_resource EGL_CHROMIUM_sync_control EGL_EXT_pixel_format_float EGL_KHR_surfaceless_context EGL_ANGLE_display_texture_share_group EGL_ANGLE_display_semaphore_share_group EGL_ANGLE_create_context_client_arrays EGL_ANGLE_program_cache_control EGL_ANGLE_robust_resource_initialization EGL_ANGLE_create_context_extensions_enabled EGL_ANDROID_blob_cache EGL_ANDROID_recordable EGL_ANGLE_image_d3d11_texture EGL_ANGLE_create_context_backwards_compatible EGL_KHR_no_config_context EGL_KHR_create_context_no_error EGL_KHR_reusable_sync EGL_ANGLE_memory_usage_report ",
+      "glWsVendor": "Google Inc. (Intel)",
+      "glWsVersion": "1.5 (ANGLE 2.1.28975 git hash: 127e783de334)",
+      "inProcessGpu": false,
+      "initializationTime": 0.487798,
+      "isAsan": false,
+      "isClangCoverage": false,
+      "jpegDecodeAcceleratorSupported": false,
+      "maxMsaaSamples": "8",
+      "nv12OverlaySupport": "SCALING",
+      "optimus": false,
+      "p010OverlaySupport": "SOFTWARE",
+      "passthroughCmdDecoder": true,
+      "pixelShaderVersion": "5.0",
+      "processCrashCount": 0,
+      "rgb10a2OverlaySupport": "SOFTWARE",
+      "sandboxed": false,
+      "skiaBackendType": "GaneshGL",
+      "subpixelFontRendering": true,
+      "supportsD3dSharedImages": false,
+      "supportsDirectML": false,
+      "supportsDx12": false,
+      "supportsOverlays": true,
+      "supportsVulkan": false,
+      "targetCpuBits": 64,
+      "vertexShaderVersion": "5.0",
+      "visibilityCallbackCallCount": 0,
+      "vulkanVersion": "Not supported",
+      "yuy2OverlaySupport": "SCALING"
+    },
+    "featureStatus": {
+      "2d_canvas": "enabled",
+      "direct_rendering_display_compositor": "disabled_off_ok",
+      "gpu_compositing": "enabled",
+      "multiple_raster_threads": "enabled_on",
+      "opengl": "enabled_on",
+      "rasterization": "enabled",
+      "raw_draw": "disabled_off_ok",
+      "skia_graphite": "disabled_off",
+      "trees_in_viz": "disabled_off",
+      "video_decode": "enabled",
+      "video_encode": "enabled",
+      "webgl": "enabled",
+      "webgpu": "enabled",
+      "webnn": "disabled_off"
+    },
+    "driverBugWorkarounds": [
+      "d3d12_encode_packed_format_dpb_sizing",
+      "disable_d3d12_h264_encoder_non_reference_frames",
+      "disable_direct_composition_sw_video_overlays",
+      "disable_vp_auto_hdr",
+      "enable_webgl_timer_query_extensions",
+      "exit_on_context_lost",
+      "force_dcomp_triple_buffer_video_swap_chain",
+      "max_msaa_sample_count_4",
+      "msaa_is_slow",
+      "no_downscaled_overlay_promotion",
+      "supports_two_yuv_hardware_overlays",
+      "disabled_extension_GL_KHR_blend_equation_advanced",
+      "disabled_extension_GL_KHR_blend_equation_advanced_coherent"
+    ],
+    "videoDecoding": [],
+    "videoEncoding": []
+  },
+  "cases": [
+    {
+      "name": "before-back-ice",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ice",
+      "phase": "back",
+      "firstInteractiveMs": 3103.6,
+      "fullTextureMs": 3822.5,
+      "cold": {
+        "snapshot": {
+          "at": 3842.9000000953674,
+          "metrics": {
+            "tier": "high",
+            "fps": 1,
+            "meanMs": 733.9,
+            "p95Ms": 1379,
+            "maxMs": 1379,
+            "calls": 16,
+            "points": 5000,
+            "triangles": 39406,
+            "dpr": 1.5,
+            "geometries": 17,
+            "textures": 1,
+            "programs": 10,
+            "heapBytes": 10925782,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              5.081710486056675,
+              -1.9086569368250423,
+              2.556021759181889
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 2841.1542374257733,
+                "y": 864.6997587953207,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6725.180308988817,
+                "y": 1330.0348900579966,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 280.59999990463257,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 11.911,
+        "frame": {
+          "n": 27,
+          "mean": 83.956,
+          "p95": 166.6,
+          "max": 1550
+        },
+        "cpu": {
+          "n": 28,
+          "mean": 56.004,
+          "p95": 146.8,
+          "max": 1367.6
+        },
+        "gpu": {
+          "n": 28,
+          "mean": 3.707,
+          "p95": 6.038,
+          "max": 8.102
+        },
+        "gpuMain": {
+          "n": 28,
+          "mean": 3.621,
+          "p95": 4.342,
+          "max": 8.102
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.401,
+          "p95": 2.401,
+          "max": 2.401
+        },
+        "draws": {
+          "n": 28,
+          "mean": 16.036,
+          "p95": 16,
+          "max": 17
+        },
+        "blendedDraws": {
+          "n": 28,
+          "mean": 11.036,
+          "p95": 11,
+          "max": 12
+        },
+        "offscreenDraws": {
+          "n": 28,
+          "mean": 0.036,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 6,
+          "mean": 339.167,
+          "p95": 1374,
+          "max": 1374
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 546095104,
+        "freeEnd": 412327936,
+        "cpuPercent": 62.916
+      }
+    },
+    {
+      "name": "after-back-ice",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ice",
+      "phase": "back",
+      "firstInteractiveMs": 2674.6,
+      "fullTextureMs": 3606.2,
+      "cold": {
+        "snapshot": {
+          "at": 3626,
+          "metrics": {
+            "tier": "high",
+            "fps": 1,
+            "meanMs": 745.35,
+            "p95Ms": 1438.3,
+            "maxMs": 1438.3,
+            "calls": 16,
+            "points": 5000,
+            "triangles": 39406,
+            "dpr": 1.5,
+            "geometries": 17,
+            "textures": 1,
+            "programs": 10,
+            "heapBytes": 11943081,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              5.081710486056675,
+              -1.9086569368250423,
+              2.556021759181889
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 2841.1542374257733,
+                "y": 864.6997587953207,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6725.180308988817,
+                "y": 1330.0348900579966,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 439.2999999523163,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 15.599,
+        "frame": {
+          "n": 39,
+          "mean": 64.108,
+          "p95": 116.6,
+          "max": 1567.6
+        },
+        "cpu": {
+          "n": 40,
+          "mean": 40.685,
+          "p95": 9.2,
+          "max": 1425.5
+        },
+        "gpu": {
+          "n": 40,
+          "mean": 5.569,
+          "p95": 21.375,
+          "max": 35.035
+        },
+        "gpuMain": {
+          "n": 40,
+          "mean": 5.509,
+          "p95": 21.375,
+          "max": 35.035
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.384,
+          "p95": 2.384,
+          "max": 2.384
+        },
+        "draws": {
+          "n": 40,
+          "mean": 16.025,
+          "p95": 16,
+          "max": 17
+        },
+        "blendedDraws": {
+          "n": 40,
+          "mean": 11.025,
+          "p95": 11,
+          "max": 12
+        },
+        "offscreenDraws": {
+          "n": 40,
+          "mean": 0.025,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 6,
+          "mean": 317.833,
+          "p95": 1432,
+          "max": 1432
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 454184960,
+        "freeEnd": 608555008,
+        "cpuPercent": 58.568
+      }
+    },
+    {
+      "name": "before-near-ice",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ice",
+      "phase": "near",
+      "firstInteractiveMs": 1510.7,
+      "fullTextureMs": 2095,
+      "cold": {
+        "snapshot": {
+          "at": 2115.2999999523163,
+          "metrics": {
+            "tier": "high",
+            "fps": 16,
+            "meanMs": 63.95,
+            "p95Ms": 666.7,
+            "maxMs": 666.7,
+            "calls": 10,
+            "points": 5000,
+            "triangles": 27918,
+            "dpr": 1.5,
+            "geometries": 11,
+            "textures": 1,
+            "programs": 8,
+            "heapBytes": 11569098,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -1.1778249102178295,
+              1.3017349146041959,
+              3.313716145503529
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -138.58697965244832,
+                "y": -138.68045444968578,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 651.6224083575647,
+                "y": 123.82989786823163,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 273.40000009536743,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 19.495,
+        "frame": {
+          "n": 26,
+          "mean": 51.296,
+          "p95": 67.4,
+          "max": 750
+        },
+        "cpu": {
+          "n": 27,
+          "mean": 28.022,
+          "p95": 59.3,
+          "max": 660.4
+        },
+        "gpu": {
+          "n": 27,
+          "mean": 3.817,
+          "p95": 15.169,
+          "max": 17.336
+        },
+        "gpuMain": {
+          "n": 27,
+          "mean": 3.672,
+          "p95": 15.169,
+          "max": 17.336
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 3.936,
+          "p95": 3.936,
+          "max": 3.936
+        },
+        "draws": {
+          "n": 27,
+          "mean": 10.037,
+          "p95": 10,
+          "max": 11
+        },
+        "blendedDraws": {
+          "n": 27,
+          "mean": 6.037,
+          "p95": 6,
+          "max": 7
+        },
+        "offscreenDraws": {
+          "n": 27,
+          "mean": 0.037,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 6,
+          "mean": 182.333,
+          "p95": 664,
+          "max": 664
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 904802304,
+        "freeEnd": 3138179072,
+        "cpuPercent": 80.212
+      }
+    },
+    {
+      "name": "after-near-ice",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ice",
+      "phase": "near",
+      "firstInteractiveMs": 886,
+      "fullTextureMs": 1656.8,
+      "cold": {
+        "snapshot": {
+          "at": 1762.5999999046326,
+          "metrics": {
+            "tier": "high",
+            "fps": 53,
+            "meanMs": 18.73,
+            "p95Ms": 21.6,
+            "maxMs": 87.6,
+            "calls": 10,
+            "points": 5000,
+            "triangles": 38990,
+            "dpr": 1.5,
+            "geometries": 11,
+            "textures": 3,
+            "programs": 8,
+            "heapBytes": 16323904,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -1.1778249102178295,
+              1.3017349146041959,
+              3.313716145503529
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -138.58697965244832,
+                "y": -138.68045444968578,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 651.6224083575647,
+                "y": 123.82989786823163,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 500.7000000476837,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 49.483,
+        "frame": {
+          "n": 47,
+          "mean": 20.209,
+          "p95": 17.6,
+          "max": 183.2
+        },
+        "cpu": {
+          "n": 48,
+          "mean": 3.508,
+          "p95": 5,
+          "max": 82.6
+        },
+        "gpu": {
+          "n": 48,
+          "mean": 3.234,
+          "p95": 4.792,
+          "max": 20.749
+        },
+        "gpuMain": {
+          "n": 48,
+          "mean": 2.969,
+          "p95": 4.792,
+          "max": 8.03
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 12.719,
+          "p95": 12.719,
+          "max": 12.719
+        },
+        "draws": {
+          "n": 48,
+          "mean": 10.021,
+          "p95": 10,
+          "max": 11
+        },
+        "blendedDraws": {
+          "n": 48,
+          "mean": 6.021,
+          "p95": 6,
+          "max": 7
+        },
+        "offscreenDraws": {
+          "n": 48,
+          "mean": 0.021,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 5,
+          "mean": 98.2,
+          "p95": 116,
+          "max": 116
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 3249184768,
+        "freeEnd": 2164101120,
+        "cpuPercent": 74.777
+      }
+    },
+    {
+      "name": "before-back-gas",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "gas",
+      "phase": "back",
+      "firstInteractiveMs": 1822.8,
+      "fullTextureMs": 2711.9,
+      "cold": {
+        "snapshot": {
+          "at": 2746.7000000476837,
+          "metrics": {
+            "tier": "high",
+            "fps": 3,
+            "meanMs": 342,
+            "p95Ms": 835.2,
+            "maxMs": 835.2,
+            "calls": 16,
+            "points": 5000,
+            "triangles": 39406,
+            "dpr": 1.5,
+            "geometries": 17,
+            "textures": 1,
+            "programs": 10,
+            "heapBytes": 11366782,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              8.13073677769068,
+              -3.053851098920068,
+              4.089634814691022
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 3203.6319405841305,
+                "y": 929.4648453755758,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6616.382011144889,
+                "y": 1314.7937702135284,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 414.2000000476837,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 21.767,
+        "frame": {
+          "n": 41,
+          "mean": 45.941,
+          "p95": 82.5,
+          "max": 999.9
+        },
+        "cpu": {
+          "n": 42,
+          "mean": 24.233,
+          "p95": 5.9,
+          "max": 825.8
+        },
+        "gpu": {
+          "n": 42,
+          "mean": 4.274,
+          "p95": 6.189,
+          "max": 21.109
+        },
+        "gpuMain": {
+          "n": 42,
+          "mean": 4.216,
+          "p95": 6.083,
+          "max": 21.109
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.447,
+          "p95": 2.447,
+          "max": 2.447
+        },
+        "draws": {
+          "n": 42,
+          "mean": 16.024,
+          "p95": 16,
+          "max": 17
+        },
+        "blendedDraws": {
+          "n": 42,
+          "mean": 11.024,
+          "p95": 11,
+          "max": 12
+        },
+        "offscreenDraws": {
+          "n": 42,
+          "mean": 0.024,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 7,
+          "mean": 220.571,
+          "p95": 831,
+          "max": 831
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 2144575488,
+        "freeEnd": 1424797696,
+        "cpuPercent": 72.832
+      }
+    },
+    {
+      "name": "after-back-gas",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "gas",
+      "phase": "back",
+      "firstInteractiveMs": 970.8,
+      "fullTextureMs": 1664.6,
+      "cold": {
+        "snapshot": {
+          "at": 1754.7000000476837,
+          "metrics": {
+            "tier": "high",
+            "fps": 38,
+            "meanMs": 26.65,
+            "p95Ms": 76.3,
+            "maxMs": 243.7,
+            "calls": 16,
+            "points": 5000,
+            "triangles": 50478,
+            "dpr": 1.5,
+            "geometries": 17,
+            "textures": 3,
+            "programs": 10,
+            "heapBytes": 16621341,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              8.13073677769068,
+              -3.053851098920068,
+              4.089634814691022
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 3203.6319405841305,
+                "y": 929.4648453755758,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6616.382011144889,
+                "y": 1314.7937702135284,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 492.10000014305115,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 34.155,
+        "frame": {
+          "n": 37,
+          "mean": 29.278,
+          "p95": 49.9,
+          "max": 383.5
+        },
+        "cpu": {
+          "n": 38,
+          "mean": 8.813,
+          "p95": 17,
+          "max": 240.4
+        },
+        "gpu": {
+          "n": 38,
+          "mean": 4.386,
+          "p95": 11.966,
+          "max": 29.949
+        },
+        "gpuMain": {
+          "n": 38,
+          "mean": 4.179,
+          "p95": 11.519,
+          "max": 29.949
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 7.859,
+          "p95": 7.859,
+          "max": 7.859
+        },
+        "draws": {
+          "n": 38,
+          "mean": 16.026,
+          "p95": 16,
+          "max": 17
+        },
+        "blendedDraws": {
+          "n": 38,
+          "mean": 11.026,
+          "p95": 11,
+          "max": 12
+        },
+        "offscreenDraws": {
+          "n": 38,
+          "mean": 0.026,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 4,
+          "mean": 140.75,
+          "p95": 242,
+          "max": 242
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1531318272,
+        "freeEnd": 743522304,
+        "cpuPercent": 70.463
+      }
+    },
+    {
+      "name": "before-near-gas",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "gas",
+      "phase": "near",
+      "firstInteractiveMs": 1182.6,
+      "fullTextureMs": 1974.3,
+      "cold": {
+        "snapshot": {
+          "at": 2000.7000000476837,
+          "metrics": {
+            "tier": "high",
+            "fps": 37,
+            "meanMs": 27.37,
+            "p95Ms": 104.7,
+            "maxMs": 255.1,
+            "calls": 10,
+            "points": 5000,
+            "triangles": 27918,
+            "dpr": 1.5,
+            "geometries": 11,
+            "textures": 3,
+            "programs": 8,
+            "heapBytes": 17675224,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -1.884519856348528,
+              2.082775863366714,
+              5.3019458328056475
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -204.1036936759017,
+                "y": -183.26262487574886,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 651.9983321454037,
+                "y": 124.78294804312523,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 371.10000014305115,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 30.428,
+        "frame": {
+          "n": 37,
+          "mean": 32.865,
+          "p95": 100.7,
+          "max": 432.7
+        },
+        "cpu": {
+          "n": 38,
+          "mean": 5.853,
+          "p95": 27,
+          "max": 146.9
+        },
+        "gpu": {
+          "n": 38,
+          "mean": 3.018,
+          "p95": 6.513,
+          "max": 11.151
+        },
+        "gpuMain": {
+          "n": 38,
+          "mean": 2.922,
+          "p95": 4.709,
+          "max": 11.151
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 3.648,
+          "p95": 3.648,
+          "max": 3.648
+        },
+        "draws": {
+          "n": 38,
+          "mean": 10.026,
+          "p95": 10,
+          "max": 11
+        },
+        "blendedDraws": {
+          "n": 38,
+          "mean": 6.026,
+          "p95": 6,
+          "max": 7
+        },
+        "offscreenDraws": {
+          "n": 38,
+          "mean": 0.026,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 5,
+          "mean": 145.4,
+          "p95": 297,
+          "max": 297
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 513191936,
+        "freeEnd": 1127460864,
+        "cpuPercent": 63.888
+      }
+    },
+    {
+      "name": "after-near-gas",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "gas",
+      "phase": "near",
+      "firstInteractiveMs": 873.2,
+      "fullTextureMs": 1242.7,
+      "cold": {
+        "snapshot": {
+          "at": 1719,
+          "metrics": {
+            "tier": "high",
+            "fps": 44,
+            "meanMs": 22.79,
+            "p95Ms": 61.3,
+            "maxMs": 111,
+            "calls": 10,
+            "points": 5000,
+            "triangles": 38990,
+            "dpr": 1.5,
+            "geometries": 11,
+            "textures": 3,
+            "programs": 8,
+            "heapBytes": 16119401,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -1.884519856348528,
+              2.082775863366714,
+              5.3019458328056475
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -204.1036936759017,
+                "y": -183.26262487574886,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 651.9983321454037,
+                "y": 124.78294804312523,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 210.59999990463257,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 26.818,
+        "frame": {
+          "n": 17,
+          "mean": 37.288,
+          "p95": 266.6,
+          "max": 266.6
+        },
+        "cpu": {
+          "n": 18,
+          "mean": 8.572,
+          "p95": 106.8,
+          "max": 106.8
+        },
+        "gpu": {
+          "n": 18,
+          "mean": 2.835,
+          "p95": 6.713,
+          "max": 6.713
+        },
+        "gpuMain": {
+          "n": 18,
+          "mean": 2.612,
+          "p95": 3.43,
+          "max": 3.43
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 4.024,
+          "p95": 4.024,
+          "max": 4.024
+        },
+        "draws": {
+          "n": 18,
+          "mean": 10.056,
+          "p95": 11,
+          "max": 11
+        },
+        "blendedDraws": {
+          "n": 18,
+          "mean": 6.056,
+          "p95": 7,
+          "max": 7
+        },
+        "offscreenDraws": {
+          "n": 18,
+          "mean": 0.056,
+          "p95": 1,
+          "max": 1
+        },
+        "tasks": {
+          "n": 5,
+          "mean": 91,
+          "p95": 162,
+          "max": 162
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1299693568,
+        "freeEnd": 768094208,
+        "cpuPercent": 50.747
+      }
+    },
+    {
+      "name": "before-back-rocky",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "rocky",
+      "phase": "back",
+      "firstInteractiveMs": 975.8,
+      "fullTextureMs": 1615.2,
+      "cold": {
+        "snapshot": {
+          "at": 1768.2999999523163,
+          "metrics": {
+            "tier": "high",
+            "fps": 41,
+            "meanMs": 24.43,
+            "p95Ms": 65.1,
+            "maxMs": 158.2,
+            "calls": 16,
+            "points": 5000,
+            "triangles": 50478,
+            "dpr": 1.5,
+            "geometries": 17,
+            "textures": 3,
+            "programs": 10,
+            "heapBytes": 17413357,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              8.384822301993509,
+              -3.149283945761318,
+              4.217435902650114
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 3239.7369305402103,
+                "y": 935.9158429958713,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6607.495563825558,
+                "y": 1313.5489032324313,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 349.7999999523163,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 33.832,
+        "frame": {
+          "n": 31,
+          "mean": 29.558,
+          "p95": 66.7,
+          "max": 266.3
+        },
+        "cpu": {
+          "n": 32,
+          "mean": 7.334,
+          "p95": 34.1,
+          "max": 150.1
+        },
+        "gpu": {
+          "n": 32,
+          "mean": 3.379,
+          "p95": 5,
+          "max": 6.256
+        },
+        "gpuMain": {
+          "n": 32,
+          "mean": 3.292,
+          "p95": 3.918,
+          "max": 5
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.773,
+          "p95": 2.773,
+          "max": 2.773
+        },
+        "draws": {
+          "n": 32,
+          "mean": 16.031,
+          "p95": 16,
+          "max": 17
+        },
+        "blendedDraws": {
+          "n": 32,
+          "mean": 11.031,
+          "p95": 11,
+          "max": 12
+        },
+        "offscreenDraws": {
+          "n": 32,
+          "mean": 0.031,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 5,
+          "mean": 116.2,
+          "p95": 152,
+          "max": 152
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1189273600,
+        "freeEnd": 521969664,
+        "cpuPercent": 62.871
+      }
+    },
+    {
+      "name": "after-back-rocky",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "rocky",
+      "phase": "back",
+      "firstInteractiveMs": 884.8,
+      "fullTextureMs": 1515.6,
+      "cold": {
+        "snapshot": {
+          "at": 1688.2000000476837,
+          "metrics": {
+            "tier": "high",
+            "fps": 43,
+            "meanMs": 23.42,
+            "p95Ms": 61.6,
+            "maxMs": 151.2,
+            "calls": 16,
+            "points": 5000,
+            "triangles": 50478,
+            "dpr": 1.5,
+            "geometries": 17,
+            "textures": 3,
+            "programs": 10,
+            "heapBytes": 17589844,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              8.384822301993509,
+              -3.149283945761318,
+              4.217435902650114
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 3239.7369305402103,
+                "y": 935.9158429958713,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6607.495563825558,
+                "y": 1313.5489032324313,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 466.5,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 36.67,
+        "frame": {
+          "n": 33,
+          "mean": 27.27,
+          "p95": 66.1,
+          "max": 266.6
+        },
+        "cpu": {
+          "n": 34,
+          "mean": 6.574,
+          "p95": 19.5,
+          "max": 147.9
+        },
+        "gpu": {
+          "n": 34,
+          "mean": 5.937,
+          "p95": 28.872,
+          "max": 32.487
+        },
+        "gpuMain": {
+          "n": 34,
+          "mean": 5.867,
+          "p95": 28.872,
+          "max": 32.487
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.377,
+          "p95": 2.377,
+          "max": 2.377
+        },
+        "draws": {
+          "n": 34,
+          "mean": 16.029,
+          "p95": 16,
+          "max": 17
+        },
+        "blendedDraws": {
+          "n": 34,
+          "mean": 11.029,
+          "p95": 11,
+          "max": 12
+        },
+        "offscreenDraws": {
+          "n": 34,
+          "mean": 0.029,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 5,
+          "mean": 96.8,
+          "p95": 149,
+          "max": 149
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 572493824,
+        "freeEnd": 395132928,
+        "cpuPercent": 48.137
+      }
+    },
+    {
+      "name": "before-near-rocky",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "rocky",
+      "phase": "near",
+      "firstInteractiveMs": 823.1,
+      "fullTextureMs": 1346.2,
+      "cold": {
+        "snapshot": {
+          "at": 1692.2999999523163,
+          "metrics": {
+            "tier": "high",
+            "fps": 47,
+            "meanMs": 21.28,
+            "p95Ms": 52.9,
+            "maxMs": 119.1,
+            "calls": 10,
+            "points": 5000,
+            "triangles": 38990,
+            "dpr": 1.5,
+            "geometries": 11,
+            "textures": 3,
+            "programs": 8,
+            "heapBytes": 17324710,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -1.9434111018594187,
+              2.147862609096923,
+              5.467631640080823
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -209.97870289024405,
+                "y": -187.26039347499113,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 652.0295731629595,
+                "y": 124.86215095129077,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 332.09999990463257,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 38.148,
+        "frame": {
+          "n": 28,
+          "mean": 26.214,
+          "p95": 50.6,
+          "max": 216.7
+        },
+        "cpu": {
+          "n": 29,
+          "mean": 6.472,
+          "p95": 35.8,
+          "max": 110.7
+        },
+        "gpu": {
+          "n": 29,
+          "mean": 2.64,
+          "p95": 3.409,
+          "max": 6.448
+        },
+        "gpuMain": {
+          "n": 29,
+          "mean": 2.514,
+          "p95": 2.785,
+          "max": 3.409
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 3.672,
+          "p95": 3.672,
+          "max": 3.672
+        },
+        "draws": {
+          "n": 29,
+          "mean": 10.034,
+          "p95": 10,
+          "max": 11
+        },
+        "blendedDraws": {
+          "n": 29,
+          "mean": 6.034,
+          "p95": 6,
+          "max": 7
+        },
+        "offscreenDraws": {
+          "n": 29,
+          "mean": 0.034,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 4,
+          "mean": 94.75,
+          "p95": 121,
+          "max": 121
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 580866048,
+        "freeEnd": 829222912,
+        "cpuPercent": 46.967
+      }
+    },
+    {
+      "name": "after-near-rocky",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "rocky",
+      "phase": "near",
+      "firstInteractiveMs": 810.9,
+      "fullTextureMs": 1346.7,
+      "cold": {
+        "snapshot": {
+          "at": 1674,
+          "metrics": {
+            "tier": "high",
+            "fps": 45,
+            "meanMs": 22.22,
+            "p95Ms": 53.7,
+            "maxMs": 100.2,
+            "calls": 10,
+            "points": 5000,
+            "triangles": 38990,
+            "dpr": 1.5,
+            "geometries": 11,
+            "textures": 3,
+            "programs": 8,
+            "heapBytes": 17171860,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -1.9434111018594187,
+              2.147862609096923,
+              5.467631640080823
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -209.97870289024405,
+                "y": -187.26039347499113,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 652.0295731629595,
+                "y": 124.86215095129077,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 346.7000000476837,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 13,
+            "meshGeometries": 13
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 34.887,
+        "frame": {
+          "n": 25,
+          "mean": 28.664,
+          "p95": 49.9,
+          "max": 183.4
+        },
+        "cpu": {
+          "n": 26,
+          "mean": 7.092,
+          "p95": 51.1,
+          "max": 97.4
+        },
+        "gpu": {
+          "n": 26,
+          "mean": 2.68,
+          "p95": 2.965,
+          "max": 6.439
+        },
+        "gpuMain": {
+          "n": 26,
+          "mean": 2.54,
+          "p95": 2.884,
+          "max": 2.965
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 3.647,
+          "p95": 3.647,
+          "max": 3.647
+        },
+        "draws": {
+          "n": 26,
+          "mean": 10.038,
+          "p95": 10,
+          "max": 11
+        },
+        "blendedDraws": {
+          "n": 26,
+          "mean": 6.038,
+          "p95": 6,
+          "max": 7
+        },
+        "offscreenDraws": {
+          "n": 26,
+          "mean": 0.038,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 6,
+          "mean": 76.167,
+          "p95": 112,
+          "max": 112
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1006694400,
+        "freeEnd": 863334400,
+        "cpuPercent": 42.905
+      }
+    },
+    {
+      "name": "before-back-ringed",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ringed",
+      "phase": "back",
+      "firstInteractiveMs": 931.1,
+      "fullTextureMs": 1507.8,
+      "cold": {
+        "snapshot": {
+          "at": 1683.2000000476837,
+          "metrics": {
+            "tier": "high",
+            "fps": 35,
+            "meanMs": 28.81,
+            "p95Ms": 177.1,
+            "maxMs": 216.2,
+            "calls": 17,
+            "points": 5000,
+            "triangles": 50542,
+            "dpr": 1.5,
+            "geometries": 18,
+            "textures": 3,
+            "programs": 11,
+            "heapBytes": 17373422,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              18.167114987652614,
+              -6.823448549149528,
+              9.137777789075253
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 6585.6042504242905,
+                "y": 1533.7329908375689,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6284.867516590615,
+                "y": 1268.3532261810467,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 270.80000019073486,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 14,
+            "meshGeometries": 14
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 26.021,
+        "frame": {
+          "n": 23,
+          "mean": 38.43,
+          "p95": 183.8,
+          "max": 316.9
+        },
+        "cpu": {
+          "n": 24,
+          "mean": 17.479,
+          "p95": 176.4,
+          "max": 213
+        },
+        "gpu": {
+          "n": 24,
+          "mean": 4.637,
+          "p95": 20.412,
+          "max": 25.928
+        },
+        "gpuMain": {
+          "n": 24,
+          "mean": 4.536,
+          "p95": 20.412,
+          "max": 25.928
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.434,
+          "p95": 2.434,
+          "max": 2.434
+        },
+        "draws": {
+          "n": 24,
+          "mean": 17.042,
+          "p95": 17,
+          "max": 18
+        },
+        "blendedDraws": {
+          "n": 24,
+          "mean": 12.042,
+          "p95": 12,
+          "max": 13
+        },
+        "offscreenDraws": {
+          "n": 24,
+          "mean": 0.042,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 6,
+          "mean": 118.667,
+          "p95": 215,
+          "max": 215
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 937619456,
+        "freeEnd": 799563776,
+        "cpuPercent": 39.875
+      }
+    },
+    {
+      "name": "after-back-ringed",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ringed",
+      "phase": "back",
+      "firstInteractiveMs": 1105.2,
+      "fullTextureMs": 1761.1,
+      "cold": {
+        "snapshot": {
+          "at": 1772.5,
+          "metrics": {
+            "tier": "high",
+            "fps": 24,
+            "meanMs": 41.41,
+            "p95Ms": 160.9,
+            "maxMs": 416.9,
+            "calls": 17,
+            "points": 5000,
+            "triangles": 50542,
+            "dpr": 1.5,
+            "geometries": 18,
+            "textures": 3,
+            "programs": 11,
+            "heapBytes": 15630830,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              18.167114987652614,
+              -6.823448549149528,
+              9.137777789075253
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 6585.6042504242905,
+                "y": 1533.7329908375689,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6284.867516590615,
+                "y": 1268.3532261810467,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 230.70000004768372,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 14,
+            "meshGeometries": 14
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 23.114,
+        "frame": {
+          "n": 27,
+          "mean": 43.263,
+          "p95": 149.4,
+          "max": 517.5
+        },
+        "cpu": {
+          "n": 28,
+          "mean": 21.539,
+          "p95": 157,
+          "max": 407
+        },
+        "gpu": {
+          "n": 28,
+          "mean": 5.407,
+          "p95": 19.693,
+          "max": 22.576
+        },
+        "gpuMain": {
+          "n": 28,
+          "mean": 5.324,
+          "p95": 19.693,
+          "max": 22.576
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.322,
+          "p95": 2.322,
+          "max": 2.322
+        },
+        "draws": {
+          "n": 28,
+          "mean": 17.036,
+          "p95": 17,
+          "max": 18
+        },
+        "blendedDraws": {
+          "n": 28,
+          "mean": 12.036,
+          "p95": 12,
+          "max": 13
+        },
+        "offscreenDraws": {
+          "n": 28,
+          "mean": 0.036,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 5,
+          "mean": 164.2,
+          "p95": 412,
+          "max": 412
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 891961344,
+        "freeEnd": 823250944,
+        "cpuPercent": 48.196
+      }
+    },
+    {
+      "name": "before-near-ringed",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ringed",
+      "phase": "near",
+      "firstInteractiveMs": 824.9,
+      "fullTextureMs": 1350.5,
+      "cold": {
+        "snapshot": {
+          "at": 1696.6000001430511,
+          "metrics": {
+            "tier": "high",
+            "fps": 42,
+            "meanMs": 23.97,
+            "p95Ms": 73.6,
+            "maxMs": 108.4,
+            "calls": 11,
+            "points": 5000,
+            "triangles": 39054,
+            "dpr": 1.5,
+            "geometries": 12,
+            "textures": 3,
+            "programs": 9,
+            "heapBytes": 17226504,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -5.4305580527110076,
+              6.001865779601748,
+              15.278440574868274
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -745.3901214058034,
+                "y": -551.5918997800248,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 653.8562358607451,
+                "y": 129.49314600910367,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 299.89999985694885,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 14,
+            "meshGeometries": 14
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 32,
+        "frame": {
+          "n": 24,
+          "mean": 31.25,
+          "p95": 67.4,
+          "max": 216.6
+        },
+        "cpu": {
+          "n": 25,
+          "mean": 7.26,
+          "p95": 39.3,
+          "max": 101.4
+        },
+        "gpu": {
+          "n": 25,
+          "mean": 4.721,
+          "p95": 19.088,
+          "max": 20.762
+        },
+        "gpuMain": {
+          "n": 25,
+          "mean": 4.58,
+          "p95": 19.088,
+          "max": 20.762
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 3.537,
+          "p95": 3.537,
+          "max": 3.537
+        },
+        "draws": {
+          "n": 25,
+          "mean": 11.04,
+          "p95": 11,
+          "max": 12
+        },
+        "blendedDraws": {
+          "n": 25,
+          "mean": 7.04,
+          "p95": 7,
+          "max": 8
+        },
+        "offscreenDraws": {
+          "n": 25,
+          "mean": 0.04,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 4,
+          "mean": 100.75,
+          "p95": 123,
+          "max": 123
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 889815040,
+        "freeEnd": 1070157824,
+        "cpuPercent": 45.669
+      }
+    },
+    {
+      "name": "after-near-ringed",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ringed",
+      "phase": "near",
+      "firstInteractiveMs": 847.3,
+      "fullTextureMs": 1419.7,
+      "cold": {
+        "snapshot": {
+          "at": 1684.5,
+          "metrics": {
+            "tier": "high",
+            "fps": 43,
+            "meanMs": 23.49,
+            "p95Ms": 73.4,
+            "maxMs": 110.6,
+            "calls": 11,
+            "points": 5000,
+            "triangles": 39054,
+            "dpr": 1.5,
+            "geometries": 12,
+            "textures": 3,
+            "programs": 9,
+            "heapBytes": 17517875,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -5.4305580527110076,
+              6.001865779601748,
+              15.278440574868274
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -745.3901214058034,
+                "y": -551.5918997800248,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 653.8562358607451,
+                "y": 129.49314600910367,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 283.5,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 14,
+            "meshGeometries": 14
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 34.797,
+        "frame": {
+          "n": 29,
+          "mean": 28.738,
+          "p95": 66.6,
+          "max": 250.1
+        },
+        "cpu": {
+          "n": 30,
+          "mean": 6.117,
+          "p95": 30.4,
+          "max": 107.5
+        },
+        "gpu": {
+          "n": 30,
+          "mean": 4.62,
+          "p95": 15.489,
+          "max": 30.853
+        },
+        "gpuMain": {
+          "n": 30,
+          "mean": 4.502,
+          "p95": 15.489,
+          "max": 30.853
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 3.536,
+          "p95": 3.536,
+          "max": 3.536
+        },
+        "draws": {
+          "n": 30,
+          "mean": 11.033,
+          "p95": 11,
+          "max": 12
+        },
+        "blendedDraws": {
+          "n": 30,
+          "mean": 7.033,
+          "p95": 7,
+          "max": 8
+        },
+        "offscreenDraws": {
+          "n": 30,
+          "mean": 0.033,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 4,
+          "mean": 97.5,
+          "p95": 166,
+          "max": 166
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1150332928,
+        "freeEnd": 1201737728,
+        "cpuPercent": 48.148
+      }
+    },
+    {
+      "name": "before-back-ocean",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ocean",
+      "phase": "back",
+      "firstInteractiveMs": 1027.2,
+      "fullTextureMs": 1664.5,
+      "cold": {
+        "snapshot": {
+          "at": 1801.8999998569489,
+          "metrics": {
+            "tier": "high",
+            "fps": 38,
+            "meanMs": 26.33,
+            "p95Ms": 67.5,
+            "maxMs": 171.5,
+            "calls": 17,
+            "points": 5000,
+            "triangles": 59278,
+            "dpr": 1.5,
+            "geometries": 18,
+            "textures": 3,
+            "programs": 11,
+            "heapBytes": 18273581,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              6.352138107570844,
+              -2.3858211710313033,
+              3.1950271989773613
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 2978.0096198896376,
+                "y": 889.1521612935068,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6679.356861687802,
+                "y": 1323.615665990693,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 317.09999990463257,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 14,
+            "meshGeometries": 14
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 31.079,
+        "frame": {
+          "n": 29,
+          "mean": 32.176,
+          "p95": 83.2,
+          "max": 299.8
+        },
+        "cpu": {
+          "n": 30,
+          "mean": 9.003,
+          "p95": 56.6,
+          "max": 164.8
+        },
+        "gpu": {
+          "n": 30,
+          "mean": 5.298,
+          "p95": 16.733,
+          "max": 21.242
+        },
+        "gpuMain": {
+          "n": 30,
+          "mean": 5.219,
+          "p95": 16.733,
+          "max": 21.242
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.387,
+          "p95": 2.387,
+          "max": 2.387
+        },
+        "draws": {
+          "n": 30,
+          "mean": 16.1,
+          "p95": 17,
+          "max": 17
+        },
+        "blendedDraws": {
+          "n": 30,
+          "mean": 11.1,
+          "p95": 12,
+          "max": 12
+        },
+        "offscreenDraws": {
+          "n": 30,
+          "mean": 0.033,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 6,
+          "mean": 109.333,
+          "p95": 168,
+          "max": 168
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1241505792,
+        "freeEnd": 1443450880,
+        "cpuPercent": 55.764
+      }
+    },
+    {
+      "name": "after-back-ocean",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ocean",
+      "phase": "back",
+      "firstInteractiveMs": 881.7,
+      "fullTextureMs": 1379.9,
+      "cold": {
+        "snapshot": {
+          "at": 1735.2000000476837,
+          "metrics": {
+            "tier": "high",
+            "fps": 40,
+            "meanMs": 24.9,
+            "p95Ms": 60.3,
+            "maxMs": 120.2,
+            "calls": 17,
+            "points": 5000,
+            "triangles": 59278,
+            "dpr": 1.5,
+            "geometries": 18,
+            "textures": 3,
+            "programs": 11,
+            "heapBytes": 17735742,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              6.352138107570844,
+              -2.3858211710313033,
+              3.1950271989773613
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": 2978.0096198896376,
+                "y": 889.1521612935068,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 6679.356861687802,
+                "y": 1323.615665990693,
+                "visible": false
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 263.30000019073486,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 14,
+            "meshGeometries": 14
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 32.105,
+        "frame": {
+          "n": 23,
+          "mean": 31.148,
+          "p95": 50,
+          "max": 216.4
+        },
+        "cpu": {
+          "n": 24,
+          "mean": 7.842,
+          "p95": 37.6,
+          "max": 115.2
+        },
+        "gpu": {
+          "n": 24,
+          "mean": 5.066,
+          "p95": 14.497,
+          "max": 31.368
+        },
+        "gpuMain": {
+          "n": 24,
+          "mean": 4.966,
+          "p95": 14.497,
+          "max": 31.368
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 2.403,
+          "p95": 2.403,
+          "max": 2.403
+        },
+        "draws": {
+          "n": 24,
+          "mean": 16.125,
+          "p95": 17,
+          "max": 17
+        },
+        "blendedDraws": {
+          "n": 24,
+          "mean": 11.125,
+          "p95": 12,
+          "max": 12
+        },
+        "offscreenDraws": {
+          "n": 24,
+          "mean": 0.042,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 4,
+          "mean": 94,
+          "p95": 118,
+          "max": 118
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1510957056,
+        "freeEnd": 1281703936,
+        "cpuPercent": 48.354
+      }
+    },
+    {
+      "name": "before-near-ocean",
+      "version": "before",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ocean",
+      "phase": "near",
+      "firstInteractiveMs": 801.9,
+      "fullTextureMs": 1359,
+      "cold": {
+        "snapshot": {
+          "at": 1663,
+          "metrics": {
+            "tier": "high",
+            "fps": 44,
+            "meanMs": 22.77,
+            "p95Ms": 51.5,
+            "maxMs": 103.1,
+            "calls": 11,
+            "points": 5000,
+            "triangles": 47790,
+            "dpr": 1.5,
+            "geometries": 12,
+            "textures": 3,
+            "programs": 9,
+            "heapBytes": 18356048,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -1.4722811377722875,
+              1.627168643255245,
+              4.142145181879411
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -164.81753521219514,
+                "y": -156.52956540962083,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 651.7792751042562,
+                "y": 124.22758986114518,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 285.5,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 14,
+            "meshGeometries": 14
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 32.607,
+        "frame": {
+          "n": 25,
+          "mean": 30.668,
+          "p95": 83.3,
+          "max": 199.9
+        },
+        "cpu": {
+          "n": 26,
+          "mean": 6.396,
+          "p95": 38.7,
+          "max": 94.1
+        },
+        "gpu": {
+          "n": 26,
+          "mean": 4.651,
+          "p95": 14.824,
+          "max": 32.199
+        },
+        "gpuMain": {
+          "n": 26,
+          "mean": 4.506,
+          "p95": 14.824,
+          "max": 32.199
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 3.771,
+          "p95": 3.771,
+          "max": 3.771
+        },
+        "draws": {
+          "n": 26,
+          "mean": 10.231,
+          "p95": 11,
+          "max": 11
+        },
+        "blendedDraws": {
+          "n": 26,
+          "mean": 6.231,
+          "p95": 7,
+          "max": 7
+        },
+        "offscreenDraws": {
+          "n": 26,
+          "mean": 0.038,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 3,
+          "mean": 99,
+          "p95": 132,
+          "max": 132
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1443917824,
+        "freeEnd": 982700032,
+        "cpuPercent": 46.602
+      }
+    },
+    {
+      "name": "after-near-ocean",
+      "version": "after",
+      "count": 1,
+      "tier": "high",
+      "iteration": 1,
+      "closeType": "ocean",
+      "phase": "near",
+      "firstInteractiveMs": 841.8,
+      "fullTextureMs": 1312.4,
+      "cold": {
+        "snapshot": {
+          "at": 1725.5,
+          "metrics": {
+            "tier": "high",
+            "fps": 50,
+            "meanMs": 20.09,
+            "p95Ms": 46.1,
+            "maxMs": 84.3,
+            "calls": 11,
+            "points": 5000,
+            "triangles": 47790,
+            "dpr": 1.5,
+            "geometries": 12,
+            "textures": 3,
+            "programs": 9,
+            "heapBytes": 18266914,
+            "auxiliaryPasses": 1,
+            "volumeTarget": "800x500",
+            "camera": [
+              -1.4722811377722875,
+              1.627168643255245,
+              4.142145181879411
+            ],
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "fov": 43,
+            "landmarks": [
+              {
+                "world": [
+                  10,
+                  -3,
+                  48
+                ],
+                "x": -164.81753521219514,
+                "y": -156.52956540962083,
+                "visible": false
+              },
+              {
+                "world": [
+                  210,
+                  -60,
+                  -900
+                ],
+                "x": 651.7792751042562,
+                "y": 124.22758986114518,
+                "visible": true
+              }
+            ]
+          },
+          "exterior": {
+            "hits": 0,
+            "misses": 1,
+            "completed": 1,
+            "cancelled": 0,
+            "workerBakeMs": 279.2999999523163,
+            "fallbackBakeMs": 0,
+            "maxSliceMs": 0,
+            "workerErrors": 0,
+            "cacheBytes": 4194304,
+            "cacheLimit": 33554432,
+            "cacheEntries": 1,
+            "worker": true,
+            "fallback": false,
+            "total": 1,
+            "targets": 1,
+            "resident": {
+              "low": 0,
+              "medium": 0,
+              "high": 1
+            },
+            "mapBytes": 5592408,
+            "pending": 0,
+            "queuePending": 0,
+            "ceiling": "high",
+            "mapBudgetBytes": 41943040,
+            "materials": 14,
+            "meshGeometries": 14
+          },
+          "ready": "true",
+          "phase": "idle"
+        },
+        "fps": 39.47,
+        "frame": {
+          "n": 25,
+          "mean": 25.336,
+          "p95": 49.4,
+          "max": 166.7
+        },
+        "cpu": {
+          "n": 26,
+          "mean": 5.773,
+          "p95": 34.2,
+          "max": 80.4
+        },
+        "gpu": {
+          "n": 26,
+          "mean": 3.745,
+          "p95": 16.235,
+          "max": 16.478
+        },
+        "gpuMain": {
+          "n": 26,
+          "mean": 3.598,
+          "p95": 16.235,
+          "max": 16.478
+        },
+        "gpuOffscreen": {
+          "n": 1,
+          "mean": 3.807,
+          "p95": 3.807,
+          "max": 3.807
+        },
+        "draws": {
+          "n": 26,
+          "mean": 10.115,
+          "p95": 11,
+          "max": 11
+        },
+        "blendedDraws": {
+          "n": 26,
+          "mean": 6.115,
+          "p95": 7,
+          "max": 7
+        },
+        "offscreenDraws": {
+          "n": 26,
+          "mean": 0.038,
+          "p95": 0,
+          "max": 1
+        },
+        "tasks": {
+          "n": 5,
+          "mean": 77.8,
+          "p95": 98,
+          "max": 98
+        }
+      },
+      "windows": {},
+      "errors": [],
+      "archiveUnchanged": true,
+      "gpuDisjoint": 0,
+      "visibility": [],
+      "system": {
+        "freeStart": 1071009792,
+        "freeEnd": 1013788672,
+        "cpuPercent": 40.871
+      }
+    }
+  ],
+  "images": [
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-back-ice.png",
+      "name": "before-back-ice",
+      "sample": {
+        "at": 3842.9000000953674,
+        "metrics": {
+          "tier": "high",
+          "fps": 1,
+          "meanMs": 733.9,
+          "p95Ms": 1379,
+          "maxMs": 1379,
+          "calls": 16,
+          "points": 5000,
+          "triangles": 39406,
+          "dpr": 1.5,
+          "geometries": 17,
+          "textures": 1,
+          "programs": 10,
+          "heapBytes": 10925782,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            5.081710486056675,
+            -1.9086569368250423,
+            2.556021759181889
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 2841.1542374257733,
+              "y": 864.6997587953207,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6725.180308988817,
+              "y": 1330.0348900579966,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 280.59999990463257,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          5.081710486056675,
+          -1.9086569368250426,
+          2.556021759181889
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-back-ice.png",
+      "name": "after-back-ice",
+      "sample": {
+        "at": 3626,
+        "metrics": {
+          "tier": "high",
+          "fps": 1,
+          "meanMs": 745.35,
+          "p95Ms": 1438.3,
+          "maxMs": 1438.3,
+          "calls": 16,
+          "points": 5000,
+          "triangles": 39406,
+          "dpr": 1.5,
+          "geometries": 17,
+          "textures": 1,
+          "programs": 10,
+          "heapBytes": 11943081,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            5.081710486056675,
+            -1.9086569368250423,
+            2.556021759181889
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 2841.1542374257733,
+              "y": 864.6997587953207,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6725.180308988817,
+              "y": 1330.0348900579966,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 439.2999999523163,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          5.081710486056675,
+          -1.9086569368250426,
+          2.556021759181889
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-near-ice.png",
+      "name": "before-near-ice",
+      "sample": {
+        "at": 2115.2999999523163,
+        "metrics": {
+          "tier": "high",
+          "fps": 16,
+          "meanMs": 63.95,
+          "p95Ms": 666.7,
+          "maxMs": 666.7,
+          "calls": 10,
+          "points": 5000,
+          "triangles": 27918,
+          "dpr": 1.5,
+          "geometries": 11,
+          "textures": 1,
+          "programs": 8,
+          "heapBytes": 11569098,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -1.1778249102178295,
+            1.3017349146041959,
+            3.313716145503529
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -138.58697965244832,
+              "y": -138.68045444968578,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 651.6224083575647,
+              "y": 123.82989786823163,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 273.40000009536743,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -1.1778249102178295,
+          1.301734914604196,
+          3.313716145503529
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-near-ice.png",
+      "name": "after-near-ice",
+      "sample": {
+        "at": 1762.5999999046326,
+        "metrics": {
+          "tier": "high",
+          "fps": 53,
+          "meanMs": 18.73,
+          "p95Ms": 21.6,
+          "maxMs": 87.6,
+          "calls": 10,
+          "points": 5000,
+          "triangles": 38990,
+          "dpr": 1.5,
+          "geometries": 11,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 16323904,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -1.1778249102178295,
+            1.3017349146041959,
+            3.313716145503529
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -138.58697965244832,
+              "y": -138.68045444968578,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 651.6224083575647,
+              "y": 123.82989786823163,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 500.7000000476837,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -1.1778249102178295,
+          1.301734914604196,
+          3.313716145503529
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-back-gas.png",
+      "name": "before-back-gas",
+      "sample": {
+        "at": 2746.7000000476837,
+        "metrics": {
+          "tier": "high",
+          "fps": 3,
+          "meanMs": 342,
+          "p95Ms": 835.2,
+          "maxMs": 835.2,
+          "calls": 16,
+          "points": 5000,
+          "triangles": 39406,
+          "dpr": 1.5,
+          "geometries": 17,
+          "textures": 1,
+          "programs": 10,
+          "heapBytes": 11366782,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            8.13073677769068,
+            -3.053851098920068,
+            4.089634814691022
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 3203.6319405841305,
+              "y": 929.4648453755758,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6616.382011144889,
+              "y": 1314.7937702135284,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 414.2000000476837,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          8.13073677769068,
+          -3.053851098920069,
+          4.089634814691022
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-back-gas.png",
+      "name": "after-back-gas",
+      "sample": {
+        "at": 1754.7000000476837,
+        "metrics": {
+          "tier": "high",
+          "fps": 38,
+          "meanMs": 26.65,
+          "p95Ms": 76.3,
+          "maxMs": 243.7,
+          "calls": 16,
+          "points": 5000,
+          "triangles": 50478,
+          "dpr": 1.5,
+          "geometries": 17,
+          "textures": 3,
+          "programs": 10,
+          "heapBytes": 16621341,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            8.13073677769068,
+            -3.053851098920068,
+            4.089634814691022
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 3203.6319405841305,
+              "y": 929.4648453755758,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6616.382011144889,
+              "y": 1314.7937702135284,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 492.10000014305115,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          8.13073677769068,
+          -3.053851098920069,
+          4.089634814691022
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-near-gas.png",
+      "name": "before-near-gas",
+      "sample": {
+        "at": 2000.7000000476837,
+        "metrics": {
+          "tier": "high",
+          "fps": 37,
+          "meanMs": 27.37,
+          "p95Ms": 104.7,
+          "maxMs": 255.1,
+          "calls": 10,
+          "points": 5000,
+          "triangles": 27918,
+          "dpr": 1.5,
+          "geometries": 11,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 17675224,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -1.884519856348528,
+            2.082775863366714,
+            5.3019458328056475
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -204.1036936759017,
+              "y": -183.26262487574886,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 651.9983321454037,
+              "y": 124.78294804312523,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 371.10000014305115,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -1.8845198563485273,
+          2.082775863366714,
+          5.301945832805647
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-near-gas.png",
+      "name": "after-near-gas",
+      "sample": {
+        "at": 1719,
+        "metrics": {
+          "tier": "high",
+          "fps": 44,
+          "meanMs": 22.79,
+          "p95Ms": 61.3,
+          "maxMs": 111,
+          "calls": 10,
+          "points": 5000,
+          "triangles": 38990,
+          "dpr": 1.5,
+          "geometries": 11,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 16119401,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -1.884519856348528,
+            2.082775863366714,
+            5.3019458328056475
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -204.1036936759017,
+              "y": -183.26262487574886,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 651.9983321454037,
+              "y": 124.78294804312523,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 210.59999990463257,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -1.8845198563485273,
+          2.082775863366714,
+          5.301945832805647
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-back-rocky.png",
+      "name": "before-back-rocky",
+      "sample": {
+        "at": 1768.2999999523163,
+        "metrics": {
+          "tier": "high",
+          "fps": 41,
+          "meanMs": 24.43,
+          "p95Ms": 65.1,
+          "maxMs": 158.2,
+          "calls": 16,
+          "points": 5000,
+          "triangles": 50478,
+          "dpr": 1.5,
+          "geometries": 17,
+          "textures": 3,
+          "programs": 10,
+          "heapBytes": 17413357,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            8.384822301993509,
+            -3.149283945761318,
+            4.217435902650114
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 3239.7369305402103,
+              "y": 935.9158429958713,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6607.495563825558,
+              "y": 1313.5489032324313,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 349.7999999523163,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          8.384822301993513,
+          -3.14928394576132,
+          4.2174359026501165
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-back-rocky.png",
+      "name": "after-back-rocky",
+      "sample": {
+        "at": 1688.2000000476837,
+        "metrics": {
+          "tier": "high",
+          "fps": 43,
+          "meanMs": 23.42,
+          "p95Ms": 61.6,
+          "maxMs": 151.2,
+          "calls": 16,
+          "points": 5000,
+          "triangles": 50478,
+          "dpr": 1.5,
+          "geometries": 17,
+          "textures": 3,
+          "programs": 10,
+          "heapBytes": 17589844,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            8.384822301993509,
+            -3.149283945761318,
+            4.217435902650114
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 3239.7369305402103,
+              "y": 935.9158429958713,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6607.495563825558,
+              "y": 1313.5489032324313,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 466.5,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          8.384822301993513,
+          -3.14928394576132,
+          4.2174359026501165
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-near-rocky.png",
+      "name": "before-near-rocky",
+      "sample": {
+        "at": 1692.2999999523163,
+        "metrics": {
+          "tier": "high",
+          "fps": 47,
+          "meanMs": 21.28,
+          "p95Ms": 52.9,
+          "maxMs": 119.1,
+          "calls": 10,
+          "points": 5000,
+          "triangles": 38990,
+          "dpr": 1.5,
+          "geometries": 11,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 17324710,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -1.9434111018594187,
+            2.147862609096923,
+            5.467631640080823
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -209.97870289024405,
+              "y": -187.26039347499113,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 652.0295731629595,
+              "y": 124.86215095129077,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 332.09999990463257,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -1.943411101859419,
+          2.1478626090969235,
+          5.467631640080823
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-near-rocky.png",
+      "name": "after-near-rocky",
+      "sample": {
+        "at": 1674,
+        "metrics": {
+          "tier": "high",
+          "fps": 45,
+          "meanMs": 22.22,
+          "p95Ms": 53.7,
+          "maxMs": 100.2,
+          "calls": 10,
+          "points": 5000,
+          "triangles": 38990,
+          "dpr": 1.5,
+          "geometries": 11,
+          "textures": 3,
+          "programs": 8,
+          "heapBytes": 17171860,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -1.9434111018594187,
+            2.147862609096923,
+            5.467631640080823
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -209.97870289024405,
+              "y": -187.26039347499113,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 652.0295731629595,
+              "y": 124.86215095129077,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 346.7000000476837,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 13,
+          "meshGeometries": 13
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -1.943411101859419,
+          2.1478626090969235,
+          5.467631640080823
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-back-ringed.png",
+      "name": "before-back-ringed",
+      "sample": {
+        "at": 1683.2000000476837,
+        "metrics": {
+          "tier": "high",
+          "fps": 35,
+          "meanMs": 28.81,
+          "p95Ms": 177.1,
+          "maxMs": 216.2,
+          "calls": 17,
+          "points": 5000,
+          "triangles": 50542,
+          "dpr": 1.5,
+          "geometries": 18,
+          "textures": 3,
+          "programs": 11,
+          "heapBytes": 17373422,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            18.167114987652614,
+            -6.823448549149528,
+            9.137777789075253
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 6585.6042504242905,
+              "y": 1533.7329908375689,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6284.867516590615,
+              "y": 1268.3532261810467,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 270.80000019073486,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 14,
+          "meshGeometries": 14
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          18.167114987652614,
+          -6.823448549149528,
+          9.137777789075253
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-back-ringed.png",
+      "name": "after-back-ringed",
+      "sample": {
+        "at": 1772.5,
+        "metrics": {
+          "tier": "high",
+          "fps": 24,
+          "meanMs": 41.41,
+          "p95Ms": 160.9,
+          "maxMs": 416.9,
+          "calls": 17,
+          "points": 5000,
+          "triangles": 50542,
+          "dpr": 1.5,
+          "geometries": 18,
+          "textures": 3,
+          "programs": 11,
+          "heapBytes": 15630830,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            18.167114987652614,
+            -6.823448549149528,
+            9.137777789075253
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 6585.6042504242905,
+              "y": 1533.7329908375689,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6284.867516590615,
+              "y": 1268.3532261810467,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 230.70000004768372,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 14,
+          "meshGeometries": 14
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          18.167114987652614,
+          -6.823448549149528,
+          9.137777789075253
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-near-ringed.png",
+      "name": "before-near-ringed",
+      "sample": {
+        "at": 1696.6000001430511,
+        "metrics": {
+          "tier": "high",
+          "fps": 42,
+          "meanMs": 23.97,
+          "p95Ms": 73.6,
+          "maxMs": 108.4,
+          "calls": 11,
+          "points": 5000,
+          "triangles": 39054,
+          "dpr": 1.5,
+          "geometries": 12,
+          "textures": 3,
+          "programs": 9,
+          "heapBytes": 17226504,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -5.4305580527110076,
+            6.001865779601748,
+            15.278440574868274
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -745.3901214058034,
+              "y": -551.5918997800248,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 653.8562358607451,
+              "y": 129.49314600910367,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 299.89999985694885,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 14,
+          "meshGeometries": 14
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -5.4305580527110076,
+          6.001865779601748,
+          15.278440574868274
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-near-ringed.png",
+      "name": "after-near-ringed",
+      "sample": {
+        "at": 1684.5,
+        "metrics": {
+          "tier": "high",
+          "fps": 43,
+          "meanMs": 23.49,
+          "p95Ms": 73.4,
+          "maxMs": 110.6,
+          "calls": 11,
+          "points": 5000,
+          "triangles": 39054,
+          "dpr": 1.5,
+          "geometries": 12,
+          "textures": 3,
+          "programs": 9,
+          "heapBytes": 17517875,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -5.4305580527110076,
+            6.001865779601748,
+            15.278440574868274
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -745.3901214058034,
+              "y": -551.5918997800248,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 653.8562358607451,
+              "y": 129.49314600910367,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 283.5,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 14,
+          "meshGeometries": 14
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -5.4305580527110076,
+          6.001865779601748,
+          15.278440574868274
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-back-ocean.png",
+      "name": "before-back-ocean",
+      "sample": {
+        "at": 1801.8999998569489,
+        "metrics": {
+          "tier": "high",
+          "fps": 38,
+          "meanMs": 26.33,
+          "p95Ms": 67.5,
+          "maxMs": 171.5,
+          "calls": 17,
+          "points": 5000,
+          "triangles": 59278,
+          "dpr": 1.5,
+          "geometries": 18,
+          "textures": 3,
+          "programs": 11,
+          "heapBytes": 18273581,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            6.352138107570844,
+            -2.3858211710313033,
+            3.1950271989773613
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 2978.0096198896376,
+              "y": 889.1521612935068,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6679.356861687802,
+              "y": 1323.615665990693,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 317.09999990463257,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 14,
+          "meshGeometries": 14
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          6.352138107570844,
+          -2.3858211710313033,
+          3.1950271989773613
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-back-ocean.png",
+      "name": "after-back-ocean",
+      "sample": {
+        "at": 1735.2000000476837,
+        "metrics": {
+          "tier": "high",
+          "fps": 40,
+          "meanMs": 24.9,
+          "p95Ms": 60.3,
+          "maxMs": 120.2,
+          "calls": 17,
+          "points": 5000,
+          "triangles": 59278,
+          "dpr": 1.5,
+          "geometries": 18,
+          "textures": 3,
+          "programs": 11,
+          "heapBytes": 17735742,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            6.352138107570844,
+            -2.3858211710313033,
+            3.1950271989773613
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": 2978.0096198896376,
+              "y": 889.1521612935068,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 6679.356861687802,
+              "y": 1323.615665990693,
+              "visible": false
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 263.30000019073486,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 14,
+          "meshGeometries": 14
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          6.352138107570844,
+          -2.3858211710313033,
+          3.1950271989773613
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 151
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/before-near-ocean.png",
+      "name": "before-near-ocean",
+      "sample": {
+        "at": 1663,
+        "metrics": {
+          "tier": "high",
+          "fps": 44,
+          "meanMs": 22.77,
+          "p95Ms": 51.5,
+          "maxMs": 103.1,
+          "calls": 11,
+          "points": 5000,
+          "triangles": 47790,
+          "dpr": 1.5,
+          "geometries": 12,
+          "textures": 3,
+          "programs": 9,
+          "heapBytes": 18356048,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -1.4722811377722875,
+            1.627168643255245,
+            4.142145181879411
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -164.81753521219514,
+              "y": -156.52956540962083,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 651.7792751042562,
+              "y": 124.22758986114518,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 285.5,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 14,
+          "meshGeometries": 14
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -1.472281137772287,
+          1.627168643255245,
+          4.142145181879411
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    },
+    {
+      "file": "artifacts-local/exterior-batch-2.1/visual-check/after-near-ocean.png",
+      "name": "after-near-ocean",
+      "sample": {
+        "at": 1725.5,
+        "metrics": {
+          "tier": "high",
+          "fps": 50,
+          "meanMs": 20.09,
+          "p95Ms": 46.1,
+          "maxMs": 84.3,
+          "calls": 11,
+          "points": 5000,
+          "triangles": 47790,
+          "dpr": 1.5,
+          "geometries": 12,
+          "textures": 3,
+          "programs": 9,
+          "heapBytes": 18266914,
+          "auxiliaryPasses": 1,
+          "volumeTarget": "800x500",
+          "camera": [
+            -1.4722811377722875,
+            1.627168643255245,
+            4.142145181879411
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "fov": 43,
+          "landmarks": [
+            {
+              "world": [
+                10,
+                -3,
+                48
+              ],
+              "x": -164.81753521219514,
+              "y": -156.52956540962083,
+              "visible": false
+            },
+            {
+              "world": [
+                210,
+                -60,
+                -900
+              ],
+              "x": 651.7792751042562,
+              "y": 124.22758986114518,
+              "visible": true
+            }
+          ]
+        },
+        "exterior": {
+          "hits": 0,
+          "misses": 1,
+          "completed": 1,
+          "cancelled": 0,
+          "workerBakeMs": 279.2999999523163,
+          "fallbackBakeMs": 0,
+          "maxSliceMs": 0,
+          "workerErrors": 0,
+          "cacheBytes": 4194304,
+          "cacheLimit": 33554432,
+          "cacheEntries": 1,
+          "worker": true,
+          "fallback": false,
+          "total": 1,
+          "targets": 1,
+          "resident": {
+            "low": 0,
+            "medium": 0,
+            "high": 1
+          },
+          "mapBytes": 5592408,
+          "pending": 0,
+          "queuePending": 0,
+          "ceiling": "high",
+          "mapBudgetBytes": 41943040,
+          "materials": 14,
+          "meshGeometries": 14
+        },
+        "ready": "true",
+        "phase": "idle"
+      },
+      "bookmark": {
+        "position": [
+          -1.472281137772287,
+          1.627168643255245,
+          4.142145181879411
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "phaseDegrees": 61
+    }
+  ],
+  "failures": []
+}

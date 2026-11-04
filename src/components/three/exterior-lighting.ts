@@ -2,17 +2,23 @@ import type { MeshStandardMaterial } from "three";
 
 // Radius units throughout, so the ring and its shadow share the same gaps.
 const ringProfile = `
-float ringWave(float r, float f) {
-  float footprint = fwidth(r) * f;
-  return sin(r * f) / (1. + footprint * footprint);
+float ringGap(float r, float footprint, float at, float halfWidth, float edge, float clear) {
+  return 1. - clear * (1. - smoothstep(halfWidth, halfWidth + max(edge, footprint), abs(r - at)));
 }
-float ringDensity(float r) {
-  float inner = smoothstep(1.42, 1.61, r);
-  float outer = 1. - smoothstep(2.31, 2.40, r);
-  float mainGap = mix(.055, 1., smoothstep(.024, .045, abs(r - 1.99)));
-  float seam = mix(.57, 1., smoothstep(.005, .021, abs(r - 1.70)));
-  float shelves = .59 + .18 * smoothstep(1.56, 1.80, r) - .17 * smoothstep(2.02, 2.14, r);
-  return inner * outer * mainGap * seam * (shelves + .13 * ringWave(r, 93.) + .085 * ringWave(r, 269.) + .035 * ringWave(r, 677.));
+float ringDensity(float r, float footprint) {
+  float envelope = smoothstep(1.43, 1.58, r) * (1. - smoothstep(2.27, 2.40, r));
+  float shelves = .25 + .44 * smoothstep(1.57, 1.65, r) - .23 * smoothstep(1.87, 1.95, r)
+    + .18 * smoothstep(2.02, 2.09, r) - .11 * smoothstep(2.22, 2.28, r);
+  float gaps = ringGap(r, footprint, 1.947, .030, .010, .91)
+    * ringGap(r, footprint, 1.708, .004, .006, .38)
+    * ringGap(r, footprint, 1.838, .009, .011, .46)
+    * ringGap(r, footprint, 2.169, .002, .008, .73);
+  float q = r - 1.41;
+  float a = footprint * 123., b = footprint * 388.;
+  // Different spacing in each radial region; fade ringlets below one pixel.
+  float ringlets = .11 * sin(q * (63. + q * 36.)) / (1. + a * a)
+    + .068 * sin(q * (251. - q * 87.)) / (1. + b * b);
+  return envelope * gaps * (shelves + ringlets);
 }
 `;
 
@@ -48,8 +54,13 @@ export function shadeExterior(
         float planeDot = dot(radial, exteriorRingNormal);
         float travel = -planeDot / (rayDot < 0. ? min(-.0001, rayDot) : max(.0001, rayDot));
         float ringRadius = length(radial + max(0., travel) * starRay);
-        float opacity = ringDensity(ringRadius);
-        daylight *= 1. - .72 * opacity * smoothstep(0., .12, travel);
+        // Derivatives must be evaluated before a divergent branch. Most sphere
+        // fragments do not project onto the annulus, so skip its density work.
+        float ringFootprint = fwidth(ringRadius);
+        if (daylight > 0. && travel > 0. && ringRadius > 1.43 && ringRadius < 2.40) {
+          float opacity = ringDensity(ringRadius, ringFootprint);
+          daylight *= 1. - .72 * opacity * smoothstep(0., .12, travel);
+        }
       ` : ""}
       reflectedLight.directDiffuse *= daylight;
       reflectedLight.directSpecular *= daylight;
@@ -108,7 +119,7 @@ uniform vec3 tint, lightPosition;
 ${ringProfile}
 void main() {
   float r = length(vRingRadial);
-  float opacity = ringDensity(r);
+  float opacity = ringDensity(r, fwidth(r));
   vec3 ray = normalize(lightPosition - vRingWorld);
   vec3 eye = normalize(cameraPosition - vRingWorld);
   float along = dot(-vRingRadial, ray);
@@ -120,7 +131,12 @@ void main() {
   float scatter = dot(-ray, eye) * .5 + .5;
   float lit = (.23 + .77 * abs(sunAngle)) * mix(.48 + .30 * scatter, 1., seeLitSide);
   vec3 ice = tint * mix(vec3(.78, .69, .60), vec3(1.12, 1.08, 1.02), smoothstep(1.54, 1.88, r));
-  gl_FragColor = vec4(ice * (.07 + light * lit), opacity);
+  // Small, world-anchored density variation. It fades before individual grains alias.
+  vec2 grain = vRingRadial.xz * 440. + vRingRadial.y * vec2(311., -223.);
+  vec2 pixel = fwidth(grain);
+  vec2 cell = 1. - abs(2. * fract(grain) - 1.);
+  float grit = (cell.x * cell.y - .25) * (1. - smoothstep(.32, 1.1, max(pixel.x, pixel.y)));
+  gl_FragColor = vec4(ice * (.07 + light * lit) * (1. + .17 * grit), opacity);
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
 }`;

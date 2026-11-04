@@ -16,7 +16,7 @@ const ringNormal = new Vector3(0, 0, 1).applyEuler(new Euler(...ringRotation));
 const optical = {
   rocky: { bounce: .075, twilight: .006, height: .008, density: .10, tint: "#b8a69c", relief: .045 },
   ocean: { bounce: .071, twilight: .055, height: .023, density: .49, tint: "#79b6e5", relief: .009 },
-  ice: { bounce: .075, twilight: .025, height: .015, density: .24, tint: "#adcddb", relief: .034 },
+  ice: { bounce: .075, twilight: .025, height: .015, density: .24, tint: "#adcddb", relief: .055 },
   gas: { bounce: .09, twilight: .035, height: .018, density: .32, tint: "#9bb2cc", relief: 0 },
   ringed: { bounce: .088, twilight: .026, height: .015, density: .26, tint: "#c5b5a3", relief: 0 },
 } satisfies Record<PlanetAppearance["type"], { bounce: number; twilight: number; height: number; density: number; tint: string; relief: number }>;

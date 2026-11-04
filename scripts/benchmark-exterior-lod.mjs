@@ -13,8 +13,9 @@ const urls = {
   before: process.env.EXTERIOR_BEFORE_URL ?? "http://127.0.0.1:3322",
   after: process.env.EXTERIOR_AFTER_URL ?? "http://127.0.0.1:3323",
 };
-const batch2 = process.env.EXTERIOR_REVIEW_BATCH === "2";
-const batch = batch2 ? "exterior-batch-2" : "exterior-batch-1.2";
+const batch21 = process.env.EXTERIOR_REVIEW_BATCH === "2.1";
+const batch2 = batch21 || process.env.EXTERIOR_REVIEW_BATCH === "2";
+const batch = batch21 ? "exterior-batch-2.1" : batch2 ? "exterior-batch-2" : "exterior-batch-1.2";
 const output = path.posix.join("artifacts-local", batch, label);
 const docs = `docs/${batch}`;
 await mkdir(docs, { recursive: true });
@@ -25,7 +26,7 @@ await writeFile(rawPath, Buffer.alloc(0), { flag: "wx" });
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const root = await browser.newBrowserCDPSession();
 const viewport = { width: 1600, height: 1000 };
-const report = { date: new Date().toISOString(), baseline: batch2 ? "4d9e9e0" : "1b41f5f", chrome: browser.version(), urls, viewport, dpr: 1.5, cpu: os.cpus()[0].model,
+const report = { date: new Date().toISOString(), baseline: batch21 ? "713fe73" : batch2 ? "4d9e9e0" : "1b41f5f", chrome: browser.version(), urls, viewport, dpr: 1.5, cpu: os.cpus()[0].model,
   ramBytes: os.totalmem(), gpu: (await root.send("SystemInfo.getInfo")).gpu, cases: [], images: [], failures: [] };
 
 // Split GPU timers when the first draw switches between the nebula FBO and the
@@ -295,17 +296,18 @@ async function run(version, count, tier, iteration, closeType, phase) {
 
 try {
   const mode = process.env.EXTERIOR_LOD_MODE;
-  const focused = mode === "focus-fifty" || mode === "baseline-five";
+  const focused = ["focus-fifty", "focus-fifty-low", "baseline-five"].includes(mode);
+  const focusedTier = mode === "focus-fifty-low" ? "low" : "high";
   if (!["visual", "visual-check"].includes(mode)) for (const iteration of focused ? [1, 2, 3, 4] : mode === "smoke" ? [1] : [1, 2]) {
     const counts = iteration === 1 ? [5, 20, 50] : [50, 20, 5];
     const tiers = iteration === 1 ? ["high", "medium", "low"] : ["low", "medium", "high"];
     const cases = tiers.flatMap(tier => counts.map(count => ({ count, tier })));
-    const selected = focused ? [{ count: mode === "baseline-five" ? 5 : 50, tier: "high" }] : mode === "smoke" ? [cases[2]] : cases;
+    const selected = focused ? [{ count: mode === "baseline-five" ? 5 : 50, tier: focusedTier }] : mode === "smoke" ? [cases[2]] : cases;
     for (const { count, tier } of selected) {
       for (const version of mode === "baseline-five" ? ["before"] : iteration % 2 === 1 ? ["before", "after"] : ["after", "before"]) await run(version, count, tier, iteration);
     }
   }
-  if (!focused && !["smoke", "matrix"].includes(mode)) for (const type of ["rocky", "ocean", "gas", "ice", "ringed"]) {
+  if (!focused && !["smoke", "matrix"].includes(mode)) for (const type of ["ice", "gas", "rocky", "ringed", "ocean"]) {
     if (batch2) {
       const angles = mode === "visual-check" ? ["back", "near"] : Object.keys(phases);
       for (const phase of angles) for (const version of ["before", "after"]) await run(version, 1, "high", 1, type, phase);

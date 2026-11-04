@@ -4,7 +4,8 @@ import path from "node:path";
 
 const run = process.argv[2];
 if (!run || !/^[a-z0-9-]+$/.test(run)) throw Error("Specify a Batch 2 visual run label");
-const source = path.join("artifacts-local/exterior-batch-2", run);
+const batch = process.env.EXTERIOR_REVIEW_BATCH === "2.1" ? "exterior-batch-2.1" : "exterior-batch-2";
+const source = path.join("artifacts-local", batch, run);
 const output = process.argv.slice(3).find(arg => arg !== "--quick") ?? path.join(source, "review");
 const quick = process.argv.includes("--quick");
 await mkdir(output, { recursive: true });
@@ -33,6 +34,12 @@ for (const type of types) {
   await sheet(type, ["before", "after"].map(version =>
     angles.map(angle => ({ file: `${version}-${angle}-${type}`, label: `${version} / ${type} / ${angle}` }))));
 }
-if (!quick) for (const tier of ["medium", "low"]) {
+if (!quick && batch !== "exterior-batch-2.1") for (const tier of ["medium", "low"]) {
   await sheet(tier, [types.map(type => ({ file: `after-near-${type}-${tier}`, label: `${tier} / ${type} / near` }))]);
+}
+
+if (!quick && batch === "exterior-batch-2.1") {
+  await sheet("tiers", types.map(type => ["high", "medium", "low"].map(tier => ({
+    file: `after-near-${type}${tier === "high" ? "" : "-" + tier}`, label: `${type} / ${tier} / near`,
+  }))));
 }
