@@ -4,6 +4,8 @@ import { gzipSync } from "node:zlib";
 import os from "node:os";
 import path from "node:path";
 import { createSeed } from "../src/data/seed.ts";
+import { stellarSource } from "../src/domain/spatial-scene.ts";
+import { Vector3 } from "three";
 
 const label = process.argv[2] ?? "paired";
 if (!/^[a-z0-9-]+$/.test(label)) throw Error("Use a new lowercase run label");
@@ -11,8 +13,10 @@ const urls = {
   before: process.env.EXTERIOR_BEFORE_URL ?? "http://127.0.0.1:3322",
   after: process.env.EXTERIOR_AFTER_URL ?? "http://127.0.0.1:3323",
 };
-const output = path.posix.join("artifacts-local/exterior-batch-1.2", label);
-const docs = "docs/exterior-batch-1.2";
+const batch2 = process.env.EXTERIOR_REVIEW_BATCH === "2";
+const batch = batch2 ? "exterior-batch-2" : "exterior-batch-1.2";
+const output = path.posix.join("artifacts-local", batch, label);
+const docs = `docs/${batch}`;
 await mkdir(docs, { recursive: true });
 await mkdir(path.posix.dirname(output), { recursive: true });
 await mkdir(output); // Refuse to overwrite any earlier run.
@@ -21,7 +25,7 @@ await writeFile(rawPath, Buffer.alloc(0), { flag: "wx" });
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const root = await browser.newBrowserCDPSession();
 const viewport = { width: 1600, height: 1000 };
-const report = { date: new Date().toISOString(), baseline: "1b41f5f", chrome: browser.version(), urls, viewport, dpr: 1.5, cpu: os.cpus()[0].model,
+const report = { date: new Date().toISOString(), baseline: batch2 ? "4d9e9e0" : "1b41f5f", chrome: browser.version(), urls, viewport, dpr: 1.5, cpu: os.cpus()[0].model,
   ramBytes: os.totalmem(), gpu: (await root.send("SystemInfo.getInfo")).gpu, cases: [], images: [], failures: [] };
 
 // Split GPU timers when the first draw switches between the nebula FBO and the
@@ -156,12 +160,22 @@ function summarize(probe, start, end) {
     draws: distribution(frames.map(row => row[3])), blendedDraws: distribution(frames.map(row => row[4])),
     offscreenDraws: distribution(frames.map(row => row[5])), tasks: distribution(tasks.map(row => row[1])) };
 }
-function fixture(count, closeType) {
+const phases = { front: 29, side: 89, back: 151, near: 61 };
+function fixture(count, closeType, phase) {
   const f = createSeed(), seeds = f.planets;
   if (closeType) {
     const p = seeds.find(p => p.appearance.type === closeType);
     f.planets = [{ ...p, id: "lod-close", name: "近景外观示例", isDemo: false, position: [0, 0, 0] }];
     const r = p.appearance.size;
+    if (phase) {
+      const sun = new Vector3(...stellarSource(f.planets).position).normalize();
+      const up = new Vector3(0, .22, 1);
+      const tangent = up.addScaledVector(sun, -up.dot(sun)).normalize();
+      const angle = phases[phase] * Math.PI / 180;
+      const direction = sun.multiplyScalar(Math.cos(angle)).addScaledVector(tangent, Math.sin(angle));
+      const distance = p.appearance.rings ? phase === "near" ? 6.65 : 8.25 : phase === "near" ? 3.75 : 6;
+      return { raw: JSON.stringify(f), bookmark: { position: direction.multiplyScalar(r * distance).toArray(), target: [0, 0, 0] } };
+    }
     return { raw: JSON.stringify(f), bookmark: { position: [-r * 4, r * 3, r * 5.8], target: [0, 0, 0] } };
   }
   f.planets = Array.from({ length: count }, (_, i) => {
@@ -174,9 +188,9 @@ function fixture(count, closeType) {
 }
 
 async function save() { await writeFile(`${docs}/${label}.json`, JSON.stringify(report, null, 2) + "\n"); }
-async function run(version, count, tier, iteration, closeType) {
-  const name = closeType ? `${version}-near-${closeType}` : `${version}-${count}-${tier}-r${iteration}`;
-  const { raw, bookmark } = fixture(count, closeType);
+async function run(version, count, tier, iteration, closeType, phase) {
+  const name = closeType ? `${version}-${phase ?? "near"}-${closeType}${tier === "high" ? "" : `-${tier}`}` : `${version}-${count}-${tier}-r${iteration}`;
+  const { raw, bookmark } = fixture(count, closeType, phase);
   const context = await browser.newContext({ viewport, deviceScaleFactor: report.dpr, reducedMotion: closeType ? "reduce" : "no-preference" });
   await install(context, { raw, tier, bookmark });
   const page = await context.newPage(), cdp = await context.newCDPSession(page), errors = [];
@@ -200,7 +214,7 @@ async function run(version, count, tier, iteration, closeType) {
     if (iteration === 1 || closeType) {
       const file = `${output}/${name}.png`;
       await page.screenshot({ path: file });
-      report.images.push({ file, name, sample: cold });
+      report.images.push({ file, name, sample: cold, ...(phase && { bookmark, phaseDegrees: phases[phase] }) });
     }
     if (!closeType) {
       const bounds = await page.locator(".universe-canvas canvas").boundingBox();
@@ -257,7 +271,7 @@ async function run(version, count, tier, iteration, closeType) {
     const archiveUnchanged = await page.evaluate(raw => localStorage.getItem("universe-of-me:data:v1") === raw, raw);
     if (!archiveUnchanged) errors.push("archive changed");
     const probe = await page.evaluate(() => window.__lodProbe);
-    const row = { name, version, count, tier, iteration, closeType, firstInteractiveMs: round(probe.first), fullTextureMs: round(probe.ready),
+    const row = { name, version, count, tier, iteration, closeType, phase, firstInteractiveMs: round(probe.first), fullTextureMs: round(probe.ready),
       cold: { snapshot: cold, ...summarize(probe, 0, probe.ready) }, windows: Object.fromEntries(Object.entries(windows).map(([key, w]) => [key, { ...w, ...summarize(probe, w.start.at, w.end.at) }])),
       errors, archiveUnchanged, gpuDisjoint: probe.disjoint, visibility: probe.visibility,
       system: { freeStart: systemStart.free, freeEnd: os.freemem(), cpuPercent: (() => {
@@ -281,16 +295,22 @@ async function run(version, count, tier, iteration, closeType) {
 
 try {
   const mode = process.env.EXTERIOR_LOD_MODE;
-  if (mode !== "visual") for (const iteration of mode === "smoke" ? [1] : [1, 2]) {
+  const focused = mode === "focus-fifty" || mode === "baseline-five";
+  if (!["visual", "visual-check"].includes(mode)) for (const iteration of focused ? [1, 2, 3, 4] : mode === "smoke" ? [1] : [1, 2]) {
     const counts = iteration === 1 ? [5, 20, 50] : [50, 20, 5];
     const tiers = iteration === 1 ? ["high", "medium", "low"] : ["low", "medium", "high"];
     const cases = tiers.flatMap(tier => counts.map(count => ({ count, tier })));
-    for (const { count, tier } of mode === "smoke" ? [cases[2]] : cases) {
-      for (const version of iteration === 1 ? ["before", "after"] : ["after", "before"]) await run(version, count, tier, iteration);
+    const selected = focused ? [{ count: mode === "baseline-five" ? 5 : 50, tier: "high" }] : mode === "smoke" ? [cases[2]] : cases;
+    for (const { count, tier } of selected) {
+      for (const version of mode === "baseline-five" ? ["before"] : iteration % 2 === 1 ? ["before", "after"] : ["after", "before"]) await run(version, count, tier, iteration);
     }
   }
-  if (mode !== "smoke") for (const type of ["rocky", "ocean", "gas", "ice", "ringed"]) {
-    for (const version of ["before", "after"]) await run(version, 1, "high", 1, type);
+  if (!focused && !["smoke", "matrix"].includes(mode)) for (const type of ["rocky", "ocean", "gas", "ice", "ringed"]) {
+    if (batch2) {
+      const angles = mode === "visual-check" ? ["back", "near"] : Object.keys(phases);
+      for (const phase of angles) for (const version of ["before", "after"]) await run(version, 1, "high", 1, type, phase);
+      if (mode !== "visual-check") for (const tier of ["medium", "low"]) await run("after", 1, tier, 1, type, "near");
+    } else for (const version of ["before", "after"]) await run(version, 1, "high", 1, type);
   }
 } finally { await browser.close(); }
 if (report.failures.length) process.exitCode = 1;

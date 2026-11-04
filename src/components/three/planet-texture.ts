@@ -33,11 +33,13 @@ export interface SurfaceSample { color: [number, number, number]; height: number
 export function planetSurfaceSampler(appearance: Pick<PlanetAppearance, "type" | "color" | "seed">) {
   const { noise, random } = noiseField(appearance.seed);
   const base = [1, 3, 5].map(i => parseInt(appearance.color.slice(i, i + 2), 16));
-  const craters = Array.from({ length: 38 }, () => {
+  const craters = Array.from({ length: 38 }, (_, i) => {
     const y = random() * 2 - 1, angle = random() * Math.PI * 2, r = Math.sqrt(1 - y * y);
-    return { x: Math.cos(angle) * r, y, z: Math.sin(angle) * r, radius: .035 + random() ** 2 * .23 };
+    const radius = .035 + random() ** 2 * .23, age = .54 + ((i * .618034) % 1) * .46;
+    return { x: Math.cos(angle) * r, y, z: Math.sin(angle) * r, inverseRadiusSquared: 1 / (radius * radius), age, radius };
   });
   const stormLongitude = random() * Math.PI * 2, stormLatitude = random() * .7 - .35;
+  const stormX = Math.cos(stormLongitude), stormZ = Math.sin(stormLongitude);
   // Reused during baking; callers retaining samples must copy them.
   const result: SurfaceSample = { color: [0, 0, 0], height: .5, roughness: .9, cloud: 0 };
   return (x: number, y: number, z: number): SurfaceSample => {
@@ -50,19 +52,24 @@ export function planetSurfaceSampler(appearance: Pick<PlanetAppearance, "type" |
     let height = .5, roughness = .9, cloud = 0;
     let r: number, g: number, b: number;
     if (appearance.type === "rocky") {
-      let relief = 0, rim = 0;
+      let relief = 0, ejecta = 0;
       for (const crater of craters) {
-        const d = (2 - 2 * (x * crater.x + y * crater.y + z * crater.z)) / (crater.radius * crater.radius);
-        if (d > 1.6) continue;
-        const edge = Math.exp(-((d - .9) ** 2) * 65);
-        relief += edge * .2 - (1 - smooth(.05, .9, d)) * .32; rim += edge;
+        const distance = (2 - 2 * (x * crater.x + y * crater.y + z * crater.z)) * crater.inverseRadiusSquared;
+        if (distance > 2.15) continue;
+        const d = distance + (n3 - .5) * .22 + (grain - .5) * .07;
+        const wall = smooth(.51, .87, d) * (1 - smooth(.9, 1.2, d));
+        const bowl = 1 - smooth(.14, .91, d);
+        const terrace = smooth(.28, .51, d) * (1 - smooth(.58, .76, d));
+        const centralPeak = crater.radius > .16 ? (1 - smooth(.025, .16, d)) * .052 : 0;
+        relief += (wall * (.067 + n2 * .083) - bowl * .25 + terrace * .026 + centralPeak) * crater.age;
+        ejecta += crater.age * smooth(.74, 1.02, d) * (1 - smooth(1.16, 2.04, d)) * smooth(.27, .65, n3);
       }
       const ridge = (1 - Math.abs(n1 * 2 - 1)) ** 5;
-      height = clamp(terrain * .65 + ridge * .12 + relief + n3 * .07 + grain * .045);
+      height = clamp(.12 + terrain * .58 + ridge * .10 + relief + n3 * .105 + grain * .058);
       const mineral = smooth(.48, .72, n1) * .18;
-      const shade = .38 + terrain * .68 + ridge * .1 + relief * .42 + rim * .09 + n3 * .09 + grain * .08;
+      const shade = .35 + terrain * .70 + ridge * .085 + relief * .59 + ejecta * .15 + n3 * .115 + grain * .082;
       r = base[0] * shade + mineral * 48; g = base[1] * shade + mineral * 39; b = base[2] * shade + mineral * 30;
-      roughness = .82 + n2 * .16 - rim * .08;
+      roughness = .86 + n2 * .12 - ejecta * .05;
     } else if (appearance.type === "ocean") {
       const land = smooth(.505, .525, terrain), elevation = smooth(.52, .73, terrain);
       const shelf = smooth(.47, .515, terrain);
@@ -74,31 +81,45 @@ export function planetSurfaceSampler(appearance: Pick<PlanetAppearance, "type" |
       b = lerp(lerp(30 + base[2] * .18, 86, shelf), 32 + elevation * 43 + mountain * 10 + mineral * 48, land);
       r = lerp(r, 218, snow); g = lerp(g, 231, snow); b = lerp(b, 232, snow);
       height = lerp(.17, .32 + elevation * .22 + mountain * .08 + n3 * .025 + grain * .012, land);
-      roughness = lerp(.22, .86 + n2 * .1, Math.max(land, snow));
+      roughness = lerp(.176 + shelf * .043 + n3 * .021, .85 + n2 * .12, Math.max(land, snow));
       const weather = noise(x * 3.8 + n1 * .7 + 13, y * 7.2, z * 3.8 + 9);
-      const wisps = noise(x * 35 + weather * 6, y * 22 + n1 * 2, z * 35);
-      cloud = smooth(.52, .72, weather * .58 + wisps * .27 + grain * .15) * .9;
+      const wisps = noise(x * 33 + weather * 8, y * 43 + n1 * 5, z * 33 - weather * 6);
+      cloud = smooth(.49, .75, weather * .64 + wisps * .26 + grain * .10) * .94;
     } else if (appearance.type === "ice") {
-      const plate = noise(x * 6 + n0 * 2 + n2 * .12, y * 6 + n1, z * 6);
-      const fault = 1 - smooth(.003, .019, Math.abs(plate - .5));
-      const secondary = (1 - smooth(.002, .009, Math.abs(n2 - .5))) * .3;
-      const fissure = Math.max(fault, secondary), frost = .74 + terrain * .29 + n3 * .09 + grain * .035;
-      r = lerp(base[0] * frost, 29, fissure * .78); g = lerp(base[1] * frost, 80, fissure * .7); b = lerp(base[2] * frost, 110, fissure * .6);
-      height = .52 + terrain * .15 - fissure * .16 + n3 * .05 + grain * .02;
-      roughness = lerp(.58 + n2 * .26, .3, fissure);
+      const plate = noise(x * 6.6 + n0 * 2.4 + n3 * .16, y * 6.6 + n1 * 1.1, z * 6.6 - n1 * 1.5);
+      const offset = plate - .51 + (n3 - .5) * .024;
+      const stress = smooth(.30, .63, n1 * .61 + n2 * .39);
+      const trough = (1 - smooth(.004, .027, Math.abs(offset))) * stress;
+      const fault = (1 - smooth(.0015, .011 + stress * .009, Math.abs(offset))) * stress;
+      const branches = (1 - smooth(.001, .013, Math.abs(n2 + n3 * .12 - .55))) * stress * smooth(.10, .45, trough);
+      const frost = .66 + terrain * .36 + n3 * .10 + grain * .043 + trough * .09;
+      const blueIce = Math.max(fault, branches * .55);
+      r = lerp(base[0] * frost, 42, blueIce * .74); g = lerp(base[1] * frost, 90, blueIce * .64); b = lerp(base[2] * frost, 125, blueIce * .52);
+      height = .46 + terrain * .21 + trough * .062 - fault * .19 - branches * .055 + n3 * .073 + grain * .031;
+      roughness = lerp(.65 + n2 * .24, .39, blueIce);
     } else {
-      const longitude = Math.atan2(z, x);
-      const delta = Math.atan2(Math.sin(longitude - stormLongitude), Math.cos(longitude - stormLongitude));
-      const dx = delta * Math.sqrt(Math.max(0, 1 - y * y)) / .32, dy = (y - stormLatitude) / .12;
-      const stormRadius = Math.sqrt(dx * dx + dy * dy), storm = 1 - smooth(.3, 1.4, stormRadius);
-      const curl = Math.sin(Math.atan2(dy, dx) * 2 + stormRadius * 9) * storm;
-      const band = Math.sin(y * 58 + n0 * 4 + n1 * 1.8 + n2 * 1.6 + curl * 2) * .5 + .5;
-      const fine = Math.sin(y * 142 + n1 * 5 + n2 * 2) * .5 + .5;
-      const belt = smooth(.3, .75, band * .82 + fine * .18), shade = .5 + belt * .43 + fine * .075 + n3 * .04 + grain * .025;
-      const cream = smooth(.62, .91, band) * .16;
-      r = base[0] * shade + cream * 127 + storm * (18 + curl * 13);
-      g = base[1] * shade + cream * 103 + storm * (4 + curl * 8); b = base[2] * shade + cream * 73 - storm * 8;
-      roughness = .94; // Gas has no solid-surface bump or metallic glints.
+      const dy = (y - stormLatitude) / .145;
+      let storm = 0, curl = 0;
+      if (Math.abs(dy) < 1.45 && x * stormX + z * stormZ > .5) {
+        const dx = (z * stormX - x * stormZ) / .30;
+        const distance = Math.hypot(dx, dy);
+        storm = 1 - smooth(.28, 1.45, distance);
+        if (storm > 0) curl = Math.sin(Math.atan2(dy, dx) * 2 + distance * 10) * storm * smooth(.04, .36, distance);
+      }
+      // Unequal jets shear the texture east/west; finer filaments follow the same flow.
+      const latitude = y + (n0 - .5) * .06 + (n1 - .5) * .038 + curl * .036;
+      const filament = noise(x * 13 + n1 * 2, latitude * 69, z * 13 - n1 * 3);
+      const broad = Math.sin(latitude * (31 + 22 * y * y) + n2 * .65) * .5 + .5;
+      const shear = Math.sin(latitude * 106 + n1 * 2.9 + filament * 3.8) * .5 + .5;
+      const belt = smooth(.20, .79, broad * .67 + shear * .19 + filament * .14);
+      const jetGroup = Math.sin(y * 11 + .55);
+      const contrast = .16 + .12 * (1 - y * y) + n0 * .075 + jetGroup * .055;
+      const shade = .54 + belt * contrast + jetGroup * .036 + filament * .134 + n3 * .052 + grain * .027;
+      const cream = smooth(.58, .91, broad * .72 + filament * .28) * .13;
+      r = base[0] * shade + cream * 132 + storm * 11 + curl * 15;
+      g = base[1] * shade + cream * 110 + storm * 5 + curl * 11;
+      b = base[2] * shade + cream * 93 - storm * 6 + curl * 7;
+      roughness = .92 + filament * .06; // No solid-surface bump or metallic glints.
     }
     result.color[0] = r; result.color[1] = g; result.color[2] = b;
     result.height = clamp(height); result.roughness = clamp(roughness); result.cloud = cloud;
@@ -106,7 +127,7 @@ export function planetSurfaceSampler(appearance: Pick<PlanetAppearance, "type" |
   };
 }
 
-/** Resumable bake; every pixel uses the unchanged Batch 1 sampler. */
+/** Resumable bake; every tier uses the same continuous surface sampler. */
 export function createPlanetBake(appearance: Pick<PlanetAppearance, "type" | "color" | "seed">, tier: RenderTier) {
   const width = EXTERIOR_BUDGETS[tier].width, height = width / 2;
   const albedo = new Uint8Array(width * height * 4), surface = new Uint8Array(albedo.length);
