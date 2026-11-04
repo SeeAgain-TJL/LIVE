@@ -9,12 +9,20 @@ export function shouldApplyPineLodFade(material: Material) {
 export function applyPineLodFade(material: Material) {
   // Keep rigid trunks crisp throughout crown blending; screen-door bark is
   // conspicuous at eye level. The aligned far trunk is only a weak back layer.
-  if(!shouldApplyPineLodFade(material))return;
+  const fade = shouldApplyPineLodFade(material);
   const previous=material.onBeforeCompile;
   const key=material.customProgramCacheKey();
-  material.customProgramCacheKey=()=>key+"|pine-lod-weight";
+  material.customProgramCacheKey=()=>key+(fade ? "|pine-lod-weight-v2":"|pine-lod-neutral-wood-v2");
   material.onBeforeCompile=(shader,renderer)=>{
     previous.call(material,shader,renderer);
+    // Every tree part receives (LOD weight, 1, 1) as instanceColor. Wood
+    // must remove RGB multiplication too, even when it does not fade.
+    // Returning before this patch reduced red only and made bark cyan/green.
+    if (!fade) {
+      shader.vertexShader = shader.vertexShader.replace("#include <color_vertex>",
+        ShaderChunk.color_vertex.replace("vColor.xyz *= instanceColor.xyz;", ""));
+      return;
+    }
     shader.vertexShader=shader.vertexShader
       .replace("#include <common>","#include <common>\nvarying float pineLodWeight;")
       .replace("#include <color_vertex>",ShaderChunk.color_vertex.replace("vColor.xyz *= instanceColor.xyz;","" )+`
