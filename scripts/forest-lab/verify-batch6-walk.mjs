@@ -3,6 +3,7 @@ import { chromium } from 'playwright';
 import { copyFile, mkdir, writeFile } from 'node:fs/promises';
 
 const quality=process.env.PINE_QUALITY || 'low';
+const scale=process.env.PINE_SCALE || '0.8';
 assert.ok(['low','mid','high'].includes(quality));
 const recording=process.argv.includes('--record');
 const current=!!process.env.PINE_EVIDENCE;
@@ -13,7 +14,7 @@ const context=await browser.newContext({viewport:{width:1440,height:900},deviceS
  ...(recording ? {recordVideo:{dir:folder,size:{width:1440,height:900}}}:{}),
 });
 const page=await context.newPage();
-const result={browser:browser.version(),quality,recording,errors:[],legs:[]};
+const result={browser:browser.version(),quality,scale,recording,errors:[],legs:[]};
 const read=()=>page.locator('canvas').evaluate(c=>({
  camera:JSON.parse(c.dataset.forestOriginMetrics).camera,
  stream:JSON.parse(c.dataset.forestStreaming),
@@ -32,10 +33,16 @@ page.on('console',m=>{if(m.type()==='error')result.errors.push(m.text());});
 page.on('response',r=>{if(r.status()>=400)result.errors.push(r.status()+' '+r.url());});
 try {
  const start=Date.now();
- await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3197')+`/forest-runtime-lab?scale=0.8&quality=${quality}`,{waitUntil:'domcontentloaded'});
+ await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3197')+`/forest-runtime-lab?scale=${scale}&quality=${quality}`,{waitUntil:'domcontentloaded'});
  const canvas=page.locator('canvas[data-forest-origin-ready=true][data-pine-landmarks=ready]');
  await canvas.waitFor({timeout:120000});
  result.firstReadyMs=Date.now()-start;
+ result.display=await canvas.evaluate(c=>{
+  const gl=c.getContext('webgl2');
+  const debug=gl.getExtension('WEBGL_debug_renderer_info');
+  return {viewport:[c.clientWidth,c.clientHeight],internal:[c.width,c.height],
+   renderer:gl.getParameter(debug ? debug.UNMASKED_RENDERER_WEBGL:gl.RENDERER)};
+ });
  await page.waitForFunction(()=>{const s=JSON.parse(document.querySelector('canvas').dataset.forestStreaming||'null');return s&&!s.pendingTiles.length&&!s.pendingResources.length&&!s.queued;},null,{timeout:120000});
  result.firstSettledMs=Date.now()-start;
  result.initial=await read();

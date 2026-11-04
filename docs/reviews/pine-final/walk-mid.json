@@ -1,0 +1,3240 @@
+{
+  "browser": "156.0.8078.80",
+  "quality": "mid",
+  "recording": false,
+  "errors": [],
+  "legs": [
+    {
+      "key": "w",
+      "ms": 12000,
+      "fps": 50.54037401562088,
+      "p95Ms": 33.5,
+      "displacement": 40.518449999332454,
+      "camera": [
+        -16.959431045558812,
+        3.4784853471431267,
+        41.85548443509107
+      ],
+      "stream": {
+        "tiles": [
+          "1_-2",
+          "0_-2",
+          "0_-1",
+          "0_-3",
+          "1_-1",
+          "1_-3",
+          "-1_-2",
+          "-1_-1",
+          "2_-2",
+          "-1_-3",
+          "2_-1",
+          "2_-3",
+          "1_0",
+          "0_-4",
+          "0_0",
+          "-1_0",
+          "1_-4",
+          "-1_-4",
+          "-2_-2",
+          "-2_-1",
+          "-2_-3",
+          "-2_0",
+          "-2_-4",
+          "-3_-2",
+          "-3_-1",
+          "-3_-3"
+        ],
+        "pendingTiles": [],
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "pine_03/far",
+          "pine_05/far",
+          "props/far",
+          "pine_04/far",
+          "silver_fir_01/far",
+          "silver_fir_02/far",
+          "silver_fir_05/far",
+          "silver_fir_03/far",
+          "silver_fir_04/far",
+          "silver_fir_06/far",
+          "silver_fir_03/near",
+          "pine_04/near",
+          "pine_02/near",
+          "pine_03/near",
+          "props/near",
+          "props/mid",
+          "silver_fir_06/near",
+          "pine_01/near",
+          "pine_05/near",
+          "silver_fir_04/near",
+          "silver_fir_05/near"
+        ],
+        "pendingResources": [],
+        "queued": 0,
+        "retainedBytes": 60586347,
+        "candidates": 40771,
+        "frustumRejected": 853946,
+        "pixelRejected": 2230,
+        "trees": 131,
+        "props": 22187,
+        "near": 807,
+        "mid": 8756,
+        "far": 12755,
+        "released": {
+          "tiles": 2,
+          "resources": 0,
+          "batches": 243,
+          "materials": 0
+        },
+        "tickMs": 53.39999985694885,
+        "batches": 203,
+        "materials": 37,
+        "overviewTrees": 585,
+        "timings": {
+          "selectMs": 8.800000429153442,
+          "matrixMs": 1.8000004291534424,
+          "tileBuildMs": 9,
+          "prepareMs": 5.099999904632568,
+          "matrixWrites": 2610,
+          "uploadBytes": 511040
+        },
+        "maxSliceMs": 27.799999952316284,
+        "geometry": {
+          "pine_01/far/pine_01": {
+            "instances": 10,
+            "triangles": 20
+          },
+          "pine_02/far/pine_02": {
+            "instances": 10,
+            "triangles": 20
+          },
+          "pine_03/far/pine_03": {
+            "instances": 10,
+            "triangles": 20
+          },
+          "pine_04/far/pine_04": {
+            "instances": 15,
+            "triangles": 30
+          },
+          "pine_05/far/pine_05": {
+            "instances": 11,
+            "triangles": 22
+          },
+          "silver_fir_01/far/silver_fir_01": {
+            "instances": 13,
+            "triangles": 26
+          },
+          "silver_fir_03/far/silver_fir_03": {
+            "instances": 14,
+            "triangles": 28
+          },
+          "silver_fir_04/far/silver_fir_04": {
+            "instances": 7,
+            "triangles": 14
+          },
+          "silver_fir_05/far/silver_fir_05": {
+            "instances": 9,
+            "triangles": 18
+          },
+          "silver_fir_06/far/silver_fir_06": {
+            "instances": 14,
+            "triangles": 28
+          },
+          "silver_fir_02/far/silver_fir_02": {
+            "instances": 11,
+            "triangles": 22
+          },
+          "props/mid/fir_sapling_small_03": {
+            "instances": 2,
+            "triangles": 9972
+          },
+          "props/mid/dead_tree_lod1": {
+            "instances": 1,
+            "triangles": 3442
+          },
+          "props/mid/fir_sapling_small_02": {
+            "instances": 1,
+            "triangles": 6026
+          },
+          "props/mid/pine_sapling_small_b": {
+            "instances": 2,
+            "triangles": 9776
+          },
+          "props/far/fern_01_c_lod1": {
+            "instances": 26,
+            "triangles": 442
+          },
+          "props/far/fern_01_b_lod1": {
+            "instances": 22,
+            "triangles": 418
+          },
+          "props/far/rock_moss_set_01_c_lod1": {
+            "instances": 9,
+            "triangles": 972
+          },
+          "props/far/rock_moss_set_01_b_lod1": {
+            "instances": 8,
+            "triangles": 3216
+          },
+          "props/far/rock_moss_set_01_d_lod1": {
+            "instances": 5,
+            "triangles": 660
+          },
+          "props/far/dry_branches_medium_01_a_lod1": {
+            "instances": 25,
+            "triangles": 4500
+          },
+          "props/far/dry_branches_medium_01_b_lod1": {
+            "instances": 21,
+            "triangles": 3318
+          },
+          "props/far/dry_branches_medium_01_c_lod1": {
+            "instances": 21,
+            "triangles": 3864
+          },
+          "props/far/dead_tree_lod1": {
+            "instances": 9,
+            "triangles": 30186
+          },
+          "props/far/fir_sapling_small_01": {
+            "instances": 8,
+            "triangles": 8192
+          },
+          "props/far/rock_moss_set_01_rock04_lod1": {
+            "instances": 5,
+            "triangles": 400
+          },
+          "props/far/grass_medium_01_mid_b_lod1": {
+            "instances": 6,
+            "triangles": 30
+          },
+          "props/far/grass_medium_01_small_b_lod1": {
+            "instances": 6,
+            "triangles": 18
+          },
+          "props/far/fern_02_c_lod1": {
+            "instances": 3,
+            "triangles": 9
+          },
+          "props/far/grass_medium_01_mid_a_lod1": {
+            "instances": 4,
+            "triangles": 72
+          },
+          "props/far/fern_02_a_lod1": {
+            "instances": 2,
+            "triangles": 12
+          },
+          "props/far/fern_02_b_lod1": {
+            "instances": 3,
+            "triangles": 24
+          },
+          "props/far/dry_branches_medium_02_a_lod1": {
+            "instances": 5,
+            "triangles": 660
+          },
+          "props/far/dry_branches_medium_02_c_lod1": {
+            "instances": 7,
+            "triangles": 868
+          },
+          "props/far/rock_moss_set_01_rock01_lod1": {
+            "instances": 9,
+            "triangles": 612
+          },
+          "props/far/fern_02_d_lod1": {
+            "instances": 5,
+            "triangles": 30
+          },
+          "props/far/dry_branches_medium_02_b_lod1": {
+            "instances": 9,
+            "triangles": 900
+          },
+          "props/far/rock_moss_set_01_rock05_lod1": {
+            "instances": 5,
+            "triangles": 160
+          },
+          "props/far/cover_02_lod1": {
+            "instances": 5,
+            "triangles": 15
+          },
+          "props/far/rock_moss_set_01_rock06_lod1": {
+            "instances": 5,
+            "triangles": 190
+          },
+          "props/far/rock_moss_set_01_e_lod1": {
+            "instances": 3,
+            "triangles": 396
+          },
+          "props/far/rock_moss_set_01_a_lod1": {
+            "instances": 13,
+            "triangles": 2340
+          },
+          "props/far/rock_moss_set_01_f_lod1": {
+            "instances": 6,
+            "triangles": 588
+          },
+          "props/far/tree_trunk_lod1": {
+            "instances": 2,
+            "triangles": 4766
+          },
+          "props/far/rock_moss_set_01_rock03_lod1": {
+            "instances": 5,
+            "triangles": 260
+          },
+          "props/far/rock_moss_set_01_rock02_lod1": {
+            "instances": 5,
+            "triangles": 1460
+          },
+          "props/far/tree_roots_a_lod1": {
+            "instances": 8,
+            "triangles": 84112
+          },
+          "props/far/pine_sapling_small_a": {
+            "instances": 2,
+            "triangles": 2254
+          },
+          "props/far/fern_01_a_lod1": {
+            "instances": 22,
+            "triangles": 132
+          },
+          "props/far/fern_01_d_lod1": {
+            "instances": 24,
+            "triangles": 144
+          },
+          "props/far/pine_sapling_small_b": {
+            "instances": 5,
+            "triangles": 4835
+          },
+          "props/far/fir_sapling_small_03": {
+            "instances": 12,
+            "triangles": 10176
+          },
+          "props/far/pine_sapling_small_c": {
+            "instances": 5,
+            "triangles": 5230
+          },
+          "props/far/grass_medium_01_small_a_lod1": {
+            "instances": 10,
+            "triangles": 30
+          },
+          "props/mid/fir_sapling_small_01": {
+            "instances": 1,
+            "triangles": 6294
+          },
+          "props/far/grass_medium_01_large_a_lod1": {
+            "instances": 3,
+            "triangles": 54
+          },
+          "props/far/moss_patch_05_lod1": {
+            "instances": 6,
+            "triangles": 24
+          },
+          "props/far/moss_patch_03_lod1": {
+            "instances": 3958,
+            "triangles": 11874
+          },
+          "props/far/moss_patch_02_lod1": {
+            "instances": 3768,
+            "triangles": 15072
+          },
+          "props/far/moss_patch_01_lod1": {
+            "instances": 3390,
+            "triangles": 13560
+          },
+          "props/far/moss_patch_06_lod1": {
+            "instances": 14,
+            "triangles": 42
+          },
+          "props/far/tree_roots_b_lod1": {
+            "instances": 10,
+            "triangles": 53710
+          },
+          "props/near/rock_moss_set_01_b_lod1": {
+            "instances": 6,
+            "triangles": 16488
+          },
+          "props/near/tree_trunk_lod1": {
+            "instances": 2,
+            "triangles": 5352
+          },
+          "props/far/cover_01_lod1": {
+            "instances": 5,
+            "triangles": 10
+          },
+          "props/far/grass_medium_01_large_b_lod1": {
+            "instances": 6,
+            "triangles": 114
+          },
+          "props/near/rock_moss_set_01_a_lod1": {
+            "instances": 1,
+            "triangles": 2750
+          },
+          "props/near/rock_moss_set_01_c_lod1": {
+            "instances": 2,
+            "triangles": 2500
+          },
+          "props/far/fir_sapling_small_02": {
+            "instances": 9,
+            "triangles": 9243
+          },
+          "props/near/dead_tree_lod1": {
+            "instances": 1,
+            "triangles": 4854
+          },
+          "props/far/grass_medium_01_large_c_lod1": {
+            "instances": 6,
+            "triangles": 108
+          },
+          "props/near/rock_moss_set_01_f_lod1": {
+            "instances": 4,
+            "triangles": 8992
+          },
+          "props/far/pine_cover_01": {
+            "instances": 539,
+            "triangles": 2156
+          },
+          "props/far/grass_medium_01_mid_c_lod1": {
+            "instances": 7,
+            "triangles": 35
+          },
+          "props/far/moss_patch_04_lod1": {
+            "instances": 7,
+            "triangles": 28
+          },
+          "props/mid/tree_roots_a_lod1": {
+            "instances": 5,
+            "triangles": 52715
+          },
+          "props/mid/rock_moss_set_01_b_lod1": {
+            "instances": 11,
+            "triangles": 5742
+          },
+          "props/mid/dry_branches_medium_02_b_lod1": {
+            "instances": 4,
+            "triangles": 832
+          },
+          "props/far/pine_cover_02": {
+            "instances": 566,
+            "triangles": 1698
+          },
+          "props/mid/pine_cover_02": {
+            "instances": 1322,
+            "triangles": 7932
+          },
+          "props/mid/pine_cover_01": {
+            "instances": 1281,
+            "triangles": 10248
+          },
+          "props/mid/grass_medium_01_small_b_lod1": {
+            "instances": 9,
+            "triangles": 144
+          },
+          "props/mid/dry_branches_medium_02_c_lod1": {
+            "instances": 15,
+            "triangles": 3330
+          },
+          "props/mid/dry_branches_medium_02_a_lod1": {
+            "instances": 8,
+            "triangles": 1872
+          },
+          "props/mid/rock_moss_set_01_d_lod1": {
+            "instances": 15,
+            "triangles": 6330
+          },
+          "props/mid/cover_02_lod1": {
+            "instances": 11,
+            "triangles": 44
+          },
+          "props/mid/grass_medium_01_mid_b_lod1": {
+            "instances": 13,
+            "triangles": 338
+          },
+          "props/mid/dry_branches_medium_01_b_lod1": {
+            "instances": 35,
+            "triangles": 8750
+          },
+          "props/mid/rock_moss_set_01_a_lod1": {
+            "instances": 17,
+            "triangles": 7446
+          },
+          "props/mid/rock_moss_set_01_rock06_lod1": {
+            "instances": 9,
+            "triangles": 630
+          },
+          "props/mid/fern_01_d_lod1": {
+            "instances": 55,
+            "triangles": 1760
+          },
+          "props/mid/dry_branches_medium_01_c_lod1": {
+            "instances": 37,
+            "triangles": 11100
+          },
+          "props/mid/moss_patch_03_lod1": {
+            "instances": 1610,
+            "triangles": 28980
+          },
+          "props/mid/fern_01_b_lod1": {
+            "instances": 48,
+            "triangles": 4560
+          },
+          "props/mid/rock_moss_set_01_c_lod1": {
+            "instances": 13,
+            "triangles": 2574
+          },
+          "props/mid/fern_02_a_lod1": {
+            "instances": 16,
+            "triangles": 176
+          },
+          "props/mid/rock_moss_set_01_rock01_lod1": {
+            "instances": 7,
+            "triangles": 742
+          },
+          "props/mid/rock_moss_set_01_f_lod1": {
+            "instances": 15,
+            "triangles": 5370
+          },
+          "props/mid/moss_patch_01_lod1": {
+            "instances": 2104,
+            "triangles": 46288
+          },
+          "props/near/dry_branches_medium_01_a_lod1": {
+            "instances": 8,
+            "triangles": 11856
+          },
+          "props/mid/cover_01_lod1": {
+            "instances": 13,
+            "triangles": 91
+          },
+          "props/mid/rock_moss_set_01_e_lod1": {
+            "instances": 26,
+            "triangles": 17160
+          },
+          "props/mid/fern_02_c_lod1": {
+            "instances": 7,
+            "triangles": 329
+          },
+          "props/near/rock_moss_set_01_d_lod1": {
+            "instances": 1,
+            "triangles": 2646
+          },
+          "props/mid/moss_patch_02_lod1": {
+            "instances": 1730,
+            "triangles": 36330
+          },
+          "props/mid/tree_trunk_lod1": {
+            "instances": 6,
+            "triangles": 14400
+          },
+          "props/mid/rock_moss_set_01_rock02_lod1": {
+            "instances": 16,
+            "triangles": 4992
+          },
+          "props/mid/rock_moss_set_01_rock03_lod1": {
+            "instances": 13,
+            "triangles": 884
+          },
+          "props/near/fir_sapling_small_01": {
+            "instances": 1,
+            "triangles": 39350
+          },
+          "props/near/rock_moss_set_01_e_lod1": {
+            "instances": 4,
+            "triangles": 16544
+          },
+          "props/near/moss_patch_02_lod1": {
+            "instances": 125,
+            "triangles": 66125
+          },
+          "props/near/pine_cover_01": {
+            "instances": 152,
+            "triangles": 4712
+          },
+          "props/near/pine_cover_02": {
+            "instances": 163,
+            "triangles": 5053
+          },
+          "props/near/fern_01_c_lod1": {
+            "instances": 20,
+            "triangles": 11240
+          },
+          "props/near/fern_01_a_lod1": {
+            "instances": 16,
+            "triangles": 3136
+          },
+          "props/mid/fern_01_a_lod1": {
+            "instances": 52,
+            "triangles": 1612
+          },
+          "props/mid/moss_patch_05_lod1": {
+            "instances": 6,
+            "triangles": 126
+          },
+          "props/mid/grass_medium_01_large_c_lod1": {
+            "instances": 13,
+            "triangles": 1209
+          },
+          "props/mid/moss_patch_04_lod1": {
+            "instances": 6,
+            "triangles": 132
+          },
+          "props/mid/moss_patch_06_lod1": {
+            "instances": 9,
+            "triangles": 162
+          },
+          "props/mid/rock_moss_set_01_rock05_lod1": {
+            "instances": 9,
+            "triangles": 648
+          },
+          "props/mid/grass_medium_01_large_a_lod1": {
+            "instances": 3,
+            "triangles": 276
+          },
+          "props/mid/grass_medium_01_large_b_lod1": {
+            "instances": 6,
+            "triangles": 582
+          },
+          "props/mid/dry_branches_medium_01_a_lod1": {
+            "instances": 32,
+            "triangles": 10112
+          },
+          "props/mid/grass_medium_01_mid_c_lod1": {
+            "instances": 7,
+            "triangles": 182
+          },
+          "props/mid/rock_moss_set_01_rock04_lod1": {
+            "instances": 9,
+            "triangles": 972
+          },
+          "props/near/dry_branches_medium_02_a_lod1": {
+            "instances": 5,
+            "triangles": 7410
+          },
+          "props/mid/grass_medium_01_mid_a_lod1": {
+            "instances": 10,
+            "triangles": 520
+          },
+          "props/near/fern_02_b_lod1": {
+            "instances": 6,
+            "triangles": 1212
+          },
+          "props/near/dry_branches_medium_02_b_lod1": {
+            "instances": 1,
+            "triangles": 1312
+          },
+          "props/near/dry_branches_medium_01_b_lod1": {
+            "instances": 8,
+            "triangles": 10496
+          },
+          "props/near/fern_01_d_lod1": {
+            "instances": 13,
+            "triangles": 2652
+          },
+          "props/near/grass_medium_01_large_a_lod1": {
+            "instances": 4,
+            "triangles": 2300
+          },
+          "props/mid/fern_02_b_lod1": {
+            "instances": 13,
+            "triangles": 689
+          },
+          "props/near/dry_branches_medium_02_c_lod1": {
+            "instances": 1,
+            "triangles": 1404
+          },
+          "props/near/pine_sapling_small_a": {
+            "instances": 1,
+            "triangles": 35625
+          },
+          "props/mid/fern_02_d_lod1": {
+            "instances": 10,
+            "triangles": 110
+          },
+          "props/near/fern_01_b_lod1": {
+            "instances": 25,
+            "triangles": 14900
+          },
+          "props/mid/grass_medium_01_small_a_lod1": {
+            "instances": 5,
+            "triangles": 130
+          },
+          "silver_fir_04/near/silver_fir_04/-2_-7": {
+            "instances": 1,
+            "triangles": 124062
+          },
+          "props/near/grass_medium_01_large_b_lod1": {
+            "instances": 5,
+            "triangles": 3055
+          },
+          "props/near/rock_moss_set_01_rock01_lod1": {
+            "instances": 2,
+            "triangles": 556
+          },
+          "pine_02/near/pine_02/-3_-6": {
+            "instances": 1,
+            "triangles": 125972
+          },
+          "props/near/dry_branches_medium_01_c_lod1": {
+            "instances": 3,
+            "triangles": 4212
+          },
+          "props/near/rock_moss_set_01_rock02_lod1": {
+            "instances": 1,
+            "triangles": 442
+          },
+          "props/near/fern_02_c_lod1": {
+            "instances": 1,
+            "triangles": 177
+          },
+          "props/near/rock_moss_set_01_rock04_lod1": {
+            "instances": 3,
+            "triangles": 828
+          },
+          "props/near/fern_02_d_lod1": {
+            "instances": 1,
+            "triangles": 57
+          },
+          "props/near/cover_01_lod1": {
+            "instances": 5,
+            "triangles": 100
+          },
+          "props/mid/fern_01_c_lod1": {
+            "instances": 62,
+            "triangles": 5518
+          },
+          "props/near/rock_moss_set_01_rock03_lod1": {
+            "instances": 1,
+            "triangles": 166
+          },
+          "props/mid/tree_roots_b_lod1": {
+            "instances": 8,
+            "triangles": 43376
+          },
+          "props/near/grass_medium_01_mid_c_lod1": {
+            "instances": 3,
+            "triangles": 489
+          },
+          "props/near/rock_moss_set_01_rock06_lod1": {
+            "instances": 1,
+            "triangles": 228
+          },
+          "props/near/grass_medium_01_mid_a_lod1": {
+            "instances": 1,
+            "triangles": 327
+          },
+          "props/near/tree_roots_b_lod1": {
+            "instances": 3,
+            "triangles": 60855
+          },
+          "props/near/moss_patch_03_lod1": {
+            "instances": 82,
+            "triangles": 38704
+          },
+          "pine_03/near/pine_03/-3_-4": {
+            "instances": 1,
+            "triangles": 176951
+          },
+          "silver_fir_04/near/silver_fir_04/-3_-4": {
+            "instances": 1,
+            "triangles": 124062
+          },
+          "props/near/moss_patch_01_lod1": {
+            "instances": 116,
+            "triangles": 64960
+          },
+          "pine_05/near/pine_05/-4_-6": {
+            "instances": 1,
+            "triangles": 244465
+          },
+          "props/near/tree_roots_a_lod1": {
+            "instances": 2,
+            "triangles": 40894
+          },
+          "pine_05/near/pine_05/-4_-7": {
+            "instances": 1,
+            "triangles": 244465
+          },
+          "silver_fir_05/near/silver_fir_05/-4_-7": {
+            "instances": 1,
+            "triangles": 35481
+          }
+        },
+        "failures": []
+      }
+    },
+    {
+      "key": "w",
+      "ms": 10500,
+      "fps": 54.91153142109932,
+      "p95Ms": 33.299999999995634,
+      "displacement": 19.439141252355782,
+      "camera": [
+        -25.828915528637303,
+        4.964603231970069,
+        24.557725689130077
+      ],
+      "stream": {
+        "tiles": [
+          "1_-2",
+          "0_-2",
+          "0_-1",
+          "0_-3",
+          "1_-1",
+          "1_-3",
+          "-1_-2",
+          "-1_-1",
+          "-1_-3",
+          "1_0",
+          "0_-4",
+          "0_0",
+          "-1_0",
+          "-1_-4",
+          "-2_-2",
+          "-2_-1",
+          "-2_-3",
+          "-2_0",
+          "-2_-4",
+          "-3_-2",
+          "-3_-1",
+          "-3_-3",
+          "-3_0",
+          "-1_1",
+          "-2_1",
+          "0_1"
+        ],
+        "pendingTiles": [],
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "pine_03/far",
+          "pine_05/far",
+          "props/far",
+          "pine_04/far",
+          "silver_fir_01/far",
+          "silver_fir_02/far",
+          "silver_fir_05/far",
+          "silver_fir_03/far",
+          "silver_fir_04/far",
+          "silver_fir_06/far",
+          "silver_fir_03/near",
+          "pine_02/near",
+          "pine_03/near",
+          "props/near",
+          "props/mid",
+          "silver_fir_06/near",
+          "pine_01/near",
+          "pine_05/near",
+          "silver_fir_04/near",
+          "silver_fir_05/near",
+          "silver_fir_02/near",
+          "silver_fir_01/near"
+        ],
+        "pendingResources": [],
+        "queued": 0,
+        "retainedBytes": 54043422,
+        "candidates": 14221,
+        "frustumRejected": 777401,
+        "pixelRejected": 66,
+        "trees": 166,
+        "props": 6034,
+        "near": 185,
+        "mid": 3076,
+        "far": 2939,
+        "released": {
+          "tiles": 6,
+          "resources": 1,
+          "batches": 316,
+          "materials": 1
+        },
+        "tickMs": 54,
+        "batches": 167,
+        "materials": 37,
+        "overviewTrees": 585,
+        "timings": {
+          "selectMs": 6.000000476837158,
+          "matrixMs": 1.1999995708465576,
+          "tileBuildMs": 9,
+          "prepareMs": 5.099999904632568,
+          "matrixWrites": 706,
+          "uploadBytes": 132160
+        },
+        "maxSliceMs": 27.799999952316284,
+        "geometry": {
+          "pine_01/far/pine_01": {
+            "instances": 12,
+            "triangles": 24
+          },
+          "pine_02/far/pine_02": {
+            "instances": 11,
+            "triangles": 22
+          },
+          "pine_03/far/pine_03": {
+            "instances": 17,
+            "triangles": 34
+          },
+          "pine_04/far/pine_04": {
+            "instances": 16,
+            "triangles": 32
+          },
+          "pine_05/far/pine_05": {
+            "instances": 12,
+            "triangles": 24
+          },
+          "silver_fir_01/far/silver_fir_01": {
+            "instances": 13,
+            "triangles": 26
+          },
+          "silver_fir_03/far/silver_fir_03": {
+            "instances": 16,
+            "triangles": 32
+          },
+          "silver_fir_04/far/silver_fir_04": {
+            "instances": 20,
+            "triangles": 40
+          },
+          "silver_fir_05/far/silver_fir_05": {
+            "instances": 11,
+            "triangles": 22
+          },
+          "silver_fir_06/far/silver_fir_06": {
+            "instances": 14,
+            "triangles": 28
+          },
+          "silver_fir_02/far/silver_fir_02": {
+            "instances": 14,
+            "triangles": 28
+          },
+          "props/mid/fir_sapling_small_03": {
+            "instances": 2,
+            "triangles": 9972
+          },
+          "props/mid/fir_sapling_small_02": {
+            "instances": 1,
+            "triangles": 6026
+          },
+          "props/mid/pine_sapling_small_b": {
+            "instances": 3,
+            "triangles": 14664
+          },
+          "props/far/fir_sapling_small_01": {
+            "instances": 10,
+            "triangles": 10240
+          },
+          "props/far/pine_sapling_small_a": {
+            "instances": 4,
+            "triangles": 4508
+          },
+          "props/far/pine_sapling_small_b": {
+            "instances": 3,
+            "triangles": 2901
+          },
+          "props/far/fir_sapling_small_03": {
+            "instances": 17,
+            "triangles": 14416
+          },
+          "props/far/pine_sapling_small_c": {
+            "instances": 5,
+            "triangles": 5230
+          },
+          "props/mid/fir_sapling_small_01": {
+            "instances": 1,
+            "triangles": 6294
+          },
+          "props/far/moss_patch_03_lod1": {
+            "instances": 1014,
+            "triangles": 3042
+          },
+          "props/far/moss_patch_02_lod1": {
+            "instances": 935,
+            "triangles": 3740
+          },
+          "props/far/moss_patch_01_lod1": {
+            "instances": 788,
+            "triangles": 3152
+          },
+          "props/near/rock_moss_set_01_b_lod1": {
+            "instances": 2,
+            "triangles": 5496
+          },
+          "props/near/rock_moss_set_01_a_lod1": {
+            "instances": 1,
+            "triangles": 2750
+          },
+          "props/near/rock_moss_set_01_c_lod1": {
+            "instances": 2,
+            "triangles": 2500
+          },
+          "props/far/fir_sapling_small_02": {
+            "instances": 21,
+            "triangles": 21567
+          },
+          "props/near/fir_sapling_small_03": {
+            "instances": 2,
+            "triangles": 62370
+          },
+          "props/near/dead_tree_lod1": {
+            "instances": 3,
+            "triangles": 14562
+          },
+          "props/mid/rock_moss_set_01_b_lod1": {
+            "instances": 2,
+            "triangles": 1044
+          },
+          "props/mid/pine_cover_02": {
+            "instances": 137,
+            "triangles": 822
+          },
+          "props/mid/pine_cover_01": {
+            "instances": 146,
+            "triangles": 1168
+          },
+          "props/mid/rock_moss_set_01_d_lod1": {
+            "instances": 1,
+            "triangles": 422
+          },
+          "props/mid/dry_branches_medium_01_b_lod1": {
+            "instances": 3,
+            "triangles": 750
+          },
+          "props/mid/fern_01_d_lod1": {
+            "instances": 2,
+            "triangles": 64
+          },
+          "props/mid/dry_branches_medium_01_c_lod1": {
+            "instances": 6,
+            "triangles": 1800
+          },
+          "props/mid/moss_patch_03_lod1": {
+            "instances": 820,
+            "triangles": 14760
+          },
+          "props/mid/fern_01_b_lod1": {
+            "instances": 4,
+            "triangles": 380
+          },
+          "props/mid/rock_moss_set_01_c_lod1": {
+            "instances": 2,
+            "triangles": 396
+          },
+          "props/mid/rock_moss_set_01_f_lod1": {
+            "instances": 2,
+            "triangles": 716
+          },
+          "props/near/fir_sapling_small_02": {
+            "instances": 1,
+            "triangles": 37719
+          },
+          "props/mid/moss_patch_01_lod1": {
+            "instances": 1034,
+            "triangles": 22748
+          },
+          "props/mid/rock_moss_set_01_e_lod1": {
+            "instances": 1,
+            "triangles": 660
+          },
+          "props/near/rock_moss_set_01_d_lod1": {
+            "instances": 1,
+            "triangles": 2646
+          },
+          "props/mid/moss_patch_02_lod1": {
+            "instances": 887,
+            "triangles": 18627
+          },
+          "props/near/pine_cover_01": {
+            "instances": 47,
+            "triangles": 1457
+          },
+          "props/near/pine_cover_02": {
+            "instances": 36,
+            "triangles": 1116
+          },
+          "props/near/fern_01_c_lod1": {
+            "instances": 9,
+            "triangles": 5058
+          },
+          "props/near/fern_01_a_lod1": {
+            "instances": 3,
+            "triangles": 588
+          },
+          "props/mid/fern_01_a_lod1": {
+            "instances": 1,
+            "triangles": 31
+          },
+          "props/mid/dry_branches_medium_01_a_lod1": {
+            "instances": 3,
+            "triangles": 948
+          },
+          "props/near/dry_branches_medium_01_b_lod1": {
+            "instances": 3,
+            "triangles": 3936
+          },
+          "props/near/fern_01_d_lod1": {
+            "instances": 5,
+            "triangles": 1020
+          },
+          "props/near/pine_sapling_small_a": {
+            "instances": 1,
+            "triangles": 35625
+          },
+          "props/near/fern_01_b_lod1": {
+            "instances": 4,
+            "triangles": 2384
+          },
+          "props/near/dry_branches_medium_01_c_lod1": {
+            "instances": 4,
+            "triangles": 5616
+          },
+          "props/mid/fern_01_c_lod1": {
+            "instances": 2,
+            "triangles": 178
+          },
+          "props/near/moss_patch_03_lod1": {
+            "instances": 8,
+            "triangles": 3776
+          },
+          "pine_03/near/pine_03/-3_-4": {
+            "instances": 1,
+            "triangles": 176951
+          },
+          "silver_fir_04/near/silver_fir_04/-3_-4": {
+            "instances": 1,
+            "triangles": 124062
+          },
+          "props/near/moss_patch_01_lod1": {
+            "instances": 22,
+            "triangles": 12320
+          },
+          "props/near/moss_patch_02_lod1": {
+            "instances": 19,
+            "triangles": 10051
+          },
+          "props/far/rock_moss_set_02_rock11_lod1": {
+            "instances": 1,
+            "triangles": 88
+          },
+          "props/far/rock_moss_set_02_rock10_lod1": {
+            "instances": 1,
+            "triangles": 62
+          },
+          "silver_fir_06/near/silver_fir_06/-4_-4": {
+            "instances": 1,
+            "triangles": 29147
+          },
+          "pine_01/near/pine_01/-4_-3": {
+            "instances": 1,
+            "triangles": 205322
+          },
+          "silver_fir_04/near/silver_fir_04/-3_-3": {
+            "instances": 1,
+            "triangles": 124062
+          },
+          "props/near/dry_branches_medium_01_a_lod1": {
+            "instances": 2,
+            "triangles": 2964
+          },
+          "silver_fir_03/near/silver_fir_03/-4_-3": {
+            "instances": 1,
+            "triangles": 137369
+          },
+          "pine_02/near/pine_02/-2_-3": {
+            "instances": 1,
+            "triangles": 125972
+          },
+          "pine_01/near/pine_01/-5_-3": {
+            "instances": 1,
+            "triangles": 205322
+          },
+          "pine_03/near/pine_03/-4_-2": {
+            "instances": 1,
+            "triangles": 176951
+          },
+          "silver_fir_01/near/silver_fir_01/-5_-3": {
+            "instances": 1,
+            "triangles": 228293
+          }
+        },
+        "failures": []
+      }
+    },
+    {
+      "key": "w",
+      "ms": 10500,
+      "fps": 43.505164453132025,
+      "p95Ms": 49.900000000001455,
+      "displacement": 32.18539213997464,
+      "camera": [
+        -7.483135131210066,
+        1.0083582280349126,
+        -1.8871567801363713
+      ],
+      "stream": {
+        "tiles": [
+          "1_-2",
+          "0_-2",
+          "0_-1",
+          "0_-3",
+          "1_-1",
+          "-1_-2",
+          "-1_-1",
+          "-1_-3",
+          "1_0",
+          "0_0",
+          "-1_0",
+          "-2_-2",
+          "-2_-1",
+          "-2_-3",
+          "-2_0",
+          "-3_-2",
+          "-3_-1",
+          "-3_-3",
+          "-3_0",
+          "-1_1",
+          "-2_1",
+          "0_1",
+          "-3_1",
+          "1_1",
+          "-1_2",
+          "0_2"
+        ],
+        "pendingTiles": [],
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "pine_03/far",
+          "pine_05/far",
+          "props/far",
+          "pine_04/far",
+          "silver_fir_01/far",
+          "silver_fir_02/far",
+          "silver_fir_05/far",
+          "silver_fir_03/far",
+          "silver_fir_04/far",
+          "silver_fir_06/far",
+          "silver_fir_03/near",
+          "pine_02/near",
+          "pine_03/near",
+          "props/near",
+          "props/mid",
+          "silver_fir_06/near",
+          "pine_01/near",
+          "silver_fir_04/near",
+          "silver_fir_02/near",
+          "silver_fir_01/near"
+        ],
+        "pendingResources": [],
+        "queued": 0,
+        "retainedBytes": 46959813,
+        "candidates": 26947,
+        "frustumRejected": 659996,
+        "pixelRejected": 9602,
+        "trees": 184,
+        "props": 11240,
+        "near": 152,
+        "mid": 3280,
+        "far": 7992,
+        "released": {
+          "tiles": 10,
+          "resources": 3,
+          "batches": 493,
+          "materials": 1
+        },
+        "tickMs": 49.700000047683716,
+        "batches": 182,
+        "materials": 37,
+        "overviewTrees": 585,
+        "timings": {
+          "selectMs": 8.000000238418579,
+          "matrixMs": 1.1999998092651367,
+          "tileBuildMs": 9,
+          "prepareMs": 5.099999904632568,
+          "matrixWrites": 1677,
+          "uploadBytes": 316800
+        },
+        "maxSliceMs": 27.799999952316284,
+        "geometry": {
+          "pine_01/far/pine_01": {
+            "instances": 20,
+            "triangles": 40
+          },
+          "pine_02/far/pine_02": {
+            "instances": 17,
+            "triangles": 34
+          },
+          "pine_03/far/pine_03": {
+            "instances": 15,
+            "triangles": 30
+          },
+          "pine_04/far/pine_04": {
+            "instances": 16,
+            "triangles": 32
+          },
+          "pine_05/far/pine_05": {
+            "instances": 17,
+            "triangles": 34
+          },
+          "silver_fir_01/far/silver_fir_01": {
+            "instances": 10,
+            "triangles": 20
+          },
+          "silver_fir_03/far/silver_fir_03": {
+            "instances": 15,
+            "triangles": 30
+          },
+          "silver_fir_05/far/silver_fir_05": {
+            "instances": 14,
+            "triangles": 28
+          },
+          "silver_fir_06/far/silver_fir_06": {
+            "instances": 13,
+            "triangles": 26
+          },
+          "silver_fir_02/far/silver_fir_02": {
+            "instances": 16,
+            "triangles": 32
+          },
+          "props/mid/dead_tree_lod1": {
+            "instances": 1,
+            "triangles": 3442
+          },
+          "props/mid/fir_sapling_small_02": {
+            "instances": 1,
+            "triangles": 6026
+          },
+          "props/mid/pine_sapling_small_b": {
+            "instances": 1,
+            "triangles": 4888
+          },
+          "props/far/fern_01_c_lod1": {
+            "instances": 5,
+            "triangles": 85
+          },
+          "props/far/fern_01_b_lod1": {
+            "instances": 15,
+            "triangles": 285
+          },
+          "props/far/rock_moss_set_01_c_lod1": {
+            "instances": 1,
+            "triangles": 108
+          },
+          "props/far/rock_moss_set_01_b_lod1": {
+            "instances": 2,
+            "triangles": 804
+          },
+          "props/far/rock_moss_set_01_d_lod1": {
+            "instances": 6,
+            "triangles": 792
+          },
+          "props/far/dry_branches_medium_01_a_lod1": {
+            "instances": 19,
+            "triangles": 3420
+          },
+          "props/far/dry_branches_medium_01_b_lod1": {
+            "instances": 13,
+            "triangles": 2054
+          },
+          "props/far/dry_branches_medium_01_c_lod1": {
+            "instances": 16,
+            "triangles": 2944
+          },
+          "props/far/dead_tree_lod1": {
+            "instances": 3,
+            "triangles": 10062
+          },
+          "props/far/fir_sapling_small_01": {
+            "instances": 15,
+            "triangles": 15360
+          },
+          "props/far/rock_moss_set_01_e_lod1": {
+            "instances": 6,
+            "triangles": 792
+          },
+          "props/far/rock_moss_set_01_a_lod1": {
+            "instances": 4,
+            "triangles": 720
+          },
+          "props/far/rock_moss_set_01_f_lod1": {
+            "instances": 4,
+            "triangles": 392
+          },
+          "props/far/tree_trunk_lod1": {
+            "instances": 3,
+            "triangles": 7149
+          },
+          "props/far/pine_sapling_small_a": {
+            "instances": 1,
+            "triangles": 1127
+          },
+          "props/far/fern_01_a_lod1": {
+            "instances": 16,
+            "triangles": 96
+          },
+          "props/far/fern_01_d_lod1": {
+            "instances": 8,
+            "triangles": 48
+          },
+          "props/far/pine_sapling_small_b": {
+            "instances": 8,
+            "triangles": 7736
+          },
+          "props/far/fir_sapling_small_03": {
+            "instances": 14,
+            "triangles": 11872
+          },
+          "props/far/pine_sapling_small_c": {
+            "instances": 3,
+            "triangles": 3138
+          },
+          "props/far/moss_patch_03_lod1": {
+            "instances": 2585,
+            "triangles": 7755
+          },
+          "props/far/moss_patch_02_lod1": {
+            "instances": 2436,
+            "triangles": 9744
+          },
+          "props/far/moss_patch_01_lod1": {
+            "instances": 2158,
+            "triangles": 8632
+          },
+          "props/near/rock_moss_set_01_b_lod1": {
+            "instances": 1,
+            "triangles": 2748
+          },
+          "props/near/tree_trunk_lod1": {
+            "instances": 1,
+            "triangles": 2676
+          },
+          "props/far/fir_sapling_small_02": {
+            "instances": 10,
+            "triangles": 10270
+          },
+          "props/near/fir_sapling_small_03": {
+            "instances": 1,
+            "triangles": 31185
+          },
+          "props/near/dead_tree_lod1": {
+            "instances": 1,
+            "triangles": 4854
+          },
+          "props/far/pine_cover_01": {
+            "instances": 251,
+            "triangles": 1004
+          },
+          "props/mid/rock_moss_set_01_b_lod1": {
+            "instances": 1,
+            "triangles": 522
+          },
+          "props/far/pine_cover_02": {
+            "instances": 234,
+            "triangles": 702
+          },
+          "props/mid/pine_cover_02": {
+            "instances": 186,
+            "triangles": 1116
+          },
+          "props/mid/pine_cover_01": {
+            "instances": 162,
+            "triangles": 1296
+          },
+          "props/mid/rock_moss_set_01_d_lod1": {
+            "instances": 2,
+            "triangles": 844
+          },
+          "props/mid/dry_branches_medium_01_b_lod1": {
+            "instances": 4,
+            "triangles": 1000
+          },
+          "props/mid/rock_moss_set_01_a_lod1": {
+            "instances": 1,
+            "triangles": 438
+          },
+          "props/mid/fern_01_d_lod1": {
+            "instances": 6,
+            "triangles": 192
+          },
+          "props/mid/dry_branches_medium_01_c_lod1": {
+            "instances": 9,
+            "triangles": 2700
+          },
+          "props/mid/moss_patch_03_lod1": {
+            "instances": 796,
+            "triangles": 14328
+          },
+          "props/mid/fern_01_b_lod1": {
+            "instances": 6,
+            "triangles": 570
+          },
+          "props/mid/rock_moss_set_01_c_lod1": {
+            "instances": 1,
+            "triangles": 198
+          },
+          "props/mid/rock_moss_set_01_f_lod1": {
+            "instances": 3,
+            "triangles": 1074
+          },
+          "props/mid/moss_patch_01_lod1": {
+            "instances": 1055,
+            "triangles": 23210
+          },
+          "props/mid/rock_moss_set_01_e_lod1": {
+            "instances": 3,
+            "triangles": 1980
+          },
+          "props/mid/moss_patch_02_lod1": {
+            "instances": 955,
+            "triangles": 20055
+          },
+          "props/near/pine_cover_01": {
+            "instances": 38,
+            "triangles": 1178
+          },
+          "props/near/pine_cover_02": {
+            "instances": 40,
+            "triangles": 1240
+          },
+          "props/near/fern_01_c_lod1": {
+            "instances": 6,
+            "triangles": 3372
+          },
+          "props/near/fern_01_a_lod1": {
+            "instances": 3,
+            "triangles": 588
+          },
+          "props/mid/fern_01_a_lod1": {
+            "instances": 5,
+            "triangles": 155
+          },
+          "props/mid/dry_branches_medium_01_a_lod1": {
+            "instances": 11,
+            "triangles": 3476
+          },
+          "props/near/dry_branches_medium_01_b_lod1": {
+            "instances": 2,
+            "triangles": 2624
+          },
+          "props/near/fern_01_d_lod1": {
+            "instances": 3,
+            "triangles": 612
+          },
+          "props/near/fern_01_b_lod1": {
+            "instances": 3,
+            "triangles": 1788
+          },
+          "props/near/dry_branches_medium_01_c_lod1": {
+            "instances": 3,
+            "triangles": 4212
+          },
+          "props/mid/fern_01_c_lod1": {
+            "instances": 4,
+            "triangles": 356
+          },
+          "props/near/moss_patch_03_lod1": {
+            "instances": 4,
+            "triangles": 1888
+          },
+          "props/near/moss_patch_01_lod1": {
+            "instances": 24,
+            "triangles": 13440
+          },
+          "props/near/moss_patch_02_lod1": {
+            "instances": 12,
+            "triangles": 6348
+          },
+          "props/near/pine_sapling_small_b": {
+            "instances": 1,
+            "triangles": 30557
+          },
+          "props/near/dry_branches_medium_01_a_lod1": {
+            "instances": 2,
+            "triangles": 2964
+          },
+          "silver_fir_04/far/silver_fir_04": {
+            "instances": 25,
+            "triangles": 50
+          },
+          "silver_fir_06/near/silver_fir_06/-2_-1": {
+            "instances": 1,
+            "triangles": 29147
+          },
+          "props/far/grass_medium_01_small_a_lod1": {
+            "instances": 1,
+            "triangles": 3
+          },
+          "silver_fir_04/near/silver_fir_04/-1_0": {
+            "instances": 1,
+            "triangles": 124062
+          },
+          "props/mid/fern_02_d_lod1": {
+            "instances": 2,
+            "triangles": 22
+          },
+          "props/mid/dry_branches_medium_02_b_lod1": {
+            "instances": 3,
+            "triangles": 624
+          },
+          "props/mid/grass_medium_01_large_c_lod1": {
+            "instances": 1,
+            "triangles": 93
+          },
+          "props/mid/rock_moss_set_01_rock03_lod1": {
+            "instances": 1,
+            "triangles": 68
+          },
+          "props/mid/fern_02_a_lod1": {
+            "instances": 3,
+            "triangles": 33
+          },
+          "props/mid/cover_02_lod1": {
+            "instances": 4,
+            "triangles": 16
+          },
+          "silver_fir_01/near/silver_fir_01/-1_-1": {
+            "instances": 1,
+            "triangles": 228293
+          },
+          "props/mid/cover_01_lod1": {
+            "instances": 2,
+            "triangles": 14
+          },
+          "props/mid/grass_medium_01_small_b_lod1": {
+            "instances": 5,
+            "triangles": 80
+          },
+          "props/mid/fern_02_b_lod1": {
+            "instances": 2,
+            "triangles": 106
+          },
+          "props/mid/grass_medium_01_large_b_lod1": {
+            "instances": 2,
+            "triangles": 194
+          },
+          "props/mid/rock_moss_set_01_rock06_lod1": {
+            "instances": 1,
+            "triangles": 70
+          },
+          "props/mid/fern_02_c_lod1": {
+            "instances": 3,
+            "triangles": 141
+          },
+          "props/mid/rock_moss_set_01_rock01_lod1": {
+            "instances": 1,
+            "triangles": 106
+          },
+          "props/mid/moss_patch_06_lod1": {
+            "instances": 3,
+            "triangles": 54
+          },
+          "props/mid/tree_roots_b_lod1": {
+            "instances": 1,
+            "triangles": 5422
+          },
+          "props/mid/grass_medium_01_mid_a_lod1": {
+            "instances": 1,
+            "triangles": 52
+          },
+          "props/mid/dry_branches_medium_02_a_lod1": {
+            "instances": 2,
+            "triangles": 468
+          },
+          "pine_03/near/pine_03/-2_1": {
+            "instances": 1,
+            "triangles": 176951
+          },
+          "pine_02/near/pine_02/-1_0": {
+            "instances": 1,
+            "triangles": 125972
+          },
+          "props/mid/grass_medium_01_mid_b_lod1": {
+            "instances": 3,
+            "triangles": 78
+          },
+          "props/mid/dry_branches_medium_02_c_lod1": {
+            "instances": 3,
+            "triangles": 666
+          },
+          "props/mid/pine_sapling_small_a": {
+            "instances": 1,
+            "triangles": 5699
+          },
+          "silver_fir_02/near/silver_fir_02/0_0": {
+            "instances": 1,
+            "triangles": 123503
+          },
+          "props/near/dry_branches_medium_02_b_lod1": {
+            "instances": 1,
+            "triangles": 1312
+          }
+        },
+        "failures": []
+      }
+    },
+    {
+      "key": "w",
+      "ms": 9000,
+      "fps": 47.26243967357255,
+      "p95Ms": 33.69999999999709,
+      "displacement": 26.709107892364496,
+      "camera": [
+        17.57985511274487,
+        1.1344125986011186,
+        -11.118785262554152
+      ],
+      "stream": {
+        "tiles": [
+          "1_-2",
+          "0_-2",
+          "0_-1",
+          "1_-1",
+          "-1_-2",
+          "-1_-1",
+          "1_0",
+          "0_0",
+          "-1_0",
+          "-2_-2",
+          "-2_-1",
+          "-2_0",
+          "-3_-1",
+          "-3_0",
+          "-1_1",
+          "-2_1",
+          "0_1",
+          "1_1",
+          "-1_2",
+          "0_2",
+          "2_0",
+          "2_-1",
+          "1_2",
+          "2_1"
+        ],
+        "pendingTiles": [
+          "2_-2"
+        ],
+        "resources": [
+          "pine_01/far",
+          "pine_02/far",
+          "pine_03/far",
+          "pine_05/far",
+          "props/far",
+          "pine_04/far",
+          "silver_fir_01/far",
+          "silver_fir_02/far",
+          "silver_fir_05/far",
+          "silver_fir_03/far",
+          "silver_fir_04/far",
+          "silver_fir_06/far",
+          "silver_fir_03/near",
+          "pine_02/near",
+          "pine_03/near",
+          "props/near",
+          "props/mid",
+          "silver_fir_06/near",
+          "pine_01/near",
+          "silver_fir_04/near",
+          "silver_fir_02/near",
+          "silver_fir_01/near",
+          "pine_05/near",
+          "pine_04/near",
+          "silver_fir_05/near"
+        ],
+        "pendingResources": [],
+        "queued": 0,
+        "retainedBytes": 36899475,
+        "candidates": 45652,
+        "frustumRejected": 497519,
+        "pixelRejected": 20582,
+        "trees": 148,
+        "props": 16942,
+        "near": 183,
+        "mid": 4355,
+        "far": 12552,
+        "released": {
+          "tiles": 16,
+          "resources": 3,
+          "batches": 540,
+          "materials": 1
+        },
+        "tickMs": 104.70000004768372,
+        "batches": 191,
+        "materials": 38,
+        "overviewTrees": 585,
+        "timings": {
+          "selectMs": 19.000000476837158,
+          "matrixMs": 1.3000004291534424,
+          "tileBuildMs": 9,
+          "prepareMs": 5.099999904632568,
+          "matrixWrites": 1396,
+          "uploadBytes": 236416
+        },
+        "maxSliceMs": 27.799999952316284,
+        "geometry": {
+          "pine_01/far/pine_01": {
+            "instances": 12,
+            "triangles": 24
+          },
+          "pine_02/far/pine_02": {
+            "instances": 11,
+            "triangles": 22
+          },
+          "pine_03/far/pine_03": {
+            "instances": 14,
+            "triangles": 28
+          },
+          "pine_04/far/pine_04": {
+            "instances": 12,
+            "triangles": 24
+          },
+          "pine_05/far/pine_05": {
+            "instances": 17,
+            "triangles": 34
+          },
+          "silver_fir_01/far/silver_fir_01": {
+            "instances": 2,
+            "triangles": 4
+          },
+          "silver_fir_03/far/silver_fir_03": {
+            "instances": 11,
+            "triangles": 22
+          },
+          "silver_fir_05/far/silver_fir_05": {
+            "instances": 12,
+            "triangles": 24
+          },
+          "silver_fir_06/far/silver_fir_06": {
+            "instances": 13,
+            "triangles": 26
+          },
+          "silver_fir_02/far/silver_fir_02": {
+            "instances": 13,
+            "triangles": 26
+          },
+          "props/mid/fir_sapling_small_03": {
+            "instances": 3,
+            "triangles": 14958
+          },
+          "props/mid/dead_tree_lod1": {
+            "instances": 2,
+            "triangles": 6884
+          },
+          "props/mid/fir_sapling_small_02": {
+            "instances": 1,
+            "triangles": 6026
+          },
+          "props/far/fern_01_c_lod1": {
+            "instances": 34,
+            "triangles": 578
+          },
+          "props/far/fern_01_b_lod1": {
+            "instances": 46,
+            "triangles": 874
+          },
+          "props/far/rock_moss_set_01_c_lod1": {
+            "instances": 11,
+            "triangles": 1188
+          },
+          "props/far/rock_moss_set_01_b_lod1": {
+            "instances": 4,
+            "triangles": 1608
+          },
+          "props/far/rock_moss_set_01_d_lod1": {
+            "instances": 9,
+            "triangles": 1188
+          },
+          "props/far/dry_branches_medium_01_a_lod1": {
+            "instances": 27,
+            "triangles": 4860
+          },
+          "props/far/dry_branches_medium_01_b_lod1": {
+            "instances": 29,
+            "triangles": 4582
+          },
+          "props/far/dry_branches_medium_01_c_lod1": {
+            "instances": 26,
+            "triangles": 4784
+          },
+          "props/far/dead_tree_lod1": {
+            "instances": 9,
+            "triangles": 30186
+          },
+          "props/far/rock_moss_set_01_e_lod1": {
+            "instances": 8,
+            "triangles": 1056
+          },
+          "props/far/rock_moss_set_01_a_lod1": {
+            "instances": 9,
+            "triangles": 1620
+          },
+          "props/far/rock_moss_set_01_f_lod1": {
+            "instances": 10,
+            "triangles": 980
+          },
+          "props/far/tree_trunk_lod1": {
+            "instances": 7,
+            "triangles": 16681
+          },
+          "props/far/pine_sapling_small_a": {
+            "instances": 6,
+            "triangles": 6762
+          },
+          "props/far/fern_01_a_lod1": {
+            "instances": 39,
+            "triangles": 234
+          },
+          "props/far/fern_01_d_lod1": {
+            "instances": 43,
+            "triangles": 258
+          },
+          "props/far/pine_sapling_small_b": {
+            "instances": 6,
+            "triangles": 5802
+          },
+          "props/far/fir_sapling_small_03": {
+            "instances": 15,
+            "triangles": 12720
+          },
+          "props/far/pine_sapling_small_c": {
+            "instances": 7,
+            "triangles": 7322
+          },
+          "props/mid/fir_sapling_small_01": {
+            "instances": 2,
+            "triangles": 12588
+          },
+          "props/far/moss_patch_03_lod1": {
+            "instances": 3848,
+            "triangles": 11544
+          },
+          "props/far/moss_patch_02_lod1": {
+            "instances": 3781,
+            "triangles": 15124
+          },
+          "props/far/moss_patch_01_lod1": {
+            "instances": 3478,
+            "triangles": 13912
+          },
+          "props/near/rock_moss_set_01_b_lod1": {
+            "instances": 1,
+            "triangles": 2748
+          },
+          "props/near/tree_trunk_lod1": {
+            "instances": 3,
+            "triangles": 8028
+          },
+          "props/near/rock_moss_set_01_a_lod1": {
+            "instances": 1,
+            "triangles": 2750
+          },
+          "props/near/rock_moss_set_01_c_lod1": {
+            "instances": 1,
+            "triangles": 1250
+          },
+          "props/far/fir_sapling_small_02": {
+            "instances": 6,
+            "triangles": 6162
+          },
+          "props/near/fir_sapling_small_03": {
+            "instances": 1,
+            "triangles": 31185
+          },
+          "props/near/dead_tree_lod1": {
+            "instances": 1,
+            "triangles": 4854
+          },
+          "props/far/pine_cover_01": {
+            "instances": 492,
+            "triangles": 1968
+          },
+          "props/mid/rock_moss_set_01_b_lod1": {
+            "instances": 2,
+            "triangles": 1044
+          },
+          "props/far/pine_cover_02": {
+            "instances": 467,
+            "triangles": 1401
+          },
+          "props/mid/pine_cover_02": {
+            "instances": 332,
+            "triangles": 1992
+          },
+          "props/mid/pine_cover_01": {
+            "instances": 293,
+            "triangles": 2344
+          },
+          "props/mid/rock_moss_set_01_d_lod1": {
+            "instances": 4,
+            "triangles": 1688
+          },
+          "props/mid/dry_branches_medium_01_b_lod1": {
+            "instances": 16,
+            "triangles": 4000
+          },
+          "props/mid/rock_moss_set_01_a_lod1": {
+            "instances": 4,
+            "triangles": 1752
+          },
+          "props/mid/fern_01_d_lod1": {
+            "instances": 13,
+            "triangles": 416
+          },
+          "props/mid/dry_branches_medium_01_c_lod1": {
+            "instances": 5,
+            "triangles": 1500
+          },
+          "props/mid/moss_patch_03_lod1": {
+            "instances": 1084,
+            "triangles": 19512
+          },
+          "props/mid/fern_01_b_lod1": {
+            "instances": 10,
+            "triangles": 950
+          },
+          "props/mid/rock_moss_set_01_c_lod1": {
+            "instances": 1,
+            "triangles": 198
+          },
+          "props/mid/rock_moss_set_01_f_lod1": {
+            "instances": 2,
+            "triangles": 716
+          },
+          "props/mid/moss_patch_01_lod1": {
+            "instances": 1356,
+            "triangles": 29832
+          },
+          "props/mid/rock_moss_set_01_e_lod1": {
+            "instances": 5,
+            "triangles": 3300
+          },
+          "props/near/rock_moss_set_01_d_lod1": {
+            "instances": 1,
+            "triangles": 2646
+          },
+          "props/mid/moss_patch_02_lod1": {
+            "instances": 1171,
+            "triangles": 24591
+          },
+          "props/mid/tree_trunk_lod1": {
+            "instances": 4,
+            "triangles": 9600
+          },
+          "props/near/pine_cover_01": {
+            "instances": 43,
+            "triangles": 1333
+          },
+          "props/near/pine_cover_02": {
+            "instances": 38,
+            "triangles": 1178
+          },
+          "props/near/fern_01_c_lod1": {
+            "instances": 2,
+            "triangles": 1124
+          },
+          "props/near/fern_01_a_lod1": {
+            "instances": 6,
+            "triangles": 1176
+          },
+          "props/mid/fern_01_a_lod1": {
+            "instances": 9,
+            "triangles": 279
+          },
+          "props/mid/dry_branches_medium_01_a_lod1": {
+            "instances": 2,
+            "triangles": 632
+          },
+          "props/near/dry_branches_medium_01_b_lod1": {
+            "instances": 3,
+            "triangles": 3936
+          },
+          "props/near/fern_01_d_lod1": {
+            "instances": 2,
+            "triangles": 408
+          },
+          "props/near/fern_01_b_lod1": {
+            "instances": 3,
+            "triangles": 1788
+          },
+          "props/near/dry_branches_medium_01_c_lod1": {
+            "instances": 1,
+            "triangles": 1404
+          },
+          "props/mid/fern_01_c_lod1": {
+            "instances": 10,
+            "triangles": 890
+          },
+          "props/near/moss_patch_03_lod1": {
+            "instances": 3,
+            "triangles": 1416
+          },
+          "props/near/moss_patch_01_lod1": {
+            "instances": 30,
+            "triangles": 16800
+          },
+          "props/near/moss_patch_02_lod1": {
+            "instances": 16,
+            "triangles": 8464
+          },
+          "props/near/pine_sapling_small_b": {
+            "instances": 2,
+            "triangles": 61114
+          },
+          "props/near/dry_branches_medium_01_a_lod1": {
+            "instances": 8,
+            "triangles": 11856
+          },
+          "silver_fir_04/far/silver_fir_04": {
+            "instances": 16,
+            "triangles": 32
+          },
+          "props/near/fir_sapling_small_01": {
+            "instances": 1,
+            "triangles": 39350
+          },
+          "props/far/fir_sapling_small_01": {
+            "instances": 25,
+            "triangles": 25600
+          },
+          "pine_02/near/pine_02/1_0": {
+            "instances": 1,
+            "triangles": 125972
+          },
+          "silver_fir_02/near/silver_fir_02/1_1": {
+            "instances": 1,
+            "triangles": 123503
+          },
+          "props/near/fir_sapling_small_02": {
+            "instances": 1,
+            "triangles": 37719
+          },
+          "silver_fir_04/near/silver_fir_04/1_0": {
+            "instances": 1,
+            "triangles": 124062
+          },
+          "silver_fir_03/near/silver_fir_03/1_1": {
+            "instances": 1,
+            "triangles": 137369
+          },
+          "pine_05/near/pine_05/1_1": {
+            "instances": 1,
+            "triangles": 244465
+          },
+          "silver_fir_03/near/silver_fir_03/1_2": {
+            "instances": 1,
+            "triangles": 137369
+          },
+          "pine_01/near/pine_01/2_2": {
+            "instances": 1,
+            "triangles": 205322
+          },
+          "silver_fir_01/near/silver_fir_01/1_2": {
+            "instances": 1,
+            "triangles": 228293
+          },
+          "pine_01/near/pine_01/1_3": {
+            "instances": 1,
+            "triangles": 205322
+          },
+          "pine_04/near/pine_04/2_1": {
+            "instances": 1,
+            "triangles": 205792
+          },
+          "props/mid/pine_sapling_small_c": {
+            "instances": 1,
+            "triangles": 5335
+          },
+          "silver_fir_01/near/silver_fir_01/3_2": {
+            "instances": 1,
+            "triangles": 228293
+          },
+          "pine_01/near/pine_01/2_3": {
+            "instances": 1,
+            "triangles": 205322
+          },
+          "pine_04/near/pine_04/3_2": {
+            "instances": 1,
+            "triangles": 205792
+          },
+          "silver_fir_05/near/silver_fir_05/3_2": {
+            "instances": 1,
+            "triangles": 35481
+          },
+          "silver_fir_02/near/silver_fir_02/2_3": {
+            "instances": 1,
+            "triangles": 123503
+          }
+        },
+        "failures": []
+      }
+    }
+  ],
+  "firstReadyMs": 10775,
+  "firstSettledMs": 16966,
+  "initial": {
+    "camera": [
+      23.155473709106445,
+      0.9223032593727112,
+      47.55979919433594
+    ],
+    "stream": {
+      "tiles": [
+        "1_-2",
+        "0_-2",
+        "0_-1",
+        "0_-3",
+        "1_-1",
+        "1_-3",
+        "-1_-2",
+        "-1_-1",
+        "2_-2",
+        "-1_-3",
+        "2_-1",
+        "2_-3",
+        "1_0",
+        "0_-4",
+        "0_0",
+        "-1_0",
+        "1_-4",
+        "-1_-4",
+        "-2_-2"
+      ],
+      "pendingTiles": [],
+      "resources": [
+        "pine_01/far",
+        "pine_02/far",
+        "pine_03/far",
+        "pine_05/far",
+        "props/far",
+        "pine_04/far",
+        "silver_fir_01/far",
+        "silver_fir_02/far",
+        "silver_fir_05/far",
+        "silver_fir_03/far",
+        "silver_fir_04/far",
+        "silver_fir_06/far",
+        "silver_fir_03/near",
+        "pine_04/near",
+        "pine_02/near",
+        "pine_03/near",
+        "props/near",
+        "props/mid"
+      ],
+      "pendingResources": [],
+      "queued": 0,
+      "retainedBytes": 60028689,
+      "candidates": 197996,
+      "frustumRejected": 676562,
+      "pixelRejected": 137397,
+      "trees": 224,
+      "props": 42945,
+      "near": 185,
+      "mid": 6546,
+      "far": 36438,
+      "released": {
+        "tiles": 0,
+        "resources": 0,
+        "batches": 61,
+        "materials": 0
+      },
+      "tickMs": 319.2999999523163,
+      "batches": 148,
+      "materials": 34,
+      "overviewTrees": 585,
+      "timings": {
+        "selectMs": 37.90000081062317,
+        "matrixMs": 2.5999984741210938,
+        "tileBuildMs": 9,
+        "prepareMs": 5.099999904632568,
+        "matrixWrites": 216,
+        "uploadBytes": 13824
+      },
+      "maxSliceMs": 20.200000047683716,
+      "geometry": {
+        "pine_01/far/pine_01": {
+          "instances": 18,
+          "triangles": 36
+        },
+        "pine_02/far/pine_02": {
+          "instances": 22,
+          "triangles": 44
+        },
+        "pine_03/far/pine_03": {
+          "instances": 19,
+          "triangles": 38
+        },
+        "pine_04/far/pine_04": {
+          "instances": 21,
+          "triangles": 42
+        },
+        "pine_05/far/pine_05": {
+          "instances": 20,
+          "triangles": 40
+        },
+        "silver_fir_01/far/silver_fir_01": {
+          "instances": 19,
+          "triangles": 38
+        },
+        "silver_fir_03/far/silver_fir_03": {
+          "instances": 21,
+          "triangles": 42
+        },
+        "silver_fir_04/far/silver_fir_04": {
+          "instances": 20,
+          "triangles": 40
+        },
+        "silver_fir_05/far/silver_fir_05": {
+          "instances": 15,
+          "triangles": 30
+        },
+        "silver_fir_06/far/silver_fir_06": {
+          "instances": 22,
+          "triangles": 44
+        },
+        "silver_fir_02/far/silver_fir_02": {
+          "instances": 19,
+          "triangles": 38
+        },
+        "pine_04/near/pine_04/3_-5": {
+          "instances": 1,
+          "triangles": 205792
+        },
+        "pine_04/near/pine_04/1_-6": {
+          "instances": 1,
+          "triangles": 205792
+        },
+        "pine_04/near/pine_04/1_-5": {
+          "instances": 1,
+          "triangles": 205792
+        },
+        "silver_fir_03/near/silver_fir_03/1_-7": {
+          "instances": 1,
+          "triangles": 137369
+        },
+        "silver_fir_03/near/silver_fir_03/2_-8": {
+          "instances": 1,
+          "triangles": 137369
+        },
+        "pine_02/near/pine_02/1_-7": {
+          "instances": 1,
+          "triangles": 125972
+        },
+        "props/far/rock_moss_set_02_rock09_lod1": {
+          "instances": 772,
+          "triangles": 35512
+        },
+        "props/far/rock_moss_set_02_rock11_lod1": {
+          "instances": 750,
+          "triangles": 66000
+        },
+        "props/far/rock_moss_set_02_rock08_lod1": {
+          "instances": 851,
+          "triangles": 32338
+        },
+        "props/far/rock_moss_set_02_rock12_lod1": {
+          "instances": 762,
+          "triangles": 56388
+        },
+        "props/far/rock_moss_set_02_rock10_lod1": {
+          "instances": 704,
+          "triangles": 43648
+        },
+        "props/far/rock_moss_set_02_rock07_lod1": {
+          "instances": 773,
+          "triangles": 58748
+        },
+        "props/far/rock_moss_set_02_rock13_lod1": {
+          "instances": 734,
+          "triangles": 61656
+        },
+        "props/far/moss_patch_03_lod1": {
+          "instances": 7410,
+          "triangles": 22230
+        },
+        "props/far/moss_patch_02_lod1": {
+          "instances": 7057,
+          "triangles": 28228
+        },
+        "props/far/moss_patch_01_lod1": {
+          "instances": 7013,
+          "triangles": 28052
+        },
+        "props/far/grass_medium_01_large_a_lod1": {
+          "instances": 31,
+          "triangles": 558
+        },
+        "props/far/moss_patch_05_lod1": {
+          "instances": 29,
+          "triangles": 116
+        },
+        "props/mid/dead_tree_lod0": {
+          "instances": 2,
+          "triangles": 12984
+        },
+        "pine_03/near/pine_03/0_-6": {
+          "instances": 1,
+          "triangles": 176951
+        },
+        "pine_03/near/pine_03/1_-8": {
+          "instances": 1,
+          "triangles": 176951
+        },
+        "props/near/rock_moss_set_02_rock11_lod0": {
+          "instances": 40,
+          "triangles": 80000
+        },
+        "props/near/rock_moss_set_02_rock10_lod0": {
+          "instances": 44,
+          "triangles": 88000
+        },
+        "props/near/rock_moss_set_02_rock13_lod0": {
+          "instances": 29,
+          "triangles": 57478
+        },
+        "props/near/rock_moss_set_02_rock12_lod0": {
+          "instances": 16,
+          "triangles": 31968
+        },
+        "props/near/rock_moss_set_02_rock07_lod0": {
+          "instances": 14,
+          "triangles": 34384
+        },
+        "props/near/rock_moss_set_02_rock09_lod0": {
+          "instances": 11,
+          "triangles": 21692
+        },
+        "props/mid/pine_cover_02": {
+          "instances": 600,
+          "triangles": 3600
+        },
+        "props/mid/rock_moss_set_02_rock09_lod0": {
+          "instances": 134,
+          "triangles": 42076
+        },
+        "props/mid/rock_moss_set_02_rock13_lod0": {
+          "instances": 111,
+          "triangles": 35076
+        },
+        "props/mid/rock_moss_set_02_rock08_lod0": {
+          "instances": 140,
+          "triangles": 44520
+        },
+        "props/mid/rock_moss_set_02_rock07_lod0": {
+          "instances": 128,
+          "triangles": 50176
+        },
+        "props/mid/rock_moss_set_02_rock11_lod0": {
+          "instances": 133,
+          "triangles": 42560
+        },
+        "props/mid/rock_moss_set_02_rock10_lod0": {
+          "instances": 103,
+          "triangles": 32754
+        },
+        "props/mid/rock_moss_set_02_rock12_lod0": {
+          "instances": 151,
+          "triangles": 48018
+        },
+        "props/mid/rock_moss_set_02_rock09_lod1": {
+          "instances": 368,
+          "triangles": 30176
+        },
+        "props/mid/rock_moss_set_02_rock11_lod1": {
+          "instances": 355,
+          "triangles": 63190
+        },
+        "props/near/rock_moss_set_02_rock08_lod0": {
+          "instances": 8,
+          "triangles": 16000
+        },
+        "props/mid/moss_patch_03_lod0": {
+          "instances": 4,
+          "triangles": 72
+        },
+        "props/near/moss_patch_01_lod0": {
+          "instances": 2,
+          "triangles": 6922
+        },
+        "props/mid/moss_patch_02_lod0": {
+          "instances": 1,
+          "triangles": 21
+        },
+        "props/mid/moss_patch_01_lod0": {
+          "instances": 2,
+          "triangles": 44
+        },
+        "props/near/pine_cover_01": {
+          "instances": 1,
+          "triangles": 31
+        },
+        "props/near/pine_cover_02": {
+          "instances": 6,
+          "triangles": 186
+        },
+        "props/near/fern_01_b_lod0": {
+          "instances": 4,
+          "triangles": 2384
+        },
+        "props/near/dry_branches_medium_01_c_lod0": {
+          "instances": 2,
+          "triangles": 2808
+        },
+        "props/mid/rock_moss_set_02_rock08_lod1": {
+          "instances": 293,
+          "triangles": 24612
+        },
+        "props/mid/rock_moss_set_02_rock12_lod1": {
+          "instances": 362,
+          "triangles": 53576
+        },
+        "props/mid/rock_moss_set_02_rock10_lod1": {
+          "instances": 386,
+          "triangles": 49408
+        },
+        "props/mid/rock_moss_set_02_rock07_lod1": {
+          "instances": 369,
+          "triangles": 47232
+        },
+        "props/mid/rock_moss_set_02_rock13_lod1": {
+          "instances": 387,
+          "triangles": 56502
+        },
+        "props/mid/pine_cover_01": {
+          "instances": 653,
+          "triangles": 5224
+        },
+        "props/mid/rock_moss_set_01_f_lod1": {
+          "instances": 4,
+          "triangles": 1432
+        },
+        "props/mid/dry_branches_medium_01_c_lod1": {
+          "instances": 11,
+          "triangles": 3300
+        },
+        "props/mid/tree_trunk_lod1": {
+          "instances": 4,
+          "triangles": 9600
+        },
+        "props/mid/fern_01_d_lod1": {
+          "instances": 25,
+          "triangles": 800
+        },
+        "props/mid/rock_moss_set_01_d_lod1": {
+          "instances": 9,
+          "triangles": 3798
+        },
+        "props/mid/fir_sapling_small_03": {
+          "instances": 1,
+          "triangles": 4986
+        },
+        "props/mid/moss_patch_01_lod1": {
+          "instances": 764,
+          "triangles": 16808
+        },
+        "props/mid/moss_patch_02_lod1": {
+          "instances": 508,
+          "triangles": 10668
+        },
+        "props/mid/moss_patch_03_lod1": {
+          "instances": 368,
+          "triangles": 6624
+        },
+        "props/mid/fern_01_c_lod1": {
+          "instances": 30,
+          "triangles": 2670
+        },
+        "props/mid/fern_01_b_lod1": {
+          "instances": 39,
+          "triangles": 3705
+        },
+        "props/mid/fern_01_a_lod1": {
+          "instances": 25,
+          "triangles": 775
+        },
+        "props/mid/rock_moss_set_01_e_lod1": {
+          "instances": 3,
+          "triangles": 1980
+        },
+        "props/mid/rock_moss_set_01_c_lod1": {
+          "instances": 6,
+          "triangles": 1188
+        },
+        "props/mid/rock_moss_set_01_a_lod1": {
+          "instances": 10,
+          "triangles": 4380
+        },
+        "props/mid/dry_branches_medium_01_b_lod1": {
+          "instances": 14,
+          "triangles": 3500
+        },
+        "props/mid/dry_branches_medium_01_a_lod1": {
+          "instances": 17,
+          "triangles": 5372
+        },
+        "props/mid/rock_moss_set_01_b_lod1": {
+          "instances": 9,
+          "triangles": 4698
+        },
+        "props/mid/tree_trunk_lod0": {
+          "instances": 1,
+          "triangles": 6622
+        },
+        "props/mid/dead_tree_lod1": {
+          "instances": 2,
+          "triangles": 6884
+        },
+        "props/mid/fir_sapling_small_02": {
+          "instances": 1,
+          "triangles": 6026
+        },
+        "props/mid/pine_sapling_small_b": {
+          "instances": 1,
+          "triangles": 4888
+        },
+        "props/far/pine_cover_02": {
+          "instances": 2310,
+          "triangles": 6930
+        },
+        "props/far/pine_cover_01": {
+          "instances": 2450,
+          "triangles": 9800
+        },
+        "props/far/fern_01_c_lod1": {
+          "instances": 641,
+          "triangles": 10897
+        },
+        "props/far/fern_01_b_lod1": {
+          "instances": 666,
+          "triangles": 12654
+        },
+        "props/far/rock_moss_set_01_c_lod1": {
+          "instances": 74,
+          "triangles": 7992
+        },
+        "props/far/rock_moss_set_01_b_lod1": {
+          "instances": 92,
+          "triangles": 36984
+        },
+        "props/far/rock_moss_set_01_d_lod1": {
+          "instances": 88,
+          "triangles": 11616
+        },
+        "props/far/dry_branches_medium_01_a_lod1": {
+          "instances": 167,
+          "triangles": 30060
+        },
+        "props/far/dry_branches_medium_01_b_lod1": {
+          "instances": 153,
+          "triangles": 24174
+        },
+        "props/far/dry_branches_medium_01_c_lod1": {
+          "instances": 147,
+          "triangles": 27048
+        },
+        "props/far/dead_tree_lod1": {
+          "instances": 23,
+          "triangles": 77142
+        },
+        "props/far/fir_sapling_small_01": {
+          "instances": 13,
+          "triangles": 13312
+        },
+        "props/far/rock_moss_set_01_rock04_lod1": {
+          "instances": 53,
+          "triangles": 4240
+        },
+        "props/far/grass_medium_01_mid_b_lod1": {
+          "instances": 22,
+          "triangles": 110
+        },
+        "props/far/grass_medium_01_large_c_lod1": {
+          "instances": 21,
+          "triangles": 378
+        },
+        "props/far/grass_medium_01_small_b_lod1": {
+          "instances": 21,
+          "triangles": 63
+        },
+        "props/far/fern_02_c_lod1": {
+          "instances": 64,
+          "triangles": 192
+        },
+        "props/far/grass_medium_01_mid_a_lod1": {
+          "instances": 18,
+          "triangles": 324
+        },
+        "props/far/grass_medium_01_small_a_lod1": {
+          "instances": 12,
+          "triangles": 36
+        },
+        "props/far/fern_02_a_lod1": {
+          "instances": 64,
+          "triangles": 384
+        },
+        "props/far/cover_01_lod1": {
+          "instances": 20,
+          "triangles": 40
+        },
+        "props/far/fern_02_b_lod1": {
+          "instances": 64,
+          "triangles": 512
+        },
+        "props/far/dry_branches_medium_02_a_lod1": {
+          "instances": 48,
+          "triangles": 6336
+        },
+        "props/far/dry_branches_medium_02_c_lod1": {
+          "instances": 49,
+          "triangles": 6076
+        },
+        "props/far/rock_moss_set_01_rock01_lod1": {
+          "instances": 41,
+          "triangles": 2788
+        },
+        "props/far/moss_patch_04_lod1": {
+          "instances": 13,
+          "triangles": 52
+        },
+        "props/far/fern_02_d_lod1": {
+          "instances": 61,
+          "triangles": 366
+        },
+        "props/far/grass_medium_01_large_b_lod1": {
+          "instances": 26,
+          "triangles": 494
+        },
+        "props/far/dry_branches_medium_02_b_lod1": {
+          "instances": 44,
+          "triangles": 4400
+        },
+        "props/far/rock_moss_set_01_rock05_lod1": {
+          "instances": 44,
+          "triangles": 1408
+        },
+        "props/far/moss_patch_06_lod1": {
+          "instances": 21,
+          "triangles": 63
+        },
+        "props/far/cover_02_lod1": {
+          "instances": 18,
+          "triangles": 54
+        },
+        "props/far/rock_moss_set_01_rock06_lod1": {
+          "instances": 34,
+          "triangles": 1292
+        },
+        "props/far/tree_roots_b_lod1": {
+          "instances": 11,
+          "triangles": 59081
+        },
+        "props/far/rock_moss_set_01_e_lod1": {
+          "instances": 87,
+          "triangles": 11484
+        },
+        "props/far/rock_moss_set_01_a_lod1": {
+          "instances": 88,
+          "triangles": 15840
+        },
+        "props/far/rock_moss_set_01_f_lod1": {
+          "instances": 83,
+          "triangles": 8134
+        },
+        "props/far/tree_trunk_lod1": {
+          "instances": 41,
+          "triangles": 97703
+        },
+        "props/far/rock_moss_set_01_rock03_lod1": {
+          "instances": 43,
+          "triangles": 2236
+        },
+        "props/far/rock_moss_set_01_rock02_lod1": {
+          "instances": 42,
+          "triangles": 12264
+        },
+        "props/far/grass_medium_01_mid_c_lod1": {
+          "instances": 18,
+          "triangles": 90
+        },
+        "props/far/tree_roots_a_lod1": {
+          "instances": 21,
+          "triangles": 220794
+        },
+        "props/far/pine_sapling_small_a": {
+          "instances": 4,
+          "triangles": 4508
+        },
+        "props/far/fern_01_a_lod1": {
+          "instances": 633,
+          "triangles": 3798
+        },
+        "props/far/fern_01_d_lod1": {
+          "instances": 650,
+          "triangles": 3900
+        },
+        "props/far/fir_sapling_small_02": {
+          "instances": 12,
+          "triangles": 12324
+        },
+        "props/far/pine_sapling_small_b": {
+          "instances": 10,
+          "triangles": 9670
+        },
+        "props/far/fir_sapling_small_03": {
+          "instances": 14,
+          "triangles": 11872
+        },
+        "props/far/pine_sapling_small_c": {
+          "instances": 9,
+          "triangles": 9414
+        }
+      },
+      "failures": []
+    }
+  },
+  "combined": {
+    "seconds": 42.017800000143026,
+    "fps": 49.16963762959906,
+    "p95Ms": 33.5
+  },
+  "final": {
+    "camera": [
+      20.047045767438608,
+      1.251470652002452,
+      -12.02033162070322
+    ],
+    "stream": {
+      "tiles": [
+        "1_-2",
+        "0_-2",
+        "0_-1",
+        "1_-1",
+        "-1_-2",
+        "-1_-1",
+        "1_0",
+        "0_0",
+        "-1_0",
+        "-2_-1",
+        "-2_0",
+        "-1_1",
+        "-2_1",
+        "0_1",
+        "1_1",
+        "-1_2",
+        "0_2",
+        "2_0",
+        "2_-1",
+        "1_2",
+        "2_1",
+        "2_-2"
+      ],
+      "pendingTiles": [],
+      "resources": [
+        "pine_01/far",
+        "pine_02/far",
+        "pine_03/far",
+        "pine_05/far",
+        "props/far",
+        "pine_04/far",
+        "silver_fir_01/far",
+        "silver_fir_02/far",
+        "silver_fir_05/far",
+        "silver_fir_03/far",
+        "silver_fir_04/far",
+        "silver_fir_06/far",
+        "silver_fir_03/near",
+        "pine_02/near",
+        "props/near",
+        "props/mid",
+        "pine_01/near",
+        "silver_fir_04/near",
+        "silver_fir_02/near",
+        "silver_fir_01/near",
+        "pine_05/near",
+        "pine_04/near",
+        "silver_fir_05/near"
+      ],
+      "pendingResources": [],
+      "queued": 0,
+      "retainedBytes": 39196623,
+      "candidates": 38201,
+      "frustumRejected": 538756,
+      "pixelRejected": 14844,
+      "trees": 137,
+      "props": 14756,
+      "near": 133,
+      "mid": 4030,
+      "far": 10730,
+      "released": {
+        "tiles": 19,
+        "resources": 5,
+        "batches": 644,
+        "materials": 2
+      },
+      "tickMs": 113.09999990463257,
+      "batches": 88,
+      "materials": 37,
+      "overviewTrees": 585,
+      "timings": {
+        "selectMs": 16.59999990463257,
+        "matrixMs": 1.8000004291534424,
+        "tileBuildMs": 9,
+        "prepareMs": 5.099999904632568,
+        "matrixWrites": 126,
+        "uploadBytes": 8064
+      },
+      "maxSliceMs": 27.799999952316284,
+      "geometry": {
+        "pine_01/far/pine_01": {
+          "instances": 12,
+          "triangles": 24
+        },
+        "pine_02/far/pine_02": {
+          "instances": 10,
+          "triangles": 20
+        },
+        "pine_03/far/pine_03": {
+          "instances": 13,
+          "triangles": 26
+        },
+        "pine_04/far/pine_04": {
+          "instances": 12,
+          "triangles": 24
+        },
+        "pine_05/far/pine_05": {
+          "instances": 16,
+          "triangles": 32
+        },
+        "silver_fir_01/far/silver_fir_01": {
+          "instances": 2,
+          "triangles": 4
+        },
+        "silver_fir_03/far/silver_fir_03": {
+          "instances": 11,
+          "triangles": 22
+        },
+        "silver_fir_05/far/silver_fir_05": {
+          "instances": 10,
+          "triangles": 20
+        },
+        "silver_fir_06/far/silver_fir_06": {
+          "instances": 13,
+          "triangles": 26
+        },
+        "silver_fir_02/far/silver_fir_02": {
+          "instances": 13,
+          "triangles": 26
+        },
+        "props/mid/fir_sapling_small_03": {
+          "instances": 2,
+          "triangles": 9972
+        },
+        "props/mid/dead_tree_lod1": {
+          "instances": 3,
+          "triangles": 10326
+        },
+        "props/mid/fir_sapling_small_02": {
+          "instances": 1,
+          "triangles": 6026
+        },
+        "props/far/fern_01_c_lod1": {
+          "instances": 22,
+          "triangles": 374
+        },
+        "props/far/fern_01_b_lod1": {
+          "instances": 27,
+          "triangles": 513
+        },
+        "props/far/rock_moss_set_01_c_lod1": {
+          "instances": 4,
+          "triangles": 432
+        },
+        "props/far/rock_moss_set_01_b_lod1": {
+          "instances": 3,
+          "triangles": 1206
+        },
+        "props/far/rock_moss_set_01_d_lod1": {
+          "instances": 6,
+          "triangles": 792
+        },
+        "props/far/dry_branches_medium_01_a_lod1": {
+          "instances": 13,
+          "triangles": 2340
+        },
+        "props/far/dry_branches_medium_01_b_lod1": {
+          "instances": 25,
+          "triangles": 3950
+        },
+        "props/far/dry_branches_medium_01_c_lod1": {
+          "instances": 18,
+          "triangles": 3312
+        },
+        "props/far/dead_tree_lod1": {
+          "instances": 9,
+          "triangles": 30186
+        },
+        "props/far/rock_moss_set_01_e_lod1": {
+          "instances": 4,
+          "triangles": 528
+        },
+        "props/far/rock_moss_set_01_a_lod1": {
+          "instances": 6,
+          "triangles": 1080
+        },
+        "props/far/rock_moss_set_01_f_lod1": {
+          "instances": 8,
+          "triangles": 784
+        },
+        "props/far/tree_trunk_lod1": {
+          "instances": 7,
+          "triangles": 16681
+        },
+        "props/far/pine_sapling_small_a": {
+          "instances": 4,
+          "triangles": 4508
+        },
+        "props/far/fern_01_a_lod1": {
+          "instances": 20,
+          "triangles": 120
+        },
+        "props/far/fern_01_d_lod1": {
+          "instances": 27,
+          "triangles": 162
+        },
+        "props/far/pine_sapling_small_b": {
+          "instances": 6,
+          "triangles": 5802
+        },
+        "props/far/fir_sapling_small_03": {
+          "instances": 16,
+          "triangles": 13568
+        },
+        "props/far/pine_sapling_small_c": {
+          "instances": 7,
+          "triangles": 7322
+        },
+        "props/mid/fir_sapling_small_01": {
+          "instances": 2,
+          "triangles": 12588
+        },
+        "props/far/moss_patch_03_lod1": {
+          "instances": 3327,
+          "triangles": 9981
+        },
+        "props/far/moss_patch_02_lod1": {
+          "instances": 3315,
+          "triangles": 13260
+        },
+        "props/far/moss_patch_01_lod1": {
+          "instances": 3022,
+          "triangles": 12088
+        },
+        "props/near/tree_trunk_lod1": {
+          "instances": 1,
+          "triangles": 2676
+        },
+        "props/near/rock_moss_set_01_a_lod1": {
+          "instances": 1,
+          "triangles": 2750
+        },
+        "props/far/fir_sapling_small_02": {
+          "instances": 7,
+          "triangles": 7189
+        },
+        "props/near/fir_sapling_small_03": {
+          "instances": 1,
+          "triangles": 31185
+        },
+        "props/far/pine_cover_01": {
+          "instances": 361,
+          "triangles": 1444
+        },
+        "props/mid/rock_moss_set_01_b_lod1": {
+          "instances": 1,
+          "triangles": 522
+        },
+        "props/far/pine_cover_02": {
+          "instances": 337,
+          "triangles": 1011
+        },
+        "props/mid/pine_cover_02": {
+          "instances": 240,
+          "triangles": 1440
+        },
+        "props/mid/pine_cover_01": {
+          "instances": 220,
+          "triangles": 1760
+        },
+        "props/mid/rock_moss_set_01_d_lod1": {
+          "instances": 3,
+          "triangles": 1266
+        },
+        "props/mid/dry_branches_medium_01_b_lod1": {
+          "instances": 13,
+          "triangles": 3250
+        },
+        "props/mid/fern_01_d_lod1": {
+          "instances": 10,
+          "triangles": 320
+        },
+        "props/mid/dry_branches_medium_01_c_lod1": {
+          "instances": 6,
+          "triangles": 1800
+        },
+        "props/mid/moss_patch_03_lod1": {
+          "instances": 1039,
+          "triangles": 18702
+        },
+        "props/mid/fern_01_b_lod1": {
+          "instances": 10,
+          "triangles": 950
+        },
+        "props/mid/rock_moss_set_01_c_lod1": {
+          "instances": 2,
+          "triangles": 396
+        },
+        "props/mid/rock_moss_set_01_f_lod1": {
+          "instances": 3,
+          "triangles": 1074
+        },
+        "props/mid/moss_patch_01_lod1": {
+          "instances": 1297,
+          "triangles": 28534
+        },
+        "props/mid/rock_moss_set_01_e_lod1": {
+          "instances": 4,
+          "triangles": 2640
+        },
+        "props/near/rock_moss_set_01_d_lod1": {
+          "instances": 1,
+          "triangles": 2646
+        },
+        "props/mid/moss_patch_02_lod1": {
+          "instances": 1141,
+          "triangles": 23961
+        },
+        "props/mid/tree_trunk_lod1": {
+          "instances": 1,
+          "triangles": 2400
+        },
+        "props/near/pine_cover_01": {
+          "instances": 32,
+          "triangles": 992
+        },
+        "props/near/pine_cover_02": {
+          "instances": 49,
+          "triangles": 1519
+        },
+        "props/near/fern_01_c_lod1": {
+          "instances": 2,
+          "triangles": 1124
+        },
+        "props/near/fern_01_a_lod1": {
+          "instances": 2,
+          "triangles": 392
+        },
+        "props/mid/fern_01_a_lod1": {
+          "instances": 4,
+          "triangles": 124
+        },
+        "props/mid/dry_branches_medium_01_a_lod1": {
+          "instances": 1,
+          "triangles": 316
+        },
+        "props/near/dry_branches_medium_01_b_lod1": {
+          "instances": 3,
+          "triangles": 3936
+        },
+        "props/near/fern_01_d_lod1": {
+          "instances": 2,
+          "triangles": 408
+        },
+        "props/near/fern_01_b_lod1": {
+          "instances": 4,
+          "triangles": 2384
+        },
+        "props/mid/fern_01_c_lod1": {
+          "instances": 5,
+          "triangles": 445
+        },
+        "props/near/moss_patch_01_lod1": {
+          "instances": 14,
+          "triangles": 7840
+        },
+        "props/near/pine_sapling_small_b": {
+          "instances": 1,
+          "triangles": 30557
+        },
+        "props/near/dry_branches_medium_01_a_lod1": {
+          "instances": 5,
+          "triangles": 7410
+        },
+        "silver_fir_04/far/silver_fir_04": {
+          "instances": 14,
+          "triangles": 28
+        },
+        "props/near/fir_sapling_small_01": {
+          "instances": 1,
+          "triangles": 39350
+        },
+        "props/near/rock_moss_set_01_e_lod1": {
+          "instances": 2,
+          "triangles": 8272
+        },
+        "props/far/fir_sapling_small_01": {
+          "instances": 24,
+          "triangles": 24576
+        },
+        "props/near/fir_sapling_small_02": {
+          "instances": 1,
+          "triangles": 37719
+        },
+        "pine_05/near/pine_05/1_1": {
+          "instances": 1,
+          "triangles": 244465
+        },
+        "silver_fir_03/near/silver_fir_03/1_2": {
+          "instances": 1,
+          "triangles": 137369
+        },
+        "pine_01/near/pine_01/2_2": {
+          "instances": 1,
+          "triangles": 205322
+        },
+        "pine_01/near/pine_01/1_3": {
+          "instances": 1,
+          "triangles": 205322
+        },
+        "pine_04/near/pine_04/2_1": {
+          "instances": 1,
+          "triangles": 205792
+        },
+        "props/mid/pine_sapling_small_c": {
+          "instances": 1,
+          "triangles": 5335
+        },
+        "silver_fir_01/near/silver_fir_01/3_2": {
+          "instances": 1,
+          "triangles": 228293
+        },
+        "pine_01/near/pine_01/2_3": {
+          "instances": 1,
+          "triangles": 205322
+        },
+        "pine_04/near/pine_04/3_2": {
+          "instances": 1,
+          "triangles": 205792
+        },
+        "silver_fir_05/near/silver_fir_05/3_2": {
+          "instances": 1,
+          "triangles": 35481
+        },
+        "silver_fir_02/near/silver_fir_02/2_3": {
+          "instances": 1,
+          "triangles": 123503
+        },
+        "silver_fir_05/near/silver_fir_05/4_0": {
+          "instances": 1,
+          "triangles": 35481
+        }
+      },
+      "failures": []
+    }
+  },
+  "contextLost": false,
+  "archiveAccess": [],
+  "passed": true
+}

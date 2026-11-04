@@ -1,5 +1,7 @@
 # UNIVERSE OF ME · 我的人生宇宙
 
+Pine Forest **整林候选**：默认实验入口 `/forest-runtime-lab`，提供低、中、高三档。原始河道、废墟、地形和森林布局在同一可漫游场景中，阶段证据和资源恢复见[整林审阅](docs/reviews/pine-final/README.md)。它仍是独立环境实验，没有接入正式星球。
+
 Pine Forest **Batch5河床样板候选已交付，等待视觉验收**：入口 `/forest-runtime-lab?scale=0.8&sample=creek`。保留原布局/材质/LOD，补局部地形起伏、静态接触AO和林下层；80.4秒真实输入连续录屏、不录屏路线、近中远同机位与实际GPU数据见[Batch5审阅](docs/reviews/pine-batch5/README.md)。样板录屏40.58FPS/P95 33.8ms；大可见集远景仍不达标，未宣称整体高品质通过。[GitHub开发预发布附件](https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-batch5-sample-20261104)提供约182MB运行ZIP与1.278GB packed Blender制作ZIP，普通Git仍不含运行资产。下面Batch4及第三批为历史记录。
 
 Pine Forest **Batch4 收尾已完成**：保留三层源PBR及path/river混合、低档Billboard和仅高档pine_04真实中景LOD。近中远截图、Blender同机位地表对照、157秒真实WASD/鼠标连续视频及恢复说明见 [Batch4审阅](docs/reviews/pine-batch4/README.md)。本机低档80%移动输入段：不录屏41.55FPS/P95 50.0ms，录屏32.99/P95 50.1ms；**整体美术和全路段性能仍未通过**。Git不含运行资产，换设备需另复制约191MB运行包；原始DCC资料另带。下段第三批B为历史记录。

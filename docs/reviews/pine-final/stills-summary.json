@@ -1,0 +1,150 @@
+{
+  "browser": "156.0.8078.80",
+  "viewport": [
+    1440,
+    900
+  ],
+  "verticalFov": 48.5,
+  "shots": [
+    {
+      "name": "near",
+      "route": "/forest-runtime-lab?scale=0.8&review=1&quality=high",
+      "pose": {
+        "position": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439487,
+          0.1260486988,
+          -0.1396602648
+        ]
+      },
+      "dimensions": [
+        1152,
+        720
+      ],
+      "trees": 224,
+      "props": 80968,
+      "triangles": 8144385,
+      "stationary": {
+        "seconds": 7.002999999952317,
+        "averageFps": 30.701128088171345,
+        "p95Ms": 50.099999999998545
+      }
+    },
+    {
+      "name": "ruins",
+      "route": "/forest-runtime-lab?scale=0.8&review=1&quality=high",
+      "pose": {
+        "position": [
+          -24,
+          9,
+          44
+        ],
+        "direction": [
+          -1,
+          0.04,
+          -0.37
+        ]
+      },
+      "dimensions": [
+        1152,
+        720
+      ],
+      "trees": 127,
+      "props": 2756,
+      "triangles": 5014456,
+      "stationary": {
+        "seconds": 7.005400000047684,
+        "averageFps": 34.83027378855442,
+        "p95Ms": 33.900000000001455
+      }
+    },
+    {
+      "name": "far",
+      "route": "/forest-runtime-lab?scale=0.8&review=1&quality=high",
+      "pose": {
+        "position": [
+          10,
+          18,
+          60
+        ],
+        "direction": [
+          0.1,
+          -0.5,
+          -1
+        ]
+      },
+      "dimensions": [
+        1152,
+        720
+      ],
+      "trees": 305,
+      "props": 73375,
+      "triangles": 7251894,
+      "stationary": {
+        "seconds": 7.003100000143051,
+        "averageFps": 24.417757849596182,
+        "p95Ms": 50.5
+      }
+    },
+    {
+      "name": "panorama",
+      "route": "/forest-runtime-lab?scale=0.8&review=1&quality=high",
+      "pose": {
+        "position": [
+          0,
+          264,
+          50
+        ],
+        "direction": [
+          0,
+          -261,
+          -50
+        ]
+      },
+      "dimensions": [
+        1152,
+        720
+      ],
+      "trees": 585,
+      "props": 109534,
+      "triangles": 7340538,
+      "stationary": {
+        "seconds": 7.015699999952318,
+        "averageFps": 38.91272431857911,
+        "p95Ms": 50
+      }
+    },
+    {
+      "name": "far",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          10,
+          18,
+          60
+        ],
+        "direction": [
+          0.1,
+          -0.5,
+          -1
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "trees": 305,
+      "props": 21530,
+      "triangles": 2348761,
+      "stationary": {
+        "seconds": 7.009800000190735,
+        "averageFps": 43.938486118237236,
+        "p95Ms": 34
+      }
+    }
+  ]
+}
