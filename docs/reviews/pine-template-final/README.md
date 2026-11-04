@@ -75,3 +75,5 @@ npm.cmd start
 制作资产：最终针叶 Release 同时提供 `pine-template-crowns-v2-authoring.zip`，包含三个无压缩派生 GLB 与构建脚本；已重新下载并在 Blender 4.4.3 实际导入三份 GLB，见[制作资产恢复](authoring-restore.json)。没有修改或新增 `.blend`。完整原工程与纹理仍由 [Poly Haven 原始归档](https://dl.polyhaven.org/file/ph-assets/Scenes/pine_forest.zip)恢复，源 blend SHA-256 为 `fdce77741081f462f11e5cefe8bf79a0bc796727dbb6e51d12fc6cf20e9c9cfb`。旧针叶 v1 发布与原始包继续保留。
 
 本轮已用完一次集中制作和一次修正额度。剩余关键问题为近景实时枝叶体积、接近林缘时二维补景的空间表现，以及最后录像复核发现的树干过渡染色。前两者继续叠加同类针叶参数不能保证解决；第三项是已定位的权重通道处理缺陷。本轮按停止条件保留证据和候选，不将局部改善写成全面通过，不自动开展下一轮森林修复。
+
+录像发布检查点为 `34eb1ce`，附件 30,316,474 字节；本地完整解码后的 SHA-256 与 GitHub 服务端摘要一致，见[发布回执](remote-assets.json)。Release 明确标记为未完全通过视觉验收的开发候选。
