@@ -68,7 +68,7 @@ function Streaming({ manifest, trees, onError, quality, field, terrainReady }: {
   },[terrainReady,quality]);
   return null;
 }
-function Terrain({ onReady, onError, field, floor, sample }: { onReady: (ready: boolean) => void; onError: (message: string) => void; field?: Texture; floor?: Texture; sample: boolean }) {
+function Terrain({ onReady, onError, onMaterial, field, floor, sample }: { onReady: (ready: boolean) => void; onError: (message: string) => void; onMaterial: (material:Material|null)=>void; field?: Texture; floor?: Texture; sample: boolean }) {
   const terrain = useGLTF(pineRoot+(sample ? "batch5/sample-terrain.glb":"environment/terrain.glb"));
   const { gl } = useThree();
   useEffect(()=>{
@@ -93,10 +93,10 @@ function Terrain({ onReady, onError, field, floor, sample }: { onReady: (ready: 
       // to reveal the tree overview while the terrain was still suspended.
       for(const map of maps) gl.initTexture(map);
       gl.domElement.dataset.pineTerrain=mode==="batch3b" ? "pbr":"layered";
-      onReady(true);
+      onMaterial(material);onReady(true);
     }).catch(error=>{release();if(!disposed) onError(`地表加载失败：${String(error)}`);});
-    return ()=>{disposed=true;onReady(false);release();delete gl.domElement.dataset.pineTerrain;};
-  },[terrain,gl,onReady,onError,sample,field,floor]);
+    return ()=>{disposed=true;onReady(false);onMaterial(null);release();delete gl.domElement.dataset.pineTerrain;};
+  },[terrain,gl,onReady,onError,onMaterial,sample,field,floor]);
   return <primitive object={terrain.scene} />;
 }
 function SourceLandmarks({field,quality}: {field: Texture; quality: Quality}) {
@@ -151,9 +151,10 @@ function EnvironmentContent(props: ContentProps) {
 }
 function ForestContent({payload,quality,onError,field,floor}: ContentProps & {field?: Texture;floor?: Texture}) {
   const [terrainReady,setTerrainReady] = useState(false);
+  const [terrainMaterial,setTerrainMaterial] = useState<Material|null>(null);
   return <>
-    <Suspense fallback={null}><Terrain sample={!field} field={field} floor={floor} onReady={setTerrainReady} onError={onError} /></Suspense>
-    {field && terrainReady && <Suspense fallback={null}><PineOuterForest /></Suspense>}
+    <Suspense fallback={null}><Terrain sample={!field} field={field} floor={floor} onReady={setTerrainReady} onMaterial={setTerrainMaterial} onError={onError} /></Suspense>
+    {field && terrainReady && terrainMaterial && <Suspense fallback={null}><PineOuterForest terrainMaterial={terrainMaterial} /></Suspense>}
     {field && <Suspense fallback={null}><SourceLandmarks field={field} quality={quality} /></Suspense>}
     {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} />}
   </>;

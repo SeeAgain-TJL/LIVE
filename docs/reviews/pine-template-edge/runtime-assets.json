@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "template-edge/edge-ground.json",
+      "bytes": 1348284,
+      "sha256": "8d0f06a68988cca42abfc494c206ddda0fa751613aa8eff8694a910d04e41fe8"
+    },
+    {
+      "path": "template-edge/edge-stands.json",
+      "bytes": 29422,
+      "sha256": "27bc6b0fb5dc298da071f70287d122ea7602e9dde300f7152ac2bfcc87f14a78"
+    },
+    {
+      "path": "template-edge/production.json",
+      "bytes": 433,
+      "sha256": "88c354daa173eaa07becc3c3ccb4532909fcd1ed2bd33cbb91a9dcbbaf5ba6fb"
+    }
+  ],
+  "totalBytes": 1378139
+}

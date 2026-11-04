@@ -1,0 +1,20 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-template-crowns-20261104",
+  "tag": "pine-template-crowns-20261104",
+  "publishedFrom": "052c67ec4373bfa505be2cac4469813ca69009e5",
+  "files": [
+    {
+      "name": "pine-template-crowns-runtime.zip",
+      "bytes": 624160,
+      "sha256": "4026197af6adf3ec08d8614cfa8365cf56b2f311400067ffe8abdabde6ac75e0",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-template-crowns-20261104/pine-template-crowns-runtime.zip"
+    },
+    {
+      "name": "pine-template-crowns-authoring.zip",
+      "bytes": 3731686,
+      "sha256": "594432a488ebabcf78a995493a567d986c6b74e605497408d3d7b2d21e3b1ebc",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-template-crowns-20261104/pine-template-crowns-authoring.zip"
+    }
+  ]
+}
