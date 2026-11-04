@@ -379,8 +379,9 @@ export class PineStream {
         // request was rewritten to "far" (the billboard). Batch4 gives pine_04
         // a real reduced-geometry mid file; let that one species actually
         // request "mid". Every other species keeps the old far-billboard
-        // rewrite until they get the same treatment.
-        const requestedTier=tree && desired==="mid" && this.manifest.names[tile.data[offset]]!=="pine_04" ? "far":desired;
+        // rewrite until they get the same treatment. Measured on the low tier the real
+        // mid costs ~30% FPS (45->31 at 18m), so it is only requested at quality=high.
+        const requestedTier=tree && desired==="mid" && !(high && this.manifest.names[tile.data[offset]]==="pine_04") ? "far":desired;
         const lookup=tile.data[offset]*3+tiers.indexOf(requestedTier);
         let resolvedAsset=resolved.get(lookup);
         if(!resolvedAsset) {
