@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "manifestFiles": 246,
+  "totalBytes": 288493417,
+  "baseFiles": 239,
+  "baseOrigin": "Previously verified base assets copied to an empty isolated folder; not downloaded again in this run",
+  "newRuntimeOrigin": "Current crown-v2 and edge ZIPs re-downloaded from GitHub and extracted",
+  "downloadReceipts": [
+    {
+      "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-template-crowns-20261104",
+      "files": [
+        {
+          "name": "pine-template-crowns-runtime.zip",
+          "bytes": 624160,
+          "sha256": "4026197af6adf3ec08d8614cfa8365cf56b2f311400067ffe8abdabde6ac75e0"
+        },
+        {
+          "name": "pine-template-crowns-authoring.zip",
+          "bytes": 3731686,
+          "sha256": "594432a488ebabcf78a995493a567d986c6b74e605497408d3d7b2d21e3b1ebc"
+        }
+      ]
+    },
+    {
+      "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-template-closure-correction-20261104",
+      "files": [
+        {
+          "name": "pine-template-crowns-v2-runtime.zip",
+          "bytes": 1104448,
+          "sha256": "a1965138c0ab4e1976adb202c395137f2c8777d50a3110606bfab6fb2bc285ae"
+        },
+        {
+          "name": "pine-template-crowns-v2-authoring.zip",
+          "bytes": 5008430,
+          "sha256": "f48eca8c5c1c871d8f2f585d1180e257146f2f80b437b5e60e40fac6943cb0ce"
+        }
+      ]
+    },
+    {
+      "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-template-edge-20261104",
+      "files": [
+        {
+          "name": "pine-template-edge-runtime.zip",
+          "bytes": 433759,
+          "sha256": "2311b733d8c7af2e2ad7d7909b7f25ae440bd5c6b526b6458c35e668954b9b73"
+        }
+      ]
+    }
+  ],
+  "isolatedBrowser": {
+    "passed": true,
+    "requests": 156,
+    "qualities": [
+      "low",
+      "mid",
+      "high",
+      "low"
+    ],
+    "boundaryX": 99.47339999949946
+  },
+  "authoringImportedInBlender": true,
+  "physicalSecondDevice": false
+}

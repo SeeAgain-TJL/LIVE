@@ -1,0 +1,16 @@
+{
+  "file": "pine-template-walk.webm",
+  "bytes": 30316474,
+  "sha256": "5535bb7f515142703d0cbd3a64891514f5de896715a44e07837013e6623f5110",
+  "durationSeconds": 65.84,
+  "viewport": [
+    1440,
+    900
+  ],
+  "encodedFps": 25,
+  "codec": "VP9",
+  "fullDecodePassed": true,
+  "unedited": true,
+  "input": "Four W legs totalling 42 seconds, mouse drags, then real A/S/D input; no review camera or teleport",
+  "independentVideoRedownload": false
+}

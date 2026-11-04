@@ -1,12 +1,27 @@
 ﻿import assert from 'node:assert/strict';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {chromium} from 'playwright';
+import path from 'node:path';
 const folder=process.env.PINE_EVIDENCE || 'artifacts-local/pine-template/runtime';
 await mkdir(folder,{recursive:true});
 const url=process.env.FOREST_LAB_URL || 'http://127.0.0.1:3214';
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:1440,height:900}});
 const result={errors:[],switches:[],assetRequests:[]};
+const restoredRoot=process.env.PINE_ASSET_ROOT&&path.resolve(process.env.PINE_ASSET_ROOT);
+if(restoredRoot) {
+ const manifest=JSON.parse(await readFile('docs/reviews/pine-template-final/runtime-assets.json','utf8'));
+ const allowed=new Set(manifest.files.map(f=>f.path));
+ result.restoredRuntime={manifestFiles:allowed.size,servedFromIsolatedFolder:true};
+ await page.route('**/forest-origin-assets/**',async route=>{
+  const relative=decodeURIComponent(new URL(route.request().url()).pathname.split('/forest-origin-assets/')[1]);
+  const file=path.resolve(restoredRoot,relative);
+  if(!allowed.has(relative)||!file.startsWith(restoredRoot+path.sep)) {
+   result.errors.push('Unexpected restored asset: '+relative);await route.abort();return;
+  }
+  await route.fulfill({path:file});
+ });
+}
 page.on('pageerror',e=>result.errors.push(String(e)));
 page.on('console',m=>{if(m.type()==='error')result.errors.push(m.text());});
 page.on('response',r=>{if(r.status()>=400)result.errors.push(`${r.status()} ${r.url()}`);});
@@ -45,7 +60,7 @@ try {
  // Reach an original boundary with real movement. No movement of the scenic
  // region is enabled; the pose only sets up this isolated collision check.
  await page.goto(url+'/forest-runtime-lab?review=1');await settled();
- const nav=JSON.parse(await readFile('public/forest-origin-assets/environment/navigation.json','utf8'));
+ const nav=JSON.parse(await readFile(path.join(restoredRoot||'public/forest-origin-assets','environment/navigation.json'),'utf8'));
  const x=89,z=50,i=Math.round((x-nav.origin[0])/nav.step),j=Math.round((-z-nav.origin[1])/nav.step);
  const y=nav.heights[i+j*nav.columns]+1.2;
  const pose={position:[x,y,z],direction:[1,0,0]};

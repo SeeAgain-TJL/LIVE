@@ -1,0 +1,23 @@
+{
+  "blender": "4.4.3",
+  "sourceBlendOpened": false,
+  "blendSaved": false,
+  "files": [
+    {
+      "file": "pine_02.glb",
+      "meshObjects": 1,
+      "polygons": 45996
+    },
+    {
+      "file": "pine_04.glb",
+      "meshObjects": 1,
+      "polygons": 71610
+    },
+    {
+      "file": "silver_fir_04.glb",
+      "meshObjects": 1,
+      "polygons": 33840
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,20 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-template-closure-correction-20261104",
+  "tag": "pine-template-closure-correction-20261104",
+  "publishedFrom": "bb522f717b1e51d1efd2cb404bf4b33cbedd609e",
+  "files": [
+    {
+      "name": "pine-template-crowns-v2-runtime.zip",
+      "bytes": 1104448,
+      "sha256": "a1965138c0ab4e1976adb202c395137f2c8777d50a3110606bfab6fb2bc285ae",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-template-closure-correction-20261104/pine-template-crowns-v2-runtime.zip"
+    },
+    {
+      "name": "pine-template-crowns-v2-authoring.zip",
+      "bytes": 5008430,
+      "sha256": "f48eca8c5c1c871d8f2f585d1180e257146f2f80b437b5e60e40fac6943cb0ce",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-template-closure-correction-20261104/pine-template-crowns-v2-authoring.zip"
+    }
+  ]
+}
