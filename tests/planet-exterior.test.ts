@@ -3,6 +3,7 @@ import test from "node:test";
 import { LinearMipmapLinearFilter, NoColorSpace, RepeatWrapping, SRGBColorSpace } from "three";
 import { bakePlanetMaps, createPlanetBake, createPlanetTextures, EXTERIOR_BUDGETS, planetSurfaceSampler } from "../src/components/three/planet-texture.ts";
 import { PlanetPixelCache } from "../src/components/three/planet-pixel-cache.ts";
+import { EXTERIOR_GPU_BUDGET, exteriorMapBytes, planExteriorLod, type LodCandidate } from "../src/components/three/exterior-lod.ts";
 import { createSeed } from "../src/data/seed.ts";
 
 test("all five surfaces are deterministic, seam/pole continuous and do not mutate appearances", () => {
@@ -72,4 +73,23 @@ test("resumed texture rows match synchronous pixels and cache obeys LRU byte bud
   cache.set("a", sliced.maps); assert.equal(cache.bytes, bytes * 2);
   cache.set("too-large", { ...sliced.maps, albedo: new Uint8Array(bytes * 3) });
   assert.equal(cache.get("too-large"), undefined); assert.equal(cache.bytes, bytes * 2);
+});
+
+test("exterior LOD budgets 50 planets and reserves the current flight ahead of visible detail", () => {
+  const far: LodCandidate = { id: "far", pixels: 24, distanceInRadii: 100, visible: true, retained: true, focused: false, hovered: false, approaching: 0, previous: null };
+  const visible = Array.from({ length: 50 }, (_, i) => ({ ...far, id: String(i), pixels: i < 15 ? 200 : 24 }));
+  const focus = { ...far, id: "flight", focused: true, visible: false };
+  const expired = { ...far, id: "expired", visible: false, retained: false, previous: "high" as const };
+  for (const ceiling of ["low", "medium", "high"] as const) {
+    const results = planExteriorLod([...visible, focus, expired], ceiling);
+    assert.equal(results[0].id, "flight");
+    assert.equal(results[0].tier, ceiling);
+    assert.equal(results.find(p => p.id === expired.id)?.tier, null);
+    assert.ok(results.filter(p => p.visible).every(p => p.tier));
+    assert.ok(results.reduce((sum, p) => sum + (p.tier ? exteriorMapBytes(p.tier) : 0), 0) <= EXTERIOR_GPU_BUDGET[ceiling] * 2 ** 20);
+  }
+  const borderline = { ...far, pixels: 100 };
+  assert.equal(planExteriorLod([borderline], "high")[0].tier, "medium");
+  assert.equal(planExteriorLod([{ ...borderline, previous: "high" }], "high")[0].tier, "high");
+  assert.equal(planExteriorLod([{ ...far, distanceInRadii: 8 }], "high")[0].tier, "high");
 });

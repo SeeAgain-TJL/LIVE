@@ -17,6 +17,8 @@ import { COSMIC_BUDGETS, renderTier } from "@/domain/cosmic-visuals";
 import { useLowPowerDevice, useReducedMotion } from "./use-render-preferences";
 import { isPlanetTap } from "@/domain/planet-flight";
 import { periodLabel, planetName } from "@/domain/planet";
+import { useExteriorLod } from "./use-exterior-lod";
+import type { RenderTier } from "@/domain/cosmic-visuals";
 
 interface SceneProps {
   planets: Planet[]; selectedId: string | null; flight: FlightRequest | null;
@@ -39,6 +41,23 @@ function ContextMonitor({ onLost }: { onLost: () => void }) {
 function SceneUnavailable({ onUnavailable }: { onUnavailable?: () => void }) {
   useEffect(() => { onUnavailable?.(); }, [onUnavailable]);
   return <div className="scene-fallback"><span>3D 信号暂不可用</span><p>请从左侧列表查看星球资料，再用「直接打开档案」继续访问记忆。</p><button className="button secondary" onClick={() => location.reload()}>重新载入</button></div>;
+}
+
+const pendingLod = { tier: null, hidden: false, compact: false, signal: { priority: 0, atmosphere: 1 } } as const;
+function ExteriorPlanets({ planets, selectedId, focusId, hoveredId, newPlanetId, labels, tier, lightPosition, reduced, onSelect, onHover }: {
+  planets: Planet[]; selectedId: string | null; focusId: string | null; hoveredId: string | null; newPlanetId?: string | null;
+  labels: React.RefObject<HTMLDivElement>; tier: RenderTier; lightPosition: Planet["position"]; reduced: boolean;
+  onSelect: (id: string, delta: number) => void; onHover: (id: string | null) => void;
+}) {
+  const plans = useExteriorLod(planets, tier, focusId, hoveredId);
+  return planets.map((planet, index) => <group key={planet.id}>
+    <PlanetMesh appearance={planet.appearance} position={planet.position} lightPosition={lightPosition} lod={plans.get(planet.id) ?? pendingLod}
+      reducedMotion={reduced} selected={selectedId === planet.id} born={newPlanetId === planet.id}
+      onSelect={e => { e.stopPropagation(); onSelect(planet.id, e.delta); }} onHover={value => onHover(value ? planet.id : null)} />
+    <Html portal={labels} position={[planet.position[0], planet.position[1] - planet.appearance.size * 1.65, planet.position[2]]} center distanceFactor={30} zIndexRange={[15, 0]} style={{ pointerEvents: "none" }}>
+      <div className={`planet-label ${selectedId === planet.id ? "selected" : ""}`}><i /><span>{planet.name || `未命名 · ${String(index + 1).padStart(2, "0")}`}</span>{planet.isDemo && <small>示例星球</small>}</div>
+    </Html>
+  </group>);
 }
 
 class SceneBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
@@ -83,16 +102,12 @@ export default function UniverseScene(props: SceneProps) {
   }}><div ref={labels} className="scene-label-layer" aria-hidden="true" />{hovered && !props.locked && <div className="planet-hover-summary" role="status"><strong>{planetName(hovered)}</strong><span>{periodLabel(hovered)} · 单击进入</span></div>}<SceneBoundary fallback={fallback}><Canvas camera={{ position: [0, 7, 30], fov: 43, near: 0.1, far: 30000 }} dpr={[1, COSMIC_BUDGETS[tier].dpr]} gl={{ antialias: !low, alpha: true, powerPreference: low ? "low-power" : "high-performance" }} fallback={<SceneUnavailable />} onPointerMissed={() => { document.body.style.cursor = "auto"; }}>
     <StellarNeighborhood planets={props.planets} tier={tier} source={source} reduced={reducedMotion} identity={props.galaxyId} showOrbits={props.showOrbits !== false} onCreate={props.onCreateVacancy} />
     <SceneMetrics tier={tier} />
-    <ExteriorStatus />
+    <ExteriorStatus tier={tier} count={props.planets.length} />
     <Suspense fallback={null}>
-      <CosmicEnvironment tier={tier} identity={props.galaxyId} />
-      {props.planets.map((planet, index) => <group key={planet.id}>
-        <PlanetMesh appearance={planet.appearance} position={planet.position} lightPosition={source.position} tier={tier} reducedMotion={reducedMotion} selected={props.selectedId === planet.id} born={props.newPlanetId === planet.id}
-          onSelect={e => { e.stopPropagation(); if (!props.locked && gesture.current.tap && e.delta <= 7) props.onEnter(planet.id); }} onHover={value => setHoveredId(value ? planet.id : null)} />
-        <Html portal={labels} position={[planet.position[0], planet.position[1] - planet.appearance.size * 1.65, planet.position[2]]} center distanceFactor={30} zIndexRange={[15, 0]} style={{ pointerEvents: "none" }}>
-          <div className={`planet-label ${props.selectedId === planet.id ? "selected" : ""}`}><i /><span>{planet.name || `未命名 · ${String(index + 1).padStart(2, "0")}`}</span>{planet.isDemo && <small>示例星球</small>}</div>
-        </Html>
-      </group>)}
+      <CosmicEnvironment tier={tier} identity={props.galaxyId} reuseStaticVolume />
+      <ExteriorPlanets planets={props.planets} selectedId={props.selectedId} focusId={props.flight?.planetId ?? props.selectedId}
+        hoveredId={hoveredId} newPlanetId={props.newPlanetId} labels={labels} tier={tier} lightPosition={source.position} reduced={reducedMotion}
+        onSelect={(id, delta) => { if (!props.locked && gesture.current.tap && delta <= 7) props.onEnter(id); }} onHover={setHoveredId} />
       <CameraRig travelMode={props.travelMode} source={source} planets={props.planets} flight={props.flight} onArrival={props.onArrival} onApproach={props.onApproach} onReturned={props.onReturned} reducedMotion={reducedMotion} bookmarkKey={props.bookmarkKey} galaxyId={props.galaxyId} returnPlanetId={props.returnPlanetId} />
       <ContextMonitor onLost={() => setContextLost(true)} />
     </Suspense>

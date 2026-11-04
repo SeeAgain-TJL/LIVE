@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { createSeed } from "../../src/data/seed";
+import type { Vec3 } from "../../src/domain/types";
 
 async function settled(page: Page, tier: string) {
   await expect.poll(async () => page.locator("canvas").first().evaluate(canvas => {
@@ -17,9 +18,13 @@ test("five exterior types survive quality switching without GPU resource growth 
   page.on("console", msg => { if (msg.type() === "error" && /shader|webgl|gl_invalid/i.test(msg.text())) errors.push(msg.text()); });
   await page.goto("/");
   const fixture = createSeed();
-  fixture.planets = fixture.planets.map(p => ({ ...p, isDemo: false, description: "外观验收示例，仅存在隔离测试浏览器。" }));
+  fixture.planets = fixture.planets.map((p, i) => ({ ...p, isDemo: false, description: "外观验收示例，仅存在隔离测试浏览器。",
+    position: [i < 3 ? (i - 1) * 3.7 : (i - 3.5) * 3.7, i < 3 ? -1.6 : 2, 0] as Vec3, appearance: { ...p.appearance, size: 1.2 } }));
   const raw = JSON.stringify(fixture);
-  await page.evaluate(raw => localStorage.setItem("universe-of-me:data:v1", raw), raw);
+  await page.evaluate(raw => {
+    localStorage.setItem("universe-of-me:data:v1", raw);
+    localStorage.setItem("universe-of-me:camera:v1:galaxy:unclassified", JSON.stringify({ position: [0, 0, 10], target: [0, 0, 0] }));
+  }, raw);
   await page.goto("/galaxy/unclassified");
   await expect(page.locator(".planet-label")).toHaveCount(5);
   const metrics = async () => JSON.parse(await page.locator("canvas").first().getAttribute("data-render-metrics") ?? "{}");
@@ -49,6 +54,59 @@ test("five exterior types survive quality switching without GPU resource growth 
   expect(icon.status()).toBe(200);
   expect(icon.headers()["content-type"]).toContain("image/");
   expect(errors).toEqual([]);
+});
+
+test("camera responds before textures and releases offscreen maps while prioritizing a real flight", async ({ page }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const fixture = createSeed();
+  const seeds = fixture.planets;
+  fixture.planets = Array.from({ length: 50 }, (_, i) => ({
+    ...seeds[i % 5], id: `lod-test-${i}`, name: `外观测试星球 ${i + 1}`, isDemo: false,
+    position: (i === 0 ? [0, 0, 0] : i === 1 ? [210, 0, 0] : [-240 - i * 4, i % 4 * 4, 0]) as Vec3,
+    appearance: { ...seeds[i % 5].appearance, size: .8 },
+  }));
+  const raw = JSON.stringify(fixture);
+  await page.addInitScript(raw => {
+    localStorage.setItem("universe-of-me:data:v1", raw);
+    localStorage.setItem("universe-of-me:cosmic-quality:v1", "high");
+    localStorage.setItem("universe-of-me:camera:v1:galaxy:unclassified", JSON.stringify({ position: [0, 0, 42], target: [0, 0, 0] }));
+    const NativeWorker = window.Worker;
+    let paused = true;
+    window.addEventListener("resume-texture-test", () => { paused = false; }, { once: true });
+    window.Worker = class extends NativeWorker {
+      override postMessage(message: unknown) {
+        if (paused) window.addEventListener("resume-texture-test", () => super.postMessage(message), { once: true });
+        else super.postMessage(message);
+      }
+    };
+  }, raw);
+  await page.goto("/galaxy/unclassified");
+  const canvas = page.locator(".universe-canvas canvas");
+  await expect(canvas).toHaveAttribute("data-exterior-interactive", "true");
+  const label = page.locator(".planet-label").first();
+  const y = async () => (await label.boundingBox())!.y;
+  const box = (await canvas.boundingBox())!, initialY = await y();
+  await page.mouse.move(box.x + box.width * .72, box.y + box.height * .7);
+  for (let i = 0; i < 3; i++) await page.mouse.wheel(0, -280);
+  await expect.poll(async () => Math.abs(await y() - initialY)).toBeGreaterThan(1);
+  await expect(canvas).not.toHaveAttribute("data-exterior-ready", "true");
+  await page.evaluate(() => window.dispatchEvent(new Event("resume-texture-test")));
+  await settled(page, "high");
+  const stats = async () => JSON.parse((await canvas.getAttribute("data-exterior-textures"))!);
+  const start = await stats();
+  expect(start.targets).toBe(1);
+  expect(start.total).toBe(50);
+  expect(start.resident.high).toBe(0);
+  await page.getByRole("button", { name: /^外观测试星球 2 / }).click();
+  await page.getByRole("button", { name: "靠近星球", exact: true }).click();
+  await expect.poll(async () => {
+    const s = await stats();
+    return [s.targets, s.resident.high, s.resident.medium + s.resident.low];
+  }, { timeout: 30_000 }).toEqual([1, 1, 0]);
+  const end = await stats();
+  expect(end.mapBytes).toBeLessThanOrEqual(end.mapBudgetBytes);
+  expect(await page.evaluate(() => localStorage.getItem("universe-of-me:data:v1"))).toBe(raw);
+  await testInfo.attach("lod-eviction", { body: JSON.stringify({ start, end }, null, 2), contentType: "application/json" });
 });
 
 test("blocked Worker uses sliced baking and rapid switches discard stale requests", async ({ page }, testInfo) => {

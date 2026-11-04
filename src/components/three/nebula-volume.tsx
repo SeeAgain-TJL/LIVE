@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { createPortal, useFrame, useThree } from "@react-three/fiber";
 import { useFBO } from "@react-three/drei";
 import { Color, Vector3, Matrix4, Scene, CustomBlending, SrcAlphaFactor, OneMinusSrcAlphaFactor, UnsignedByteType } from "three";
@@ -17,7 +17,7 @@ gl_FragColor=vec4(sum/max(.001,opacity),opacity);
 #include <colorspace_fragment>
 }`;
 /** Bounded 3D density integration. One draw, bounded steps, no full-screen postprocessing. */
-export function NebulaVolume({ tier, local = false, seed, cool = "#46677c", warm = "#8e756e" }: { tier: RenderTier; local?: boolean; seed: number; cool?: string; warm?: string }) {
+export function NebulaVolume({ tier, local = false, seed, cool = "#46677c", warm = "#8e756e", reuseStatic = false }: { tier: RenderTier; local?: boolean; seed: number; cool?: string; warm?: string; reuseStatic?: boolean }) {
   const { size, gl } = useThree();
   const resolution = tier === "low" ? .35 : tier === "medium" ? .4 : .5;
   // Diffuse gas has its own pixel budget, independent of the sharp celestial geometry.
@@ -28,14 +28,21 @@ export function NebulaVolume({ tier, local = false, seed, cool = "#46677c", warm
   const position = useMemo(() => new Vector3(local ? -12 : -20, local ? 12 : 18, local ? -90 : -135), [local]);
   const scale = useMemo(() => new Vector3(local ? 220 : 360, local ? 105 : 155, local ? 100 : 145), [local]);
   const uniforms = useMemo(() => ({ invProjection: { value: new Matrix4() }, cameraWorld: { value: new Matrix4() }, volumeScale: { value: scale }, eye: { value: new Vector3() }, cool: { value: new Color(local ? cool : "#46677c") }, warm: { value: new Color(local ? warm : "#8e756e") }, seed: { value: seed % 19 }, steps: { value: tier === "low" ? 4 : tier === "medium" ? 7 : 11 } }), [local, seed, tier, scale, cool, warm]);
+  const last = useRef<{ uniforms: typeof uniforms; width: number; height: number } | null>(null);
   useFrame(({ camera }) => {
+    camera.updateMatrixWorld();
+    const previousPass = last.current;
+    const sameMatrix = (a: Matrix4, b: Matrix4) => a.elements.every((v, i) => Math.abs(v - b.elements[i]) < 1e-7);
+    if (reuseStatic && previousPass?.uniforms === uniforms && previousPass.width === target.width && previousPass.height === target.height
+      && sameMatrix(uniforms.cameraWorld.value, camera.matrixWorld) && sameMatrix(uniforms.invProjection.value, camera.projectionMatrixInverse)) return;
+    last.current = { uniforms, width: target.width, height: target.height };
     uniforms.eye.value.copy(camera.position).sub(position).divide(scale);
-    camera.updateMatrixWorld(); uniforms.invProjection.value.copy(camera.projectionMatrixInverse); uniforms.cameraWorld.value.copy(camera.matrixWorld);
+    uniforms.invProjection.value.copy(camera.projectionMatrixInverse); uniforms.cameraWorld.value.copy(camera.matrixWorld);
     const previous = gl.getRenderTarget(), alpha = gl.getClearAlpha(); gl.getClearColor(clear);
     gl.setRenderTarget(target); gl.setClearColor(0, 0); gl.clear(); gl.render(scene, camera);
     gl.setRenderTarget(previous); gl.setClearColor(clear, alpha);
   });
-  // The texture is a freshly ray-integrated 3D volume, not a static backdrop. Composite in
+  // The volume is ray-integrated whenever the view changes. Composite in
   // the opaque queue before planets, with explicit alpha blending; never wash over their surfaces.
   return <>{createPortal(<mesh frustumCulled={false} raycast={() => null}><planeGeometry args={[2, 2]} /><shaderMaterial uniforms={uniforms} vertexShader={vertex} fragmentShader={fragment} transparent depthWrite={false} depthTest={false} /></mesh>, scene)}
     <mesh frustumCulled={false} renderOrder={-90} raycast={() => null}><planeGeometry args={[2, 2]} /><shaderMaterial uniforms={composite} depthWrite={false} depthTest={false} blending={CustomBlending} blendSrc={SrcAlphaFactor} blendDst={OneMinusSrcAlphaFactor}

@@ -4,7 +4,7 @@ import { createPlanetBake, type PlanetPixels } from "./planet-texture";
 import { PlanetPixelCache } from "./planet-pixel-cache";
 
 type Appearance = Pick<PlanetAppearance, "type" | "color" | "seed">;
-interface Consumer { resolve: (maps: PlanetPixels) => void; reject: (error: Error) => void; signal: AbortSignal }
+interface Consumer { resolve: (maps: PlanetPixels) => void; priority: () => number }
 interface Job { key: string; appearance: Appearance; tier: RenderTier; consumers: Set<Consumer> }
 const cache = new PlanetPixelCache();
 const jobs = new Map<string, Job>();
@@ -14,10 +14,11 @@ const counters = { hits: 0, misses: 0, completed: 0, cancelled: 0, workerBakeMs:
 export const planetTextureKey = (a: Appearance, tier: RenderTier) => `${tier}:${a.type}:${a.color}:${a.seed}`;
 export const exteriorTextureStats = () => ({ ...counters, cacheBytes: cache.bytes, cacheLimit: cache.limit, cacheEntries: cache.size, pending: jobs.size, worker: !!worker, fallback: workerFailed });
 const abortError = () => new DOMException("Texture request cancelled", "AbortError");
+const normalPriority = () => 0;
 
 function complete(job: Job, maps: PlanetPixels) {
   if (job.consumers.size) cache.set(job.key, maps);
-  for (const consumer of job.consumers) if (!consumer.signal.aborted) consumer.resolve(maps);
+  for (const consumer of job.consumers) consumer.resolve(maps);
   jobs.delete(job.key); active = undefined; counters.completed++;
   pump();
 }
@@ -36,7 +37,11 @@ function fallback(job: Job) {
 function pump() {
   if (active) return;
   clearTimeout(idleTimer);
-  const job = [...jobs.values()].find(j => j.consumers.size);
+  let job: Job | undefined, best = -Infinity;
+  for (const candidate of jobs.values()) for (const consumer of candidate.consumers) {
+    const score = consumer.priority();
+    if (score > best) { job = candidate; best = score; }
+  }
   if (!job) { idleTimer = setTimeout(() => { worker?.terminate(); worker = undefined; }, 5000); return; }
   active = job;
   if (!workerFailed && !worker) {
@@ -55,37 +60,42 @@ function pump() {
   if (worker) worker.postMessage({ key: job.key, appearance: job.appearance, tier: job.tier }); else fallback(job);
 }
 
-export function requestPlanetPixels(appearance: Appearance, tier: RenderTier, signal: AbortSignal): Promise<PlanetPixels> {
+export function requestPlanetPixels(appearance: Appearance, tier: RenderTier, signal: AbortSignal, priority = normalPriority): Promise<PlanetPixels> {
   if (signal.aborted) return Promise.reject(abortError());
   const key = planetTextureKey(appearance, tier), hit = cache.get(key);
   if (hit) { counters.hits++; return Promise.resolve(hit); }
   return new Promise((resolve, reject) => {
     let job = jobs.get(key);
     if (!job) { job = { key, appearance, tier, consumers: new Set() }; jobs.set(key, job); counters.misses++; }
-    const consumer: Consumer = { resolve: maps => { signal.removeEventListener("abort", abort); resolve(maps); }, reject, signal };
+    const consumer: Consumer = { resolve: maps => { signal.removeEventListener("abort", abort); resolve(maps); }, priority };
     const abort = () => {
       job.consumers.delete(consumer); counters.cancelled++; reject(abortError());
       if (!job.consumers.size && active !== job) jobs.delete(key);
     };
-    job.consumers.add(consumer); signal.addEventListener("abort", abort, { once: true }); pump();
+    job.consumers.add(consumer); signal.addEventListener("abort", abort, { once: true });
+    // Let all effects from this React commit enter the queue before picking the first job.
+    if (!active && jobs.size === 1) queueMicrotask(pump);
   });
 }
 
 // One upload/commit per animation frame, including cache hits. A worker alone would still
 // let 50 cached texture uploads land in one main-thread task on a quality round trip.
-const uploads: { run: () => void; signal: AbortSignal }[] = [];
+const uploads: { run: () => void; priority: () => number }[] = [];
 let scheduled = false;
-export function schedulePlanetUpload(run: () => void, signal: AbortSignal) {
+export function schedulePlanetUpload(run: () => void, signal: AbortSignal, priority = normalPriority) {
   if (signal.aborted) return;
-  const item = { run: () => { signal.removeEventListener("abort", abort); run(); }, signal };
+  const item = { run: () => { signal.removeEventListener("abort", abort); run(); }, priority };
   const abort = () => { const i = uploads.indexOf(item); if (i !== -1) uploads.splice(i, 1); };
   signal.addEventListener("abort", abort, { once: true }); uploads.push(item);
   if (scheduled) return;
   scheduled = true;
   const next = () => {
-    let item;
-    do { item = uploads.shift(); } while (item?.signal.aborted);
-    item?.run();
+    let best = -Infinity, index = -1;
+    for (let i = 0; i < uploads.length; i++) {
+      const score = uploads[i].priority();
+      if (score > best) { best = score; index = i; }
+    }
+    if (index !== -1) uploads.splice(index, 1)[0].run();
     if (uploads.length) requestAnimationFrame(next); else scheduled = false;
   };
   requestAnimationFrame(next);
