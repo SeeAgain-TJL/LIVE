@@ -106,30 +106,43 @@ export function planetSurfaceSampler(appearance: Pick<PlanetAppearance, "type" |
   };
 }
 
-export function bakePlanetMaps(appearance: Pick<PlanetAppearance, "type" | "color" | "seed">, tier: RenderTier) {
+/** Resumable bake; every pixel uses the unchanged Batch 1 sampler. */
+export function createPlanetBake(appearance: Pick<PlanetAppearance, "type" | "color" | "seed">, tier: RenderTier) {
   const width = EXTERIOR_BUDGETS[tier].width, height = width / 2;
   const albedo = new Uint8Array(width * height * 4), surface = new Uint8Array(albedo.length);
   const sample = planetSurfaceSampler(appearance);
   const longitude = Array.from({ length: width }, (_, x) => x / (width - 1) * Math.PI * 2), cos = longitude.map(Math.cos), sin = longitude.map(Math.sin);
-  for (let row = 0; row < height; row++) {
-    const latitude = row / (height - 1) * Math.PI, y = -Math.cos(latitude);
-    const radius = row === 0 || row === height - 1 ? 0 : Math.sin(latitude);
-    for (let col = 0; col < width; col++) {
-      const x = col === width - 1 ? 0 : col; // Exact duplicate seam texels and uniform pole rows.
-      const s = sample(-cos[x] * radius, y, sin[x] * radius), i = (row * width + col) * 4;
-      const cloud = tier === "low" ? s.cloud * .65 : 0; // Low bakes weather, avoiding a transparent shell.
-      for (let c = 0; c < 3; c++) albedo[i + c] = Math.round(Math.max(0, Math.min(255, lerp(s.color[c], 231, cloud))));
-      albedo[i + 3] = 255;
-      surface[i] = Math.round(s.height * 255); surface[i + 1] = Math.round(s.roughness * 255);
-      surface[i + 2] = Math.round(s.cloud * 255); surface[i + 3] = 255;
+  let row = 0;
+  const maps = { albedo, surface, width, height };
+  return { maps, get done() { return row === height; }, advance(rows = 4) {
+    const end = Math.min(height, row + rows);
+    for (; row < end; row++) {
+      const latitude = row / (height - 1) * Math.PI, y = -Math.cos(latitude);
+      const radius = row === 0 || row === height - 1 ? 0 : Math.sin(latitude);
+      for (let col = 0; col < width; col++) {
+        const x = col === width - 1 ? 0 : col; // Exact duplicate seam texels and uniform pole rows.
+        const s = sample(-cos[x] * radius, y, sin[x] * radius), i = (row * width + col) * 4;
+        const cloud = tier === "low" ? s.cloud * .65 : 0; // Low bakes weather, avoiding a transparent shell.
+        for (let c = 0; c < 3; c++) albedo[i + c] = Math.round(Math.max(0, Math.min(255, lerp(s.color[c], 231, cloud))));
+        albedo[i + 3] = 255;
+        surface[i] = Math.round(s.height * 255); surface[i + 1] = Math.round(s.roughness * 255);
+        surface[i + 2] = Math.round(s.cloud * 255); surface[i + 3] = 255;
+      }
     }
-  }
-  return { albedo, surface, width, height };
+  } };
+}
+
+export type PlanetPixels = ReturnType<typeof createPlanetBake>["maps"];
+export function bakePlanetMaps(appearance: Pick<PlanetAppearance, "type" | "color" | "seed">, tier: RenderTier) {
+  const bake = createPlanetBake(appearance, tier); bake.advance(bake.maps.height); return bake.maps;
 }
 
 /** GPU ownership stays with PlanetMesh; no unbounded global texture cache. */
 export function createPlanetTextures(appearance: Pick<PlanetAppearance, "type" | "color" | "seed">, tier: RenderTier) {
-  const maps = bakePlanetMaps(appearance, tier);
+  return texturesFromPixels(bakePlanetMaps(appearance, tier), tier);
+}
+
+export function texturesFromPixels(maps: PlanetPixels, tier: RenderTier) {
   const texture = (pixels: Uint8Array, color = false) => {
     const map = new DataTexture(pixels, maps.width, maps.height, RGBAFormat);
     if (color) map.colorSpace = SRGBColorSpace;

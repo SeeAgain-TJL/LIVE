@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Color, DoubleSide, BackSide, type Group, type Mesh, Vector3, AdditiveBlending } from "three";
 import type { PlanetAppearance, Vec3 } from "@/domain/types";
 import type { RenderTier } from "@/domain/cosmic-visuals";
-import { createPlanetTextures, EXTERIOR_BUDGETS } from "./planet-texture";
+import { EXTERIOR_BUDGETS } from "./planet-texture";
+import { usePlanetTextures } from "./use-planet-textures";
 
 const atmosphereVertex = `varying vec3 vNormal; varying vec3 vPosition;
 void main(){ vec4 world = modelMatrix * vec4(position,1.); vPosition=world.xyz; vNormal=normalize(mat3(modelMatrix)*normal); gl_Position=projectionMatrix*viewMatrix*world; }`;
@@ -37,12 +38,13 @@ export function PlanetMesh({ appearance, position = [0, 0, 0], lightPosition = P
   const clouds = useRef<Mesh>(null);
   const group = useRef<Group>(null);
   const birth = useRef(born ? 0.05 : 1);
-  const tier = requestedTier ?? (low ? "low" : "medium"), budget = EXTERIOR_BUDGETS[tier];
+  const desiredTier = requestedTier ?? (low ? "low" : "medium");
+  const { ready } = usePlanetTextures(appearance, desiredTier);
+  const tier = ready?.tier ?? desiredTier, budget = EXTERIOR_BUDGETS[tier];
   const { type, color, seed } = appearance;
   const relief = budget.bump && type !== "gas" && type !== "ringed";
-  const textures = useMemo(() => createPlanetTextures({ type, color, seed }, tier), [type, color, seed, tier]);
-  useEffect(() => () => textures.dispose(), [textures]);
-  const cloudUniforms = useMemo(() => ({ surface: { value: textures.surface }, lightPosition: { value: new Vector3(...lightPosition) } }), [textures, lightPosition]);
+  const textures = ready?.textures;
+  const cloudUniforms = useMemo(() => ({ surface: { value: textures?.surface }, lightPosition: { value: new Vector3(...lightPosition) } }), [textures, lightPosition]);
   const atmosphere = useMemo(() => ({ tint: { value: new Color(appearance.type === "ocean" ? "#568cba" : appearance.type === "ice" ? "#a2d8e5" : appearance.color) }, lightPosition: { value: new Vector3(...lightPosition) } }), [appearance, lightPosition]);
   const rings = useMemo(() => ({ tint: { value: new Color(appearance.color).lerp(new Color("#e0d3bc"), 0.32) }, radius: { value: appearance.size }, lightPosition: { value: new Vector3(...lightPosition) }, planetPosition: { value: new Vector3(...position) } }), [appearance.color, appearance.size, lightPosition, position]);
   const scale = useMemo(() => new Vector3(1, 1, 1), []);
@@ -59,11 +61,11 @@ export function PlanetMesh({ appearance, position = [0, 0, 0], lightPosition = P
     <mesh ref={mesh} rotation={[0.06, appearance.seed, 0.12]} onClick={onSelect} onPointerOver={e => { e.stopPropagation(); if (onSelect) document.body.style.cursor = "pointer"; onHover?.(true); }} onPointerOut={() => { document.body.style.cursor = "auto"; onHover?.(false); }}>
       <sphereGeometry args={[radius, budget.segments, budget.rows]} />
       {/* Changing bump presence requires a new shader variant, releasing old sampler bindings. */}
-      <meshStandardMaterial key={relief ? "relief" : "smooth"} map={textures.albedo} roughnessMap={textures.surface} roughness={1} metalness={0}
-        bumpMap={relief ? textures.surface : undefined}
+      <meshStandardMaterial key={textures ? relief ? "relief" : "smooth" : "loading"} color={textures ? "#ffffff" : color} map={textures?.albedo} roughnessMap={textures?.surface} roughness={1} metalness={0}
+        bumpMap={relief ? textures?.surface : undefined}
         bumpScale={radius * (type === "rocky" ? .055 : type === "ice" ? .028 : .012)} />
     </mesh>
-    {type === "ocean" && budget.clouds && <mesh ref={clouds} rotation={[0.06, seed, 0.12]} scale={1.012} raycast={() => null}>
+    {textures && type === "ocean" && budget.clouds && <mesh ref={clouds} rotation={[0.06, seed, 0.12]} scale={1.012} raycast={() => null}>
       <sphereGeometry args={[radius, budget.segments, budget.rows]} />
       <shaderMaterial uniforms={cloudUniforms} vertexShader={cloudVertex} fragmentShader={cloudFragment} transparent depthWrite={false} />
     </mesh>}

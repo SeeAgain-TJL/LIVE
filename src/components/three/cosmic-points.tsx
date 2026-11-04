@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { AdditiveBlending, NormalBlending, PerspectiveCamera, Vector3, type Points, type ShaderMaterial } from "three";
+import { AdditiveBlending, BufferAttribute, BufferGeometry, NormalBlending, PerspectiveCamera, Vector3, type Points, type ShaderMaterial } from "three";
 
 const vertex = `attribute float pointSize; varying vec3 vColor; varying float vDistance; uniform float pixelScale; uniform float minSize;
 void main(){ vColor=color; vec4 mv=modelViewMatrix*vec4(position,1.);vDistance=length(mv.xyz);
@@ -19,6 +19,16 @@ export interface PointCloud { positions: Float32Array; colors: Float32Array; siz
 /** One draw call per cloud, no per-star objects/textures; world-space sizes. */
 export function CosmicPoints({ cloud, opacity = 1, soft = false, lod = false, minimumSize = 1, nearFade = 0, additive = true }: { cloud: PointCloud; opacity?: number; soft?: boolean; lod?: boolean; minimumSize?: number; nearFade?: number; additive?: boolean }) {
   const points = useRef<Points>(null), material = useRef<ShaderMaterial>(null);
+  // Replacing attributes on a live geometry orphans its old GPU buffers. Keep each
+  // cloud's attributes together and dispose the complete old geometry on replacement.
+  const geometry = useMemo(() => {
+    const geometry = new BufferGeometry();
+    geometry.setAttribute("position", new BufferAttribute(cloud.positions, 3));
+    geometry.setAttribute("color", new BufferAttribute(cloud.colors, 3));
+    geometry.setAttribute("pointSize", new BufferAttribute(cloud.sizes, 1));
+    return geometry;
+  }, [cloud]);
+  useEffect(() => () => geometry.dispose(), [geometry]);
   const { size, gl } = useThree();
   const world = useMemo(() => new Vector3(), []);
   const uniforms = useMemo(() => ({ pixelScale: { value: 1 }, minSize: { value: minimumSize }, opacity: { value: opacity }, soft: { value: soft ? 1 : 0 }, nearFade: { value: nearFade } }), [soft, opacity, minimumSize, nearFade]);
@@ -36,7 +46,7 @@ export function CosmicPoints({ cloud, opacity = 1, soft = false, lod = false, mi
     }
   });
   return <points ref={points} raycast={() => null}>
-    <bufferGeometry><bufferAttribute attach="attributes-position" args={[cloud.positions, 3]} /><bufferAttribute attach="attributes-color" args={[cloud.colors, 3]} /><bufferAttribute attach="attributes-pointSize" args={[cloud.sizes, 1]} /></bufferGeometry>
+    <primitive object={geometry} attach="geometry" />
     <shaderMaterial ref={material} uniforms={uniforms} vertexShader={vertex} fragmentShader={fragment} vertexColors transparent depthWrite={false} blending={additive ? AdditiveBlending : NormalBlending} />
   </points>;
 }

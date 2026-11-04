@@ -12,6 +12,7 @@ import { CosmicEnvironment } from "./cosmic-environment";
 import { stellarSource } from "@/domain/spatial-scene";
 import { StellarNeighborhood } from "./stellar-neighborhood";
 import { SceneMetrics } from "./scene-metrics";
+import { ExteriorStatus } from "./exterior-status";
 import { COSMIC_BUDGETS, renderTier } from "@/domain/cosmic-visuals";
 import { useLowPowerDevice, useReducedMotion } from "./use-render-preferences";
 import { isPlanetTap } from "@/domain/planet-flight";
@@ -82,6 +83,7 @@ export default function UniverseScene(props: SceneProps) {
   }}><div ref={labels} className="scene-label-layer" aria-hidden="true" />{hovered && !props.locked && <div className="planet-hover-summary" role="status"><strong>{planetName(hovered)}</strong><span>{periodLabel(hovered)} · 单击进入</span></div>}<SceneBoundary fallback={fallback}><Canvas camera={{ position: [0, 7, 30], fov: 43, near: 0.1, far: 30000 }} dpr={[1, COSMIC_BUDGETS[tier].dpr]} gl={{ antialias: !low, alpha: true, powerPreference: low ? "low-power" : "high-performance" }} fallback={<SceneUnavailable />} onPointerMissed={() => { document.body.style.cursor = "auto"; }}>
     <StellarNeighborhood planets={props.planets} tier={tier} source={source} reduced={reducedMotion} identity={props.galaxyId} showOrbits={props.showOrbits !== false} onCreate={props.onCreateVacancy} />
     <SceneMetrics tier={tier} />
+    <ExteriorStatus />
     <Suspense fallback={null}>
       <CosmicEnvironment tier={tier} identity={props.galaxyId} />
       {props.planets.map((planet, index) => <group key={planet.id}>

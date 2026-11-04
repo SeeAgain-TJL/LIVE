@@ -1,0 +1,215 @@
+{
+  "baseline": "2953935",
+  "results": [
+    {
+      "type": "ringed",
+      "tier": "low",
+      "channel": "albedo",
+      "sha256": "74e4bcea896cb8ba07a72d039ad12e2871079cccc599e08b43233b4f40198233",
+      "equal": true
+    },
+    {
+      "type": "ringed",
+      "tier": "low",
+      "channel": "surface",
+      "sha256": "c6563c608719d73b358db34d40c529763d409883dd70b53eb8f909e92a61f412",
+      "equal": true
+    },
+    {
+      "type": "ringed",
+      "tier": "medium",
+      "channel": "albedo",
+      "sha256": "f92fc799959859514183e2370e38a84a046e234ad2043d0056c1a0b6ba75020f",
+      "equal": true
+    },
+    {
+      "type": "ringed",
+      "tier": "medium",
+      "channel": "surface",
+      "sha256": "30a6a7daf2cf174ff7b7a9804d37c20b7c0d7933b7fd7e391ff34dfe4e766076",
+      "equal": true
+    },
+    {
+      "type": "ringed",
+      "tier": "high",
+      "channel": "albedo",
+      "sha256": "5be373508ad564ac4560c2d499504e1e0f18b21e4336410fb7e632d46997edac",
+      "equal": true
+    },
+    {
+      "type": "ringed",
+      "tier": "high",
+      "channel": "surface",
+      "sha256": "07062558eadb6be0db84cdbbbe5051ed2ed09d349f3c32a4a102298f70402b7e",
+      "equal": true
+    },
+    {
+      "type": "ocean",
+      "tier": "low",
+      "channel": "albedo",
+      "sha256": "0b816f9e6f9eba84c84eb39ab94207a5fc01b6869cbf7a6e37352b05fce5d34c",
+      "equal": true
+    },
+    {
+      "type": "ocean",
+      "tier": "low",
+      "channel": "surface",
+      "sha256": "b91185bddc92287ac8911c0961ff6fa3bbdeef39c94d0557071a26f01fb103df",
+      "equal": true
+    },
+    {
+      "type": "ocean",
+      "tier": "medium",
+      "channel": "albedo",
+      "sha256": "d3e66098da9b1415caf87d3294d39eb4245fd512257c967b49e3bdfbd6116250",
+      "equal": true
+    },
+    {
+      "type": "ocean",
+      "tier": "medium",
+      "channel": "surface",
+      "sha256": "6f677fa3a92d7ab2873ffaad5c8fab2649e6da60621777502be428839b896494",
+      "equal": true
+    },
+    {
+      "type": "ocean",
+      "tier": "high",
+      "channel": "albedo",
+      "sha256": "9c6744de1a586634cd25c668dbfa49f99598e16020a9011668155ff80c940c6e",
+      "equal": true
+    },
+    {
+      "type": "ocean",
+      "tier": "high",
+      "channel": "surface",
+      "sha256": "8fb271d80f27da0439dd505bee0ad64cf1cd3ce2c69932639fa5df61c0820b5b",
+      "equal": true
+    },
+    {
+      "type": "rocky",
+      "tier": "low",
+      "channel": "albedo",
+      "sha256": "22ac79416c9b8b49a519cf0745da7118e857742e1a6e429b42bf17443c92bf29",
+      "equal": true
+    },
+    {
+      "type": "rocky",
+      "tier": "low",
+      "channel": "surface",
+      "sha256": "205a91c831da6d0bf5c71973cb24316520da752c01c476a788ea74a32e08bc06",
+      "equal": true
+    },
+    {
+      "type": "rocky",
+      "tier": "medium",
+      "channel": "albedo",
+      "sha256": "59568bc7130b907d3d369375f22cbb3f224667b83d3f244006e8f7d3ad4aa62b",
+      "equal": true
+    },
+    {
+      "type": "rocky",
+      "tier": "medium",
+      "channel": "surface",
+      "sha256": "419c9761e75e8a2fb318c08097ad8dc55092127616459158af21a00e082dfbc5",
+      "equal": true
+    },
+    {
+      "type": "rocky",
+      "tier": "high",
+      "channel": "albedo",
+      "sha256": "03e38638f314387d8a281de391e4fe161607ee5de479b77f4bceb3c10fd89bdb",
+      "equal": true
+    },
+    {
+      "type": "rocky",
+      "tier": "high",
+      "channel": "surface",
+      "sha256": "7d19b1dc18c4997e963ca28544afc4cb8590989afb06783f83334d3cd5cdd2fb",
+      "equal": true
+    },
+    {
+      "type": "ice",
+      "tier": "low",
+      "channel": "albedo",
+      "sha256": "5196640d95c1a14b5ca46b2114a99c61eab69bc8055cae43c8e03e00cd320f50",
+      "equal": true
+    },
+    {
+      "type": "ice",
+      "tier": "low",
+      "channel": "surface",
+      "sha256": "81569f6bdbbd11ac3cd6aaee2b9873975af1bfde9876cd5bf0f8a82b1ab7cc7f",
+      "equal": true
+    },
+    {
+      "type": "ice",
+      "tier": "medium",
+      "channel": "albedo",
+      "sha256": "549d64ebc897acef4c5f78e52e0bc04cfe48e250af5b0fae6d9e64d17ef8859f",
+      "equal": true
+    },
+    {
+      "type": "ice",
+      "tier": "medium",
+      "channel": "surface",
+      "sha256": "7b1cfb7d287f7779813cffde6c843719b2c1f9cf321f027825488a8fc2a28785",
+      "equal": true
+    },
+    {
+      "type": "ice",
+      "tier": "high",
+      "channel": "albedo",
+      "sha256": "149e31559a8bc4c0f9159e4915cf2656cf2d03e1d3f5ed5e4621953e3db00599",
+      "equal": true
+    },
+    {
+      "type": "ice",
+      "tier": "high",
+      "channel": "surface",
+      "sha256": "7ef34a19355f7c0cbf215575ee65429926a2b072451fa4512b2cf9971cc0aab2",
+      "equal": true
+    },
+    {
+      "type": "gas",
+      "tier": "low",
+      "channel": "albedo",
+      "sha256": "fa2bd5f23117e9dcf8003ef0a16b1a584fbcbd687237187137171f2dafd4daa9",
+      "equal": true
+    },
+    {
+      "type": "gas",
+      "tier": "low",
+      "channel": "surface",
+      "sha256": "c6563c608719d73b358db34d40c529763d409883dd70b53eb8f909e92a61f412",
+      "equal": true
+    },
+    {
+      "type": "gas",
+      "tier": "medium",
+      "channel": "albedo",
+      "sha256": "04946da119dc5cee8db70d494dfac0dd321ecbfc6ee1c88870bb6ff70541e578",
+      "equal": true
+    },
+    {
+      "type": "gas",
+      "tier": "medium",
+      "channel": "surface",
+      "sha256": "30a6a7daf2cf174ff7b7a9804d37c20b7c0d7933b7fd7e391ff34dfe4e766076",
+      "equal": true
+    },
+    {
+      "type": "gas",
+      "tier": "high",
+      "channel": "albedo",
+      "sha256": "b22a1a3a745ebac3d4baf423c2c9c6fbac4351e48c6e0aa77daac14ab4dceeba",
+      "equal": true
+    },
+    {
+      "type": "gas",
+      "tier": "high",
+      "channel": "surface",
+      "sha256": "07062558eadb6be0db84cdbbbe5051ed2ed09d349f3c32a4a102298f70402b7e",
+      "equal": true
+    }
+  ]
+}

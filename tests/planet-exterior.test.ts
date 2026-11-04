@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { LinearMipmapLinearFilter, NoColorSpace, RepeatWrapping, SRGBColorSpace } from "three";
-import { bakePlanetMaps, createPlanetTextures, EXTERIOR_BUDGETS, planetSurfaceSampler } from "../src/components/three/planet-texture.ts";
+import { bakePlanetMaps, createPlanetBake, createPlanetTextures, EXTERIOR_BUDGETS, planetSurfaceSampler } from "../src/components/three/planet-texture.ts";
+import { PlanetPixelCache } from "../src/components/three/planet-pixel-cache.ts";
 import { createSeed } from "../src/data/seed.ts";
 
 test("all five surfaces are deterministic, seam/pole continuous and do not mutate appearances", () => {
@@ -54,4 +55,21 @@ test("three quality tiers bound texture/geometry cost and give GPU maps the corr
   let disposed = 0;
   maps.albedo.addEventListener("dispose", () => disposed++); maps.surface.addEventListener("dispose", () => disposed++);
   maps.dispose(); assert.equal(disposed, 2);
+});
+
+test("resumed texture rows match synchronous pixels and cache obeys LRU byte budget", () => {
+  const appearance = createSeed().planets[1].appearance;
+  const sliced = createPlanetBake(appearance, "medium");
+  while (!sliced.done) sliced.advance(13);
+  assert.deepEqual(sliced.maps, bakePlanetMaps(appearance, "medium"));
+  const bytes = sliced.maps.albedo.byteLength + sliced.maps.surface.byteLength;
+  const cache = new PlanetPixelCache(bytes * 2);
+  cache.set("a", sliced.maps); cache.set("b", sliced.maps);
+  assert.equal(cache.get("a"), sliced.maps);
+  cache.set("c", sliced.maps);
+  assert.equal(cache.get("b"), undefined); assert.equal(cache.get("a"), sliced.maps);
+  assert.equal(cache.bytes, bytes * 2); assert.equal(cache.size, 2);
+  cache.set("a", sliced.maps); assert.equal(cache.bytes, bytes * 2);
+  cache.set("too-large", { ...sliced.maps, albedo: new Uint8Array(bytes * 3) });
+  assert.equal(cache.get("too-large"), undefined); assert.equal(cache.bytes, bytes * 2);
 });
