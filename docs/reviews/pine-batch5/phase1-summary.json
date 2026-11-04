@@ -1,0 +1,358 @@
+{
+  "baseline": {
+    "route": "/forest-runtime-lab?scale=0.8",
+    "motion": {
+      "seconds": 88.65479999990482,
+      "frames": 3717,
+      "averageFps": 41.926663869344814,
+      "p95Ms": 50.09999999997672,
+      "p99Ms": 66.79999999998836,
+      "over100ms": 1
+    },
+    "passed": true,
+    "qualityTargetMet": false,
+    "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "canvasSize": {
+      "internal": [
+        1152,
+        720
+      ],
+      "css": [
+        1440,
+        900
+      ],
+      "devicePixelRatio": 1
+    },
+    "firstForestMs": 5984,
+    "settledMs": 10153,
+    "errors": [],
+    "archiveAccess": [],
+    "contextEvents": [],
+    "released": {
+      "tiles": 28,
+      "resources": 17,
+      "batches": 457,
+      "materials": 6
+    },
+    "stages": [
+      {
+        "name": "near-static",
+        "fps": 32.53890626649445,
+        "p95Ms": 50.20000000000073,
+        "gpu": {
+          "samples": 332,
+          "medianMs": 25.633802,
+          "p95Ms": 39.755208
+        },
+        "triangles": [
+          6921361,
+          6921361
+        ],
+        "uploads": {
+          "calls": 0,
+          "bytes": 0,
+          "cpuMs": 0
+        }
+      },
+      {
+        "name": "walk-forward",
+        "fps": 46.52862027146649,
+        "p95Ms": 33.5,
+        "gpu": {
+          "samples": 677,
+          "medianMs": 19.183853,
+          "p95Ms": 26.443176
+        },
+        "triangles": [
+          2926054,
+          7345524
+        ],
+        "uploads": {
+          "calls": 39383,
+          "bytes": 139454984,
+          "cpuMs": 280.19999861717224
+        }
+      },
+      {
+        "name": "walk-diagonal",
+        "fps": 57.21359090873667,
+        "p95Ms": 17.299999999995634,
+        "gpu": {
+          "samples": 584,
+          "medianMs": 10.0075,
+          "p95Ms": 22.146978
+        },
+        "triangles": [
+          1250801,
+          5023600
+        ],
+        "uploads": {
+          "calls": 2752,
+          "bytes": 93221832,
+          "cpuMs": 72.89999914169312
+        }
+      },
+      {
+        "name": "turn-and-walk",
+        "fps": 37.13270907329674,
+        "p95Ms": 50.19999999999709,
+        "gpu": {
+          "samples": 575,
+          "medianMs": 25.069947,
+          "p95Ms": 33.376926
+        },
+        "triangles": [
+          3520099,
+          8010996
+        ],
+        "uploads": {
+          "calls": 2740,
+          "bytes": 47370076,
+          "cpuMs": 82.19999980926514
+        }
+      },
+      {
+        "name": "mid-static-release",
+        "fps": 31.916845001714705,
+        "p95Ms": 66.5,
+        "gpu": {
+          "samples": 522,
+          "medianMs": 28.420572,
+          "p95Ms": 35.385676
+        },
+        "triangles": [
+          6945156,
+          6945156
+        ],
+        "uploads": {
+          "calls": 66,
+          "bytes": 11712,
+          "cpuMs": 0.5
+        }
+      },
+      {
+        "name": "continuous-turn",
+        "fps": 39.25114349517373,
+        "p95Ms": 50,
+        "gpu": {
+          "samples": 369,
+          "medianMs": 22.041197,
+          "p95Ms": 30.845207
+        },
+        "triangles": [
+          6109914,
+          6109914
+        ],
+        "uploads": {
+          "calls": 669,
+          "bytes": 47943812,
+          "cpuMs": 93.90000009536743
+        }
+      },
+      {
+        "name": "far-static",
+        "fps": 42.329998832668714,
+        "p95Ms": 49.80000000000291,
+        "gpu": {
+          "samples": 436,
+          "medianMs": 20.839426,
+          "p95Ms": 26.043958
+        },
+        "triangles": [
+          6109914,
+          6109914
+        ],
+        "uploads": {
+          "calls": 0,
+          "bytes": 0,
+          "cpuMs": 0
+        }
+      },
+      {
+        "name": "walk-return",
+        "fps": 33.29618278082946,
+        "p95Ms": 66.69999999999709,
+        "gpu": {
+          "samples": 477,
+          "medianMs": 28.720624,
+          "p95Ms": 34.987655
+        },
+        "triangles": [
+          5016368,
+          8412355
+        ],
+        "uploads": {
+          "calls": 2494,
+          "bytes": 35433370,
+          "cpuMs": 98.7000024318695
+        }
+      },
+      {
+        "name": "diagonal-return",
+        "fps": 30.730562673513248,
+        "p95Ms": 66.60000000000582,
+        "gpu": {
+          "samples": 313,
+          "medianMs": 29.441041,
+          "p95Ms": 36.735781
+        },
+        "triangles": [
+          6850207,
+          6850207
+        ],
+        "uploads": {
+          "calls": 44,
+          "bytes": 7680,
+          "cpuMs": 0.2999997138977051
+        }
+      },
+      {
+        "name": "dense-return",
+        "fps": 49.79080944642301,
+        "p95Ms": 33.60000000000582,
+        "gpu": {
+          "samples": 720,
+          "medianMs": 16.211874,
+          "p95Ms": 29.18328
+        },
+        "triangles": [
+          3353389,
+          6850207
+        ],
+        "uploads": {
+          "calls": 1533,
+          "bytes": 29449832,
+          "cpuMs": 34.19999933242798
+        }
+      }
+    ]
+  },
+  "accepted": {
+    "route": "/forest-runtime-lab",
+    "motion": {
+      "seconds": 89.16139999976184,
+      "frames": 3126,
+      "averageFps": 35.060014759843945,
+      "p95Ms": 50,
+      "p99Ms": 50.90000000002328,
+      "over100ms": 2
+    },
+    "passed": true,
+    "qualityTargetMet": false,
+    "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "canvasSize": {
+      "internal": [
+        1440,
+        900
+      ],
+      "css": [
+        1440,
+        900
+      ],
+      "devicePixelRatio": 1
+    },
+    "firstForestMs": 1217,
+    "settledMs": 10500,
+    "errors": [],
+    "archiveAccess": [],
+    "contextEvents": [],
+    "released": {
+      "tiles": 27,
+      "resources": 17,
+      "batches": 489,
+      "materials": 8
+    },
+    "stages": [
+      {
+        "name": "near-static",
+        "fps": 27.12652586733065,
+        "p95Ms": 50.29999999999927,
+        "triangles": [
+          6667228,
+          6667228
+        ]
+      },
+      {
+        "name": "walk-forward",
+        "fps": 34.57039790129321,
+        "p95Ms": 50.099999999998545,
+        "triangles": [
+          2123906,
+          6190724
+        ]
+      },
+      {
+        "name": "walk-diagonal",
+        "fps": 52.42918686644051,
+        "p95Ms": 33.400000000001455,
+        "triangles": [
+          147596,
+          5022367
+        ]
+      },
+      {
+        "name": "turn-and-walk",
+        "fps": 28.10683083037401,
+        "p95Ms": 50.400000000001455,
+        "triangles": [
+          2702246,
+          6126100
+        ]
+      },
+      {
+        "name": "mid-static-release",
+        "fps": 31.287590673169714,
+        "p95Ms": 50.09999999999127,
+        "triangles": [
+          3982000,
+          3982000
+        ]
+      },
+      {
+        "name": "continuous-turn",
+        "fps": 42.752287574571085,
+        "p95Ms": 33.5,
+        "triangles": [
+          4515480,
+          4515480
+        ]
+      },
+      {
+        "name": "far-static",
+        "fps": 44.88875820878969,
+        "p95Ms": 33.5,
+        "triangles": [
+          4515480,
+          4515480
+        ]
+      },
+      {
+        "name": "walk-return",
+        "fps": 33.186845433140746,
+        "p95Ms": 50,
+        "triangles": [
+          3542302,
+          6795550
+        ]
+      },
+      {
+        "name": "diagonal-return",
+        "fps": 30.995472900816623,
+        "p95Ms": 49.79999999998836,
+        "triangles": [
+          5998952,
+          5998952
+        ]
+      },
+      {
+        "name": "dense-return",
+        "fps": 30.645150057068502,
+        "p95Ms": 50,
+        "triangles": [
+          5998952,
+          5998952
+        ]
+      }
+    ]
+  }
+}

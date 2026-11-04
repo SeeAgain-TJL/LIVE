@@ -47,12 +47,12 @@ function Streaming({ manifest, trees, onError, quality }: { manifest: TileManife
   useFrame(()=>{if(camera instanceof PerspectiveCamera) owner.current?.tick(camera,performance.now());});
   return null;
 }
-function Terrain() {
+function Terrain({ onReady, onError }: { onReady: (ready: boolean) => void; onError: (message: string) => void }) {
   const terrain = useGLTF(pineRoot+"terrain.glb");
   const { gl } = useThree();
   useEffect(()=>{
     const mode=new URLSearchParams(window.location.search).get("terrain");
-    if(mode==="legacy") return;
+    if(mode==="legacy") {onReady(true);return ()=>onReady(false);}
     let disposed=false;
     let release=()=>{};
     gl.domElement.dataset.pineTerrain="loading";
@@ -62,10 +62,14 @@ function Terrain() {
       release=()=>{for(const [mesh,previous] of original) mesh.material=previous;material.dispose();for(const map of maps) map.dispose();};
       if(disposed) {release();return;}
       terrain.scene.traverse(object=>{if(object instanceof Mesh){original.set(object,object.material);object.material=material;}});
+      // Upload the surface before vegetation starts; async material loading used
+      // to reveal the tree overview while the terrain was still suspended.
+      for(const map of maps) gl.initTexture(map);
       gl.domElement.dataset.pineTerrain=mode==="batch3b" ? "pbr":"layered";
-    }).catch(error=>console.error("Pine terrain PBR",error));
-    return ()=>{disposed=true;release();delete gl.domElement.dataset.pineTerrain;};
-  },[terrain,gl]);
+      onReady(true);
+    }).catch(error=>{if(!disposed) onError(`地表加载失败：${String(error)}`);});
+    return ()=>{disposed=true;onReady(false);release();delete gl.domElement.dataset.pineTerrain;};
+  },[terrain,gl,onReady,onError]);
   return <primitive object={terrain.scene} />;
 }
 export function ForestRuntimeLab() {
@@ -73,6 +77,7 @@ export function ForestRuntimeLab() {
   const [error,setError] = useState("");
   const [scale,setScale] = useState(1);
   const [quality,setQuality] = useState<"low" | "high">("low");
+  const [terrainReady,setTerrainReady] = useState(false);
   const status = useRef<HTMLSpanElement>(null);
   useEffect(()=>{
     const controller = new AbortController();
@@ -100,13 +105,14 @@ export function ForestRuntimeLab() {
   return <main className="forest-lab" aria-label="Pine Forest 实时漫游">
     {payload && <ForestSurface><Canvas camera={{position:[23.155473709106445,0.9223032593727112,47.55979919433594],fov:48.5,near:0.08,far:220}}
       fallback={<RenderFailure message="无法创建 WebGL 场景，请检查浏览器的图形支持。" />}
+      onCreated={({gl})=>{gl.domElement.dataset.forestStreamingRuntime="true";}}
       dpr={scale} gl={{antialias:true,powerPreference:"high-performance",toneMapping:ACESFilmicToneMapping}}>
       <RenderHealth />
       <fog attach="fog" args={["#adb2a5",0.013]} />
       <ambientLight intensity={0.65} /><directionalLight position={[-30,45,12]} intensity={2.1} />
       <Suspense fallback={null}><Environment files={pineRoot+"sky.hdr"} background environmentIntensity={0.75} /></Suspense>
-      <Suspense fallback={null}><Terrain /></Suspense>
-      <Streaming manifest={payload.manifest} trees={payload.trees} onError={setError} quality={quality} />
+      <Suspense fallback={null}><Terrain onReady={setTerrainReady} onError={setError} /></Suspense>
+      {terrainReady && <Streaming manifest={payload.manifest} trees={payload.trees} onError={setError} quality={quality} />}
       <Walker collision={payload.collision} trunks={payload.trunks} />
       <RuntimeReviewPose />
     </Canvas></ForestSurface>}

@@ -394,7 +394,10 @@ export class PineStream {
           resolvedAsset={key,resource,asset:resource.assets.get(name)!,batchKey:`${key}/${name}`,available};
           resolved.set(lookup,resolvedAsset);
         }
-        const {key,asset,batchKey,available}=resolvedAsset;
+        const {key,asset,available}=resolvedAsset;
+        // Original tree parts can now be culled separately per small stand.
+        // Broad species-wide bounds previously submitted whole crowns offscreen.
+        const batchKey=resolvedAsset.batchKey+(!asset.billboard && tree ? `/${Math.floor(tile.data[offset+4]/8)}_${Math.floor(tile.data[offset+8]/8)}`:"");
         const batch=selection.get(batchKey) || {resource:key,asset,chunks:[],count:0};
         let chunk=chunks.get(batchKey);
         if(!chunk) {chunk={data:tile.data,offsets:[]};chunks.set(batchKey,chunk);batch.chunks.push(chunk);}
@@ -427,7 +430,7 @@ export class PineStream {
           // Parts are populated across frames. Never submit identity matrices
           // from a newly allocated but not yet populated batch.
           mesh.count=0;
-          mesh.instanceMatrix.setUsage(DynamicDrawUsage);mesh.frustumCulled=false;mesh.name=key;
+          mesh.instanceMatrix.setUsage(DynamicDrawUsage);mesh.frustumCulled=!selected.asset.billboard;mesh.name=key;
           this.group.add(mesh);return mesh;
         });
         batch={resource:selected.resource,parts,capacity,ownedGeometry,lastUsed:now,entries:[],slots:new Map()};this.batches.set(key,batch);
@@ -529,7 +532,10 @@ export class PineStream {
         }
       }
     }
-    for(const [mesh,count] of counts) mesh.count=count;
+    for(const [mesh,count] of counts) {
+      mesh.count=count;
+      if(mesh.frustumCulled && count) mesh.computeBoundingSphere();
+    }
     this.counters=counters;
     this.audit.updates++;
     this.tickMs=performance.now()-tickStart;
