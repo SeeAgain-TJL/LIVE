@@ -1,11 +1,15 @@
 import { Material, ShaderChunk } from "three";
 
+export function shouldApplyPineLodFade(material: Material) {
+  return material.transparent || !/bark|trunk|stem|dead[ _-]?branches/i.test(material.name.trim());
+}
+
 /** Reuse InstancedMesh.instanceColor as an independent LOD weight. This
  * avoids cloning large shared tree vertex buffers for a single attribute. */
 export function applyPineLodFade(material: Material) {
   // Keep rigid trunks crisp throughout crown blending; screen-door bark is
   // conspicuous at eye level. The aligned far trunk is only a weak back layer.
-  if(!material.transparent && /bark|trunk|dead_branches/.test(material.name))return;
+  if(!shouldApplyPineLodFade(material))return;
   const previous=material.onBeforeCompile;
   const key=material.customProgramCacheKey();
   material.customProgramCacheKey=()=>key+"|pine-lod-weight";
