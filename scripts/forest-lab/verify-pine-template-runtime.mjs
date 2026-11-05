@@ -7,10 +7,10 @@ await mkdir(folder,{recursive:true});
 const url=process.env.FOREST_LAB_URL || 'http://127.0.0.1:3214';
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:1440,height:900}});
-const result={errors:[],switches:[],assetRequests:[]};
+const result={route:'/forest-runtime-lab?trees=rebuild',errors:[],switches:[],assetRequests:[]};
 const restoredRoot=process.env.PINE_ASSET_ROOT&&path.resolve(process.env.PINE_ASSET_ROOT);
 if(restoredRoot) {
- const stages=['pine-template-final','pine-scene-repair','pine-scene-repair-contact'];
+ const stages=['pine-template-final','pine-scene-repair','pine-scene-repair-contact','pine-tree-rebuild'];
  const manifests=await Promise.all(stages.map(stage=>readFile(`docs/reviews/${stage}/runtime-assets.json`,'utf8').then(JSON.parse)));
  const allowed=new Set(manifests.flatMap(manifest=>manifest.files.map(f=>f.path)));
  result.restoredRuntime={manifestFiles:allowed.size,servedFromIsolatedFolder:true};
@@ -45,6 +45,12 @@ const settled=async()=>{
 const state=()=>page.locator('canvas').evaluate(c=>({dimensions:[c.width,c.height],stream:JSON.parse(c.dataset.forestStreaming),metrics:JSON.parse(c.dataset.forestOriginMetrics),gpuDeletes:window.pineGpuDeletes}));
 try {
  await page.goto(url+'/forest-runtime-lab');await settled();
+ assert.equal(await page.getByLabel('森林资源精度').inputValue(),'low');
+ assert.ok(result.assetRequests.some(p=>p.startsWith('batch2/impostors/') || p.startsWith('optimized/')));
+ assert.ok(!result.assetRequests.some(p=>p.startsWith('tree-rebuild/')));
+ result.legacyDefault={originalTrees:(await state()).stream.overviewTrees,quality:'low',scale:'0.7'};
+ result.assetRequests=[];
+ await page.goto(url+result.route);await settled();
  result.default=await state();
  assert.equal(await page.getByLabel('森林资源精度').inputValue(),'low');
  assert.equal(await page.getByLabel('内部渲染分辨率').inputValue(),'0.7');
@@ -57,10 +63,12 @@ try {
  const end=result.switches.at(-1);
  assert.ok(end.gpuDeletes.buffers>result.default.gpuDeletes.buffers);
  assert.ok(end.gpuDeletes.textures>result.default.gpuDeletes.textures);
- assert.ok(end.stream.resources.every(r=>r==='props/far'||r.startsWith('props/')||r.endsWith('/far')||!r.endsWith('/mid')));
+ assert.equal(end.stream.overviewTrees,585);
+ assert.equal(new Set(result.assetRequests.filter(p=>/^tree-rebuild\/.+-far\.glb$/.test(p))).size,11);
+ assert.ok(!result.assetRequests.some(p=>p.startsWith('optimized/') || p.startsWith('batch2/impostors/')));
  // Reach an original boundary with real movement. No movement of the scenic
  // region is enabled; the pose only sets up this isolated collision check.
- await page.goto(url+'/forest-runtime-lab?review=1');await settled();
+ await page.goto(url+result.route+'&review=1');await settled();
  const nav=JSON.parse(await readFile(path.join(restoredRoot||'public/forest-origin-assets','environment/navigation.json'),'utf8'));
  const x=89,z=50,i=Math.round((x-nav.origin[0])/nav.step),j=Math.round((-z-nav.origin[1])/nav.step);
  const y=nav.heights[i+j*nav.columns]+1.2;

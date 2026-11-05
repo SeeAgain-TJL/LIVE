@@ -478,11 +478,14 @@ export class PineStream {
         const species=this.manifest.names[tile.data[offset]];
         if(tree && this.options.rebuiltTrees?.has(species)) {
           const distance=Math.sqrt(trueDistanceSquared);
-          const near=high ? 27:middle ? 21:15, mid=high ? 66:middle ? 51:38;
+          // Mid geometry has real branch rings as well as two sets of twig cards.
+          // Give it a bounded range on Intel-class devices; far is still a
+          // fixed 3-D branch assembly at every original tree location.
+          const near=high ? 24:middle ? 15:9, mid=high ? 60:middle ? 38:24;
           const frozen=this.options.frozenLod;
-          const nearWeight=frozen ? Number(frozen==="near") : (1-smooth(near-4,near+2,distance))*smooth(250,390,pixels);
-          const midWeight=frozen ? Number(frozen!=="far") : (1-smooth(mid-7,mid+5,distance))*smooth(95,160,pixels);
-          const useTier=(tier:Tier,weight:number)=>{
+          const nearWeight=frozen ? Number(frozen==="near") : smooth(.04,.96,(1-smooth(near-3,near+2,distance))*smooth(250,390,pixels));
+          const midWeight=frozen ? Number(frozen!=="far") : smooth(.04,.96,(1-smooth(mid-5,mid+4,distance))*smooth(95,160,pixels));
+          const batchTier=(tier:Tier,weight:number)=>{
             const key=`${species}/${tier}`;
             const resource=this.resources.get(key)!;
             resource.lastUsed=now;
@@ -506,8 +509,8 @@ export class PineStream {
           const nw=readyWeight("near",nearWeight), mw=readyWeight("mid",midWeight);
           const main=nw>.002 ? "near" : mw>.002 ? "mid" : "far";
           const weight=main==="near" ? nw : main==="mid" ? mw : 1;
-          useTier(main,weight);
-          if(weight<.998)useTier(main==="near" && mw>.90 ? "mid":"far",-weight);
+          batchTier(main,weight);
+          if(weight<.998)batchTier(main==="near" && mw>.90 ? "mid":"far",-weight);
           tile.lod[i]=tiers.indexOf(main);
           counters.trees++;counters[main]++;
           continue;

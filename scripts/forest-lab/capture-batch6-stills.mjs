@@ -49,7 +49,7 @@ try {
     const state=await page.locator('canvas').evaluate(c=>({metrics:JSON.parse(c.dataset.forestOriginMetrics),streaming:JSON.parse(c.dataset.forestStreaming),dimensions:[c.width,c.height]}));
     assert.ok(Math.hypot(...state.metrics.camera.map((v,i)=>v-pose.position[i]))<.00001);
     assert.equal(state.metrics.contextLost,false);
-    if (!high) assert.ok(!state.streaming.resources.includes('pine_04/mid'));
+    if (!high && new URLSearchParams(process.env.PINE_QUERY).get('trees')!=='rebuild') assert.ok(!state.streaming.resources.includes('pine_04/mid'));
     await page.screenshot({path:path.join(folder,`${name}.png`)});
     const frames=await page.evaluate(()=>new Promise(resolve=>{
       const f=[];let last=performance.now();const start=last;

@@ -83,7 +83,7 @@ test("Pine Forest opens and closes a real memory during a continuous walk", asyn
   await page.reload();
   await writeMediaBlobs(page);
   const before = await page.evaluate(() => localStorage.getItem("universe-of-me:data:v1"));
-  await page.goto("/forest-memory-lab");
+  await page.goto("/forest-memory-lab?trees=rebuild");
   const canvas = page.locator(".forest-lab canvas");
   await expect(page.getByLabel("记忆所属星球")).toHaveValue("review-planet");
   await expect.poll(() => canvas.getAttribute("data-pine-memory-anchors")).toBeTruthy();
@@ -138,7 +138,13 @@ test("Pine Forest opens and closes a real memory during a continuous walk", asyn
   await page.screenshot({ path: info.outputPath("forest-memory-reading-video.png") });
   await page.waitForTimeout(1200);
   await page.keyboard.press("Escape");await expect(reader).toHaveCount(0);
-  await page.keyboard.down("w");await page.waitForTimeout(500);await page.keyboard.up("w");
+  await expect(canvas).toBeFocused();
+  const resumedAt = await canvas.getAttribute("data-forest-walker-position");
+  await page.keyboard.down("w");await page.waitForTimeout(1050);await page.keyboard.up("w");
+  await expect(canvas).not.toHaveAttribute("data-forest-walker-position", resumedAt!);
+  await page.mouse.move(box.x+box.width/2,box.y+box.height/2);
+  await page.mouse.down();await page.mouse.move(box.x+box.width/2+160,box.y+box.height/2-95,{steps:18});await page.mouse.up();
+  await page.keyboard.down("d");await page.waitForTimeout(750);await page.keyboard.up("d");
   await page.getByRole("button", { name: "探索设置" }).click();
   const settings=page.getByRole("dialog", { name: "探索与画质" });
   await expect(settings).toBeVisible();
