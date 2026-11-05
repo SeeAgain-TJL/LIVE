@@ -1,0 +1,20 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-tree-representative-20261105",
+  "tag": "pine-tree-representative-20261105",
+  "publishedFrom": "7b9aebf8d81b4cb74423227ec6248a870e575db5",
+  "files": [
+    {
+      "name": "pine-tree-representative-runtime.zip",
+      "bytes": 5079146,
+      "sha256": "0e0f3ffb96d3a159e1226061ca8eb4239d051d94821fc7d4344fc084972bdc76",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-tree-representative-20261105/pine-tree-representative-runtime.zip"
+    },
+    {
+      "name": "pine-tree-representative-authoring.zip",
+      "bytes": 12930508,
+      "sha256": "7a77b41284dc8a2a09ac8b3e3076561db16272649bc0b770c1499ffbb0911832",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-tree-representative-20261105/pine-tree-representative-authoring.zip"
+    }
+  ]
+}

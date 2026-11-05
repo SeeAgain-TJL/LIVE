@@ -1,0 +1,189 @@
+{
+  "pine_01": {
+    "near": {
+      "bytes": 9245904,
+      "triangles": 465980,
+      "twigInstances": 1800
+    },
+    "mid": {
+      "bytes": 616428,
+      "triangles": 30950,
+      "twigInstances": 1800
+    },
+    "far": {
+      "bytes": 393948,
+      "triangles": 7775,
+      "twigInstances": 1800
+    }
+  },
+  "pine_02": {
+    "near": {
+      "bytes": 5766640,
+      "triangles": 289046,
+      "twigInstances": 1090
+    },
+    "mid": {
+      "bytes": 497560,
+      "triangles": 20621,
+      "twigInstances": 1090
+    },
+    "far": {
+      "bytes": 346932,
+      "triangles": 4984,
+      "twigInstances": 1090
+    }
+  },
+  "pine_03": {
+    "near": {
+      "bytes": 7942160,
+      "triangles": 396211,
+      "twigInstances": 1555
+    },
+    "mid": {
+      "bytes": 503136,
+      "triangles": 25939,
+      "twigInstances": 1555
+    },
+    "far": {
+      "bytes": 311712,
+      "triangles": 6322,
+      "twigInstances": 1555
+    }
+  },
+  "pine_04": {
+    "near": {
+      "bytes": 9312504,
+      "triangles": 465600,
+      "twigInstances": 1800
+    },
+    "mid": {
+      "bytes": 621532,
+      "triangles": 30962,
+      "twigInstances": 1800
+    },
+    "far": {
+      "bytes": 395780,
+      "triangles": 7695,
+      "twigInstances": 1800
+    }
+  },
+  "pine_05": {
+    "near": {
+      "bytes": 10977600,
+      "triangles": 551191,
+      "twigInstances": 2150
+    },
+    "mid": {
+      "bytes": 662316,
+      "triangles": 35603,
+      "twigInstances": 2150
+    },
+    "far": {
+      "bytes": 404612,
+      "triangles": 8895,
+      "twigInstances": 2150
+    }
+  },
+  "silver_fir_01": {
+    "near": {
+      "bytes": 7384940,
+      "triangles": 364016,
+      "twigInstances": 1716
+    },
+    "mid": {
+      "bytes": 631472,
+      "triangles": 30331,
+      "twigInstances": 1716
+    },
+    "far": {
+      "bytes": 408876,
+      "triangles": 9056,
+      "twigInstances": 1716
+    }
+  },
+  "silver_fir_02": {
+    "near": {
+      "bytes": 4355368,
+      "triangles": 216290,
+      "twigInstances": 1024
+    },
+    "mid": {
+      "bytes": 478260,
+      "triangles": 17421,
+      "twigInstances": 1024
+    },
+    "far": {
+      "bytes": 347632,
+      "triangles": 5051,
+      "twigInstances": 1024
+    }
+  },
+  "silver_fir_03": {
+    "near": {
+      "bytes": 4782744,
+      "triangles": 232275,
+      "twigInstances": 1148
+    },
+    "mid": {
+      "bytes": 496908,
+      "triangles": 17620,
+      "twigInstances": 1148
+    },
+    "far": {
+      "bytes": 361548,
+      "triangles": 5120,
+      "twigInstances": 1148
+    }
+  },
+  "silver_fir_04": {
+    "near": {
+      "bytes": 4374424,
+      "triangles": 218041,
+      "twigInstances": 1028
+    },
+    "mid": {
+      "bytes": 486452,
+      "triangles": 17607,
+      "twigInstances": 1028
+    },
+    "far": {
+      "bytes": 357640,
+      "triangles": 5281,
+      "twigInstances": 1028
+    }
+  },
+  "silver_fir_05": {
+    "near": {
+      "bytes": 1981332,
+      "triangles": 103368,
+      "twigInstances": 494
+    },
+    "mid": {
+      "bytes": 452268,
+      "triangles": 18209,
+      "twigInstances": 494
+    },
+    "far": {
+      "bytes": 333608,
+      "triangles": 4986,
+      "twigInstances": 494
+    }
+  },
+  "silver_fir_06": {
+    "near": {
+      "bytes": 1685244,
+      "triangles": 82133,
+      "twigInstances": 418
+    },
+    "mid": {
+      "bytes": 418492,
+      "triangles": 12984,
+      "twigInstances": 418
+    },
+    "far": {
+      "bytes": 329184,
+      "triangles": 3503,
+      "twigInstances": 418
+    }
+  }
+}

@@ -18,6 +18,7 @@ from mathutils import Matrix, Vector
 parser = argparse.ArgumentParser()
 parser.add_argument("trees", nargs="+")
 parser.add_argument("--out", default="artifacts-local/pine-tree-rebuild/authoring")
+parser.add_argument("--include-existing", type=Path, help="Append scenes from a verified rebuilt tree library.")
 args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:])
 out = Path(args.out).resolve()
 out.mkdir(parents=True, exist_ok=True)
@@ -332,9 +333,9 @@ def realize_modifier(tree):
     tree.modifiers.new("Realize compact branch instances", "NODES").node_group = group
 
 
-def split_mesh(mesh, name, filter_material, uv):
+def split_mesh(mesh, name, filter_material, uv, filter_face=lambda _: True):
     materials = list(mesh.materials)
-    selected = [p for p in mesh.polygons if filter_material(materials[p.material_index])]
+    selected = [p for p in mesh.polygons if filter_material(materials[p.material_index]) and filter_face(p.index)]
     used = {}
     points, faces, values = [], [], []
     for polygon in selected:
@@ -366,6 +367,54 @@ def split_mesh(mesh, name, filter_material, uv):
 wood_materials = {}
 
 
+def reduce_wood_curves(group, tier):
+    """Lower ring counts on the source branch curves before they become meshes.
+
+    Resample only the inputs of Curve to Mesh; the original curves feeding
+    twig placement and the captured bark UV attributes are left in place.
+    """
+    for mesh in list(group.nodes):
+        if mesh.bl_idname != "GeometryNodeCurveToMesh":
+            continue
+        for socket, mode, value in (
+            ("Curve", "LENGTH", .26 if tier == "mid" else .68),
+            ("Profile Curve", "COUNT", 6 if tier == "mid" else 4),
+        ):
+            target = mesh.inputs[socket]
+            if not target.is_linked:
+                continue
+            source = target.links[0].from_socket
+            sample = group.nodes.new("GeometryNodeResampleCurve")
+            sample.mode = mode
+            sample.inputs["Length" if mode == "LENGTH" else "Count"].default_value = value
+            group.links.new(source, sample.inputs["Curve"])
+            group.links.new(sample.outputs["Curve"], target)
+    # Tag the high-density scanned stump before it joins the generated wood.
+    # Only the stump can then be collapsed, separately from the slender branches.
+    for node in list(group.nodes):
+        if node.type != "OBJECT_INFO" or not node.inputs["Object"].default_value:
+            continue
+        if "_trunk_" not in node.inputs["Object"].default_value.name:
+            continue
+        output = node.outputs["Geometry"]
+        original_links = list(output.links)
+        targets = [link.to_socket for link in original_links]
+        if not targets:
+            continue
+        tag = group.nodes.new("GeometryNodeStoreNamedAttribute")
+        tag.data_type = "BOOLEAN"
+        tag.domain = "FACE"
+        tag.inputs["Name"].default_value = "RebuildScannedStump"
+        tag.inputs["Value"].default_value = True
+        group.links.new(output, tag.inputs["Geometry"])
+        # Join Geometry accepts multiple links, so connecting a tagged copy
+        # without disconnecting the old socket draws the full scan twice.
+        for link in original_links:
+            group.links.remove(link)
+        for target in targets:
+            group.links.new(tag.outputs["Geometry"], target)
+
+
 def wood_material(original):
     if original.name in wood_materials:
         return wood_materials[original.name]
@@ -394,6 +443,7 @@ def build_tree(name, replacements, foliage, geometric_foliage):
     result = {}
     keep = []
     for tier in tiers:
+        crown_material = geometric_foliage if tier == "near" else foliage
         tree = source.copy()
         scene.collection.objects.link(tree)
         tree.matrix_world = Matrix.Identity(4)
@@ -404,7 +454,13 @@ def build_tree(name, replacements, foliage, geometric_foliage):
             if modifier.type != "NODES":
                 continue
             modifier.node_group = modifier.node_group.copy()
+            if tier != "near":
+                reduce_wood_curves(modifier.node_group, tier)
             for node in modifier.node_group.nodes:
+                if node.type == "SET_MATERIAL":
+                    socket = node.inputs["Material"]
+                    if socket.default_value and socket.default_value.name.split(".")[0] in {"pine_twig", "fir_twig"}:
+                        socket.default_value = crown_material
                 if node.type != "COLLECTION_INFO":
                     continue
                 collection = node.inputs[0].default_value
@@ -420,25 +476,54 @@ def build_tree(name, replacements, foliage, geometric_foliage):
         mesh = bpy.data.meshes.new_from_object(tree.evaluated_get(deps), preserve_all_data_layers=True, depsgraph=deps)
         bpy.data.objects.remove(tree, do_unlink=True)
         uv = source_uv(mesh)
-        crown_material = geometric_foliage if tier == "near" else foliage
         crown = split_mesh(mesh, f"{name} {tier} branch clusters", lambda m: m == crown_material, uv)
-        wood = split_mesh(mesh, f"{name} {tier} woody structure", lambda m: m != crown_material, uv)
+        if not crown.polygons:
+            raise RuntimeError(f"Original graph overrode the rebuilt foliage for {name} {tier}")
+        stump = None
+        if tier == "near":
+            wood = split_mesh(mesh, f"{name} {tier} woody structure", lambda m: m != crown_material, uv)
+        else:
+            scanned = np.zeros(len(mesh.polygons), dtype=bool)
+            tag = mesh.attributes.get("RebuildScannedStump")
+            if tag:
+                tag.data.foreach_get("value", scanned)
+            if scanned.any():
+                stump = split_mesh(mesh, f"{name} {tier} scanned stump", lambda m: m != crown_material, uv, lambda i: scanned[i])
+            wood = split_mesh(mesh, f"{name} {tier} woody structure",
+                              lambda m: m != crown_material and (tier == "mid" or not (m and "dead_branches" in m.name)),
+                              uv, lambda i: not scanned[i])
         marker = np.empty(len(mesh.polygons), dtype=np.int32)
         mesh.attributes["TwigInstance"].data.foreach_get("value", marker)
-        for i, mat in enumerate(list(wood.materials)):
-            if mat and mat != crown_material:
-                wood.materials[i] = wood_material(mat)
+        for data in (wood, stump):
+            if data:
+                for i, mat in enumerate(list(data.materials)):
+                    if mat and mat != crown_material:
+                        data.materials[i] = wood_material(mat)
         bpy.data.meshes.remove(mesh)
         objs = []
-        for data in (wood, crown):
+        for data in (wood, crown, stump):
+            if data is None:
+                continue
             obj = bpy.data.objects.new(data.name, data)
             scene.collection.objects.link(obj)
             objs.append(obj)
             keep.append(obj)
         bpy.context.view_layer.objects.active = objs[0]
         reduction = objs[0].modifiers.new("Reduce wood only; leave branch coverage intact", "DECIMATE")
-        reduction.ratio = {"near": .24, "mid": .07, "far": .018}[tier]
+        if tier == "near":
+            reduction.ratio = .24
+        else:
+            # Dissolve coplanar rings without crossing material or UV seams.
+            # Aggressive edge collapse here formed broad triangles across thin fir branches.
+            reduction.decimate_type = "DISSOLVE"
+            reduction.angle_limit = math.radians(2)
+            reduction.delimit = {"MATERIAL", "UV"}
         bpy.ops.object.modifier_apply(modifier=reduction.name)
+        if stump:
+            bpy.context.view_layer.objects.active = objs[-1]
+            reduction = objs[-1].modifiers.new("Reduce scanned stump independently", "DECIMATE")
+            reduction.ratio = .04 if tier == "mid" else .012
+            bpy.ops.object.modifier_apply(modifier=reduction.name)
         bpy.ops.object.select_all(action="DESELECT")
         for obj in objs:
             obj.select_set(True)
@@ -471,5 +556,9 @@ for family, collections in (("pine", twig_collections[:1]), ("silver_fir", twig_
         authoring_scenes.append(scene)
 
 # Export a small editable library containing only the rebuilt geometry and baked materials.
+if args.include_existing:
+    with bpy.data.libraries.load(str(args.include_existing.resolve()), link=False) as (existing, selected):
+        selected.scenes = [name for name in existing.scenes if name.split(" ")[0] not in args.trees]
+    authoring_scenes.extend(selected.scenes)
 bpy.data.libraries.write(str(out / "pine-rebuilt-trees.blend"), set(authoring_scenes), compress=True)
 (out / "production.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf8")

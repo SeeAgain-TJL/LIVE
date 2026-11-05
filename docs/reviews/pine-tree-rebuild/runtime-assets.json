@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "tree-rebuild/pine_01-far.glb",
+      "bytes": 393948,
+      "sha256": "70ba734e6ab2da29e00180ae52286328692f56d6c82f20ae63271f4204badd44"
+    },
+    {
+      "path": "tree-rebuild/pine_01-mid.glb",
+      "bytes": 616428,
+      "sha256": "9fd6eb4594a3448876b4d9377a0bb202de485e6e6f74570bdd18689658ca6b8b"
+    },
+    {
+      "path": "tree-rebuild/pine_01-near.glb",
+      "bytes": 9245904,
+      "sha256": "df58d1d266bfe6f04f048c0383ee9bc58d67fd17192f815018776164f5be1fba"
+    },
+    {
+      "path": "tree-rebuild/pine_02-far.glb",
+      "bytes": 346932,
+      "sha256": "722b097776a5d0ed2fa34288fafef1816a941dbaec0afe3ef4217887e33efed4"
+    },
+    {
+      "path": "tree-rebuild/pine_02-mid.glb",
+      "bytes": 497560,
+      "sha256": "dceff27293275f1cf683db3b43df2644780d0d5d46f9a19c6280574bbae6025b"
+    },
+    {
+      "path": "tree-rebuild/pine_02-near.glb",
+      "bytes": 5766640,
+      "sha256": "83abca8c45c2b304b796c195164d4015371e05daf3e67daf2efd5eccdd884a54"
+    },
+    {
+      "path": "tree-rebuild/pine_03-far.glb",
+      "bytes": 311712,
+      "sha256": "9866719a0559fe208f21810c5e388a4de1380678c26e2d225b1d4d13bb87c601"
+    },
+    {
+      "path": "tree-rebuild/pine_03-mid.glb",
+      "bytes": 503136,
+      "sha256": "685d34458a367b5d09b2b5238f808231873bea6cbbf7b26b86ccdb442e5db647"
+    },
+    {
+      "path": "tree-rebuild/pine_03-near.glb",
+      "bytes": 7942160,
+      "sha256": "aaa6e133954f1c2675d5af50e127f2b7aab865878b07d504c3f616f579425113"
+    },
+    {
+      "path": "tree-rebuild/pine_04-far.glb",
+      "bytes": 395780,
+      "sha256": "5bbb794f45a2cc002261df030949cadeae070af9234a33636903ea8403bc962b"
+    },
+    {
+      "path": "tree-rebuild/pine_04-mid.glb",
+      "bytes": 621532,
+      "sha256": "dd297c154b88e48c7ceb0c46d9824c2983926d3cdc43fe3b00d6e692e0a04f5e"
+    },
+    {
+      "path": "tree-rebuild/pine_04-near.glb",
+      "bytes": 9312504,
+      "sha256": "1267e2b7608a256aa3abc416b8ba2747b35ac9d6e71df33ac99c1007582781a2"
+    },
+    {
+      "path": "tree-rebuild/pine_05-far.glb",
+      "bytes": 404612,
+      "sha256": "18613f2ebb341e16e3f0a4cd3ec6f4a11908a3e6861aa1b2586641658d1121b0"
+    },
+    {
+      "path": "tree-rebuild/pine_05-mid.glb",
+      "bytes": 662316,
+      "sha256": "6973f34070acb8b03d8dca930e53c6c589acce45cac52cd15b74719b28a8094a"
+    },
+    {
+      "path": "tree-rebuild/pine_05-near.glb",
+      "bytes": 10977600,
+      "sha256": "b43f180cde3f0f3a62d18b005fdeaf85c92a6743bcdc6eff5b5c5d517e8dcff5"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_01-far.glb",
+      "bytes": 408876,
+      "sha256": "4e74c37d2ee2b3d1aae494318440dd30d54256cc27371f2ab41235097fc52996"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_01-mid.glb",
+      "bytes": 631472,
+      "sha256": "59abdca00fbad3579faf0ca25014d35f80569ac4a9563626e45283245e284911"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_01-near.glb",
+      "bytes": 7384940,
+      "sha256": "b449e9cfacf33d9639df42efe59e286247109ae6233429e30816c376448c9280"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_02-far.glb",
+      "bytes": 347632,
+      "sha256": "f36c8a4b62a85c11886ca60eec61e50e33bdd5daf58096c352c9d2a98eaa75ab"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_02-mid.glb",
+      "bytes": 478260,
+      "sha256": "5a82e608c83dfd5977634647706b2195c879698344f2d1c38af2a1ddd700cf59"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_02-near.glb",
+      "bytes": 4355368,
+      "sha256": "fd0eec7ee0bacf4c7d50c68612483bb3b25f13647515d759a3c4a7b58149fa44"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_03-far.glb",
+      "bytes": 361548,
+      "sha256": "788039fd21ac0a2f6171cf0fd28da8a788a7f7eeafd303550026913edfe85525"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_03-mid.glb",
+      "bytes": 496908,
+      "sha256": "49fa115142f7859e130a7706f6054785c133436716ca1ba3121bc7de332cb171"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_03-near.glb",
+      "bytes": 4782744,
+      "sha256": "050749ddd418ed6d966a2716802aa158b3a1a6676f5f4aa93089fdec5c915685"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_04-far.glb",
+      "bytes": 357640,
+      "sha256": "21c88cb930c0bd7e6bf9bbe217eb65b2500d595361baf6a68280f8fe75c1eed3"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_04-mid.glb",
+      "bytes": 486452,
+      "sha256": "4b19fb4a0d0356d3ea8ad0e19085ffd34045eee8d915a28a34a165a53cf729ef"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_04-near.glb",
+      "bytes": 4374424,
+      "sha256": "3aadb11c4c3004d450d6332393376dcbabe05249a08db0c6d808dc2214a4ea63"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_05-far.glb",
+      "bytes": 333608,
+      "sha256": "1dccfc71b8806358a8a903965166b34f56da8b540da4d0501b945cc18599a04f"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_05-mid.glb",
+      "bytes": 452268,
+      "sha256": "6db91dc748be47a5c0333201afed16c872724d22190a125d0d857d4ba5b4bf29"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_05-near.glb",
+      "bytes": 1981332,
+      "sha256": "c6271b2bb5f466fe200b6702687eb758a070fb1fb4d4eea226e3934b807b7cd2"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_06-far.glb",
+      "bytes": 329184,
+      "sha256": "8a4a05503749556de99d95c1887e94924d2311a40a89d22b41ea2fcfe6e421fc"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_06-mid.glb",
+      "bytes": 418492,
+      "sha256": "9a33102a57c27142140e79acb5bd59d70ded1839c3737b7ee52af9052d07d4ad"
+    },
+    {
+      "path": "tree-rebuild/silver_fir_06-near.glb",
+      "bytes": 1685244,
+      "sha256": "b1e1ae56068d9ef04b3a74b7f0309b9b032c128c2b6ef230487900366a1b1d48"
+    }
+  ],
+  "totalBytes": 77665156
+}
