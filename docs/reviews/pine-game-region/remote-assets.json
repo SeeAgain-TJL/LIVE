@@ -1,0 +1,20 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-game-region-20261105",
+  "tag": "pine-game-region-20261105",
+  "publishedFrom": "7acfb748b2967d070b2ab6d4dd3b640f03bbf88b",
+  "files": [
+    {
+      "name": "pine-game-region-runtime.zip",
+      "bytes": 3827788,
+      "sha256": "2cff79c868e04d4accaba9ebdeae869725edceadd0c67717f8caac70378ee37a",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-game-region-20261105/pine-game-region-runtime.zip"
+    },
+    {
+      "name": "pine-game-region-authoring.zip",
+      "bytes": 9288645,
+      "sha256": "5dc1975dc433003b33832194309feb6a60281d51c2f0ad3326c358d2ec4dfc87",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-game-region-20261105/pine-game-region-authoring.zip"
+    }
+  ]
+}
