@@ -32,6 +32,8 @@
 
 [河道近景](river-after.webp) · [森林远景](forest-after.webp) · [记忆阅读](memory-photo.webp) · [连续漫游录屏](https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-scene-repair-review-20261105/pine-scene-repair-walk.webm)。前两行是同机位、同视角、1440×900 窗口和 80% 内部分辨率；树木一行是未接入候选的诊断对比。原 Blender 构图参考可见[历史同机位图](../pine-template-final/source-camera.webp)，其中的浏览器画面属于旧检查点。
 
+录屏完整解码通过；从 Release 重新下载并核验 SHA-256，见[发布回执](../pine-scene-repair-review/remote-assets.json)。
+
 ## 运行性能
 
 Chrome 156 / ANGLE D3D11 / Intel Graphics (0x0000A7AA)，1440×900，DPR 1。沿用[前一轮 42 秒路线](../pine-template-final/README.md)的出生点、按键时长和鼠标转角，各档单独运行，无录屏开销。路线中的碰撞和帧间移动会改变实际位置；对照是同机历史测量，非同步测试。
