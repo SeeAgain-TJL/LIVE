@@ -33,7 +33,7 @@ page.on('console',m=>{if(m.type()==='error')result.errors.push(m.text());});
 page.on('response',r=>{if(r.status()>=400)result.errors.push(r.status()+' '+r.url());});
 try {
  const start=Date.now();
- await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3197')+`/forest-runtime-lab?scale=${scale}&quality=${quality}`,{waitUntil:'domcontentloaded'});
+ await page.goto((process.env.FOREST_LAB_URL||'http://127.0.0.1:3197')+`/forest-runtime-lab?scale=${scale}&quality=${quality}`+(process.env.PINE_QUERY ? '&'+process.env.PINE_QUERY : ''),{waitUntil:'domcontentloaded'});
  const canvas=page.locator('canvas[data-forest-origin-ready=true][data-pine-landmarks=ready]');
  await canvas.waitFor({timeout:120000});
  if(process.env.PINE_VISUAL_FINISH) await page.locator('canvas[data-pine-outer-forest=ready]').waitFor({timeout:120000});

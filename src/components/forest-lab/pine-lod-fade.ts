@@ -1,5 +1,31 @@
 import { Material, ShaderChunk } from "three";
 
+/** Complementary coverage for two opaque or alpha-masked geometry LODs. */
+export function applyPineGeometryTransition(material: Material) {
+  const previous = material.onBeforeCompile;
+  const key = material.customProgramCacheKey();
+  material.customProgramCacheKey = () => key + "|pine-geometry-transition";
+  material.onBeforeCompile = (shader, renderer) => {
+    previous.call(material, shader, renderer);
+    shader.vertexShader = shader.vertexShader
+      .replace("#include <common>", "#include <common>\nvarying float pineGeometryWeight;")
+      .replace("#include <color_vertex>", ShaderChunk.color_vertex.replace("vColor.xyz *= instanceColor.xyz;", "") + `
+        pineGeometryWeight = 1.0;
+        #ifdef USE_INSTANCING_COLOR
+          pineGeometryWeight = instanceColor.r;
+        #endif
+      `);
+    shader.fragmentShader = shader.fragmentShader
+      .replace("#include <common>", "#include <common>\nvarying float pineGeometryWeight;")
+      .replace("#include <alphatest_fragment>", `
+        #include <alphatest_fragment>
+        float pineLodNoise = fract(52.9829189*fract(dot(gl_FragCoord.xy,vec2(.06711056,.00583715))));
+        if (pineGeometryWeight >= 0.0 ? pineLodNoise >= pineGeometryWeight : pineLodNoise < -pineGeometryWeight) discard;
+      `);
+  };
+  material.needsUpdate = true;
+}
+
 export function shouldApplyPineLodFade(material: Material) {
   return material.transparent || !/bark|trunk|stem|dead[ _-]?branches/i.test(material.name.trim());
 }

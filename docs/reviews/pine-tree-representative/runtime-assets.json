@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "tree-rebuild/pine_02-far.glb",
+      "bytes": 356852,
+      "sha256": "5cb5eca6818d2cfc86fbf4a8cbc747b62d448a5dc748c8e5d1e2482dad1ba32a"
+    },
+    {
+      "path": "tree-rebuild/pine_02-mid.glb",
+      "bytes": 428648,
+      "sha256": "3c43068b88ed439f3a0b4294e463866e3d72cf1b298a7bda1ddb4c17ef91b0c5"
+    },
+    {
+      "path": "tree-rebuild/pine_02-near.glb",
+      "bytes": 5766640,
+      "sha256": "83abca8c45c2b304b796c195164d4015371e05daf3e67daf2efd5eccdd884a54"
+    }
+  ],
+  "totalBytes": 6552140
+}

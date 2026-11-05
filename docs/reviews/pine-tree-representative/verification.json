@@ -1,0 +1,179 @@
+{
+  "browser": "156.0.8078.80",
+  "viewport": [
+    1440,
+    900
+  ],
+  "assets": {
+    "pine_02": {
+      "near": {
+        "bytes": 5766640,
+        "triangles": 289046,
+        "twigInstances": 1090
+      },
+      "mid": {
+        "bytes": 428648,
+        "triangles": 11022,
+        "twigInstances": 1090
+      },
+      "far": {
+        "bytes": 356852,
+        "triangles": 6054,
+        "twigInstances": 1090
+      }
+    }
+  },
+  "comparison": [
+    {
+      "name": "pine02Near",
+      "pose": {
+        "position": [
+          13.8,
+          2.2,
+          57
+        ],
+        "direction": [
+          -4.5,
+          5,
+          -2.1
+        ]
+      },
+      "previous": {
+        "seconds": 7.014000000047683,
+        "averageFps": 60.02281151940946,
+        "p95Ms": 16.899999999997817
+      },
+      "rebuilt": {
+        "seconds": 7.000699999952317,
+        "averageFps": 60.136843458920886,
+        "p95Ms": 16.900000000001455
+      },
+      "rebuiltDraws": {
+        "pine_02/far": {
+          "instances": 3,
+          "triangles": 18162
+        },
+        "pine_02/mid/-1_-4": {
+          "instances": 1,
+          "triangles": 11022
+        },
+        "pine_02/far/lower": {
+          "instances": 1,
+          "triangles": 6054
+        },
+        "pine_02/near/0_-4": {
+          "instances": 2,
+          "triangles": 578092
+        },
+        "pine_02/mid/lower/0_-4": {
+          "instances": 1,
+          "triangles": 11022
+        },
+        "pine_02/mid/-2_-3": {
+          "instances": 1,
+          "triangles": 11022
+        }
+      }
+    },
+    {
+      "name": "pine02Mid",
+      "pose": {
+        "position": [
+          22,
+          2,
+          62
+        ],
+        "direction": [
+          -12.7,
+          5.5,
+          -7.1
+        ]
+      },
+      "previous": {
+        "seconds": 7.0068999999523145,
+        "averageFps": 59.94091538381571,
+        "p95Ms": 17
+      },
+      "rebuilt": {
+        "seconds": 7.014399999952315,
+        "averageFps": 58.878877737626546,
+        "p95Ms": 17
+      },
+      "rebuiltDraws": {
+        "pine_02/far": {
+          "instances": 19,
+          "triangles": 115026
+        },
+        "pine_02/mid/-1_-4": {
+          "instances": 1,
+          "triangles": 11022
+        },
+        "pine_02/far/lower": {
+          "instances": 1,
+          "triangles": 6054
+        },
+        "pine_02/mid/0_-4": {
+          "instances": 1,
+          "triangles": 11022
+        },
+        "pine_02/near/0_-4": {
+          "instances": 1,
+          "triangles": 289046
+        },
+        "pine_02/mid/lower/0_-4": {
+          "instances": 1,
+          "triangles": 11022
+        },
+        "pine_02/mid/-1_-5": {
+          "instances": 1,
+          "triangles": 11022
+        }
+      }
+    },
+    {
+      "name": "pine02Far",
+      "pose": {
+        "position": [
+          48,
+          7,
+          70
+        ],
+        "direction": [
+          -38.7,
+          1.5,
+          -15.1
+        ]
+      },
+      "previous": {
+        "seconds": 7.013300000047682,
+        "averageFps": 54.46793948603408,
+        "p95Ms": 33.399999999999636
+      },
+      "rebuilt": {
+        "seconds": 7.002300000047682,
+        "averageFps": 56.98127757983563,
+        "p95Ms": 32.69999999999709
+      },
+      "rebuiltDraws": {
+        "pine_02/far": {
+          "instances": 26,
+          "triangles": 157404
+        },
+        "pine_02/far/lower": {
+          "instances": 1,
+          "triangles": 6054
+        },
+        "pine_02/mid/0_-4": {
+          "instances": 1,
+          "triangles": 11022
+        },
+        "pine_02/mid/1_-6": {
+          "instances": 1,
+          "triangles": 11022
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

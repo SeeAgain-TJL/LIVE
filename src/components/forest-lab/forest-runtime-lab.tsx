@@ -17,6 +17,7 @@ import { derivePineMemoryAnchors, type PineMemoryAnchor, type PineMemorySafety }
 type Quality = "low" | "mid" | "high";
 type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][]; trees: SourceTree[]; safety?: PineMemorySafety; rockContacts?: PineRockContacts };
 const NO_MEMORIES: Memory[] = [];
+const REPRESENTATIVE_REBUILD = new Set(["pine_02"]);
 import { PineMemoryScene, type PineMemorySceneProps } from "./pine-memory-scene";
 
 function ForestHaze() {
@@ -56,6 +57,7 @@ function Streaming({ manifest, trees, onError, quality, field, terrainReady, roc
       smoothImpostor:params.get("impostor")!=="legacy",
       sourceImpostor:params.get("impostor")==="source" || (quality==="high" && params.get("impostor")!=="legacy"),
       sourceTrees:params.get("overview")==="off" ? undefined:trees,field,rockContacts,
+      rebuiltTrees:field && params.get("trees")==="rebuild" ? REPRESENTATIVE_REBUILD:undefined,
       frozenLod:frozen === "near" || frozen === "mid" || frozen === "far" ? frozen:undefined});
     owner.current = runtime;
     runtime.group.visible=false;

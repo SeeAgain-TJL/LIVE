@@ -13,6 +13,7 @@ const poses={
   ...(process.env.PINE_REPAIR ? {
     pine02Near:{position:[13.8,2.2,57],direction:[-4.5,5,-2.1]},
     pine02Mid:{position:[22,2,62],direction:[-12.7,5.5,-7.1]},
+    pine02Far:{position:[48,7,70],direction:[-38.7,1.5,-15.1]},
     river:{position:[17,2.5,39],direction:[-6,-1.5,-8]},
   }:{}),
   ...(process.env.PINE_TEMPLATE ? {
@@ -34,7 +35,7 @@ try {
     page.on('pageerror',e=>result.errors.push(String(e)));
     page.on('console',m=>{if(m.type()==='error')result.errors.push(m.text());});
     page.on('response',r=>{if(r.status()>=400)result.errors.push(`${r.status()} ${r.url()}`);});
-    const route=`/forest-runtime-lab?scale=${process.env.PINE_SCALE || '0.8'}&review=1`+(high ? '&quality=high':'');
+    const route=`/forest-runtime-lab?scale=${process.env.PINE_SCALE || '0.8'}&review=1`+(high ? '&quality=high':'')+(process.env.PINE_QUERY ? '&'+process.env.PINE_QUERY : '');
     await page.goto((process.env.FOREST_LAB_URL || 'http://127.0.0.1:3320')+route);
     await page.locator('canvas[data-pine-review-pose-ready=true][data-pine-terrain=layered][data-pine-landmarks=ready]').waitFor({timeout:120000});
     if(process.env.PINE_VISUAL_FINISH) await page.locator('canvas[data-pine-outer-forest=ready]').waitFor({timeout:120000});

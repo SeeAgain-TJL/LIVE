@@ -2,7 +2,7 @@ import { Box3, DoubleSide, DynamicDrawUsage, Frustum, Group, InstancedBufferAttr
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { applyPineCanopyField } from "./pine-environment";
-import { applyPineLodFade } from "./pine-lod-fade";
+import { applyPineGeometryTransition, applyPineLodFade } from "./pine-lod-fade";
 
 export const pineRoot = "/forest-origin-assets/";
 export type TileManifest = { names: string[]; propAssetCount: number; tiles: Record<string, { trees: number; props: number; bytes: number }> };
@@ -130,7 +130,7 @@ export class PineStream {
   private microCover: Set<number>;
 
   constructor(private manifest: TileManifest, private gl: WebGLRenderer, private reportError: (message: string) => void,
-    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: Quality; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture; rockContacts?: PineRockContacts } = { alpha: "single" }) {
+    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: Quality; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture; rockContacts?: PineRockContacts; rebuiltTrees?: ReadonlySet<string> } = { alpha: "single" }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Meshoptimizer API, not a React hook.
     MeshoptDecoder.useWorkers(2);
     this.understory=new Set(this.manifest.names.flatMap((name,i)=>/^(fern|(?:fir|pine)_sapling)/.test(name) ? [i]:[]));
@@ -143,6 +143,7 @@ export class PineStream {
   private file(key: string) {
     const [name,tier] = key.split("/");
     if (name === "props") return `batch2/props-${tier}.gltf`;
+    if (this.options.rebuiltTrees?.has(name)) return `tree-rebuild/${name}-${tier}.glb`;
     if (tier === "near") return this.options.field && this.options.quality!=="high" ? `optimized/${name}.glb` : `batch2/trees/${name}-near.gltf`;
     // Batch4: pine_04's mid tier is real reduced geometry (not the far billboard),
     // so trees crossing from near to mid keep actual branch silhouettes instead of
@@ -160,7 +161,8 @@ export class PineStream {
     while (!this.disposed && this.pending.size < (this.options.field ? 4:2) && this.queue.size) {
       const [key] = [...this.queue].sort((a,b)=>a[1]-b[1])[0];
       this.queue.delete(key); this.pending.add(key);
-      const load=key!=="props/far" && key.endsWith("/far") ? this.loadImpostor(key) : this.loadGeometry(key);
+      const name=key.split("/")[0];
+      const load=name!=="props" && key.endsWith("/far") && !this.options.rebuiltTrees?.has(name) ? this.loadImpostor(key) : this.loadGeometry(key);
       load.then(resource => {
         if (this.disposed) this.releaseResource(resource);
         else { resource.readyAt=performance.now();this.resources.set(key,resource); this.dirty = true; }
@@ -173,7 +175,7 @@ export class PineStream {
     const gltf=await this.loader.loadAsync(pineRoot+this.file(key));
     const [name,tier]=key.split("/");
     // Only these three existing source species receive a near needle layer.
-    const needles=this.options.field && tier==="near" && needleSpecies.has(name)
+    const needles=this.options.field && tier==="near" && needleSpecies.has(name) && !this.options.rebuiltTrees?.has(name)
       ? await this.loader.loadAsync(pineRoot+`template-crowns-v2/${name}.glb`) : null;
     const resource=this.prepare(gltf,key);
     if(needles) {
@@ -248,7 +250,8 @@ export class PineStream {
         // Source atlases are identical across species within a tree LOD tier;
         // all three prop tiers use the exact same verified 1K image bytes.
         const coverage=this.options.alpha === "coverage" && name==="pine_02" && material.name.includes("twig");
-        const poolKey = `${name === "props" ? "props" : tier}/${material.name}${coverage ? "/coverage":""}`;
+        const rebuilt = this.options.rebuiltTrees?.has(name);
+        const poolKey = `${rebuilt ? "rebuilt" : name === "props" ? "props" : tier}/${material.name}${coverage ? "/coverage":""}`;
         const pooled = this.materials.get(poolKey);
         let selected = material;
         if (pooled) {
@@ -263,7 +266,11 @@ export class PineStream {
               material.transparent=false;material.alphaTest=0.03;material.alphaToCoverage=true;material.depthWrite=true;
             }
           }
-          if (this.options.field) {applyPineCanopyField(material,this.options.field);if(name!=="props")applyPineLodFade(material);}
+          if (this.options.field) {
+            applyPineCanopyField(material,this.options.field);
+            if (rebuilt) applyPineGeometryTransition(material);
+            else if (name!=="props") applyPineLodFade(material);
+          }
           this.materials.set(poolKey,{material,refs:0});
         }
         if (!resource.materialKeys.has(poolKey)) { this.materials.get(poolKey)!.refs++; resource.materialKeys.add(poolKey); }
@@ -468,6 +475,43 @@ export class PineStream {
         // raised overview must not select detailed trees directly below it.
         const dy=tuned ? tile.data[offset+12]-camera.position.y:0;
         const trueDistanceSquared=distanceSquared+dy*dy;
+        const species=this.manifest.names[tile.data[offset]];
+        if(tree && this.options.rebuiltTrees?.has(species)) {
+          const distance=Math.sqrt(trueDistanceSquared);
+          const near=high ? 27:middle ? 21:15, mid=high ? 66:middle ? 51:38;
+          const frozen=this.options.frozenLod;
+          const nearWeight=frozen ? Number(frozen==="near") : (1-smooth(near-4,near+2,distance))*smooth(250,390,pixels);
+          const midWeight=frozen ? Number(frozen!=="far") : (1-smooth(mid-7,mid+5,distance))*smooth(95,160,pixels);
+          const useTier=(tier:Tier,weight:number)=>{
+            const key=`${species}/${tier}`;
+            const resource=this.resources.get(key)!;
+            resource.lastUsed=now;
+            const asset=resource.assets.get(species)!;
+            const cell=tier==="far" ? "" : `/${Math.floor(tile.data[offset+4]/16)}_${Math.floor(tile.data[offset+8]/16)}`;
+            const batchKey=key+(weight<0 ? "/lower":"")+cell;
+            const batch=selection.get(batchKey)||{resource:key,asset,chunks:[],count:0};
+            let chunk=chunks.get(batchKey);
+            if(!chunk){chunk={data:tile.data,offsets:[],weights:new Map()};chunks.set(batchKey,chunk);batch.chunks.push(chunk);}
+            chunk.offsets.push(offset);chunk.weights!.set(offset,weight);batch.count++;selection.set(batchKey,batch);
+          };
+          if(nearWeight>.002)this.request(`${species}/near`,distanceSquared);
+          if(midWeight>.002)this.request(`${species}/mid`,distanceSquared+2);
+          const readyWeight=(tier:Tier,weight:number)=>{
+            const resource=this.resources.get(`${species}/${tier}`);
+            if(!resource || weight<=.002)return 0;
+            const arrival=frozen ? 1:smooth(0,280,now-(resource.readyAt ?? 0));
+            if(arrival<1)this.dirty=true;
+            return weight*arrival;
+          };
+          const nw=readyWeight("near",nearWeight), mw=readyWeight("mid",midWeight);
+          const main=nw>.002 ? "near" : mw>.002 ? "mid" : "far";
+          const weight=main==="near" ? nw : main==="mid" ? mw : 1;
+          useTier(main,weight);
+          if(weight<.998)useTier(main==="near" && mw>.90 ? "mid":"far",-weight);
+          tile.lod[i]=tiers.indexOf(main);
+          counters.trees++;counters[main]++;
+          continue;
+        }
         const nearRange=tuned ? high ? 22:middle ? 17:11 : high ? 26:middle ? 22:18;
         const nearBlend=tuned && tree ? (1-smooth(nearRange-2,nearRange+1,Math.sqrt(trueDistanceSquared))) * smooth((high?450:middle?580:700)*.80,(high?450:middle?580:700),pixels) : 1;
         const tierIndex=tree && tuned && !this.options.frozenLod && nearBlend>.002 ? 0 : tree ? (trueDistanceSquared<(nearRange*hysteresis)**2 && pixels>(high?450:middle?580:700)/hysteresis ? 0 : trueDistanceSquared<(45*hysteresis)**2 && pixels>260/hysteresis ? 1:2)
