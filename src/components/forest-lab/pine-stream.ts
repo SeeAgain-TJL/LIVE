@@ -7,6 +7,7 @@ import { applyPineLodFade } from "./pine-lod-fade";
 export const pineRoot = "/forest-origin-assets/";
 export type TileManifest = { names: string[]; propAssetCount: number; tiles: Record<string, { trees: number; props: number; bytes: number }> };
 export type SourceTree = { source: string; matrix: number[][] };
+export type PineRockContacts = Record<string, [index: number, heightDelta: number][]>;
 type Tier = "near" | "mid" | "far";
 type Quality = "low" | "mid" | "high";
 type Part = { geometry: Mesh["geometry"]; material: Material | Material[]; matrix: Matrix4 };
@@ -129,7 +130,7 @@ export class PineStream {
   private microCover: Set<number>;
 
   constructor(private manifest: TileManifest, private gl: WebGLRenderer, private reportError: (message: string) => void,
-    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: Quality; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture } = { alpha: "single" }) {
+    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: Quality; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture; rockContacts?: PineRockContacts } = { alpha: "single" }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Meshoptimizer API, not a React hook.
     MeshoptDecoder.useWorkers(2);
     this.understory=new Set(this.manifest.names.flatMap((name,i)=>/^(fern|(?:fir|pine)_sapling)/.test(name) ? [i]:[]));
@@ -321,6 +322,13 @@ export class PineStream {
         if (controller.signal.aborted || this.disposed) return;
         const data=new Float32Array(buffer);
         const count=data.length/13;
+        // Carry the source rocks' ground offsets to the baked relief before building instance bounds.
+        for (const [index,delta] of this.options.rockContacts?.[key] ?? []) {
+          const offset=index*13;
+          if (Number.isInteger(index) && index>=0 && index<count && Math.abs(delta)<.3 && this.manifest.names[data[offset]]?.startsWith("rock_")) {
+            data[offset+12]+=delta;
+          }
+        }
         const cells=new Map<string,{box:Box3;offsets:number[]}>();
         const bounds=new Float32Array(count*4);
         let sliceStart=performance.now();

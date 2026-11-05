@@ -7,15 +7,15 @@ import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
 import { ACESFilmicToneMapping, FogExp2, Mesh, PerspectiveCamera, TextureLoader, Vector3, type Material, type Texture } from "three";
 import { ForestSurface, RenderFailure, RenderHealth, Walker, type Collision } from "./forest-origin-lab";
-import { PineStream, pineRoot, type TileManifest, type SourceTree } from "./pine-stream";
+import { PineStream, pineRoot, type TileManifest, type SourceTree, type PineRockContacts } from "./pine-stream";
 import { loadPineTerrainLayeredMaterial, loadPineTerrainMaterial } from "./pine-materials";
 import { applyPineCanopyField, applyPineUnderstory, makePineRiver } from "./pine-environment";
 import { PineOuterForest, pineVisualRoot } from "./pine-outer-forest";
 import type { Memory } from "@/domain/types";
-import { derivePineMemoryAnchors, type PineMemoryAnchor } from "./pine-memory-anchors";
+import { derivePineMemoryAnchors, type PineMemoryAnchor, type PineMemorySafety } from "./pine-memory-anchors";
 
 type Quality = "low" | "mid" | "high";
-type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][]; trees: SourceTree[] };
+type Payload = { manifest: TileManifest; collision: Collision; trunks: number[][][]; trees: SourceTree[]; safety?: PineMemorySafety; rockContacts?: PineRockContacts };
 const NO_MEMORIES: Memory[] = [];
 import { PineMemoryScene, type PineMemorySceneProps } from "./pine-memory-scene";
 
@@ -46,7 +46,7 @@ function RuntimeReviewPose() {
   },[camera,gl]);
   return null;
 }
-function Streaming({ manifest, trees, onError, quality, field, terrainReady }: { manifest: TileManifest; trees:SourceTree[]; onError: (message: string) => void; quality: Quality; field?: Texture; terrainReady: boolean }) {
+function Streaming({ manifest, trees, onError, quality, field, terrainReady, rockContacts }: { manifest: TileManifest; trees:SourceTree[]; onError: (message: string) => void; quality: Quality; field?: Texture; terrainReady: boolean; rockContacts?: PineRockContacts }) {
   const { gl, camera, scene } = useThree();
   const owner = useRef<PineStream | null>(null);
   useEffect(() => {
@@ -55,7 +55,7 @@ function Streaming({ manifest, trees, onError, quality, field, terrainReady }: {
     const runtime = new PineStream(manifest,gl,onError,{alpha:params.get("alpha") === "coverage" ? "coverage":params.get("alpha") === "mask" ? "mask":"single",quality,audit:params.has("audit"),sample:params.get("sample")==="creek",
       smoothImpostor:params.get("impostor")!=="legacy",
       sourceImpostor:params.get("impostor")==="source" || (quality==="high" && params.get("impostor")!=="legacy"),
-      sourceTrees:params.get("overview")==="off" ? undefined:trees,field,
+      sourceTrees:params.get("overview")==="off" ? undefined:trees,field,rockContacts,
       frozenLod:frozen === "near" || frozen === "mid" || frozen === "far" ? frozen:undefined});
     owner.current = runtime;
     runtime.group.visible=false;
@@ -63,7 +63,7 @@ function Streaming({ manifest, trees, onError, quality, field, terrainReady }: {
     scene.add(runtime.group);
     gl.domElement.dataset.forestStreamingRuntime="true";
     return () => { owner.current=null;scene.remove(runtime.group);runtime.dispose();delete gl.domElement.dataset.forestGeometryReady;delete gl.domElement.dataset.forestStreaming; };
-  }, [manifest,trees,gl,onError,scene,quality,field]);
+  }, [manifest,trees,gl,onError,scene,quality,field,rockContacts]);
   useFrame(()=>{
     const runtime=owner.current;
     if (!runtime || !terrainReady || !(camera instanceof PerspectiveCamera)) return;
@@ -105,8 +105,8 @@ function Terrain({ onReady, onError, onMaterial, field, floor, sample }: { onRea
   },[terrain,gl,onReady,onError,onMaterial,sample,field,floor]);
   return <primitive object={terrain.scene} />;
 }
-function SourceLandmarks({field,quality}: {field: Texture; quality: Quality}) {
-  const { scene } = useGLTF(pineRoot+(quality==="high" ? "batch6/landmarks.glb":"optimized/landmarks.glb"));
+function SourceLandmarks({field}: {field: Texture}) {
+  const { scene } = useGLTF(pineRoot+"scene-repair/landmarks.glb");
   const { gl } = useThree();
   const waterTime = useRef({value:0});
   const reducedMotion = useRef(false);
@@ -161,8 +161,8 @@ function ForestContent({payload,quality,onError,field,floor,anchors,experience}:
   return <>
     <Suspense fallback={null}><Terrain sample={!field} field={field} floor={floor} onReady={setTerrainReady} onMaterial={setTerrainMaterial} onError={onError} /></Suspense>
     {field && terrainReady && terrainMaterial && <Suspense fallback={null}><PineOuterForest terrainMaterial={terrainMaterial} /></Suspense>}
-    {field && <Suspense fallback={null}><SourceLandmarks field={field} quality={quality} /></Suspense>}
-    {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} />}
+    {field && <Suspense fallback={null}><SourceLandmarks field={field} /></Suspense>}
+    {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} rockContacts={payload.rockContacts} />}
     {terrainReady && experience && <PineMemoryScene anchors={anchors} {...experience} />}
   </>;
 }
@@ -179,7 +179,7 @@ export function ForestRuntimeLab({ memories = NO_MEMORIES, experience }: { memor
   // The host lives inside the independently mounted reading settings dialog.
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(()=>{if(immersive)setQualityHost(document.getElementById("fm-quality-slot"));},[immersive]);
-  const anchors = useMemo(()=>payload ? derivePineMemoryAnchors(memories,payload.collision,payload.trunks):[],[payload,memories]);
+  const anchors = useMemo(()=>payload ? derivePineMemoryAnchors(memories,payload.collision,payload.trunks,payload.safety):[],[payload,memories]);
   useEffect(()=>{
     const controller = new AbortController();
     const load = async (file: string) => {
@@ -192,13 +192,14 @@ export function ForestRuntimeLab({ memories = NO_MEMORIES, experience }: { memor
     const requested=params.get("quality");
     if (!creek) {
       useGLTF.preload(pineRoot+"environment/terrain.glb");
-      useGLTF.preload(pineRoot+(requested==="high" ? "batch6/landmarks.glb":"optimized/landmarks.glb"));
+      useGLTF.preload(pineRoot+"scene-repair/landmarks.glb");
       useLoader.preload(TextureLoader,pineRoot+"environment/height-light.png");
     }
-    Promise.all([load("batch2/tiles/manifest.json"),load(creek ? "batch5/collision-layout.json":"environment/navigation.json"),load("source-tree-placements.json")])
-      .then(([manifest,layout,trees])=>{if(!controller.signal.aborted) {
+    Promise.all([load("batch2/tiles/manifest.json"),load(creek ? "batch5/collision-layout.json":"environment/navigation.json"),load("source-tree-placements.json"),
+      immersive && !creek ? load("scene-repair/memory-safety.json"):undefined,creek ? undefined:load("scene-repair-contact/rock-contact.json")])
+      .then(([manifest,layout,trees,safety,rockContacts])=>{if(!controller.signal.aborted) {
         setSample(creek);
-        setPayload({manifest,collision:creek ? layout.collision:layout,trees,trunks:trees.map((tree:SourceTree)=>tree.matrix)});
+        setPayload({manifest,collision:creek ? layout.collision:layout,trees,safety,rockContacts,trunks:trees.map((tree:SourceTree)=>tree.matrix)});
         const pixels=params.get("scale");
         if (pixels==="0.8") setScale(.8);
         else if (pixels==="0.7" && !creek) setScale(.7);
@@ -214,7 +215,7 @@ export function ForestRuntimeLab({ memories = NO_MEMORIES, experience }: { memor
       status.current.textContent=value ? `${metrics?.fps?.toFixed(1) ?? "…"} FPS · 源树 ${value.trees} · 地被 ${value.props} · 驻留分区 ${value.tiles.length}` : "正在逐步加载周边森林";
     },1000);
     return ()=>{controller.abort();window.clearInterval(timer);};
-  },[]);
+  },[immersive]);
   const controls = <div className="forest-lab-bar"><div><strong>{sample ? "Pine Forest · 河床森林样板":"Pine Forest · 原布局动态 LOD"}</strong><span ref={status}>正在加载地表与周边森林</span></div>
       <label>资源精度<select aria-label="森林资源精度" value={quality} onChange={event=>{
         const next=event.target.value as Quality;

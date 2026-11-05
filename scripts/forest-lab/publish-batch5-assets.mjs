@@ -9,6 +9,7 @@ import path from 'node:path';
 const batch6=process.argv.includes('--batch6');
 const profiles={
   '--scene-repair':{batch:'pine-scene-repair',tag:'pine-scene-repair-20261105',name:'Pine Forest - source geometry repair',files:['pine-scene-repair-runtime.zip','pine-scene-repair-authoring.zip']},
+  '--scene-repair-contact':{batch:'pine-scene-repair-contact',tag:'pine-scene-repair-contact-20261105',name:'Pine Forest - rock contact overlay',files:['pine-scene-repair-contact-runtime.zip']},
   '--scene-repair-review':{batch:'pine-scene-repair-review',tag:'pine-scene-repair-review-20261105',name:'Pine Forest - repaired scene walkthrough',files:['pine-scene-repair-walk.webm']},
   '--template-correction':{batch:'pine-template-crowns-v2',tag:'pine-template-closure-correction-20261104',name:'Pine Forest ? near needle bundle correction',files:['pine-template-crowns-v2-runtime.zip','pine-template-crowns-v2-authoring.zip']},
   '--template-crowns':{batch:'pine-template-crowns',tag:'pine-template-crowns-20261104',name:'Pine Forest ? near crown closure',files:['pine-template-crowns-runtime.zip','pine-template-crowns-authoring.zip']},

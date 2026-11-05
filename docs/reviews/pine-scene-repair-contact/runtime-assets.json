@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "scene-repair-contact/production.json",
+      "bytes": 177,
+      "sha256": "0cba6885b880b4a0ef29bddad0286ad5986f30e5a030c81fd62416dc7d3972f9"
+    },
+    {
+      "path": "scene-repair-contact/rock-contact.json",
+      "bytes": 709474,
+      "sha256": "9036a5ad846b0d1ab9d96b8f03c48192c6a47c6f1ff7d9c10d338cdc4ed1be14"
+    }
+  ],
+  "totalBytes": 709651
+}

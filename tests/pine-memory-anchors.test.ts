@@ -28,3 +28,21 @@ test("forest memory anchors avoid blocked ground and tree trunks", () => {
   assert.ok(Math.hypot(x, z) >= 2.2);
   assert.deepEqual(derivePineMemoryAnchors([], collision, []), []);
 });
+
+test("forest anchors reject water, rock clearance and disconnected cells without changing memories", () => {
+  const records=[memory("memory-a"),memory("memory-b")];
+  const snapshot=JSON.stringify(records);
+  const safety={...collision,safe:Array<number>(collision.columns*collision.rows).fill(0)};
+  assert.deepEqual(derivePineMemoryAnchors(records,collision,[],safety),[]);
+  safety.safe.fill(1);
+  const original=derivePineMemoryAnchors(records,collision,[],safety);
+  for(const {position:[x,,z]} of original){
+    const i=Math.floor((x-collision.origin[0])/collision.step),j=Math.floor((-z-collision.origin[1])/collision.step);
+    safety.safe[j*collision.columns+i]=0;
+  }
+  const next=derivePineMemoryAnchors(records,collision,[],safety);
+  assert.equal(next.length,2);
+  assert.ok(next.every(a=>original.every(b=>a.position[0]!==b.position[0] || a.position[2]!==b.position[2])));
+  assert.deepEqual(derivePineMemoryAnchors(records,collision,[],{...safety,step:1}),[]);
+  assert.equal(JSON.stringify(records),snapshot);
+});

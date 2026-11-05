@@ -1,0 +1,20 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-scene-repair-20261105",
+  "tag": "pine-scene-repair-20261105",
+  "publishedFrom": "40acc3907efdddd5350932f4fa74b12c7f8771d2",
+  "files": [
+    {
+      "name": "pine-scene-repair-runtime.zip",
+      "bytes": 24885549,
+      "sha256": "70089b4c0e2442ab9b6bdd88b23d6d7b0d615859ca0baf4b3a72a2ab711885c1",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-scene-repair-20261105/pine-scene-repair-runtime.zip"
+    },
+    {
+      "name": "pine-scene-repair-authoring.zip",
+      "bytes": 115982807,
+      "sha256": "bdf0c0f6d67c9af3371392847581459fd3e60b5e004b2fd23fc538f1b947cb70",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-scene-repair-20261105/pine-scene-repair-authoring.zip"
+    }
+  ]
+}

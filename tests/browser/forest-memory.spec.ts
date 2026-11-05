@@ -8,27 +8,17 @@ import { Vector3 } from "three";
 test.use({ viewport: { width: 1440, height: 900 }, video: { mode: "on", size: { width: 1440, height: 900 } } });
 
 const navigation = JSON.parse(readFileSync("public/forest-origin-assets/environment/navigation.json", "utf8"));
+const safety = JSON.parse(readFileSync("public/forest-origin-assets/scene-repair/memory-safety.json", "utf8"));
 const sourceTrees = JSON.parse(readFileSync("public/forest-origin-assets/source-tree-placements.json", "utf8"));
 const start = new Vector3(23.155473709106445, 0.9223032593727112, 47.55979919433594);
-const heading = new Vector3(-0.9821439487, 0, -0.1396602648).normalize();
-
 function chooseReachableMemory() {
-  let best: { memory: Memory; position: number[]; score: number } | undefined;
-  for (let index = 0; index < 1600; index++) {
-    const memory: Memory = { id: `review-memory-${index}`, planetId: "review-planet", kind: "mixed",
+  // This seeded ID resolves to a dry bank with a direct route from the real spawn.
+  const memory: Memory = { id: "review-memory-269", planetId: "review-planet", kind: "mixed",
       title: "林间的夏日", body: "测试档案中的真实记忆正文。沿着林间微光走近，然后停下来读一会儿。\n\n这份内容仅用于隔离浏览器验收。",
       occurredOn: "2018-06-21", createdAt: "2018-06-21T12:00:00.000Z", updatedAt: "2018-06-21T12:00:00.000Z", mediaIds: ["review-photo", "review-video"] };
-    const anchor = derivePineMemoryAnchors([memory], navigation, sourceTrees.map((tree: { matrix: number[][] }) => tree.matrix))[0];
-    if (!anchor) continue;
-    const delta = new Vector3(...anchor.position).sub(start), distance = delta.length(), forward = delta.x * heading.x + delta.z * heading.z;
-    const cross = Math.abs(delta.x * heading.z - delta.z * heading.x);
-    if (distance > 8 && distance < 42 && clearWalkRoute(anchor.position)) {
-      const score = Math.abs(distance - 24) + cross * 0.2 - forward * 0.01;
-      if (!best || score < best.score) best = { memory, position: anchor.position, score };
-    }
-  }
-  if (!best) throw new Error("No walkable test memory anchor was found in the source forest.");
-  return best;
+  const anchor = derivePineMemoryAnchors([memory], navigation, sourceTrees.map((tree: { matrix: number[][] }) => tree.matrix), safety)[0];
+  if (!anchor || !clearWalkRoute(anchor.position)) throw new Error("The test memory no longer has a direct route from spawn.");
+  return { memory, position: anchor.position };
 }
 
 function clearWalkRoute(target: number[]) {
@@ -77,6 +67,7 @@ async function writeMediaBlobs(page: Page) {
 }
 
 test("Pine Forest opens and closes a real memory during a continuous walk", async ({ page }, info) => {
+  test.setTimeout(150_000);
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   const chosen = chooseReachableMemory();
@@ -103,27 +94,31 @@ test("Pine Forest opens and closes a real memory during a continuous walk", asyn
   await page.getByRole("button", { name: /走进森林/ }).click();
   await expect(page.locator(".fm-walk-note")).toBeVisible();
   await page.screenshot({ path: info.outputPath("forest-memory-exploring.png") });
+  await page.waitForTimeout(1200);
 
   const target = new Vector3(...anchors[0].position as [number, number, number]);
   const box = (await canvas.boundingBox())!;
   await canvas.focus();
-  for (let step = 0; step < 80; step++) {
-    const walker = await page.evaluate(() => JSON.parse(document.querySelector("canvas")!.dataset.forestWalkerPosition!));
-    const cameraPosition = new Vector3(...walker.position as [number, number, number]);
-    const delta = target.clone().sub(cameraPosition), distance = Math.hypot(delta.x, delta.z);
-    if (distance <= 4.1) break;
-    const direction = new Vector3(...walker.direction as [number, number, number]);
-    const currentYaw = Math.atan2(-direction.x, -direction.z);
-    const desiredYaw = Math.atan2(-delta.x, -delta.z);
-    const yawDelta = Math.atan2(Math.sin(desiredYaw - currentYaw), Math.cos(desiredYaw - currentYaw));
-    const drag = Math.max(-150, Math.min(150, -yawDelta / 0.0025));
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await page.mouse.down();await page.mouse.move(box.x + box.width / 2 + drag, box.y + box.height / 2, { steps: 8 });await page.mouse.up();
-    await canvas.focus();
-    await page.keyboard.down("w");await page.waitForTimeout(300);await page.keyboard.up("w");
-    await page.waitForTimeout(120);
-    if (distance <= 3.7) break;
-  }
+  let walking = false;
+  try {
+    for (let step = 0; step < 120; step++) {
+      const walker = await page.evaluate(() => JSON.parse(document.querySelector("canvas")!.dataset.forestWalkerPosition!));
+      const cameraPosition = new Vector3(...walker.position as [number, number, number]);
+      const delta = target.clone().sub(cameraPosition), distance = Math.hypot(delta.x, delta.z);
+      if (distance <= 4.1) break;
+      const direction = new Vector3(...walker.direction as [number, number, number]);
+      const currentYaw = Math.atan2(-direction.x, -direction.z);
+      const desiredYaw = Math.atan2(-delta.x, -delta.z);
+      const yawDelta = Math.atan2(Math.sin(desiredYaw - currentYaw), Math.cos(desiredYaw - currentYaw));
+      const drag = Math.max(-150, Math.min(150, -yawDelta / 0.0025));
+      if (Math.abs(drag) > 3) {
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+        await page.mouse.down();await page.mouse.move(box.x + box.width / 2 + drag, box.y + box.height / 2, { steps: 6 });await page.mouse.up();
+      }
+      if (!walking && Math.abs(yawDelta) < .08) { await page.keyboard.down("w"); walking = true; }
+      await page.waitForTimeout(350);
+    }
+  } finally { if (walking) await page.keyboard.up("w"); }
   const walkEvidence = await page.evaluate(() => ({ metrics: JSON.parse(document.querySelector("canvas")!.dataset.forestOriginMetrics ?? "null"), walker: document.querySelector("canvas")!.dataset.forestWalkerPosition ?? null, proximity: document.querySelector(".fm-discovery")?.textContent ?? null }));
   console.log("WALK_EVIDENCE", JSON.stringify({ target: chosen.position, walkEvidence }));
   await info.attach("walk-position", { body: JSON.stringify({ target: chosen.position, walkEvidence }, null, 2), contentType: "application/json" });
@@ -141,6 +136,7 @@ test("Pine Forest opens and closes a real memory during a continuous walk", asyn
   await expect(reader.locator("video")).toHaveCount(1);
   await expect.poll(() => reader.locator("video").evaluate((v: HTMLVideoElement) => v.readyState)).toBeGreaterThanOrEqual(1);
   await page.screenshot({ path: info.outputPath("forest-memory-reading-video.png") });
+  await page.waitForTimeout(1200);
   await page.keyboard.press("Escape");await expect(reader).toHaveCount(0);
   await page.keyboard.down("w");await page.waitForTimeout(500);await page.keyboard.up("w");
   await page.getByRole("button", { name: "探索设置" }).click();

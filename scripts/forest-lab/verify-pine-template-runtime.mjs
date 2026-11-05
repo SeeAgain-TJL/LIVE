@@ -10,8 +10,9 @@ const page=await browser.newPage({viewport:{width:1440,height:900}});
 const result={errors:[],switches:[],assetRequests:[]};
 const restoredRoot=process.env.PINE_ASSET_ROOT&&path.resolve(process.env.PINE_ASSET_ROOT);
 if(restoredRoot) {
- const manifest=JSON.parse(await readFile('docs/reviews/pine-template-final/runtime-assets.json','utf8'));
- const allowed=new Set(manifest.files.map(f=>f.path));
+ const stages=['pine-template-final','pine-scene-repair','pine-scene-repair-contact'];
+ const manifests=await Promise.all(stages.map(stage=>readFile(`docs/reviews/${stage}/runtime-assets.json`,'utf8').then(JSON.parse)));
+ const allowed=new Set(manifests.flatMap(manifest=>manifest.files.map(f=>f.path)));
  result.restoredRuntime={manifestFiles:allowed.size,servedFromIsolatedFolder:true};
  await page.route('**/forest-origin-assets/**',async route=>{
   const relative=decodeURIComponent(new URL(route.request().url()).pathname.split('/forest-origin-assets/')[1]);
