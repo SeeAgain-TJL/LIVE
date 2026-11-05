@@ -26,7 +26,7 @@ const poses={
   ...(process.env.PINE_PANORAMA ? {panorama:{position:[0,264,50],direction:[0,-261,-50]}} : {}),
 };
 const browser=await chromium.launch({channel:'chrome',headless:true});
-const result={browser:browser.version(),viewport:[1440,900],verticalFov:48.5,errors:[],shots:[]};
+const result={browser:browser.version(),query:process.env.PINE_QUERY||null,viewport:[1440,900],verticalFov:48.5,errors:[],shots:[]};
 try {
   for(const [name,pose] of Object.entries(poses)) {
     if(process.env.PINE_SHOT && !process.env.PINE_SHOT.split(',').includes(name)) continue;
@@ -40,6 +40,7 @@ try {
     await page.locator('canvas[data-pine-review-pose-ready=true][data-pine-terrain=layered][data-pine-landmarks=ready]').waitFor({timeout:120000});
     if(process.env.PINE_VISUAL_FINISH) await page.locator('canvas[data-pine-outer-forest=ready]').waitFor({timeout:120000});
     await page.locator('canvas[data-forest-origin-ready=true]').waitFor({timeout:120000});
+    if(new URLSearchParams(process.env.PINE_QUERY).get('trees')==='game-region') await page.locator('canvas[data-pine-game-region="38"]').waitFor({timeout:120000});
     await page.evaluate(detail=>window.dispatchEvent(new CustomEvent('pine-runtime-review-camera',{detail})),pose);
     await page.waitForFunction(()=>{
       const c=document.querySelector('canvas');const s=JSON.parse(c?.dataset.forestStreaming || 'null');
