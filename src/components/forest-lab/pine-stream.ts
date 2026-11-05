@@ -1,3 +1,4 @@
+import { inGameTreeRegion } from "./pine-game-region";
 import { Box3, DoubleSide, DynamicDrawUsage, Frustum, Group, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, PlaneGeometry, Sphere, SRGBColorSpace, Texture, TextureLoader, Vector3, type WebGLRenderer } from "three";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
@@ -130,7 +131,7 @@ export class PineStream {
   private microCover: Set<number>;
 
   constructor(private manifest: TileManifest, private gl: WebGLRenderer, private reportError: (message: string) => void,
-    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: Quality; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture; rockContacts?: PineRockContacts; rebuiltTrees?: ReadonlySet<string> } = { alpha: "single" }) {
+    private options: { alpha: "single" | "mask" | "coverage"; frozenLod?: Tier; quality?: Quality; audit?: boolean; smoothImpostor?: boolean; sourceImpostor?: boolean; sourceTrees?: SourceTree[]; sample?: boolean; field?: Texture; rockContacts?: PineRockContacts; gameRegion?: boolean; rebuiltTrees?: ReadonlySet<string> } = { alpha: "single" }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Meshoptimizer API, not a React hook.
     MeshoptDecoder.useWorkers(2);
     this.understory=new Set(this.manifest.names.flatMap((name,i)=>/^(fern|(?:fir|pine)_sapling)/.test(name) ? [i]:[]));
@@ -455,6 +456,7 @@ export class PineStream {
         counters.candidates++;
         const i=offset/13;
         const tree=tile.data[offset]>=this.manifest.propAssetCount;
+        if(tree && this.options.gameRegion && inGameTreeRegion(tile.data[offset+4],tile.data[offset+8])) continue;
         const dx=tile.data[offset+4]-camera.position.x,dz=-tile.data[offset+8]-camera.position.z;
         const distanceSquared=dx*dx+dz*dz;
         const inSample=tile.data[offset+4]>-40 && tile.data[offset+4]<40 && tile.data[offset+8]>-75 && tile.data[offset+8]<-15;

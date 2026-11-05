@@ -10,6 +10,7 @@ import { ForestSurface, RenderFailure, RenderHealth, Walker, type Collision } fr
 import { PineStream, pineRoot, type TileManifest, type SourceTree, type PineRockContacts } from "./pine-stream";
 import { loadPineTerrainLayeredMaterial, loadPineTerrainMaterial } from "./pine-materials";
 import { applyPineCanopyField, applyPineUnderstory, makePineRiver } from "./pine-environment";
+import { PineGameRegion } from "./pine-game-region";
 import { PineOuterForest, pineVisualRoot } from "./pine-outer-forest";
 import type { Memory } from "@/domain/types";
 import { derivePineMemoryAnchors, type PineMemoryAnchor, type PineMemorySafety } from "./pine-memory-anchors";
@@ -46,7 +47,7 @@ function RuntimeReviewPose() {
   },[camera,gl]);
   return null;
 }
-function Streaming({ manifest, trees, onError, quality, field, terrainReady, rockContacts }: { manifest: TileManifest; trees:SourceTree[]; onError: (message: string) => void; quality: Quality; field?: Texture; terrainReady: boolean; rockContacts?: PineRockContacts }) {
+function Streaming({ manifest, trees, onError, quality, field, terrainReady, rockContacts, gameReady }: { manifest: TileManifest; trees:SourceTree[]; onError: (message: string) => void; quality: Quality; field?: Texture; terrainReady: boolean; rockContacts?: PineRockContacts; gameReady?: boolean }) {
   const { gl, camera, scene } = useThree();
   const owner = useRef<PineStream | null>(null);
   useEffect(() => {
@@ -55,6 +56,7 @@ function Streaming({ manifest, trees, onError, quality, field, terrainReady, roc
     const runtime = new PineStream(manifest,gl,onError,{alpha:params.get("alpha") === "coverage" ? "coverage":params.get("alpha") === "mask" ? "mask":"single",quality,audit:params.has("audit"),sample:params.get("sample")==="creek",
       smoothImpostor:params.get("impostor")!=="legacy",
       sourceImpostor:params.get("impostor")==="source" || (quality==="high" && params.get("impostor")!=="legacy"),
+      gameRegion:gameReady,
       sourceTrees:params.get("overview")==="off" ? undefined:trees,field,rockContacts,
       // Keep the validated legacy default while the full rebuild misses the
       // Intel frame-time gate. The review route still exercises every source variant.
@@ -66,7 +68,7 @@ function Streaming({ manifest, trees, onError, quality, field, terrainReady, roc
     scene.add(runtime.group);
     gl.domElement.dataset.forestStreamingRuntime="true";
     return () => { owner.current=null;scene.remove(runtime.group);runtime.dispose();delete gl.domElement.dataset.forestGeometryReady;delete gl.domElement.dataset.forestStreaming; };
-  }, [manifest,trees,gl,onError,scene,quality,field,rockContacts]);
+  }, [manifest,trees,gl,onError,scene,quality,field,rockContacts,gameReady]);
   useFrame(()=>{
     const runtime=owner.current;
     if (!runtime || !terrainReady || !(camera instanceof PerspectiveCamera)) return;
@@ -160,12 +162,15 @@ function EnvironmentContent(props: ContentProps) {
 }
 function ForestContent({payload,quality,onError,field,floor,anchors,experience}: ContentProps & {field?: Texture;floor?: Texture}) {
   const [terrainReady,setTerrainReady] = useState(false);
+  const [gameReady,setGameReady] = useState(false);
+  const gameRegion=typeof window!=="undefined" && new URLSearchParams(window.location.search).get("trees")==="game-region";
   const [terrainMaterial,setTerrainMaterial] = useState<Material|null>(null);
   return <>
+    {gameRegion && <PineGameRegion onReady={setGameReady} onError={onError} />}
     <Suspense fallback={null}><Terrain sample={!field} field={field} floor={floor} onReady={setTerrainReady} onMaterial={setTerrainMaterial} onError={onError} /></Suspense>
     {field && terrainReady && terrainMaterial && <Suspense fallback={null}><PineOuterForest terrainMaterial={terrainMaterial} /></Suspense>}
     {field && <Suspense fallback={null}><SourceLandmarks field={field} /></Suspense>}
-    {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} rockContacts={payload.rockContacts} />}
+    {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} rockContacts={payload.rockContacts} gameReady={gameReady} />}
     {terrainReady && experience && <PineMemoryScene anchors={anchors} {...experience} />}
   </>;
 }
