@@ -160,17 +160,19 @@ function EnvironmentContent(props: ContentProps) {
   const [field,floor]=useLoader(TextureLoader,[pineRoot+"environment/height-light.png",pineVisualRoot+"understory.webp"]);
   return <ForestContent {...props} field={field} floor={floor} />;
 }
+// The stream is created once with the region exclusion; toggling it after the GLB loads
+// would rebuild PineStream and dispose shared prop textures still in use.
+const noteGameRegion=()=>{};
 function ForestContent({payload,quality,onError,field,floor,anchors,experience}: ContentProps & {field?: Texture;floor?: Texture}) {
   const [terrainReady,setTerrainReady] = useState(false);
-  const [gameReady,setGameReady] = useState(false);
   const gameRegion=typeof window!=="undefined" && new URLSearchParams(window.location.search).get("trees")==="game-region";
   const [terrainMaterial,setTerrainMaterial] = useState<Material|null>(null);
   return <>
-    {gameRegion && <PineGameRegion onReady={setGameReady} onError={onError} />}
+    {gameRegion && <PineGameRegion onReady={noteGameRegion} onError={onError} />}
     <Suspense fallback={null}><Terrain sample={!field} field={field} floor={floor} onReady={setTerrainReady} onMaterial={setTerrainMaterial} onError={onError} /></Suspense>
     {field && terrainReady && terrainMaterial && <Suspense fallback={null}><PineOuterForest terrainMaterial={terrainMaterial} /></Suspense>}
     {field && <Suspense fallback={null}><SourceLandmarks field={field} /></Suspense>}
-    {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} rockContacts={payload.rockContacts} gameReady={gameReady} />}
+    {(field || terrainReady) && <Streaming manifest={payload.manifest} trees={payload.trees} onError={onError} quality={quality} field={field} terrainReady={terrainReady} rockContacts={payload.rockContacts} gameReady={gameRegion} />}
     {terrainReady && experience && <PineMemoryScene anchors={anchors} {...experience} />}
   </>;
 }
