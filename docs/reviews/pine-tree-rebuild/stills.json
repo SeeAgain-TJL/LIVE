@@ -1,0 +1,253 @@
+{
+  "browser": "156.0.8078.80",
+  "viewport": [
+    1440,
+    900
+  ],
+  "verticalFov": 48.5,
+  "shots": [
+    {
+      "name": "near",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439487,
+          0.1260486988,
+          -0.1396602648
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 224,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.026499999856948,
+        "averageFps": 32.448587490876236,
+        "p95Ms": 33.60000000000218
+      }
+    },
+    {
+      "name": "far",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          10,
+          18,
+          60
+        ],
+        "direction": [
+          0.1,
+          -0.5,
+          -1
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 305,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.0033999998092655,
+        "averageFps": 36.26809835321666,
+        "p95Ms": 33.60000000000218
+      }
+    },
+    {
+      "name": "pine02Near",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          13.8,
+          2.2,
+          57
+        ],
+        "direction": [
+          -4.5,
+          5,
+          -2.1
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 50,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.00940000014305,
+        "averageFps": 60.06220218441066,
+        "p95Ms": 16.900000000001455
+      }
+    },
+    {
+      "name": "pine02Mid",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          22,
+          2,
+          62
+        ],
+        "direction": [
+          -12.7,
+          5.5,
+          -7.1
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 248,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.00659999985695,
+        "averageFps": 34.53886335811104,
+        "p95Ms": 33.79999999999927
+      }
+    },
+    {
+      "name": "pine02Far",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          48,
+          7,
+          70
+        ],
+        "direction": [
+          -38.7,
+          1.5,
+          -15.1
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 305,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.000400000000002,
+        "averageFps": 30.426832752414143,
+        "p95Ms": 50
+      }
+    },
+    {
+      "name": "river",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          17,
+          2.5,
+          39
+        ],
+        "direction": [
+          -6,
+          -1.5,
+          -8
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 233,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.018400000190733,
+        "averageFps": 30.491280063003575,
+        "p95Ms": 49.900000000001455
+      }
+    },
+    {
+      "name": "walkMid",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          -9.3,
+          2.6,
+          31.1
+        ],
+        "direction": [
+          -0.84,
+          0.045,
+          -0.54
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 160,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.015600000095368,
+        "averageFps": 43.90216089797211,
+        "p95Ms": 33.5
+      }
+    },
+    {
+      "name": "raisedEdge",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          55,
+          41,
+          48
+        ],
+        "direction": [
+          1,
+          -0.4,
+          -0.22
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 58,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.012499999904634,
+        "averageFps": 60.03565062470237,
+        "p95Ms": 17
+      }
+    },
+    {
+      "name": "panorama",
+      "route": "/forest-runtime-lab?scale=0.7&review=1",
+      "pose": {
+        "position": [
+          0,
+          264,
+          50
+        ],
+        "direction": [
+          0,
+          -261,
+          -50
+        ]
+      },
+      "dimensions": [
+        1007,
+        630
+      ],
+      "visibleTrees": 585,
+      "originalTrees": 585,
+      "stationary": {
+        "seconds": 7.060100000095368,
+        "averageFps": 21.52944009262571,
+        "p95Ms": 83.29999999999927
+      }
+    }
+  ]
+}

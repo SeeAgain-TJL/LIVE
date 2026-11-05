@@ -1,0 +1,20 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-tree-rebuild-20261105",
+  "tag": "pine-tree-rebuild-20261105",
+  "publishedFrom": "91f7236d7f6dd1dab3df0174587872d8c005c08c",
+  "files": [
+    {
+      "name": "pine-tree-rebuild-runtime.zip",
+      "bytes": 57949023,
+      "sha256": "c3274bd278d659da46411e49161f6bd391a342204191515ad4c10bbf738d8a66",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-tree-rebuild-20261105/pine-tree-rebuild-runtime.zip"
+    },
+    {
+      "name": "pine-tree-rebuild-authoring.zip",
+      "bytes": 143805290,
+      "sha256": "5854c176a38d7f4fcf89c08b8964fd80ae6480f7117848702b4f009e9853ddae",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-tree-rebuild-20261105/pine-tree-rebuild-authoring.zip"
+    }
+  ]
+}

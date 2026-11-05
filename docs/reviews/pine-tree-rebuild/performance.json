@@ -1,0 +1,170 @@
+[
+  {
+    "quality": "low",
+    "scale": "0.7",
+    "route": "memory-bank-out-and-back",
+    "browser": "156.0.8078.80",
+    "display": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "internal": [
+        1007,
+        630
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    "frames": {
+      "seconds": 42.625600000143116,
+      "fps": 40.09327727924679,
+      "p95Ms": 50
+    },
+    "firstReadyMs": 5972,
+    "firstSettledMs": 8966,
+    "legs": [
+      {
+        "key": "w",
+        "ms": null,
+        "fps": 41.64280147585607,
+        "p95Ms": 34.29999999999927,
+        "camera": [
+          -32.40369132620172,
+          1.4478129534830637,
+          -0.5585728727129934
+        ],
+        "displacement": 73.49964999783035
+      },
+      {
+        "key": "s",
+        "ms": null,
+        "fps": 38.545584139015546,
+        "p95Ms": 50.19999999999709,
+        "camera": [
+          21.98449258824139,
+          0.7528015554266059,
+          46.5456423901171
+        ],
+        "displacement": 71.95054999816418
+      }
+    ],
+    "baseline": {
+      "frames": {
+        "seconds": 40.78110000014306,
+        "fps": 52.59789461276118,
+        "p95Ms": 33.400000000001455
+      },
+      "firstReadyMs": 7972,
+      "firstSettledMs": 11535
+    },
+    "contextLost": false,
+    "errors": [],
+    "archiveAccess": []
+  },
+  {
+    "quality": "mid",
+    "scale": "0.8",
+    "route": "memory-bank-out-and-back",
+    "browser": "156.0.8078.80",
+    "display": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "internal": [
+        1152,
+        720
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    "frames": {
+      "seconds": 66.32690000028617,
+      "fps": 27.50015453748223,
+      "p95Ms": 66.69999999999709
+    },
+    "firstReadyMs": 6763,
+    "firstSettledMs": 9739,
+    "legs": [
+      {
+        "key": "w",
+        "ms": null,
+        "fps": 30.34341944801003,
+        "p95Ms": 50.10000000000218,
+        "camera": [
+          -31.671365131644336,
+          1.522008765127012,
+          0.07567611720179022
+        ],
+        "displacement": 72.53084999966622
+      },
+      {
+        "key": "s",
+        "ms": null,
+        "fps": 26.16833189049613,
+        "p95Ms": 83.30000000000291,
+        "camera": [
+          21.71542620759639,
+          0.8515006193016158,
+          46.312610878459466
+        ],
+        "displacement": 70.62579999983312
+      }
+    ],
+    "contextLost": false,
+    "errors": [],
+    "archiveAccess": []
+  },
+  {
+    "quality": "high",
+    "scale": "1",
+    "route": "memory-bank-out-and-back",
+    "browser": "156.0.8078.80",
+    "display": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "internal": [
+        1440,
+        900
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    "frames": {
+      "seconds": 72.33479999999997,
+      "fps": 19.409744687204505,
+      "p95Ms": 100.39999999999964
+    },
+    "firstReadyMs": 5988,
+    "firstSettledMs": 9767,
+    "legs": [
+      {
+        "key": "w",
+        "ms": null,
+        "fps": 21.329137437355108,
+        "p95Ms": 67.89999999999964,
+        "camera": [
+          -31.255992253163953,
+          1.5418600082400353,
+          0.43541994525577293
+        ],
+        "displacement": 71.98134999966622
+      },
+      {
+        "key": "s",
+        "ms": null,
+        "fps": 18.521776230288083,
+        "p95Ms": 116.5,
+        "camera": [
+          20.580426433258747,
+          1.1847016609853271,
+          45.329616598345915
+        ],
+        "displacement": 68.57480000233646
+      }
+    ],
+    "contextLost": false,
+    "errors": [],
+    "archiveAccess": []
+  }
+]

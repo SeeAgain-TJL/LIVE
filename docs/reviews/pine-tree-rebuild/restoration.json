@@ -1,0 +1,123 @@
+{
+  "download": {
+    "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-tree-rebuild-20261105",
+    "files": [
+      {
+        "name": "pine-tree-rebuild-runtime.zip",
+        "bytes": 57949023,
+        "sha256": "c3274bd278d659da46411e49161f6bd391a342204191515ad4c10bbf738d8a66"
+      },
+      {
+        "name": "pine-tree-rebuild-authoring.zip",
+        "bytes": 143805290,
+        "sha256": "5854c176a38d7f4fcf89c08b8964fd80ae6480f7117848702b4f009e9853ddae"
+      }
+    ]
+  },
+  "authoring": {
+    "blender": "4.4.3",
+    "scenes": [
+      "pine_01",
+      "pine_02",
+      "pine_03",
+      "pine_04",
+      "pine_05",
+      "silver_fir_01",
+      "silver_fir_02",
+      "silver_fir_03",
+      "silver_fir_04",
+      "silver_fir_05",
+      "silver_fir_06"
+    ],
+    "embeddedImages": 17,
+    "openedDownloadedBlend": true,
+    "allLodsEditable": true
+  },
+  "runtime": {
+    "passed": true,
+    "route": "/forest-runtime-lab?trees=rebuild",
+    "legacyDefault": {
+      "originalTrees": 585,
+      "quality": "low",
+      "scale": "0.7"
+    },
+    "restoredRuntime": {
+      "manifestFiles": 284,
+      "servedFromIsolatedFolder": true
+    },
+    "errors": [],
+    "boundary": {
+      "start": {
+        "position": [
+          89,
+          1.194,
+          50
+        ],
+        "direction": [
+          1,
+          0,
+          0
+        ]
+      },
+      "end": [
+        99.48109999966647,
+        1.1841340000200118,
+        50
+      ]
+    },
+    "archiveAccess": [],
+    "assetRequests": 123,
+    "originalTreeCount": 585,
+    "farTreeFiles": 11,
+    "qualitySwitches": [
+      {
+        "quality": "candidate low",
+        "dimensions": [
+          1007,
+          630
+        ],
+        "contextLost": false,
+        "released": {
+          "buffers": 48,
+          "textures": 0
+        }
+      },
+      {
+        "quality": "mid",
+        "dimensions": [
+          1152,
+          720
+        ],
+        "contextLost": false,
+        "released": {
+          "buffers": 1060,
+          "textures": 49
+        }
+      },
+      {
+        "quality": "high",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "contextLost": false,
+        "released": {
+          "buffers": 2336,
+          "textures": 101
+        }
+      },
+      {
+        "quality": "low",
+        "dimensions": [
+          1007,
+          630
+        ],
+        "contextLost": false,
+        "released": {
+          "buffers": 3811,
+          "textures": 153
+        }
+      }
+    ]
+  }
+}
