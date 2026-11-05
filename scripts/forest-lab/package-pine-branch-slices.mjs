@@ -1,0 +1,35 @@
+// Reproduce the rejected pine_02 prototype for diagnosis only; the forest does not load this output.
+import {createRequire} from 'node:module';
+import {pathToFileURL} from 'node:url';
+import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import sharp from 'sharp';
+import {spawnSync} from 'node:child_process';
+import {MeshoptDecoder} from 'three/examples/jsm/libs/meshopt_decoder.module.js';
+const require=createRequire(path.join(process.env.LOCALAPPDATA,'UNIVERSE-OF-ME/tools/gltf-transform-batch2/package.json'));
+const {NodeIO}=await import(pathToFileURL(require.resolve('@gltf-transform/core')));
+const {ALL_EXTENSIONS,KHRMaterialsUnlit}=await import(pathToFileURL(require.resolve('@gltf-transform/extensions')));
+const {prune}=await import(pathToFileURL(require.resolve('@gltf-transform/functions')));
+await MeshoptDecoder.ready;
+const io=new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.decoder':MeshoptDecoder});
+const base='artifacts-local/pine-scene-repair/pine02-bake',out='public/forest-origin-assets/scene-repair-tree';await mkdir(out,{recursive:true});
+const meta=JSON.parse(await readFile(base+'/slices.json','utf8'));
+const atlas=await sharp({create:{width:2048,height:4096,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(meta.slices.map((s,i)=>({input:path.join(base,s.file),left:(i%4)*512,top:Math.floor(i/4)*1024}))).png().toBuffer();
+const d=await io.read('public/forest-origin-assets/optimized/pine_02.glb');
+for(const m of d.getRoot().listMeshes())for(const p of m.listPrimitives())if(p.getMaterial()?.getName().includes('twig')){m.removePrimitive(p);p.dispose();}
+for(const e of d.getRoot().listExtensionsUsed())if(e.extensionName==='EXT_meshopt_compression')e.dispose();
+const texture=d.createTexture('Native pine crown slice atlas').setImage(atlas).setMimeType('image/png');
+const unlit=d.createExtension(KHRMaterialsUnlit);
+const material=d.createMaterial('pine_02_native_crown_slices').setBaseColorTexture(texture).setAlphaMode('MASK').setAlphaCutoff(.08).setDoubleSided(true).setExtension('KHR_materials_unlit',unlit.createUnlit());
+const pos=[],uv=[],indices=[];
+meta.slices.forEach((s,i)=>{pos.push(...s.corners.flat());const x=i%4,y=Math.floor(i/4);uv.push(x/4,(y+1)/4,(x+1)/4,(y+1)/4,(x+1)/4,y/4,x/4,y/4);const k=i*4;indices.push(k,k+1,k+2,k,k+2,k+3);});
+const buffer=d.getRoot().listBuffers()[0];
+const accessor=(type,array)=>d.createAccessor().setType(type).setArray(array).setBuffer(buffer);
+const primitive=d.createPrimitive().setMaterial(material).setAttribute('POSITION',accessor('VEC3',new Float32Array(pos))).setAttribute('TEXCOORD_0',accessor('VEC2',new Float32Array(uv))).setIndices(accessor('SCALAR',new Uint16Array(indices)));
+const mesh=d.createMesh('Fixed source crown volume').addPrimitive(primitive);d.getRoot().listScenes()[0].addChild(d.createNode('Source branch volume').setMesh(mesh));
+await d.transform(prune());
+const raw=base+'/pine_02-slices.glb';await io.write(raw,d);
+const pack=path.join(process.env.LOCALAPPDATA,'UNIVERSE-OF-ME/tools/gltfpack-1.3/gltfpack.exe');
+const result=spawnSync(pack,['-i',raw,'-o',out+'/pine_02.glb','-c','-tw','-kn'],{encoding:'utf8',windowsHide:true});if(result.status!==0)throw Error(result.stderr);
+await writeFile(out+'/production.json',JSON.stringify({species:'pine_02',sourceFaces:meta.sourceFaces,crownTriangles:32,worldFixedSlices:16,allOriginalTreePlacements:true,otherSpeciesRebuilt:false},null,2));
+console.log('Packed native-material 3D crown slices');

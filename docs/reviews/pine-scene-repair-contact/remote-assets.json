@@ -1,0 +1,14 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-scene-repair-contact-20261105",
+  "tag": "pine-scene-repair-contact-20261105",
+  "publishedFrom": "6b8d5df31c5e5e3fdd9dd8c5440e21859d8faf99",
+  "files": [
+    {
+      "name": "pine-scene-repair-contact-runtime.zip",
+      "bytes": 239964,
+      "sha256": "29f257a5b99faef51843f74013477229482d1222a177d0bd6fd2bfe14de14c4a",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-scene-repair-contact-20261105/pine-scene-repair-contact-runtime.zip"
+    }
+  ]
+}

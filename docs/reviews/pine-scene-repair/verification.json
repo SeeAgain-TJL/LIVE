@@ -1,0 +1,666 @@
+{
+  "revisions": {
+    "asset": "40acc39",
+    "integration": "6b8d5df",
+    "samePoseBaseline": "cf914238",
+    "sameInputComparison": "prior template review, archived, not simultaneous"
+  },
+  "software": {
+    "browser": "156.0.8078.80",
+    "viewport": [
+      1440,
+      900
+    ],
+    "internal": [
+      1007,
+      630
+    ],
+    "renderer": "ANGLE (Intel, Intel(R) Graphics (0x0000A7AA) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "checks": {
+    "lint": true,
+    "typecheck": true,
+    "unitTestsPassed": 52,
+    "productionBuild": true,
+    "playwrightForestMemoryPassed": true,
+    "playwrightTravelTestsPassed": 2,
+    "fixtureArchiveUnchanged": true,
+    "memoryWalkDistanceFromSpawnM": 75.18,
+    "memoryVideoSeconds": 54.36,
+    "recordingFullyDecoded": true
+  },
+  "tiers": {
+    "low": {
+      "scale": "0.7",
+      "current": {
+        "readyMs": 6758,
+        "settledMs": 9407,
+        "seconds": 42.04100000009554,
+        "fps": 58.44294855009196,
+        "p95Ms": 17.19999999999709,
+        "legs": [
+          {
+            "key": "w",
+            "ms": 12000,
+            "displacement": 40.74630000066762,
+            "camera": [
+              -17.185011765010362,
+              3.549529408409766,
+              41.82340699566462
+            ],
+            "residentTiles": 27,
+            "resources": 21
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 19.34144860590214,
+            "camera": [
+              -25.788853485590625,
+              4.935186955950587,
+              24.501006993876288
+            ],
+            "residentTiles": 25,
+            "resources": 22
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 33.25445666368358,
+            "camera": [
+              -6.846486283613962,
+              1.0835460314510725,
+              -2.8311281730346125
+            ],
+            "residentTiles": 26,
+            "resources": 22
+          },
+          {
+            "key": "w",
+            "ms": 9000,
+            "displacement": 20.51086206515704,
+            "camera": [
+              11.671873326171717,
+              1.1511732334307514,
+              -11.649621242633092
+            ],
+            "residentTiles": 24,
+            "resources": 24
+          }
+        ],
+        "passed": true,
+        "errors": [],
+        "contextLost": false
+      },
+      "archivedSameInputs": {
+        "readyMs": 4437,
+        "settledMs": 7080,
+        "seconds": 42.020200000381834,
+        "fps": 60.04255096303858,
+        "p95Ms": 16.80000000000291,
+        "legs": [
+          {
+            "key": "w",
+            "ms": 12000,
+            "displacement": 41.88310000050077,
+            "camera": [
+              -18.310489756373848,
+              3.8764273084865,
+              41.66336471819687
+            ],
+            "residentTiles": 27,
+            "resources": 21
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 18.59898214986683,
+            "camera": [
+              -26.01447175418256,
+              5.076058468745669,
+              24.73496259665851
+            ],
+            "residentTiles": 25,
+            "resources": 22
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 34.304522905158784,
+            "camera": [
+              -6.417017297700713,
+              1.0909791631707406,
+              -3.42067752351428
+            ],
+            "residentTiles": 26,
+            "resources": 22
+          },
+          {
+            "key": "w",
+            "ms": 9000,
+            "displacement": 19.880723316837276,
+            "camera": [
+              11.670386911483753,
+              1.150022564784309,
+              -11.672281523598953
+            ],
+            "residentTiles": 24,
+            "resources": 24
+          }
+        ],
+        "passed": true,
+        "errors": [],
+        "contextLost": false
+      }
+    },
+    "mid": {
+      "scale": "0.8",
+      "current": {
+        "readyMs": 6367,
+        "settledMs": 9262,
+        "seconds": 42.04160000023855,
+        "fps": 54.99314964194705,
+        "p95Ms": 33.29999999999927,
+        "legs": [
+          {
+            "key": "w",
+            "ms": 12000,
+            "displacement": 40.616099999666204,
+            "camera": [
+              -17.056108496516256,
+              3.509014562732766,
+              41.84173696108479
+            ],
+            "residentTiles": 27,
+            "resources": 23
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 19.410764216066237,
+            "camera": [
+              -25.783662721549355,
+              4.934233117951478,
+              24.503698874241618
+            ],
+            "residentTiles": 25,
+            "resources": 24
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 36.28751259782768,
+            "camera": [
+              -5.139874712171535,
+              0.9172275364913899,
+              -5.339517895426009
+            ],
+            "residentTiles": 26,
+            "resources": 22
+          },
+          {
+            "key": "w",
+            "ms": 9000,
+            "displacement": 17.944150703162048,
+            "camera": [
+              11.679429148028584,
+              1.1538868322606115,
+              -11.592802001881466
+            ],
+            "residentTiles": 24,
+            "resources": 25
+          }
+        ],
+        "passed": true,
+        "errors": [],
+        "contextLost": false
+      },
+      "archivedSameInputs": {
+        "readyMs": 4903,
+        "settledMs": 7625,
+        "seconds": 42.02720000014337,
+        "fps": 59.984962119565424,
+        "p95Ms": 16.899999999997817,
+        "legs": [
+          {
+            "key": "w",
+            "ms": 12000,
+            "displacement": 41.302799999833155,
+            "camera": [
+              -17.735969278510122,
+              3.7189713875753814,
+              41.745061176443656
+            ],
+            "residentTiles": 27,
+            "resources": 23
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 18.913696001143038,
+            "camera": [
+              -25.998010510755567,
+              5.0686696994609575,
+              24.731344031142036
+            ],
+            "residentTiles": 25,
+            "resources": 24
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 33.70119285284619,
+            "camera": [
+              -6.7601964054742805,
+              1.0912218955528723,
+              -2.9395234680053584
+            ],
+            "residentTiles": 26,
+            "resources": 22
+          },
+          {
+            "key": "w",
+            "ms": 9000,
+            "displacement": 20.366646148904973,
+            "camera": [
+              11.681848513047456,
+              1.1543597079560564,
+              -11.581933697676961
+            ],
+            "residentTiles": 24,
+            "resources": 25
+          }
+        ],
+        "passed": true,
+        "errors": [],
+        "contextLost": false
+      }
+    },
+    "high": {
+      "scale": "1",
+      "current": {
+        "readyMs": 7559,
+        "settledMs": 10145,
+        "seconds": 41.98759999928485,
+        "fps": 31.31877030414688,
+        "p95Ms": 50,
+        "legs": [
+          {
+            "key": "w",
+            "ms": 12000,
+            "displacement": 40.018299998998614,
+            "camera": [
+              -16.464262310654888,
+              3.3220624596869888,
+              41.925897124342264
+            ],
+            "residentTiles": 31,
+            "resources": 24
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 12.501094465518364,
+            "camera": [
+              -22.088033801594225,
+              4.904628545068018,
+              30.761195737672228
+            ],
+            "residentTiles": 30,
+            "resources": 25
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 34.72288311517306,
+            "camera": [
+              -2.07950571223116,
+              1.2385828008727688,
+              2.382728275049453
+            ],
+            "residentTiles": 38,
+            "resources": 24
+          },
+          {
+            "key": "w",
+            "ms": 9000,
+            "displacement": 15.090955386769036,
+            "camera": [
+              11.831434877388359,
+              1.255265625679114,
+              -3.4672859469443336
+            ],
+            "residentTiles": 33,
+            "resources": 26
+          }
+        ],
+        "passed": true,
+        "errors": [],
+        "contextLost": false
+      },
+      "archivedSameInputs": {
+        "readyMs": 5548,
+        "settledMs": 7205,
+        "seconds": 41.9568000002862,
+        "fps": 35.2982114934861,
+        "p95Ms": 49.80000000000018,
+        "legs": [
+          {
+            "key": "w",
+            "ms": 12000,
+            "displacement": 40.653199998497925,
+            "camera": [
+              -17.09283899631467,
+              3.5205379324516928,
+              41.83651390662667
+            ],
+            "residentTiles": 33,
+            "resources": 24
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 19.38160914049399,
+            "camera": [
+              -25.7957437988255,
+              4.942526816781551,
+              24.51871321273618
+            ],
+            "residentTiles": 31,
+            "resources": 25
+          },
+          {
+            "key": "w",
+            "ms": 10500,
+            "displacement": 35.97758489539251,
+            "camera": [
+              -5.304685152234546,
+              0.9299265404592819,
+              -5.053285881798252
+            ],
+            "residentTiles": 38,
+            "resources": 24
+          },
+          {
+            "key": "w",
+            "ms": 9000,
+            "displacement": 18.326694030979127,
+            "camera": [
+              11.68950817146874,
+              1.136937444611704,
+              -11.913687282716758
+            ],
+            "residentTiles": 33,
+            "resources": 26
+          }
+        ],
+        "passed": true,
+        "errors": [],
+        "contextLost": false
+      }
+    }
+  },
+  "stills": [
+    {
+      "name": "near",
+      "pose": {
+        "position": [
+          23.155473709106445,
+          0.9223032593727112,
+          47.55979919433594
+        ],
+        "direction": [
+          -0.9821439487,
+          0.1260486988,
+          -0.1396602648
+        ]
+      },
+      "before": {
+        "seconds": 7.010500000143052,
+        "averageFps": 60.0527779746679,
+        "p95Ms": 17
+      },
+      "after": {
+        "seconds": 7.007399999952315,
+        "averageFps": 44.66706624456003,
+        "p95Ms": 33.599999999998545
+      },
+      "visibleTriangles": 4630432
+    },
+    {
+      "name": "ruins",
+      "pose": {
+        "position": [
+          -24,
+          9,
+          44
+        ],
+        "direction": [
+          -1,
+          0.04,
+          -0.37
+        ]
+      },
+      "before": {
+        "seconds": 7.008999999809264,
+        "averageFps": 60.06562990604318,
+        "p95Ms": 16.900000000001455
+      },
+      "after": {
+        "seconds": 7.002400000047684,
+        "averageFps": 54.26710841960075,
+        "p95Ms": 33.399999999999636
+      },
+      "visibleTriangles": 2591640
+    },
+    {
+      "name": "far",
+      "pose": {
+        "position": [
+          10,
+          18,
+          60
+        ],
+        "direction": [
+          0.1,
+          -0.5,
+          -1
+        ]
+      },
+      "before": {
+        "seconds": 7.008199999904631,
+        "averageFps": 55.36371678965783,
+        "p95Ms": 33.29999999999927
+      },
+      "after": {
+        "seconds": 7.008099999999999,
+        "averageFps": 54.08027853483827,
+        "p95Ms": 33.399999999999636
+      },
+      "visibleTriangles": 2415216
+    },
+    {
+      "name": "pine02Near",
+      "pose": {
+        "position": [
+          13.8,
+          2.2,
+          57
+        ],
+        "direction": [
+          -4.5,
+          5,
+          -2.1
+        ]
+      },
+      "after": {
+        "seconds": 7.013799999999999,
+        "averageFps": 60.02452308306482,
+        "p95Ms": 17
+      },
+      "visibleTriangles": 1320986
+    },
+    {
+      "name": "river",
+      "pose": {
+        "position": [
+          17,
+          2.5,
+          39
+        ],
+        "direction": [
+          -6,
+          -1.5,
+          -8
+        ]
+      },
+      "after": {
+        "seconds": 7.032300000190735,
+        "averageFps": 36.11905066523198,
+        "p95Ms": 50.20000000000073
+      },
+      "visibleTriangles": 4299424
+    }
+  ],
+  "rockContacts": {
+    "correctedInstances": 41884,
+    "minOffset": -0.07992834848514757,
+    "maxOffset": 0.2088518223941137,
+    "xyRotationScaleChanged": false,
+    "sourceTilesChanged": false
+  },
+  "ruinCollision": {
+    "approach": {
+      "position": [
+        -49.75,
+        5.884,
+        45.25
+      ],
+      "direction": [
+        1,
+        0,
+        0
+      ],
+      "wall": -46.5
+    },
+    "errors": [],
+    "end": [
+      -46.503400000333784,
+      6.307268799977303,
+      45.25
+    ],
+    "passed": true
+  },
+  "restored": {
+    "manifestFiles": 251,
+    "servedFromIsolatedFolder": true,
+    "default": {
+      "dimensions": [
+        1007,
+        630
+      ],
+      "contextLost": false,
+      "gpuDeletes": {
+        "buffers": 52,
+        "textures": 0
+      },
+      "residentTiles": 23
+    },
+    "qualitySwitches": [
+      {
+        "quality": "mid",
+        "dimensions": [
+          1152,
+          720
+        ],
+        "contextLost": false,
+        "gpuDeletes": {
+          "buffers": 765,
+          "textures": 64
+        },
+        "residentTiles": 15
+      },
+      {
+        "quality": "high",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "contextLost": false,
+        "gpuDeletes": {
+          "buffers": 1686,
+          "textures": 137
+        },
+        "residentTiles": 9
+      },
+      {
+        "quality": "low",
+        "dimensions": [
+          1007,
+          630
+        ],
+        "contextLost": false,
+        "gpuDeletes": {
+          "buffers": 2639,
+          "textures": 210
+        },
+        "residentTiles": 23
+      }
+    ],
+    "boundary": {
+      "start": {
+        "position": [
+          89,
+          1.194,
+          50
+        ],
+        "direction": [
+          1,
+          0,
+          0
+        ]
+      },
+      "end": [
+        99.46359999883188,
+        1.185184000070087,
+        50
+      ]
+    },
+    "archiveAccess": [],
+    "errors": [],
+    "passed": true
+  },
+  "blender": {
+    "version": "4.4.3",
+    "reopenedDownloadedBlend": true,
+    "ruinObjectsWithUV": 4,
+    "riverObjectPresent": true
+  },
+  "downloaded": [
+    {
+      "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-scene-repair-20261105",
+      "files": [
+        {
+          "name": "pine-scene-repair-runtime.zip",
+          "bytes": 24885549,
+          "sha256": "70089b4c0e2442ab9b6bdd88b23d6d7b0d615859ca0baf4b3a72a2ab711885c1"
+        },
+        {
+          "name": "pine-scene-repair-authoring.zip",
+          "bytes": 115982807,
+          "sha256": "bdf0c0f6d67c9af3371392847581459fd3e60b5e004b2fd23fc538f1b947cb70"
+        }
+      ]
+    },
+    {
+      "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-scene-repair-contact-20261105",
+      "files": [
+        {
+          "name": "pine-scene-repair-contact-runtime.zip",
+          "bytes": 239964,
+          "sha256": "29f257a5b99faef51843f74013477229482d1222a177d0bd6fd2bfe14de14c4a"
+        }
+      ]
+    }
+  ]
+}
