@@ -1,0 +1,520 @@
+[
+  {
+    "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\pine-source-conversion/batch6/landmarks-source.glb",
+    "meshes": [
+      {
+        "name": "BezierCurve.002",
+        "parts": [
+          {
+            "material": "Pine river realtime",
+            "triangles": 36248,
+            "uv": null,
+            "alpha": "BLEND",
+            "alphaCutoff": 0.5
+          }
+        ]
+      },
+      {
+        "name": "montaigle_ruine_reproject",
+        "parts": [
+          {
+            "material": "montaigle_ruins_03",
+            "triangles": 518344,
+            "uv": {
+              "min": [
+                0.00012199999764561653,
+                0.0006099939346313477
+              ],
+              "max": [
+                0.9998739957809448,
+                0.9998769760131836
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5
+          }
+        ]
+      },
+      {
+        "name": "montaigle_ruine_p2",
+        "parts": [
+          {
+            "material": "montaigle_ruins_02",
+            "triangles": 262403,
+            "uv": {
+              "min": [
+                0.00024399999529123306,
+                0.00024402141571044922
+              ],
+              "max": [
+                0.9997529983520508,
+                0.9997509717941284
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5
+          }
+        ]
+      },
+      {
+        "name": "montaigle_ruine_p1",
+        "parts": [
+          {
+            "material": "montaigle_ruins_01",
+            "triangles": 533514,
+            "uv": {
+              "min": [
+                0.00012199999764561653,
+                0.00012201070785522461
+              ],
+              "max": [
+                0.9998760223388672,
+                0.9998779892921448
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "public/forest-origin-assets/batch6/landmarks.glb",
+    "meshes": [
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "Pine river realtime",
+            "triangles": 5436,
+            "uv": null,
+            "alpha": "BLEND",
+            "alphaCutoff": 0.5
+          }
+        ]
+      },
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "montaigle_ruins_03",
+            "triangles": 77750,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              15.9996939,
+              15.9919004
+            ]
+          }
+        ]
+      },
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "montaigle_ruins_02",
+            "triangles": 241569,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              15.9958048,
+              15.9957724
+            ]
+          }
+        ]
+      },
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "montaigle_ruins_01",
+            "triangles": 498022,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              15.9997263,
+              15.9997578
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "public/forest-origin-assets/optimized/landmarks.glb",
+    "meshes": [
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "Pine river realtime",
+            "triangles": 4349,
+            "uv": null,
+            "alpha": "BLEND",
+            "alphaCutoff": 0.5
+          }
+        ]
+      },
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "montaigle_ruins_03",
+            "triangles": 62201,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              15.9996939,
+              15.9914846
+            ]
+          }
+        ]
+      },
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "montaigle_ruins_02",
+            "triangles": 31436,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              15.9949093,
+              15.9671431
+            ]
+          }
+        ]
+      },
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "montaigle_ruins_01",
+            "triangles": 63939,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              15.9994383,
+              15.9993744
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "C:\\Users\\tingjie.li\\AppData\\Local\\UNIVERSE-OF-ME\\asset-audit\\candidate-assets\\pine-source-conversion/trees-realized/pine_02_unreduced.glb",
+    "meshes": [
+      {
+        "name": "NurbsPath.018",
+        "parts": [
+          {
+            "material": "pine_bark_single_tree",
+            "triangles": 14094,
+            "uv": {
+              "min": [
+                0,
+                0.20000004768371582
+              ],
+              "max": [
+                1,
+                0.800000011920929
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5
+          },
+          {
+            "material": "pine_trunk_02_single_tree",
+            "triangles": 78776,
+            "uv": {
+              "min": [
+                0,
+                0.036547839641571045
+              ],
+              "max": [
+                5,
+                2
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5
+          },
+          {
+            "material": "pine_twig_single_tree",
+            "triangles": 3960711,
+            "uv": {
+              "min": [
+                0.01354064792394638,
+                0.029108285903930664
+              ],
+              "max": [
+                0.9703834652900696,
+                0.984611988067627
+              ]
+            },
+            "alpha": "BLEND",
+            "alphaCutoff": 0.5
+          },
+          {
+            "material": "pine_dead_branches_single_tree",
+            "triangles": 2306,
+            "uv": {
+              "min": [
+                0.1596347540616989,
+                0.21454006433486938
+              ],
+              "max": [
+                0.5843070149421692,
+                0.7854597568511963
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "public/forest-origin-assets/batch2/trees/pine_02-near.gltf",
+    "meshes": [
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "pine_bark_single_tree",
+            "triangles": 4699,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              16.003664,
+              9.60219669
+            ]
+          },
+          {
+            "material": "pine_trunk_02_single_tree",
+            "triangles": 7877,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              80.0183182,
+              31.4224262
+            ]
+          },
+          {
+            "material": "pine_twig_single_tree",
+            "triangles": 396071,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "BLEND",
+            "alphaCutoff": 0.5,
+            "transform": [
+              15.3129902,
+              15.2915592
+            ]
+          },
+          {
+            "material": "pine_dead_branches_single_tree",
+            "triangles": 200,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              6.79631186,
+              9.13172436
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "public/forest-origin-assets/optimized/pine_02.glb",
+    "meshes": [
+      {
+        "name": "",
+        "parts": [
+          {
+            "material": "pine_bark_single_tree",
+            "triangles": 4703,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              16.003664,
+              9.60219669
+            ]
+          },
+          {
+            "material": "pine_trunk_02_single_tree",
+            "triangles": 2362,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              79.9368896,
+              31.4224262
+            ]
+          },
+          {
+            "material": "pine_twig_single_tree",
+            "triangles": 118821,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "BLEND",
+            "alphaCutoff": 0.5,
+            "transform": [
+              15.3129902,
+              15.2915592
+            ]
+          },
+          {
+            "material": "pine_dead_branches_single_tree",
+            "triangles": 86,
+            "uv": {
+              "min": [
+                0,
+                0
+              ],
+              "max": [
+                0.06248569466697185,
+                0.06248569466697185
+              ]
+            },
+            "alpha": "OPAQUE",
+            "alphaCutoff": 0.5,
+            "transform": [
+              4.36924696,
+              9.09918213
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

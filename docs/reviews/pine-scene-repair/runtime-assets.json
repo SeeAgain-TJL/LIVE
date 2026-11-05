@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "scope": "Runtime overlay; restore alongside earlier stage manifests",
+  "files": [
+    {
+      "path": "scene-repair/landmarks.glb",
+      "bytes": 29394760,
+      "sha256": "e35f15a8eb724c262f053afd3c4e1fcae59fec1bde7f53b01ed04a035270529f"
+    },
+    {
+      "path": "scene-repair/memory-safety.json",
+      "bytes": 326481,
+      "sha256": "d26d60149496dfce781d284b51131ff3b8cfaadb82712674ddee73b99324be1d"
+    },
+    {
+      "path": "scene-repair/safety-production.json",
+      "bytes": 142,
+      "sha256": "594e0d2c54275eb9cb7f87533addfdf7f2c0f260830b714bc52c7b993b083e4b"
+    }
+  ],
+  "totalBytes": 29721383
+}

@@ -25,6 +25,7 @@ try {
   for(const [name,pose] of Object.entries(poses)) {
     if(process.env.PINE_SHOT && name!==process.env.PINE_SHOT) continue;
     const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+    if(process.env.PINE_LANDMARK_OVERRIDE) await page.route('**/forest-origin-assets/**/landmarks.glb',r=>r.fulfill({path:path.resolve(process.env.PINE_LANDMARK_OVERRIDE)}));
     page.on('pageerror',e=>result.errors.push(String(e)));
     page.on('console',m=>{if(m.type()==='error')result.errors.push(m.text());});
     page.on('response',r=>{if(r.status()>=400)result.errors.push(`${r.status()} ${r.url()}`);});

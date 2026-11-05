@@ -1,0 +1,1470 @@
+{
+  "montaigle_ruins_01": {
+    "vertices": 267419,
+    "faces": 533514,
+    "uv": [
+      {
+        "name": "UVMap",
+        "active_render": true,
+        "range": [
+          [
+            0.00012199999764561653,
+            0.9998760223388672
+          ],
+          [
+            0.00012199999764561653,
+            0.9998779892921448
+          ]
+        ]
+      }
+    ],
+    "modifiers": [],
+    "materials": [
+      {
+        "name": "montaigle_ruins_01",
+        "nodes": [
+          {
+            "name": "Principled BSDF",
+            "type": "BSDF_PRINCIPLED",
+            "image": null,
+            "uv_map": null
+          },
+          {
+            "name": "Material Output",
+            "type": "OUTPUT_MATERIAL",
+            "image": null,
+            "uv_map": null
+          },
+          {
+            "name": "Image Texture",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_01_diff.jpg",
+            "uv_map": null
+          },
+          {
+            "name": "Image Texture.001",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_01_rough.jpg",
+            "uv_map": null
+          },
+          {
+            "name": "Image Texture.002",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_01_nor_gl.jpg",
+            "uv_map": null
+          },
+          {
+            "name": "Normal Map",
+            "type": "NORMAL_MAP",
+            "image": null,
+            "uv_map": ""
+          }
+        ],
+        "links": [
+          [
+            "Principled BSDF",
+            "BSDF",
+            "Material Output",
+            "Surface"
+          ],
+          [
+            "Image Texture",
+            "Color",
+            "Principled BSDF",
+            "Base Color"
+          ],
+          [
+            "Image Texture.001",
+            "Color",
+            "Principled BSDF",
+            "Roughness"
+          ],
+          [
+            "Image Texture.002",
+            "Color",
+            "Normal Map",
+            "Color"
+          ],
+          [
+            "Normal Map",
+            "Normal",
+            "Principled BSDF",
+            "Normal"
+          ]
+        ]
+      }
+    ]
+  },
+  "montaigle_ruins_02": {
+    "vertices": 131785,
+    "faces": 262403,
+    "uv": [
+      {
+        "name": "UVMap",
+        "active_render": true,
+        "range": [
+          [
+            0.00024399999529123306,
+            0.9997529983520508
+          ],
+          [
+            0.00024900000425986946,
+            0.9997559785842896
+          ]
+        ]
+      }
+    ],
+    "modifiers": [],
+    "materials": [
+      {
+        "name": "montaigle_ruins_02",
+        "nodes": [
+          {
+            "name": "Principled BSDF",
+            "type": "BSDF_PRINCIPLED",
+            "image": null,
+            "uv_map": null
+          },
+          {
+            "name": "Normal Map",
+            "type": "NORMAL_MAP",
+            "image": null,
+            "uv_map": ""
+          },
+          {
+            "name": "Material Output",
+            "type": "OUTPUT_MATERIAL",
+            "image": null,
+            "uv_map": null
+          },
+          {
+            "name": "Image Texture.001",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_02_diff.jpg",
+            "uv_map": null
+          },
+          {
+            "name": "Image Texture.002",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_02_rough.jpg",
+            "uv_map": null
+          },
+          {
+            "name": "Image Texture",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_02_nor_gl.jpg",
+            "uv_map": null
+          }
+        ],
+        "links": [
+          [
+            "Principled BSDF",
+            "BSDF",
+            "Material Output",
+            "Surface"
+          ],
+          [
+            "Normal Map",
+            "Normal",
+            "Principled BSDF",
+            "Normal"
+          ],
+          [
+            "Image Texture",
+            "Color",
+            "Normal Map",
+            "Color"
+          ],
+          [
+            "Image Texture.001",
+            "Color",
+            "Principled BSDF",
+            "Base Color"
+          ],
+          [
+            "Image Texture.002",
+            "Color",
+            "Principled BSDF",
+            "Roughness"
+          ]
+        ]
+      }
+    ]
+  },
+  "montaigle_ruins_03": {
+    "vertices": 259843,
+    "faces": 518344,
+    "uv": [
+      {
+        "name": "UVMap",
+        "active_render": true,
+        "range": [
+          [
+            0.00012199999764561653,
+            0.9998739957809448
+          ],
+          [
+            0.0001230000052601099,
+            0.9993900060653687
+          ]
+        ]
+      }
+    ],
+    "modifiers": [],
+    "materials": [
+      {
+        "name": "montaigle_ruins_03",
+        "nodes": [
+          {
+            "name": "Principled BSDF",
+            "type": "BSDF_PRINCIPLED",
+            "image": null,
+            "uv_map": null
+          },
+          {
+            "name": "Material Output",
+            "type": "OUTPUT_MATERIAL",
+            "image": null,
+            "uv_map": null
+          },
+          {
+            "name": "Normal Map",
+            "type": "NORMAL_MAP",
+            "image": null,
+            "uv_map": ""
+          },
+          {
+            "name": "Image Texture.002",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_03_nor_gl.jpg",
+            "uv_map": null
+          },
+          {
+            "name": "Image Texture.001",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_03_rough.jpg",
+            "uv_map": null
+          },
+          {
+            "name": "Image Texture",
+            "type": "TEX_IMAGE",
+            "image": "//textures\\montaigle_ruins_03_diff.jpg",
+            "uv_map": null
+          }
+        ],
+        "links": [
+          [
+            "Principled BSDF",
+            "BSDF",
+            "Material Output",
+            "Surface"
+          ],
+          [
+            "Image Texture",
+            "Color",
+            "Principled BSDF",
+            "Base Color"
+          ],
+          [
+            "Image Texture.001",
+            "Color",
+            "Principled BSDF",
+            "Roughness"
+          ],
+          [
+            "Image Texture.002",
+            "Color",
+            "Normal Map",
+            "Color"
+          ],
+          [
+            "Normal Map",
+            "Normal",
+            "Principled BSDF",
+            "Normal"
+          ]
+        ]
+      }
+    ]
+  },
+  "river_water": {
+    "type": "CURVE"
+  },
+  "pine_02": {
+    "type": "CURVE"
+  },
+  "pine_04": {
+    "type": "CURVE"
+  },
+  "silver_fir_04": {
+    "type": "CURVE"
+  },
+  "twigMaterials": [
+    {
+      "name": "fir_twig",
+      "nodes": [
+        {
+          "name": "Frame.001",
+          "type": "FRAME",
+          "image": null
+        },
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Attribute",
+          "type": "ATTRIBUTE",
+          "image": null
+        },
+        {
+          "name": "Reroute.002",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Reroute.003",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Reroute.004",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Mix Shader",
+          "type": "MIX_SHADER",
+          "image": null
+        },
+        {
+          "name": "Reroute.005",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Reroute.001",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Math",
+          "type": "MATH",
+          "image": null
+        },
+        {
+          "name": "Noise Texture",
+          "type": "TEX_NOISE",
+          "image": null
+        },
+        {
+          "name": "Geometry",
+          "type": "NEW_GEOMETRY",
+          "image": null
+        },
+        {
+          "name": "ColorRamp",
+          "type": "VALTORGB",
+          "image": null
+        },
+        {
+          "name": "Reroute.006",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Reroute.007",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Reroute.008",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Mix",
+          "type": "MIX",
+          "image": null
+        },
+        {
+          "name": "Hue Saturation Value",
+          "type": "HUE_SAT",
+          "image": null
+        },
+        {
+          "name": "Hue Saturation Value.001",
+          "type": "HUE_SAT",
+          "image": null
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\fir_twig_rough.png"
+        },
+        {
+          "name": "Image Texture.002",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\fir_twig_nor_gl.png"
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\fir_twig_diff.png"
+        },
+        {
+          "name": "Reroute",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Image Texture.004",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\fir_twig_mask01.png"
+        },
+        {
+          "name": "Translucent BSDF",
+          "type": "BSDF_TRANSLUCENT",
+          "image": null
+        },
+        {
+          "name": "Math.002",
+          "type": "MATH",
+          "image": null
+        },
+        {
+          "name": "Math.001",
+          "type": "MATH",
+          "image": null
+        },
+        {
+          "name": "Image Texture.003",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\fir_twig_alpha.png"
+        },
+        {
+          "name": "Add Shader",
+          "type": "ADD_SHADER",
+          "image": null
+        },
+        {
+          "name": "Transparent BSDF",
+          "type": "BSDF_TRANSPARENT",
+          "image": null
+        },
+        {
+          "name": "Reroute.009",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Mix Shader.001",
+          "type": "MIX_SHADER",
+          "image": null
+        }
+      ],
+      "links": [
+        [
+          "Reroute.007",
+          "Output",
+          "Principled BSDF",
+          "Roughness"
+        ],
+        [
+          "Image Texture.002",
+          "Color",
+          "Normal Map",
+          "Color"
+        ],
+        [
+          "Reroute.008",
+          "Output",
+          "Principled BSDF",
+          "Normal"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.001",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.002",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.003",
+          "Vector"
+        ],
+        [
+          "Attribute",
+          "Vector",
+          "Reroute",
+          "Input"
+        ],
+        [
+          "Principled BSDF",
+          "BSDF",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Mix Shader",
+          "Shader",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Reroute.005",
+          "Output",
+          "Translucent BSDF",
+          "Normal"
+        ],
+        [
+          "Hue Saturation Value.001",
+          "Color",
+          "Translucent BSDF",
+          "Color"
+        ],
+        [
+          "Image Texture",
+          "Color",
+          "Hue Saturation Value",
+          "Color"
+        ],
+        [
+          "Hue Saturation Value",
+          "Color",
+          "Mix",
+          "A"
+        ],
+        [
+          "Geometry",
+          "Position",
+          "Noise Texture",
+          "Vector"
+        ],
+        [
+          "Noise Texture",
+          "Fac",
+          "ColorRamp",
+          "Fac"
+        ],
+        [
+          "Math",
+          "Value",
+          "Mix",
+          "Factor"
+        ],
+        [
+          "ColorRamp",
+          "Color",
+          "Math",
+          "Value"
+        ],
+        [
+          "Reroute.004",
+          "Output",
+          "Principled BSDF",
+          "Base Color"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.004",
+          "Vector"
+        ],
+        [
+          "Reroute.002",
+          "Output",
+          "Reroute.001",
+          "Input"
+        ],
+        [
+          "Math.002",
+          "Value",
+          "Mix Shader",
+          "Fac"
+        ],
+        [
+          "Translucent BSDF",
+          "BSDF",
+          "Mix Shader",
+          "Shader"
+        ],
+        [
+          "Reroute.001",
+          "Output",
+          "Math.001",
+          "Value"
+        ],
+        [
+          "Image Texture.004",
+          "Color",
+          "Reroute.002",
+          "Input"
+        ],
+        [
+          "Mix",
+          "Result",
+          "Reroute.003",
+          "Input"
+        ],
+        [
+          "Reroute.003",
+          "Output",
+          "Reroute.004",
+          "Input"
+        ],
+        [
+          "Reroute.006",
+          "Output",
+          "Reroute.005",
+          "Input"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Reroute.006",
+          "Input"
+        ],
+        [
+          "Image Texture.001",
+          "Color",
+          "Reroute.007",
+          "Input"
+        ],
+        [
+          "Reroute.006",
+          "Output",
+          "Reroute.008",
+          "Input"
+        ],
+        [
+          "Reroute.003",
+          "Output",
+          "Hue Saturation Value.001",
+          "Color"
+        ],
+        [
+          "Reroute.009",
+          "Output",
+          "Principled BSDF",
+          "Alpha"
+        ],
+        [
+          "Image Texture.003",
+          "Color",
+          "Reroute.009",
+          "Input"
+        ],
+        [
+          "Math.001",
+          "Value",
+          "Math.002",
+          "Value"
+        ],
+        [
+          "Reroute.009",
+          "Output",
+          "Math.002",
+          "Value"
+        ],
+        [
+          "Transparent BSDF",
+          "BSDF",
+          "Mix Shader.001",
+          "Shader"
+        ],
+        [
+          "Mix Shader.001",
+          "Shader",
+          "Material Output",
+          "Surface"
+        ],
+        [
+          "Reroute.009",
+          "Output",
+          "Mix Shader.001",
+          "Fac"
+        ],
+        [
+          "Add Shader",
+          "Shader",
+          "Mix Shader.001",
+          "Shader"
+        ]
+      ]
+    },
+    {
+      "name": "pine_twig",
+      "nodes": [
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "image": null
+        },
+        {
+          "name": "Frame.001",
+          "type": "FRAME",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Mapping",
+          "type": "MAPPING",
+          "image": null
+        },
+        {
+          "name": "Attribute",
+          "type": "ATTRIBUTE",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Translucent BSDF",
+          "type": "BSDF_TRANSLUCENT",
+          "image": null
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_diff.png"
+        },
+        {
+          "name": "Image Texture.002",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_rough.png"
+        },
+        {
+          "name": "Image Texture.003",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_nor_gl.png"
+        },
+        {
+          "name": "Image Texture.004",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_alpha.png"
+        },
+        {
+          "name": "Reroute",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Image Texture.005",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_mask.png"
+        },
+        {
+          "name": "Mix Shader",
+          "type": "MIX_SHADER",
+          "image": null
+        },
+        {
+          "name": "Mix",
+          "type": "MIX",
+          "image": null
+        },
+        {
+          "name": "Invert",
+          "type": "INVERT",
+          "image": null
+        },
+        {
+          "name": "Math",
+          "type": "MATH",
+          "image": null
+        },
+        {
+          "name": "Add Shader",
+          "type": "ADD_SHADER",
+          "image": null
+        }
+      ],
+      "links": [
+        [
+          "Image Texture.001",
+          "Color",
+          "Principled BSDF",
+          "Base Color"
+        ],
+        [
+          "Image Texture.002",
+          "Color",
+          "Principled BSDF",
+          "Roughness"
+        ],
+        [
+          "Image Texture.003",
+          "Color",
+          "Normal Map",
+          "Color"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Principled BSDF",
+          "Normal"
+        ],
+        [
+          "Image Texture.004",
+          "Color",
+          "Principled BSDF",
+          "Alpha"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.001",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.002",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.003",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.004",
+          "Vector"
+        ],
+        [
+          "Mapping",
+          "Vector",
+          "Reroute",
+          "Input"
+        ],
+        [
+          "Attribute",
+          "Vector",
+          "Mapping",
+          "Vector"
+        ],
+        [
+          "Principled BSDF",
+          "BSDF",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Mix Shader",
+          "Shader",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Mix",
+          "Result",
+          "Translucent BSDF",
+          "Color"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Translucent BSDF",
+          "Normal"
+        ],
+        [
+          "Translucent BSDF",
+          "BSDF",
+          "Mix Shader",
+          "Shader"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.005",
+          "Vector"
+        ],
+        [
+          "Image Texture.001",
+          "Color",
+          "Mix",
+          "A"
+        ],
+        [
+          "Math",
+          "Value",
+          "Invert",
+          "Color"
+        ],
+        [
+          "Invert",
+          "Color",
+          "Mix",
+          "Factor"
+        ],
+        [
+          "Image Texture.005",
+          "Color",
+          "Math",
+          "Value"
+        ],
+        [
+          "Add Shader",
+          "Shader",
+          "Material Output",
+          "Surface"
+        ]
+      ]
+    },
+    {
+      "name": "pine_twig.001",
+      "nodes": [
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "image": null
+        },
+        {
+          "name": "Frame.001",
+          "type": "FRAME",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Mapping",
+          "type": "MAPPING",
+          "image": null
+        },
+        {
+          "name": "Attribute",
+          "type": "ATTRIBUTE",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Translucent BSDF",
+          "type": "BSDF_TRANSLUCENT",
+          "image": null
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_diff.png"
+        },
+        {
+          "name": "Image Texture.002",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_rough.png"
+        },
+        {
+          "name": "Image Texture.003",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_nor_gl.png"
+        },
+        {
+          "name": "Image Texture.004",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_alpha.png"
+        },
+        {
+          "name": "Reroute",
+          "type": "REROUTE",
+          "image": null
+        },
+        {
+          "name": "Image Texture.005",
+          "type": "TEX_IMAGE",
+          "image": "//textures\\pine_twig_mask.png"
+        },
+        {
+          "name": "Mix Shader",
+          "type": "MIX_SHADER",
+          "image": null
+        },
+        {
+          "name": "Mix",
+          "type": "MIX",
+          "image": null
+        },
+        {
+          "name": "Invert",
+          "type": "INVERT",
+          "image": null
+        },
+        {
+          "name": "Math",
+          "type": "MATH",
+          "image": null
+        },
+        {
+          "name": "Add Shader",
+          "type": "ADD_SHADER",
+          "image": null
+        }
+      ],
+      "links": [
+        [
+          "Image Texture.001",
+          "Color",
+          "Principled BSDF",
+          "Base Color"
+        ],
+        [
+          "Image Texture.002",
+          "Color",
+          "Principled BSDF",
+          "Roughness"
+        ],
+        [
+          "Image Texture.003",
+          "Color",
+          "Normal Map",
+          "Color"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Principled BSDF",
+          "Normal"
+        ],
+        [
+          "Image Texture.004",
+          "Color",
+          "Principled BSDF",
+          "Alpha"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.001",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.002",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.003",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.004",
+          "Vector"
+        ],
+        [
+          "Mapping",
+          "Vector",
+          "Reroute",
+          "Input"
+        ],
+        [
+          "Attribute",
+          "Vector",
+          "Mapping",
+          "Vector"
+        ],
+        [
+          "Principled BSDF",
+          "BSDF",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Mix Shader",
+          "Shader",
+          "Add Shader",
+          "Shader"
+        ],
+        [
+          "Mix",
+          "Result",
+          "Translucent BSDF",
+          "Color"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Translucent BSDF",
+          "Normal"
+        ],
+        [
+          "Translucent BSDF",
+          "BSDF",
+          "Mix Shader",
+          "Shader"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Image Texture.005",
+          "Vector"
+        ],
+        [
+          "Image Texture.001",
+          "Color",
+          "Mix",
+          "A"
+        ],
+        [
+          "Math",
+          "Value",
+          "Invert",
+          "Color"
+        ],
+        [
+          "Invert",
+          "Color",
+          "Mix",
+          "Factor"
+        ],
+        [
+          "Image Texture.005",
+          "Color",
+          "Math",
+          "Value"
+        ],
+        [
+          "Add Shader",
+          "Shader",
+          "Material Output",
+          "Surface"
+        ]
+      ]
+    }
+  ],
+  "geometryReferences": {
+    "Auto Smooth": [],
+    "fir_sapling_medium": [],
+    "NodeGroup": [],
+    "NodeGroup.001": [],
+    "NodeGroup.002": [
+      "rock_proxy",
+      "rock_proxy_lod1"
+    ],
+    "NodeGroup.003": [
+      "branch_proxy_lod1",
+      "branch_proxy"
+    ],
+    "NodeGroup.004": [
+      "moss_proxy_lod1",
+      "moss_proxy"
+    ],
+    "NodeGroup.005": [
+      "fern_proxy_lod1",
+      "fern_proxy"
+    ],
+    "NodeGroup.006": [
+      "fir_proxy_large",
+      "fir_proxy_large"
+    ],
+    "NodeGroup.007": [
+      "pine_proxy_large",
+      "pine_proxy_large"
+    ],
+    "NodeGroup.008": [
+      "Camera1"
+    ],
+    "NodeGroup.009": [
+      "Camera1"
+    ],
+    "NodeGroup.010": [
+      "Camera1"
+    ],
+    "NodeGroup.011": [
+      "Camera1"
+    ],
+    "NodeGroup.012": [
+      "Camera1"
+    ],
+    "NodeGroup.013": [
+      "Camera1"
+    ],
+    "NodeGroup.014": [
+      "Camera1"
+    ],
+    "NodeGroup.015": [
+      "Camera1"
+    ],
+    "NodeGroup.016": [
+      "Camera1"
+    ],
+    "NodeGroup.017": [
+      "Camera1"
+    ],
+    "NodeGroup.018": [
+      "Camera1"
+    ],
+    "NodeGroup.019": [
+      "Camera1"
+    ],
+    "NodeGroup.020": [
+      "Camera1"
+    ],
+    "NodeGroup.021": [
+      "tree_trunk_proxy",
+      "tree_trunk_proxy_lod1"
+    ],
+    "NodeGroup.022": [
+      "dead_tree_proxy_lod0",
+      "dead_tree_proxy_lod1"
+    ],
+    "NodeGroup.023": [
+      "grass_proxy_lod1",
+      "grass_proxy"
+    ],
+    "NodeGroup.027": [
+      "rock_proxy",
+      "rock_proxy_lod1"
+    ],
+    "NodeGroup.028": [
+      "rock_proxy_lod1",
+      "rock_proxy"
+    ],
+    "NodeGroup.029": [],
+    "NodeGroup.030": [
+      "tree_roots_proxy_lod1",
+      "tree_roots_proxy_lod0"
+    ],
+    "NodeGroup.031": [],
+    "NodeGroup.032": [
+      "fir_proxy_medium",
+      "fir_proxy_medium"
+    ],
+    "NodeGroup.033": [
+      "pine_proxy_medium",
+      "pine_proxy_medium"
+    ],
+    "NodeGroup.034": [
+      "pine_proxy_small",
+      "pine_proxy_small"
+    ],
+    "NodeGroup.035": [
+      "fir_proxy_small",
+      "fir_proxy_small"
+    ],
+    "path": [
+      "path"
+    ],
+    "pine_sapling_medium": [],
+    "pine_sapling_medium_c": [],
+    "pine_twig_01": [
+      "pine_branch_01"
+    ],
+    "pine_twig_01.001": [
+      "pine_branch_01.001"
+    ],
+    "pine_twig_02": [
+      "pine_branch_02.001"
+    ],
+    "pine_twig_03": [
+      "pine_branch_03.001"
+    ],
+    "pine_twig_04": [
+      "pine_branch_04.001"
+    ],
+    "pine_twig_05": [
+      "pine_branch_05.001"
+    ],
+    "pine_twig_06": [
+      "pine_branch_06.001"
+    ],
+    "pine_twig_07": [
+      "pine_branch_07.001"
+    ],
+    "river": [
+      "river_bed"
+    ],
+    "river_flow": [],
+    "scots_pine_01": [
+      "pine_trunk_01"
+    ],
+    "scots_pine_02": [
+      "pine_trunk_02"
+    ],
+    "scots_pine_03": [
+      "pine_trunk_03"
+    ],
+    "scots_pine_04": [
+      "pine_trunk_04"
+    ],
+    "scots_pine_05": [
+      "pine_trunk_05"
+    ],
+    "silver_fir": [
+      "fir_trunk_01"
+    ],
+    "silver_fir_b": [
+      "fir_trunk_02"
+    ],
+    "silver_fir_c": [
+      "fir_trunk_03"
+    ],
+    "silver_fir_d": [
+      "fir_trunk_04"
+    ],
+    "silver_fir_e": [
+      "fir_trunk_05"
+    ],
+    "silver_fir_f": [
+      "fir_trunk_06"
+    ],
+    "terrain": []
+  },
+  "mapping": {
+    "fir_twig": [
+      {
+        "type": "ATTRIBUTE",
+        "attribute": "UVMap",
+        "inputs": {}
+      },
+      {
+        "type": "MIX_SHADER",
+        "attribute": null,
+        "inputs": {
+          "Fac": 0.5
+        }
+      },
+      {
+        "type": "MIX_SHADER",
+        "attribute": null,
+        "inputs": {
+          "Fac": 0.5
+        }
+      }
+    ],
+    "pine_twig": [
+      {
+        "type": "MAPPING",
+        "attribute": null,
+        "inputs": {
+          "Vector": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      {
+        "type": "ATTRIBUTE",
+        "attribute": "UVMap",
+        "inputs": {}
+      },
+      {
+        "type": "MIX_SHADER",
+        "attribute": null,
+        "inputs": {
+          "Fac": 0.5
+        }
+      }
+    ],
+    "pine_twig.001": [
+      {
+        "type": "MAPPING",
+        "attribute": null,
+        "inputs": {
+          "Vector": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      {
+        "type": "ATTRIBUTE",
+        "attribute": "UVMap",
+        "inputs": {}
+      },
+      {
+        "type": "MIX_SHADER",
+        "attribute": null,
+        "inputs": {
+          "Fac": 0.5
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "river_water_runtime",
+    "before": 36248,
+    "after": 36248,
+    "uvLayers": []
+  },
+  {
+    "name": "montaigle_ruins_03",
+    "before": 518344,
+    "after": 336691,
+    "uvLayers": [
+      "UVMap"
+    ]
+  },
+  {
+    "name": "montaigle_ruins_02",
+    "before": 262403,
+    "after": 208828,
+    "uvLayers": [
+      "UVMap"
+    ]
+  },
+  {
+    "name": "montaigle_ruins_01",
+    "before": 533514,
+    "after": 440688,
+    "uvLayers": [
+      "UVMap"
+    ]
+  }
+]
