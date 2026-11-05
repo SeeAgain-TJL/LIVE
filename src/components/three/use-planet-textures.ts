@@ -7,10 +7,11 @@ import type { PlanetAppearance } from "@/domain/types";
 import type { RenderTier } from "@/domain/cosmic-visuals";
 import { texturesFromPixels } from "./planet-texture";
 import { planetTextureKey, requestPlanetPixels, schedulePlanetUpload } from "./planet-texture-pipeline";
+import { visualPresetFor } from "./visual-library";
 import { exteriorMapBytes } from "./exterior-lod";
 import type { ExteriorLodSignal } from "./use-exterior-lod";
 
-const states = new WeakMap<WebGLRenderer, Set<{ requested: string | null; rendered: string | null; tier: RenderTier | null }>>();
+const states = new WeakMap<WebGLRenderer, Set<{ requested: string | null; rendered: string | null; tier: RenderTier | null; failed: boolean }>>();
 export function exteriorReadiness(gl: WebGLRenderer) {
   const entries = [...(states.get(gl) ?? [])];
   const resident = { low: 0, medium: 0, high: 0 };
@@ -18,17 +19,18 @@ export function exteriorReadiness(gl: WebGLRenderer) {
   for (const { tier } of entries) if (tier) { resident[tier]++; mapBytes += exteriorMapBytes(tier); }
   const targets = entries.filter(e => e.requested !== null);
   return { total: entries.length, targets: targets.length, resident, mapBytes,
-    pending: entries.filter(e => e.requested !== e.rendered).length };
+    failed: entries.filter(e => e.failed).length, pending: entries.filter(e => e.requested !== e.rendered).length };
 }
 
 export function usePlanetTextures(appearance: PlanetAppearance, requestedTier: RenderTier | null, lod?: ExteriorLodSignal) {
   const gl = useThree(state => state.gl);
   const { type, color, seed } = appearance;
   const key = requestedTier ? planetTextureKey({ type, color, seed }, requestedTier) : null;
-  const status = useRef({ requested: null as string | null, rendered: null as string | null, tier: null as RenderTier | null });
+  const status = useRef({ requested: null as string | null, rendered: null as string | null, tier: null as RenderTier | null, failed: false });
   const owned = useMemo(() => new Set<ReturnType<typeof texturesFromPixels>>(), []);
   const [ready, setReady] = useState<{ key: string; tier: RenderTier; textures: ReturnType<typeof texturesFromPixels> } | null>(null);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<{ key: string; error: Error } | null>(null);
+  const failure = error?.key === key && ready?.key !== key ? error.error : null;
   useLayoutEffect(() => {
     const record = status.current;
     const entries = states.get(gl) ?? new Set(); states.set(gl, entries); entries.add(record);
@@ -40,7 +42,8 @@ export function usePlanetTextures(appearance: PlanetAppearance, requestedTier: R
     status.current.requested = key;
     status.current.rendered = ready?.key ?? null;
     status.current.tier = ready?.tier ?? null;
-  }, [key, ready, status]);
+    status.current.failed = !!failure;
+  }, [key, ready, status, failure]);
   useEffect(() => {
     const abort = new AbortController();
     if (!requestedTier || !key) {
@@ -56,9 +59,9 @@ export function usePlanetTextures(appearance: PlanetAppearance, requestedTier: R
           gl.initTexture(textures.albedo); gl.initTexture(textures.surface);
           owned.add(textures);
           setReady({ key, tier: requestedTier, textures });
-        } catch (e) { textures.dispose(); setError(e instanceof Error ? e : new Error(String(e))); }
+        } catch (e) { textures.dispose(); setError({ key, error: e instanceof Error ? e : new Error(String(e)) }); }
       }, abort.signal, priority);
-    }).catch(e => { if (!abort.signal.aborted) setError(e instanceof Error ? e : new Error(String(e))); });
+    }).catch(e => { if (!abort.signal.aborted) setError({ key, error: e instanceof Error ? e : new Error(String(e)) }); });
     return () => abort.abort();
   }, [type, color, seed, requestedTier, gl, key, owned, lod]);
   // Disposal follows the committed resource, not the request: the old material remains valid
@@ -66,6 +69,6 @@ export function usePlanetTextures(appearance: PlanetAppearance, requestedTier: R
   useEffect(() => {
     return () => { if (ready) { ready.textures.dispose(); owned.delete(ready.textures); } };
   }, [ready, owned]);
-  if (error) throw error;
-  return { ready: requestedTier ? ready : null };
+  if (failure && !visualPresetFor(appearance)) throw failure;
+  return { ready: requestedTier ? ready : null, failed: !!failure };
 }

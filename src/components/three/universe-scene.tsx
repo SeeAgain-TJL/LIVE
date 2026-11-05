@@ -1,12 +1,13 @@
 "use client";
 
-import { Component, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 
 import type { TravelMode } from "@/domain/travel";
 import type { Planet, Quality } from "@/domain/types";
 import { CameraRig, type FlightRequest } from "./camera-rig";
+import { SceneBoundary } from "./scene-boundary";
 import { PlanetMesh } from "./planet-mesh";
 import { CosmicEnvironment } from "./cosmic-environment";
 import { stellarSource } from "@/domain/spatial-scene";
@@ -58,12 +59,6 @@ function ExteriorPlanets({ planets, selectedId, focusId, hoveredId, newPlanetId,
       <div className={`planet-label ${selectedId === planet.id ? "selected" : ""}`}><i /><span>{planet.name || `未命名 · ${String(index + 1).padStart(2, "0")}`}</span>{planet.isDemo && <small>示例星球</small>}</div>
     </Html>
   </group>);
-}
-
-class SceneBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() { return { failed: true }; }
-  render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
 export default function UniverseScene(props: SceneProps) {

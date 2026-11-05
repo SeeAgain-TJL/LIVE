@@ -9,7 +9,10 @@ import { EXTERIOR_BUDGETS } from "./planet-texture";
 import { usePlanetTextures } from "./use-planet-textures";
 import type { ExteriorLodPlan } from "./use-exterior-lod";
 
-import { atmosphereFragment, atmosphereVertex, cloudFragment, cloudVertex, ringFragment, ringRotation, ringVertex, shadeExterior } from "./exterior-lighting";
+import { atmosphereFragment, atmosphereVertex, cloudFragment, cloudVertex, visualRingFragment, ringRotation, ringVertex, shadeExterior } from "./exterior-lighting";
+
+import { visualPresetFor } from "./visual-library";
+import { VisualRingDebris } from "./visual-ring-debris";
 
 const PREVIEW_LIGHT: Vec3 = [-6, 5, 6];
 const ringNormal = new Vector3(0, 0, 1).applyEuler(new Euler(...ringRotation));
@@ -31,17 +34,20 @@ export function PlanetMesh({ appearance, position = [0, 0, 0], lightPosition = P
   const group = useRef<Group>(null);
   const birth = useRef(born ? 0.05 : 1);
   const desiredTier = lod ? lod.tier : requestedTier ?? (low ? "low" : "medium");
-  const { ready } = usePlanetTextures(appearance, desiredTier, lod?.signal);
+  const { ready, failed } = usePlanetTextures(appearance, desiredTier, lod?.signal);
   const tier = ready?.tier ?? (lod ? "low" : desiredTier ?? "low"), budget = EXTERIOR_BUDGETS[tier];
   const compact = lod?.compact && tier === "low";
   const segments = compact ? 20 : budget.segments, rows = compact ? 14 : budget.rows;
   const { type, color, seed } = appearance;
+  const visual = visualPresetFor(appearance);
+  const meridian = visual?.meridian ?? seed;
   const relief = budget.bump && type !== "gas" && type !== "ringed";
   const textures = ready?.textures;
   const cloudUniforms = useMemo(() => ({ surface: { value: textures?.surface }, lightPosition: { value: new Vector3(...lightPosition) } }), [textures, lightPosition]);
   const style = optical[type];
-  const atmosphere = useMemo(() => ({ tint: { value: new Color(style.tint) }, lightPosition: { value: new Vector3(...lightPosition) },
-    strength: { value: 1 }, density: { value: style.density } }), [style, lightPosition]);
+  const optics = visual?.atmosphere ?? style;
+  const atmosphere = useMemo(() => ({ tint: { value: new Color(optics.tint) }, lightPosition: { value: new Vector3(...lightPosition) },
+    strength: { value: 1 }, density: { value: optics.density } }), [optics, lightPosition]);
   const lighting = useRef({ exteriorToStar: { value: new Vector3() }, exteriorRingNormal: { value: ringNormal },
     exteriorBounce: { value: 0 }, exteriorTwilight: { value: 0 } });
   useLayoutEffect(() => {
@@ -50,11 +56,13 @@ export function PlanetMesh({ appearance, position = [0, 0, 0], lightPosition = P
     lighting.current.exteriorTwilight.value = style.twilight;
   }, [lightPosition, position, style]);
   const ringed = appearance.rings;
+  const ringStyle = ringed ? visual?.ring : undefined;
   const surfaceProgram = useMemo(() => ({
-    onBeforeCompile: (shader: Parameters<MeshStandardMaterial["onBeforeCompile"]>[0]) => shadeExterior(shader, lighting.current, ringed),
-    customProgramCacheKey: () => ringed ? "exterior-v2-ring" : "exterior-v2",
-  }), [ringed]);
-  const rings = useMemo(() => ({ tint: { value: new Color(appearance.color).lerp(new Color("#e0d3bc"), 0.32) }, radius: { value: appearance.size }, lightPosition: { value: new Vector3(...lightPosition) } }), [appearance.color, appearance.size, lightPosition]);
+    onBeforeCompile: (shader: Parameters<MeshStandardMaterial["onBeforeCompile"]>[0]) => shadeExterior(shader, lighting.current, ringed, ringStyle),
+    customProgramCacheKey: () => ringed ? `exterior-v2-ring-${ringStyle ?? "default"}` : "exterior-v2",
+  }), [ringed, ringStyle]);
+  const ringShader = useMemo(() => visualRingFragment(ringStyle), [ringStyle]);
+  const rings = useMemo(() => ({ tint: { value: new Color(appearance.color).lerp(new Color(ringStyle === "fragments" ? "#9ab6d0" : "#e0d3bc"), ringStyle ? .52 : .32) }, radius: { value: appearance.size }, lightPosition: { value: new Vector3(...lightPosition) } }), [appearance.color, appearance.size, lightPosition, ringStyle]);
   const scale = useMemo(() => new Vector3(1, 1, 1), []);
   useFrame((_, dt) => {
     if (mesh.current && !reducedMotion) mesh.current.rotation.y += dt * 0.025;
@@ -70,28 +78,29 @@ export function PlanetMesh({ appearance, position = [0, 0, 0], lightPosition = P
       group.current.scale.copy(scale).multiplyScalar(1 - Math.pow(1 - birth.current, 3));
     }
   });
-  if (lod?.hidden) return null;
+  if (lod?.hidden || (failed && !textures)) return null;
   const radius = appearance.size;
   return <group ref={group} position={position}>
-    <mesh ref={mesh} rotation={[0.06, appearance.seed, 0.12]} onClick={onSelect} onPointerOver={e => { e.stopPropagation(); if (onSelect) document.body.style.cursor = "pointer"; onHover?.(true); }} onPointerOut={() => { document.body.style.cursor = "auto"; onHover?.(false); }}>
+    <mesh ref={mesh} rotation={[0.06, meridian, 0.12]} onClick={onSelect} onPointerOver={e => { e.stopPropagation(); if (onSelect) document.body.style.cursor = "pointer"; onHover?.(true); }} onPointerOut={() => { document.body.style.cursor = "auto"; onHover?.(false); }}>
       <sphereGeometry args={[radius, segments, rows]} />
       {/* Changing bump presence requires a new shader variant, releasing old sampler bindings. */}
       <meshStandardMaterial {...surfaceProgram} key={`${textures ? relief ? "relief" : "smooth" : "loading"}-${ringed}`} color={textures ? "#ffffff" : color} map={textures?.albedo} roughnessMap={textures?.surface} roughness={1} metalness={0}
         bumpMap={relief ? textures?.surface : undefined}
-        bumpScale={radius * style.relief} />
+        bumpScale={radius * (visual?.relief ?? style.relief)} />
     </mesh>
-    {textures && type === "ocean" && budget.clouds && <mesh ref={clouds} rotation={[0.06, seed, 0.12]} scale={1.012} raycast={() => null}>
+    {textures && type === "ocean" && budget.clouds && <mesh ref={clouds} rotation={[0.06, meridian, 0.12]} scale={1.012} raycast={() => null}>
       <sphereGeometry args={[radius, budget.segments, budget.rows]} />
       <shaderMaterial uniforms={cloudUniforms} vertexShader={cloudVertex} fragmentShader={cloudFragment} transparent depthWrite={false} />
     </mesh>}
-    <mesh ref={rim} scale={1 + style.height} raycast={() => null}>
+    <mesh ref={rim} scale={1 + optics.height} raycast={() => null}>
       <sphereGeometry args={[radius, segments, compact ? 12 : tier === "low" ? 20 : 32]} />
       <shaderMaterial vertexShader={atmosphereVertex} fragmentShader={atmosphereFragment} uniforms={atmosphere} transparent side={BackSide} depthWrite={false} />
     </mesh>
     {appearance.rings && <mesh rotation={ringRotation} raycast={() => null}>
       <ringGeometry args={[radius * 1.42, radius * 2.4, compact ? 48 : tier === "low" ? 80 : tier === "medium" ? 128 : 192]} />
-      <shaderMaterial uniforms={rings} vertexShader={ringVertex} fragmentShader={ringFragment} transparent side={DoubleSide} depthWrite={false} />
+      <shaderMaterial uniforms={rings} vertexShader={ringVertex} fragmentShader={ringShader} transparent side={DoubleSide} depthWrite={false} />
     </mesh>}
+    {ringStyle === "fragments" && textures && tier !== "low" && <VisualRingDebris radius={radius} />}
     {selected && <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -radius * 1.3, 0]} raycast={() => null}>
       <ringGeometry args={[radius * 1.18, radius * 1.19, 96]} />
       <meshBasicMaterial color="#d9c39c" transparent opacity={0.45} side={DoubleSide} depthWrite={false} />

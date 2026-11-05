@@ -1,12 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, RefreshCw, Sparkles } from "lucide-react";
 import type { Planet, PlanetAppearance, PlanetInput } from "@/domain/types";
 import { PLANET_TYPES } from "@/domain/planet";
 import { DEFAULT_GALAXY } from "@/domain/galaxy";
 import { useUniverse } from "@/components/providers/universe-provider";
+import { presetAppearance, visualPresetFor, visualPresets } from "@/components/three/visual-library";
 import { Modal } from "@/components/ui/modal";
 
 const Preview = dynamic(() => import("@/components/three/universe-scene").then(m => m.PlanetPreview), { ssr: false, loading: () => <div className="preview-fallback">正在生成星球…</div> });
@@ -23,7 +25,11 @@ export function PlanetEditor({ planet, defaultGalaxyId, onClose, onSaved }: { pl
   const [appearance, setAppearance] = useState<PlanetAppearance>(() => planet?.appearance ?? { type: "ocean", color: "#5c93aa", seed: Math.floor(Math.random() * 100000), rings: false, size: 1.6 });
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
-  const changeLook = (update: Partial<PlanetAppearance>) => setAppearance(a => ({ ...a, ...update }));
+  const activePreset = visualPresetFor(appearance);
+  const changeLook = (update: Partial<PlanetAppearance>) => setAppearance(a => ({
+    ...a, ...((update.type && update.type !== a.type || update.color && update.color !== a.color) && visualPresetFor(a)
+      ? { seed: Math.floor(Math.random() * 100000) } : {}), ...update,
+  }));
   const submit = async (event: FormEvent) => {
     event.preventDefault(); setError(""); setSaving(true);
     try {
@@ -44,6 +50,12 @@ export function PlanetEditor({ planet, defaultGalaxyId, onClose, onSaved }: { pl
       </div>
       <div className="editor-appearance"><div className="preview-orbit"><Preview appearance={appearance} /><span className="preview-caption">实时 3D 预览 · 拖动旋转</span></div>
         <p className="eyebrow">PLANET COMPOSITION</p>
+        <label className="field" htmlFor="planet-visual-preset">外观预设<select id="planet-visual-preset" value={activePreset?.id ?? ""} onChange={e => {
+          const preset = visualPresets.find(item => item.id === e.target.value);
+          if (preset) setAppearance(a => presetAppearance(preset, a.size));
+          else changeLook({ seed: Math.floor(Math.random() * 100000) });
+        }}><option value="">自定义外观</option>{visualPresets.map(preset => <option key={preset.id} value={preset.id}>{preset.name}</option>)}</select></label>
+        <Link className="text-button" href="/planet-visual-library" target="_blank" rel="noopener">浏览星球视觉库（新标签页）</Link>
         <div className="type-options">{PLANET_TYPES.map(type => <button type="button" className={appearance.type === type.value ? "type-option selected" : "type-option"} key={type.value} onClick={() => changeLook({ type: type.value, rings: type.value === "ringed" || appearance.rings })} title={type.hint}>{type.label}</button>)}</div>
         <div className="color-options">{COLORS.map(color => <button type="button" key={color} style={{ background: color }} className={appearance.color === color ? "swatch selected" : "swatch"} aria-label={`颜色 ${color}`} aria-pressed={appearance.color === color} onClick={() => changeLook({ color })}>{appearance.color === color && <Check size={15} />}</button>)}<label className="custom-color" title="自定义颜色"><input type="color" value={appearance.color} aria-label="自定义星球颜色" onChange={e => changeLook({ color: e.target.value })} /></label></div>
         <div className="look-controls"><label className="check-field"><input type="checkbox" checked={appearance.rings} onChange={e => changeLook({ rings: e.target.checked })} />添加星环</label><button type="button" className="text-button" onClick={() => changeLook({ seed: Math.floor(Math.random() * 100000) })}><RefreshCw size={13} />换一种纹理</button></div>

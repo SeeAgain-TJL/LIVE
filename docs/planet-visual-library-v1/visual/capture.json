@@ -1,0 +1,511 @@
+{
+  "chrome": "156.0.8078.80",
+  "url": "http://127.0.0.1:3359",
+  "errors": [],
+  "images": [
+    {
+      "id": "red-wastes",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/red-wastes-high-front.png"
+    },
+    {
+      "id": "red-wastes",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/red-wastes-high-side.png"
+    },
+    {
+      "id": "red-wastes",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/red-wastes-high-back.png"
+    },
+    {
+      "id": "red-wastes",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/red-wastes-high-near.png"
+    },
+    {
+      "id": "red-wastes",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/red-wastes-high-far.png"
+    },
+    {
+      "id": "red-wastes",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/red-wastes-medium-near.png"
+    },
+    {
+      "id": "red-wastes",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/red-wastes-low-near.png"
+    },
+    {
+      "id": "ancient-strata",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/ancient-strata-high-front.png"
+    },
+    {
+      "id": "ancient-strata",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/ancient-strata-high-side.png"
+    },
+    {
+      "id": "ancient-strata",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/ancient-strata-high-back.png"
+    },
+    {
+      "id": "ancient-strata",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/ancient-strata-high-near.png"
+    },
+    {
+      "id": "ancient-strata",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/ancient-strata-high-far.png"
+    },
+    {
+      "id": "ancient-strata",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/ancient-strata-medium-near.png"
+    },
+    {
+      "id": "ancient-strata",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/ancient-strata-low-near.png"
+    },
+    {
+      "id": "jade-ocean",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/jade-ocean-high-front.png"
+    },
+    {
+      "id": "jade-ocean",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/jade-ocean-high-side.png"
+    },
+    {
+      "id": "jade-ocean",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/jade-ocean-high-back.png"
+    },
+    {
+      "id": "jade-ocean",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/jade-ocean-high-near.png"
+    },
+    {
+      "id": "jade-ocean",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/jade-ocean-high-far.png"
+    },
+    {
+      "id": "jade-ocean",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/jade-ocean-medium-near.png"
+    },
+    {
+      "id": "jade-ocean",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/jade-ocean-low-near.png"
+    },
+    {
+      "id": "abyssal-ocean",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/abyssal-ocean-high-front.png"
+    },
+    {
+      "id": "abyssal-ocean",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/abyssal-ocean-high-side.png"
+    },
+    {
+      "id": "abyssal-ocean",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/abyssal-ocean-high-back.png"
+    },
+    {
+      "id": "abyssal-ocean",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/abyssal-ocean-high-near.png"
+    },
+    {
+      "id": "abyssal-ocean",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/abyssal-ocean-high-far.png"
+    },
+    {
+      "id": "abyssal-ocean",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/abyssal-ocean-medium-near.png"
+    },
+    {
+      "id": "abyssal-ocean",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/abyssal-ocean-low-near.png"
+    },
+    {
+      "id": "glacial-rift",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/glacial-rift-high-front.png"
+    },
+    {
+      "id": "glacial-rift",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/glacial-rift-high-side.png"
+    },
+    {
+      "id": "glacial-rift",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/glacial-rift-high-back.png"
+    },
+    {
+      "id": "glacial-rift",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/glacial-rift-high-near.png"
+    },
+    {
+      "id": "glacial-rift",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/glacial-rift-high-far.png"
+    },
+    {
+      "id": "glacial-rift",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/glacial-rift-medium-near.png"
+    },
+    {
+      "id": "glacial-rift",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/glacial-rift-low-near.png"
+    },
+    {
+      "id": "crystal-frost",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/crystal-frost-high-front.png"
+    },
+    {
+      "id": "crystal-frost",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/crystal-frost-high-side.png"
+    },
+    {
+      "id": "crystal-frost",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/crystal-frost-high-back.png"
+    },
+    {
+      "id": "crystal-frost",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/crystal-frost-high-near.png"
+    },
+    {
+      "id": "crystal-frost",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/crystal-frost-high-far.png"
+    },
+    {
+      "id": "crystal-frost",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/crystal-frost-medium-near.png"
+    },
+    {
+      "id": "crystal-frost",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/crystal-frost-low-near.png"
+    },
+    {
+      "id": "tempest",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/tempest-high-front.png"
+    },
+    {
+      "id": "tempest",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/tempest-high-side.png"
+    },
+    {
+      "id": "tempest",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/tempest-high-back.png"
+    },
+    {
+      "id": "tempest",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/tempest-high-near.png"
+    },
+    {
+      "id": "tempest",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/tempest-high-far.png"
+    },
+    {
+      "id": "tempest",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/tempest-medium-near.png"
+    },
+    {
+      "id": "tempest",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/tempest-low-near.png"
+    },
+    {
+      "id": "cobalt-giant",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/cobalt-giant-high-front.png"
+    },
+    {
+      "id": "cobalt-giant",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/cobalt-giant-high-side.png"
+    },
+    {
+      "id": "cobalt-giant",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/cobalt-giant-high-back.png"
+    },
+    {
+      "id": "cobalt-giant",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/cobalt-giant-high-near.png"
+    },
+    {
+      "id": "cobalt-giant",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/cobalt-giant-high-far.png"
+    },
+    {
+      "id": "cobalt-giant",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/cobalt-giant-medium-near.png"
+    },
+    {
+      "id": "cobalt-giant",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/cobalt-giant-low-near.png"
+    },
+    {
+      "id": "gilded-rings",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/gilded-rings-high-front.png"
+    },
+    {
+      "id": "gilded-rings",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/gilded-rings-high-side.png"
+    },
+    {
+      "id": "gilded-rings",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/gilded-rings-high-back.png"
+    },
+    {
+      "id": "gilded-rings",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/gilded-rings-high-near.png"
+    },
+    {
+      "id": "gilded-rings",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/gilded-rings-high-far.png"
+    },
+    {
+      "id": "gilded-rings",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/gilded-rings-medium-near.png"
+    },
+    {
+      "id": "gilded-rings",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/gilded-rings-low-near.png"
+    },
+    {
+      "id": "midnight-arcs",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/midnight-arcs-high-front.png"
+    },
+    {
+      "id": "midnight-arcs",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/midnight-arcs-high-side.png"
+    },
+    {
+      "id": "midnight-arcs",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/midnight-arcs-high-back.png"
+    },
+    {
+      "id": "midnight-arcs",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/midnight-arcs-high-near.png"
+    },
+    {
+      "id": "midnight-arcs",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/midnight-arcs-high-far.png"
+    },
+    {
+      "id": "midnight-arcs",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/midnight-arcs-medium-near.png"
+    },
+    {
+      "id": "midnight-arcs",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/midnight-arcs-low-near.png"
+    },
+    {
+      "id": "violet-haze",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/violet-haze-high-front.png"
+    },
+    {
+      "id": "violet-haze",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/violet-haze-high-side.png"
+    },
+    {
+      "id": "violet-haze",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/violet-haze-high-back.png"
+    },
+    {
+      "id": "violet-haze",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/violet-haze-high-near.png"
+    },
+    {
+      "id": "violet-haze",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/violet-haze-high-far.png"
+    },
+    {
+      "id": "violet-haze",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/violet-haze-medium-near.png"
+    },
+    {
+      "id": "violet-haze",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/violet-haze-low-near.png"
+    },
+    {
+      "id": "verdant-world",
+      "state": "high",
+      "angle": "front",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/verdant-world-high-front.png"
+    },
+    {
+      "id": "verdant-world",
+      "state": "high",
+      "angle": "side",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/verdant-world-high-side.png"
+    },
+    {
+      "id": "verdant-world",
+      "state": "high",
+      "angle": "back",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/verdant-world-high-back.png"
+    },
+    {
+      "id": "verdant-world",
+      "state": "high",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/verdant-world-high-near.png"
+    },
+    {
+      "id": "verdant-world",
+      "state": "high",
+      "angle": "far",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/verdant-world-high-far.png"
+    },
+    {
+      "id": "verdant-world",
+      "state": "medium",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/verdant-world-medium-near.png"
+    },
+    {
+      "id": "verdant-world",
+      "state": "low",
+      "angle": "near",
+      "file": "artifacts-local/planet-visual-library-v1/gallery-r3/verdant-world-low-near.png"
+    }
+  ]
+}

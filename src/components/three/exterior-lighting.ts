@@ -1,4 +1,6 @@
 import type { MeshStandardMaterial } from "three";
+import type { VisualPreset } from "./visual-library";
+import { visualRingProfile } from "./visual-ring-profile";
 
 // Radius units throughout, so the ring and its shadow share the same gaps.
 const ringProfile = `
@@ -22,6 +24,25 @@ float ringDensity(float r, float footprint) {
 }
 `;
 
+const measuredRing = (style: NonNullable<VisualPreset["ring"]>) => `
+const float densityProfile[64] = float[64](${visualRingProfile.map(v => v.toFixed(4)).join(",")});
+float measuredRingDensity(vec3 radial, float footprint) {
+  float r = length(radial);
+  float pos = clamp((r - 1.43) / .97, 0., 1.) * 63.;
+  int a = int(pos);
+  float measured = mix(densityProfile[a], densityProfile[min(a + 1, 63)], fract(pos));
+  float footprintBlend = smoothstep(.01, .075, footprint);
+  float envelope = smoothstep(1.43, 1.51, r) * (1. - smoothstep(2.32, 2.40, r));
+  ${style === "gold" ? "return envelope * mix(measured, .44, footprintBlend * .72) * .92;" : `
+    vec3 dir = radial / max(r, .001);
+    float arcA = smoothstep(.31, .61, dot(dir, normalize(vec3(.90, .05, -.38))));
+    float arcB = smoothstep(.58, .79, dot(dir, normalize(vec3(-.51, .25, .72))));
+    float arcC = smoothstep(.76, .89, dot(dir, normalize(vec3(-.41, .25, -.69))));
+    float shells = smoothstep(1.68, 1.71, r) * (1. - smoothstep(2.18, 2.27, r));
+    return shells * mix(measured, .49, footprintBlend * .55) * max(arcA * .67, max(arcB, arcC * .54));
+  `}
+}
+`;
 export const ringRotation = [-Math.PI / 2.65, -.18, .2] as const;
 
 /** Keep the Standard BRDF and the existing two maps. Only exterior meshes use this patch. */
@@ -29,6 +50,7 @@ export function shadeExterior(
   shader: Parameters<MeshStandardMaterial["onBeforeCompile"]>[0],
   uniforms: Record<string, { value: unknown }>,
   ringed: boolean,
+  libraryRing?: VisualPreset["ring"],
 ) {
   Object.assign(shader.uniforms, uniforms);
   shader.vertexShader = shader.vertexShader
@@ -42,7 +64,7 @@ export function shadeExterior(
     .replace("#include <common>", `#include <common>
       varying vec3 vExteriorRadial, vExteriorSun;
       uniform float exteriorBounce, exteriorTwilight;
-      ${ringed ? `uniform vec3 exteriorRingNormal; ${ringProfile}` : ""}`)
+      ${ringed ? `uniform vec3 exteriorRingNormal; ${libraryRing ? measuredRing(libraryRing) : ringProfile}` : ""}`)
     .replace("#include <lights_fragment_end>", `#include <lights_fragment_end>
       vec3 radial = normalize(vExteriorRadial);
       vec3 starRay = normalize(vExteriorSun);
@@ -58,7 +80,7 @@ export function shadeExterior(
         // fragments do not project onto the annulus, so skip its density work.
         float ringFootprint = fwidth(ringRadius);
         if (daylight > 0. && travel > 0. && ringRadius > 1.43 && ringRadius < 2.40) {
-          float opacity = ringDensity(ringRadius, ringFootprint);
+          float opacity = ${libraryRing ? "measuredRingDensity(radial + max(0., travel) * starRay, ringFootprint)" : "ringDensity(ringRadius, ringFootprint)"};
           daylight *= 1. - .72 * opacity * smoothstep(0., .12, travel);
         }
       ` : ""}
@@ -140,6 +162,12 @@ void main() {
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
 }`;
+
+export function visualRingFragment(style: VisualPreset["ring"]) {
+  if (!style) return ringFragment;
+  return ringFragment.replace(ringProfile, measuredRing(style))
+    .replace("ringDensity(r, fwidth(r))", "measuredRingDensity(vRingRadial, fwidth(r))");
+}
 
 export const cloudVertex = `
 varying vec2 vUv;

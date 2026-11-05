@@ -1,0 +1,546 @@
+{
+  "sources": {
+    "mars": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_mars.jpg",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "2d187f3e77a98eaa8cea5f4cc722f633c122ef170b9e94ace6b5fb6cbc3f8e01"
+    },
+    "jupiter": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_jupiter.jpg",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "b0f04d005350252636b0e3396fc592548cbd9e9126b269d32d5c6abd4b0e4f2b"
+    },
+    "saturn": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_saturn.jpg",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "54a900ca9bf7ab62e70f862852759abdf342e6d6436a95a2fe9ebdb6bcd3bbac"
+    },
+    "rings": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_saturn_ring_alpha.png",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 125,
+      "sha256": "4b0644b2f3ef259fd0bfaedd9dc52f9e7d9738f65f50363e8c4dd19f650d7334"
+    },
+    "neptune": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_neptune.jpg",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "cb42ea82709741d28b0af44d8b283cbc6dbd0c521a7f0e1e1e010ade00977df6"
+    },
+    "venus": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_venus_atmosphere.jpg",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "225012ad4911730605c4e189ca2a3bf674fce50cc48aab4102b936b47d6991ac"
+    },
+    "earth": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "767ee1dc6eb3802699bfccf6f264880f8acd0b80de3191cd24984fe279b07b7c"
+    },
+    "clouds": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_earth_clouds.jpg",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "fffd7f68d41b37274822150e54a6ef605af1d3ec35624d9f628c3b896bfa42ed"
+    },
+    "water": {
+      "url": "https://www.solarsystemscope.com/textures/download/2k_earth_specular_map.tif",
+      "page": "https://www.solarsystemscope.com/textures/",
+      "credit": "Solar System Scope / INOVE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "6b90ecfce248591a1ecc9a3e49acca1a7059b6828877e718302ed9a6b4471bd7"
+    },
+    "europa": {
+      "url": "https://maps.jpl.nasa.gov/tmaps/pix/jup2vss2.jpg",
+      "page": "https://maps.jpl.nasa.gov/tmaps/jupiter.html",
+      "credit": "Courtesy NASA/JPL-Caltech/USGS; Voyager mosaic",
+      "license": "https://www.jpl.nasa.gov/jpl-image-use-policy/",
+      "width": 1440,
+      "height": 720,
+      "sha256": "03164d293c46b3eff16678c20dfb73337db8a404e2d83f057bc320b95484b54f"
+    },
+    "ganymede": {
+      "url": "https://maps.jpl.nasa.gov/tmaps/pix/jup3vss2.jpg",
+      "page": "https://maps.jpl.nasa.gov/tmaps/jupiter.html",
+      "credit": "Courtesy NASA/JPL-Caltech/USGS; Voyager mosaic",
+      "license": "https://www.jpl.nasa.gov/jpl-image-use-policy/",
+      "width": 1440,
+      "height": 720,
+      "sha256": "626302a877528d7eab74f4229f6c7249fffc91be8e28e8edc040433aca98cc6d"
+    },
+    "neptuneClouds": {
+      "url": "https://maps.jpl.nasa.gov/tmaps/pix/nep0fds1.jpg",
+      "page": "https://maps.jpl.nasa.gov/tmaps/neptune.html",
+      "credit": "Don Davis, courtesy NASA/JPL-Caltech; authored fictional texture",
+      "license": "https://www.jpl.nasa.gov/jpl-image-use-policy/",
+      "width": 720,
+      "height": 360,
+      "sha256": "8f3be9e5d06eb5cf73fe791832ecc5b7ade6d99e4ce18116b9b98d39c1c1146f"
+    },
+    "moon": {
+      "url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_2k.jpg",
+      "page": "https://svs.gsfc.nasa.gov/4720/",
+      "credit": "NASA's Scientific Visualization Studio / Ernie Wright; LRO/LROC",
+      "license": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "width": 2048,
+      "height": 1024,
+      "sha256": "f7130a1822681fa7512d7dcfd40db8c10b9ba4f06777910348698260ed7a2170"
+    },
+    "moonHeight": {
+      "url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_3_8bit.jpg",
+      "page": "https://svs.gsfc.nasa.gov/4720/",
+      "credit": "NASA's Scientific Visualization Studio / Ernie Wright; LRO/LOLA",
+      "license": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "width": 1024,
+      "height": 512,
+      "sha256": "6d93f887e7d8bedfe35ab89ba785e5e3ca12381bd092a5e6abe2c707dda8bb98"
+    }
+  },
+  "assets": {
+    "red-wastes": {
+      "sources": [
+        "mars"
+      ],
+      "tiers": {
+        "high": {
+          "file": "red-wastes-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 1168905,
+          "sha256": "f9fe188df8382b2eed0de002de5f359aeba9bae6a7e443bc2c22285e6e4a9682"
+        },
+        "medium": {
+          "file": "red-wastes-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 328008,
+          "sha256": "c185bc4b1c74b267a8feb19754900f1d01aa676d2d4c2ff55d69de28523c9376"
+        },
+        "low": {
+          "file": "red-wastes-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 89571,
+          "sha256": "3d839533288c15d23749ae06ff4445e6b33ba9c42b81e302748687e0674a9201"
+        }
+      }
+    },
+    "ancient-strata": {
+      "sources": [
+        "moon",
+        "moonHeight"
+      ],
+      "tiers": {
+        "high": {
+          "file": "ancient-strata-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 1172698,
+          "sha256": "0caac06e4a64a16d0646b77a8c2ed434636d92dcff14c76935f723d4bb1890e4"
+        },
+        "medium": {
+          "file": "ancient-strata-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 328872,
+          "sha256": "d50a25dc4c76a6acfb384b4e97ff33c3fdc0cadd21f59d7281050d59209dedac"
+        },
+        "low": {
+          "file": "ancient-strata-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 91467,
+          "sha256": "4d085ef77a02ab3c514b5837885b04f15c40802083c9ff08a461a6146d66a03e"
+        }
+      }
+    },
+    "jade-ocean": {
+      "sources": [
+        "earth",
+        "water",
+        "clouds"
+      ],
+      "tiers": {
+        "high": {
+          "file": "jade-ocean-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 768977,
+          "sha256": "1b8f8ae23840acfaf5beb5b8ce1d402f2cf0246aaff921620fba5e82b91fd763"
+        },
+        "medium": {
+          "file": "jade-ocean-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 218551,
+          "sha256": "20b63bea7390dee0adf80f15fabe169e0776416228a368a936278915ca10b174"
+        },
+        "low": {
+          "file": "jade-ocean-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 79924,
+          "sha256": "f39b61aa47121e54ee9ff61c8b8b3b49e028954c101b28fcad2f3823b8ed8ba2"
+        }
+      }
+    },
+    "abyssal-ocean": {
+      "sources": [
+        "earth",
+        "water",
+        "clouds"
+      ],
+      "tiers": {
+        "high": {
+          "file": "abyssal-ocean-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 714292,
+          "sha256": "dc21305c7123f310733dde993178c3b12b354c35b4ca27245a48ab9fc8042092"
+        },
+        "medium": {
+          "file": "abyssal-ocean-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 205299,
+          "sha256": "77b5ccb181fe2615f15a1f36aa2a567f961c12a534dc7d49a83d47f81e814f2b"
+        },
+        "low": {
+          "file": "abyssal-ocean-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 78567,
+          "sha256": "24523336b55f3993006ce30d1cb51aa95f5b448f000d2e73ff2912ef1d6412a3"
+        }
+      }
+    },
+    "glacial-rift": {
+      "sources": [
+        "europa"
+      ],
+      "tiers": {
+        "high": {
+          "file": "glacial-rift-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 987731,
+          "sha256": "459a77d9576e85439ac7edfc094c0ffd22842e0e03313a1133308e57e73b34d4"
+        },
+        "medium": {
+          "file": "glacial-rift-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 288799,
+          "sha256": "1294110804b775888a2cff805b50f53b57366a81b33cce2e1af5cd2469fc2f7c"
+        },
+        "low": {
+          "file": "glacial-rift-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 81945,
+          "sha256": "d066a0d1901cac4e9b5a943d263a7b94b2fc4196e0e72cf22ed1de5764a083bd"
+        }
+      }
+    },
+    "crystal-frost": {
+      "sources": [
+        "ganymede",
+        "europa"
+      ],
+      "tiers": {
+        "high": {
+          "file": "crystal-frost-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 1138173,
+          "sha256": "bfb688fb7bb2b82c09c6f3abf12e564835cf1c35db37b45b20e5406c2da13836"
+        },
+        "medium": {
+          "file": "crystal-frost-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 323940,
+          "sha256": "e349701bc4b70a07da8e450f4a77229a8e4806ea9afd3690c75db4cdd9bce53f"
+        },
+        "low": {
+          "file": "crystal-frost-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 89070,
+          "sha256": "b7bf303dd118bb639d5be00c1751975bbeef6bd8532cc568471df9ca93539075"
+        }
+      }
+    },
+    "tempest": {
+      "sources": [
+        "jupiter"
+      ],
+      "tiers": {
+        "high": {
+          "file": "tempest-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 809795,
+          "sha256": "1db05081b1689356789015cd3601ad0265b48219708aa63b8b326cb1d6ca88a2"
+        },
+        "medium": {
+          "file": "tempest-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 242334,
+          "sha256": "984ce13d4fca29312d9830e6f54cea445ce1fa82cad34f45bf5e3c2df20d11c6"
+        },
+        "low": {
+          "file": "tempest-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 69219,
+          "sha256": "22afa44d80822e8163ae256f5d4a6340ee5baa18065c65dbfb24068fecb8f04d"
+        }
+      }
+    },
+    "cobalt-giant": {
+      "sources": [
+        "neptune",
+        "neptuneClouds"
+      ],
+      "tiers": {
+        "high": {
+          "file": "cobalt-giant-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 413041,
+          "sha256": "7be196ff947e93ed43b46e0bed445549ec2b15f173727e9fb6b4215efa030c6d"
+        },
+        "medium": {
+          "file": "cobalt-giant-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 131997,
+          "sha256": "74ced52c16b52c3c5f192c6ba4d1ce7c8ef2704d6b14188f6f84c3b53fe2ca0d"
+        },
+        "low": {
+          "file": "cobalt-giant-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 39476,
+          "sha256": "20dd36938fe2489b9ae8a0eb0228ba6a52878278c481ce25b79a59282ce93faf"
+        }
+      }
+    },
+    "gilded-rings": {
+      "sources": [
+        "saturn",
+        "rings"
+      ],
+      "tiers": {
+        "high": {
+          "file": "gilded-rings-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 360387,
+          "sha256": "4f11b926309972f464bf26cac1261282be9d4cf604db2cd24d4cd5a26655d0c6"
+        },
+        "medium": {
+          "file": "gilded-rings-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 114383,
+          "sha256": "2dc112b7d293d082d38f48c166190c8f95cc6c5fc5cc686af3d5d69b15178fd3"
+        },
+        "low": {
+          "file": "gilded-rings-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 34473,
+          "sha256": "27a23f74431001c571027f9f16ec97f0403ecb9a46b76e8bed69121d647b6ce1"
+        }
+      }
+    },
+    "midnight-arcs": {
+      "sources": [
+        "neptuneClouds",
+        "saturn",
+        "rings"
+      ],
+      "tiers": {
+        "high": {
+          "file": "midnight-arcs-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 471518,
+          "sha256": "c7755baf47bab6304df05164e379a47f6675c8cbd8ef6a84e35c239d0272dec2"
+        },
+        "medium": {
+          "file": "midnight-arcs-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 155667,
+          "sha256": "e05576577e87382a0818b9e5ceccb85e6684e77538030545603b69fbdc642270"
+        },
+        "low": {
+          "file": "midnight-arcs-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 46655,
+          "sha256": "cdd9cd29c23746d3599f4751368d00d5a4fe51b6145d08e13ce92239b9510ebe"
+        }
+      }
+    },
+    "violet-haze": {
+      "sources": [
+        "venus"
+      ],
+      "tiers": {
+        "high": {
+          "file": "violet-haze-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 419184,
+          "sha256": "f69b357bf0604c80e0d46ae6abc2a1b432136dec79e3d553a7f456d932306fe1"
+        },
+        "medium": {
+          "file": "violet-haze-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 124563,
+          "sha256": "c6c5a337426141d34f1c30d9a57f27da661db29c828e0112786be76673fa7d7c"
+        },
+        "low": {
+          "file": "violet-haze-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 36587,
+          "sha256": "a4f026fb05af1aafc6f0b2d24cd286a3da9f149d0f02cd1ea3ecfac5057af288"
+        }
+      }
+    },
+    "verdant-world": {
+      "sources": [
+        "earth",
+        "water",
+        "clouds"
+      ],
+      "tiers": {
+        "high": {
+          "file": "verdant-world-high.pvl",
+          "width": 1024,
+          "height": 512,
+          "bytes": 814081,
+          "sha256": "0fdcb87ecbc91926e19a8621e7394944194dd856fbba6860770c772c45a26367"
+        },
+        "medium": {
+          "file": "verdant-world-medium.pvl",
+          "width": 512,
+          "height": 256,
+          "bytes": 232419,
+          "sha256": "90bb5a941182c8a7c2529959b4d26e190af7a40a595cb56f55d4ff9fdbe41b13"
+        },
+        "low": {
+          "file": "verdant-world-low.pvl",
+          "width": 256,
+          "height": 128,
+          "bytes": 82969,
+          "sha256": "73dd7257dfada48af302c500a4cf576db4f18d3c57af2f1190e1005596dab6b1"
+        }
+      }
+    }
+  },
+  "radial": [
+    0,
+    0,
+    0,
+    0.0247,
+    0.0916,
+    0.1749,
+    0.2421,
+    0.2467,
+    0.3335,
+    0.3733,
+    0.3876,
+    0.4182,
+    0.4062,
+    0.468,
+    0.4162,
+    0.4393,
+    0.3807,
+    0.441,
+    0.5508,
+    0.586,
+    0.7938,
+    0.8037,
+    0.8115,
+    0.8179,
+    0.8315,
+    0.8359,
+    0.9008,
+    0.9316,
+    0.9343,
+    0.9462,
+    0.922,
+    0.9326,
+    0.9419,
+    0.9447,
+    0.9392,
+    0.9535,
+    0.9203,
+    0.9136,
+    0.9182,
+    0.9156,
+    0.9104,
+    0.9437,
+    0.8554,
+    0.3633,
+    0.3464,
+    0.4656,
+    0.612,
+    0.8213,
+    0.8101,
+    0.7295,
+    0.7066,
+    0.6889,
+    0.6927,
+    0.6901,
+    0.7004,
+    0.694,
+    0.708,
+    0.5762,
+    0.7933,
+    0.8101,
+    0.1938,
+    0.017,
+    0.0275,
+    0.0673
+  ]
+}

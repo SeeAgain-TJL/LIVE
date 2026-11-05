@@ -1,10 +1,12 @@
 import type { PlanetAppearance } from "@/domain/types";
 import type { RenderTier } from "@/domain/cosmic-visuals";
 import { createPlanetBake, type PlanetPixels } from "./planet-texture";
+import { loadLibraryBake } from "./visual-library-pack";
+import { visualPresetFor } from "./visual-library";
 import { PlanetPixelCache } from "./planet-pixel-cache";
 
 type Appearance = Pick<PlanetAppearance, "type" | "color" | "seed">;
-interface Consumer { resolve: (maps: PlanetPixels) => void; priority: () => number }
+interface Consumer { resolve: (maps: PlanetPixels) => void; priority: () => number; reject: (error: Error) => void }
 interface Job { key: string; appearance: Appearance; tier: RenderTier; consumers: Set<Consumer> }
 const cache = new PlanetPixelCache();
 const jobs = new Map<string, Job>();
@@ -22,8 +24,11 @@ function complete(job: Job, maps: PlanetPixels) {
   jobs.delete(job.key); active = undefined; counters.completed++;
   pump();
 }
-function fallback(job: Job) {
-  const bake = createPlanetBake(job.appearance, job.tier);
+function failed(job: Job, error: Error) {
+  for (const consumer of job.consumers) consumer.reject(error);
+  jobs.delete(job.key); active = undefined; pump();
+}
+function fallback(job: Job, bake = createPlanetBake(job.appearance, job.tier)) {
   const slice = () => {
     if (!job.consumers.size) { jobs.delete(job.key); active = undefined; pump(); return; }
     const start = performance.now();
@@ -33,6 +38,12 @@ function fallback(job: Job) {
     if (bake.done) complete(job, bake.maps); else setTimeout(slice, 0);
   };
   setTimeout(slice, 0);
+}
+function fallbackJob(job: Job) {
+  if (!visualPresetFor(job.appearance)) { fallback(job); return; }
+  loadLibraryBake(job.appearance, job.tier).then(bake => {
+    if (bake) fallback(job, bake);
+  }).catch(error => failed(job, error instanceof Error ? error : new Error(String(error))));
 }
 function pump() {
   if (active) return;
@@ -47,17 +58,18 @@ function pump() {
   if (!workerFailed && !worker) {
     try {
       worker = new Worker(new URL("./planet-texture.worker.ts", import.meta.url), { type: "module" });
-      worker.onmessage = (event: MessageEvent<{ key: string; maps: PlanetPixels; bakeMs: number }>) => {
+      worker.onmessage = (event: MessageEvent<{ key: string; maps: PlanetPixels; bakeMs: number } | { key: string; error: string }>) => {
         if (active?.key !== event.data.key) return;
+        if ("error" in event.data) { failed(active, new Error(event.data.error)); return; }
         counters.workerBakeMs += event.data.bakeMs; complete(active, event.data.maps);
       };
       worker.onerror = event => {
         event.preventDefault(); worker?.terminate(); worker = undefined; workerFailed = true; counters.workerErrors++;
-        if (active) fallback(active);
+        if (active) fallbackJob(active);
       };
     } catch { workerFailed = true; counters.workerErrors++; }
   }
-  if (worker) worker.postMessage({ key: job.key, appearance: job.appearance, tier: job.tier }); else fallback(job);
+  if (worker) worker.postMessage({ key: job.key, appearance: job.appearance, tier: job.tier }); else fallbackJob(job);
 }
 
 export function requestPlanetPixels(appearance: Appearance, tier: RenderTier, signal: AbortSignal, priority = normalPriority): Promise<PlanetPixels> {
@@ -67,7 +79,10 @@ export function requestPlanetPixels(appearance: Appearance, tier: RenderTier, si
   return new Promise((resolve, reject) => {
     let job = jobs.get(key);
     if (!job) { job = { key, appearance, tier, consumers: new Set() }; jobs.set(key, job); counters.misses++; }
-    const consumer: Consumer = { resolve: maps => { signal.removeEventListener("abort", abort); resolve(maps); }, priority };
+    const consumer: Consumer = {
+      resolve: maps => { signal.removeEventListener("abort", abort); resolve(maps); },
+      reject: error => { signal.removeEventListener("abort", abort); reject(error); }, priority,
+    };
     const abort = () => {
       job.consumers.delete(consumer); counters.cancelled++; reject(abortError());
       if (!job.consumers.size && active !== job) jobs.delete(key);

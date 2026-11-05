@@ -3,6 +3,7 @@ import { appendFile, mkdir, writeFile } from "node:fs/promises";
 import { gzipSync } from "node:zlib";
 import os from "node:os";
 import path from "node:path";
+import { presetAppearance, visualPresets } from "../src/components/three/visual-library.ts";
 import { createSeed } from "../src/data/seed.ts";
 import { stellarSource } from "../src/domain/spatial-scene.ts";
 import { Vector3 } from "three";
@@ -13,9 +14,11 @@ const urls = {
   before: process.env.EXTERIOR_BEFORE_URL ?? "http://127.0.0.1:3322",
   after: process.env.EXTERIOR_AFTER_URL ?? "http://127.0.0.1:3323",
 };
+const visualLibrary = process.env.EXTERIOR_REVIEW_BATCH === "library-v1";
+const libraryPressurePresets = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9, 10, 11].map(index => visualPresets[index]);
 const batch21 = process.env.EXTERIOR_REVIEW_BATCH === "2.1";
 const batch2 = batch21 || process.env.EXTERIOR_REVIEW_BATCH === "2";
-const batch = batch21 ? "exterior-batch-2.1" : batch2 ? "exterior-batch-2" : "exterior-batch-1.2";
+const batch = visualLibrary ? "planet-visual-library-v1" : batch21 ? "exterior-batch-2.1" : batch2 ? "exterior-batch-2" : "exterior-batch-1.2";
 const output = path.posix.join("artifacts-local", batch, label);
 const docs = `docs/${batch}`;
 await mkdir(docs, { recursive: true });
@@ -26,7 +29,7 @@ await writeFile(rawPath, Buffer.alloc(0), { flag: "wx" });
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const root = await browser.newBrowserCDPSession();
 const viewport = { width: 1600, height: 1000 };
-const report = { date: new Date().toISOString(), baseline: batch21 ? "713fe73" : batch2 ? "4d9e9e0" : "1b41f5f", chrome: browser.version(), urls, viewport, dpr: 1.5, cpu: os.cpus()[0].model,
+const report = { date: new Date().toISOString(), baseline: visualLibrary ? "243eca2" : batch21 ? "713fe73" : batch2 ? "4d9e9e0" : "1b41f5f", chrome: browser.version(), urls, viewport, dpr: 1.5, cpu: os.cpus()[0].model,
   ramBytes: os.totalmem(), gpu: (await root.send("SystemInfo.getInfo")).gpu, cases: [], images: [], failures: [] };
 
 // Split GPU timers when the first draw switches between the nebula FBO and the
@@ -182,7 +185,8 @@ function fixture(count, closeType, phase) {
   f.planets = Array.from({ length: count }, (_, i) => {
     const p = seeds[i % 5], row = Math.floor(i / 10), col = i % 10;
     return { ...p, id: `lod-example-${i}`, name: `外观压力示例 ${i + 1}`, isDemo: false, description: "隔离外观压力样本，不代表用户经历。",
-      appearance: { ...p.appearance, seed: p.appearance.seed + Math.floor(i / 5) * 101, size: p.appearance.size * .7 },
+      appearance: visualLibrary ? presetAppearance(libraryPressurePresets[i % libraryPressurePresets.length], p.appearance.size * .7)
+        : { ...p.appearance, seed: p.appearance.seed + Math.floor(i / 5) * 101, size: p.appearance.size * .7 },
       position: count === 5 ? p.position : [(col - 4.5) * 7, (row - (Math.ceil(count / 10) - 1) / 2) * 7, Math.sin(i * 2.4) * 4] };
   });
   return { raw: JSON.stringify(f), bookmark: count === 5 ? { position: [0, 12, 42], target: [-2, 0, -3] } : { position: [0, 13, 105], target: [0, 0, 0] } };
@@ -298,16 +302,17 @@ try {
   const mode = process.env.EXTERIOR_LOD_MODE;
   const focused = ["focus-fifty", "focus-fifty-low", "baseline-five"].includes(mode);
   const focusedTier = mode === "focus-fifty-low" ? "low" : "high";
-  if (!["visual", "visual-check"].includes(mode)) for (const iteration of focused ? [1, 2, 3, 4] : mode === "smoke" ? [1] : [1, 2]) {
+  if (!["visual", "visual-check"].includes(mode)) for (const iteration of focused ? [1, 2, 3, 4] : ["smoke", "matrix-once"].includes(mode) ? [1] : [1, 2]) {
     const counts = iteration === 1 ? [5, 20, 50] : [50, 20, 5];
     const tiers = iteration === 1 ? ["high", "medium", "low"] : ["low", "medium", "high"];
     const cases = tiers.flatMap(tier => counts.map(count => ({ count, tier })));
-    const selected = focused ? [{ count: mode === "baseline-five" ? 5 : 50, tier: focusedTier }] : mode === "smoke" ? [cases[2]] : cases;
-    for (const { count, tier } of selected) {
-      for (const version of mode === "baseline-five" ? ["before"] : iteration % 2 === 1 ? ["before", "after"] : ["after", "before"]) await run(version, count, tier, iteration);
+    const selected = mode === "library-recheck" ? cases.filter(({ count, tier }) => (count === 20 && tier === "high") || (count === 50 && (tier === "medium" || tier === "low"))) : focused ? [{ count: mode === "baseline-five" ? 5 : 50, tier: focusedTier }] : mode === "smoke" ? [cases[2]] : cases;
+    for (const [caseIndex, { count, tier }] of selected.entries()) {
+      const reverse = (mode === "matrix-once" ? caseIndex + 1 : iteration) % 2 === 0;
+      for (const version of mode === "baseline-five" ? ["before"] : reverse ? ["after", "before"] : ["before", "after"]) await run(version, count, tier, iteration);
     }
   }
-  if (!focused && !["smoke", "matrix"].includes(mode)) for (const type of ["ice", "gas", "rocky", "ringed", "ocean"]) {
+  if (!visualLibrary && !focused && !["smoke", "matrix", "matrix-once", "library-recheck"].includes(mode)) for (const type of ["ice", "gas", "rocky", "ringed", "ocean"]) {
     if (batch2) {
       const angles = mode === "visual-check" ? ["back", "near"] : Object.keys(phases);
       for (const phase of angles) for (const version of ["before", "after"]) await run(version, 1, "high", 1, type, phase);
