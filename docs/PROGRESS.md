@@ -745,3 +745,16 @@ Pine Forest 集中验收：[整林审阅](reviews/pine-final/README.md)提供源
 游戏级枝叶卡片代表区域（38 棵树，EZ-Tree Pine 预设，Blender 导出 4.9 MB）：仅作可选入口 `?trees=game-region`，不推广。首版接入使 PineStream 在 GLB 加载后重建，丢失碎石、倒木、雾和落叶地表，首轮 FPS 提升作废；a27a065 修复后 Intel 核显静止采样与旧森林无一致差异（近/远 44.7/44.4 FPS，步行位 57–59 FPS），视觉偏卡通、亮绿，与原森林风格不符。转动视角的 4 个静止朝向显示卡片侧对镜头时退化成窄片，存在纸片感。未做连续漫游录屏和 Blender 同机位对照。运行/制作资产见 Release pine-game-region-20261105，详见 [评估](reviews/pine-game-region/README.md)。
 
 写实树木资产评估（2026-11-05）：Sketchfab「Pine trees pack (lowpoly, game ready, LODs)」（作者 LOLIPOP，CC BY 4.0，需署名，允许商用）经公开 API 核实：15 个模型（大树到幼苗），每棵 3 级 LOD 加 16 面 Billboard，大树 LOD0 约 11.8k 三角面，树皮 1K×2K、枝叶簇 2K 含 Opacity/SSS，顶点色烘焙 AO。预览图中树形为稀疏欧洲赤松，树干细长。下载接口需要 Sketchfab 登录令牌，本机没有，尚未下载，所以还没有做过实际 Blender/Three.js 检查。Poly Haven 的 CC0 pine_tree_01 / fir_tree_01 是离线渲染级（约 1740 万 / 785 万三角面，.bin 905 / 456 MB），不是游戏级，需要自己减面和做 LOD，不采用。下载脚本：scripts/forest-lab/fetch-sketchfab-pine.mjs（需设置 SKETCHFAB_TOKEN）。
+
+
+## 归档（2026-11-06）：项目暂停
+
+- 状态：用户决定暂停开发。本次只做归档，没有新功能、美术优化或实验。分支 `codex/pine-forest-vertical-slice`；`main` 未改动、未合并；stash `batch4-wip-backup-20261104-100624` 保留。
+- 可运行版本：`/forest-runtime-lab`（默认森林）、`/forest-memory-lab`（独立记忆体验，提交 `cf91423`）。`?trees=game-region` 为未推广的 EZ-Tree 候选。
+- 已完成：默认森林可自由行走；记忆体验（发现、聚焦、阅读文字/照片/视频、退出）；树干偏绿修复（`d393e06`）。
+- 未成为默认：11 种树整林重建（`41b2041`，视觉与性能未达标）；EZ-Tree 38 棵候选（无一致性能收益、风格不符、转动视角有纸片感，不推广）。
+- 已提取、未接入浏览器：LOLIPOP 松树包（CC BY 4.0，作者署名见 `license.txt` 与评估文档）已用 Blender 提取为 `pine-pack.glb`，并生成 38 个树位映射（`region.json`）。没有写 Three.js 组件，没有浏览器视觉或性能测试。上文 747 行所述"尚未下载"已过时。
+- 未解决：没有 Intel 核显 GPU timer-query 实测；没有逐帧 LOD 切换量化；水面、林下密度、背光相对 Blender 原场景仍有差距；未在第二台设备上实机运行。
+- 验证说明：记忆体验提交时 lint、typecheck、51 项单测、build、浏览器端到端通过；EZ-Tree 阶段只跑了 lint、typecheck、build；归档时未重跑完整测试。
+- 本次归档新增 Release：`pine-sketchfab-pack-20261106`（运行包 8.8MB、制作包 116MB，SHA-256 已由发布脚本与服务端核对）。清单：`docs/reviews/pine-sketchfab/remote-assets.json`。此前 18 个 Release 的 25 个附件大小与 SHA-256 已逐一核对一致。
+- 恢复方法：`npm.cmd ci`；从 `docs/reviews/*/remote-assets.json` 列出的 Release 下载运行包，解压到仓库根目录（被 Git 忽略的 `public/forest-origin-assets/`、`artifacts-local/` 依赖这些包）；可用 `scripts/forest-lab/verify-pine-release-download.mjs` 校验下载；再运行 lint/typecheck/test/build。继续 LOLIPOP 路线的下一步是写 `?trees=sketchfab` 的 Three.js 组件，并保留 CC BY 4.0 署名。

@@ -1,0 +1,20 @@
+{
+  "repository": "SeeAgain-TJL/LIVE",
+  "release": "https://github.com/SeeAgain-TJL/LIVE/releases/tag/pine-sketchfab-pack-20261106",
+  "tag": "pine-sketchfab-pack-20261106",
+  "publishedFrom": "567212b9281e62387108c9a22a415a090e0067c9",
+  "files": [
+    {
+      "name": "pine-sketchfab-runtime.zip",
+      "bytes": 8831883,
+      "sha256": "411b2edefb1ae23f055f2c4eb8619b1277cad2d9df007278c0c899b4d4029f83",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-sketchfab-pack-20261106/pine-sketchfab-runtime.zip"
+    },
+    {
+      "name": "pine-sketchfab-authoring.zip",
+      "bytes": 121725626,
+      "sha256": "00d94083a615c64a28f6c5b9530460f53026e8f6dc28ce249020fdafe162a580",
+      "url": "https://github.com/SeeAgain-TJL/LIVE/releases/download/pine-sketchfab-pack-20261106/pine-sketchfab-authoring.zip"
+    }
+  ]
+}
