@@ -8,6 +8,7 @@ import { request } from 'node:https';
 import path from 'node:path';
 const batch6=process.argv.includes('--batch6');
 const profiles={
+  '--sketchfab-pack':{batch:'pine-sketchfab',tag:'pine-sketchfab-pack-20261106',name:'Pine Forest - LOLIPOP Sketchfab pine pack (CC BY 4.0)',files:['pine-sketchfab-runtime.zip','pine-sketchfab-authoring.zip']},
   '--game-region':{batch:'pine-game-region',tag:'pine-game-region-20261105',name:'Pine Forest - game-card tree region candidate',files:['pine-game-region-runtime.zip','pine-game-region-authoring.zip']},
   '--tree-representative':{batch:'pine-tree-representative',tag:'pine-tree-representative-20261105',name:'Pine Forest - representative geometric pine',files:['pine-tree-representative-runtime.zip','pine-tree-representative-authoring.zip']},
   '--tree-rebuild':{batch:'pine-tree-rebuild',tag:'pine-tree-rebuild-20261105',name:'Pine Forest - rebuilt source trees',files:['pine-tree-rebuild-runtime.zip','pine-tree-rebuild-authoring.zip']},
